@@ -23,13 +23,20 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
 }) => {
   const isDepleted = remaining <= 0;
 
+  const isDisabled = disabled || isDepleted || !canBuy;
+
   return (
     <button
       type="button"
       onClick={onShowDetail}
-      className="text-left border border-slate-600 rounded-md p-2 flex flex-col justify-between bg-slate-900/70 transition-transform shadow-sm hover:-translate-y-1 hover:shadow-lg hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+      className="relative hb-card text-left flex flex-col justify-between transition-transform hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
     >
-      <div>
+      {/* 残り枚数バッジ */}
+      <span className="absolute -top-1 -right-1 px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-100 border border-slate-500 shadow">
+        残り {remaining}
+      </span>
+
+      <div className="pr-4">
         <div className="text-xs font-semibold mb-1">{card.name}</div>
         <div className="text-[10px] text-slate-300 mb-1">
           種類: {renderTypeLabel(card.type)}
@@ -45,7 +52,9 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
         </div>
       </div>
       <div className="mt-2 flex items-center justify-between text-[10px]">
-        <span>のこり: {remaining}枚</span>
+        <span className="text-slate-300">
+          {isDepleted ? "在庫なし" : "購入できます"}
+        </span>
         <button
           type="button"
           className="px-2 py-1 rounded bg-indigo-600 disabled:bg-slate-700 disabled:opacity-60"
@@ -53,7 +62,7 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
             e.stopPropagation(); // カードクリック(onShowDetail)と分離
             onBuy();
           }}
-          disabled={disabled || isDepleted || !canBuy}
+          disabled={isDisabled}
         >
           買う
         </button>
@@ -63,5 +72,4 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
 };
 
 export default SupplyCardPile;
-
 

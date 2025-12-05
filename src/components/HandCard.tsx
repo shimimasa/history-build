@@ -7,6 +7,8 @@ import { renderTypeLabel } from "./shared";
 interface HandCardProps {
   card: Card;
   disabled: boolean;
+  selected: boolean;
+  onSelect: () => void;
   onPlay: () => void;
   onShowDetail: () => void;
 }
@@ -14,13 +16,22 @@ interface HandCardProps {
 const HandCard: React.FC<HandCardProps> = ({
   card,
   disabled,
+  selected,
+  onSelect,
   onPlay,
   onShowDetail
 }) => {
   const isAction = card.type === "character" || card.type === "event";
 
+  const baseClass = "hb-hand-card";
+  const selectedClass = selected ? " hb-hand-card-selected" : "";
+  const disabledClass = disabled ? " opacity-60 cursor-not-allowed" : " hover:-translate-y-1";
+
   return (
-    <div className="shrink-0 min-w-[120px] max-w-[160px] border border-slate-600 rounded-md p-2 bg-slate-900/80 flex flex-col justify-between">
+    <div
+      className={baseClass + selectedClass + disabledClass}
+      onClick={disabled ? undefined : onSelect}
+    >
       <div>
         <div className="text-xs font-semibold mb-1">{card.name}</div>
         <div className="text-[10px] text-slate-300 mb-1">
@@ -37,14 +48,22 @@ const HandCard: React.FC<HandCardProps> = ({
         <button
           type="button"
           className="text-[10px] text-sky-300 hover:text-sky-100 underline"
-          onClick={onShowDetail}
+          onClick={(e) => {
+            e.stopPropagation();
+            onShowDetail();
+          }}
         >
           くわしく
         </button>
         {isAction ? (
           <button
             className="px-2 py-1 rounded bg-emerald-600 text-[10px] disabled:bg-slate-700 disabled:opacity-60"
-            onClick={onPlay}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!disabled) {
+                onPlay();
+              }
+            }}
             disabled={disabled}
           >
             つかう
@@ -60,5 +79,3 @@ const HandCard: React.FC<HandCardProps> = ({
 };
 
 export default HandCard;
-
-

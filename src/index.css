@@ -1,4 +1,101 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* アプリ全体のベースレイアウト */
+  .hb-app {
+    @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col;
+  }
+
+  /* ヘッダー + ターン情報 */
+  .hb-header {
+    @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur;
+  }
+
+  .hb-header-inner {
+    @apply w-full max-w-6xl mx-auto px-4 py-3 flex items-center justify-between;
+  }
+
+  .hb-header-title {
+    @apply text-xl font-bold tracking-wide;
+  }
+
+  .hb-header-turn {
+    @apply flex items-center gap-3 text-sm;
+  }
+
+  .hb-pill {
+    @apply px-3 py-1 rounded-full bg-slate-800/80 border border-slate-600 text-xs font-semibold;
+  }
+
+  /* 上部ステータスバー（アクション/購入/米/知識） */
+  .hb-status-row {
+    @apply w-full max-w-6xl mx-auto px-4 pb-3 flex gap-4;
+  }
+
+  .hb-status-tile {
+    @apply flex-1 flex items-center gap-3 px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700 shadow-md;
+  }
+
+  .hb-status-icon {
+    @apply w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold bg-slate-800;
+  }
+
+  /* 中央ボードレイアウト */
+  .hb-main-board {
+    @apply flex-1 w-full flex justify-center;
+  }
+
+  .hb-board-inner {
+    @apply w-full max-w-6xl px-4 py-4 flex gap-4;
+  }
+
+  .hb-sidebar {
+    @apply w-56 flex-shrink-0 space-y-3;
+  }
+
+  .hb-sidebar-panel {
+    @apply hb-card text-xs;
+  }
+
+  /* 汎用カードコンテナ（Supply/サイドバーなど） */
+  .hb-card {
+    @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
+  }
+
+  /* サプライボード */
+  .hb-supply {
+    @apply flex-1 flex flex-col gap-3;
+  }
+
+  .hb-supply-grid {
+    @apply grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+  }
+
+  /* 手札バー（sticky bottom） */
+  .hb-hand-bar {
+    @apply w-full border-t border-slate-800 bg-slate-950/95;
+  }
+
+  .hb-hand-inner {
+    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-3;
+  }
+
+  .hb-hand-scroll {
+    @apply flex gap-3 overflow-x-auto pb-2;
+  }
+
+  .hb-hand-card {
+    @apply shrink-0 min-w-[120px] max-w-[160px] hb-card cursor-pointer transition-transform duration-150;
+  }
+
+  .hb-hand-card-selected {
+    @apply ring-2 ring-amber-400 shadow-amber-500/50;
+  }
+
+  /* 右下のフェイズボタン */
+  .hb-phase-buttons {
+    @apply fixed bottom-4 right-4 flex flex-col gap-2 z-40;
+  }
+}
