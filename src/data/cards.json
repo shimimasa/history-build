@@ -1,0 +1,228 @@
+[
+    {
+      "id": "SENGOKU_R1",
+      "era": "sengoku",
+      "name": "農地のかい発",
+      "type": "resource",
+      "cost": 2,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addRice",
+          "value": 2
+        }
+      ],
+      "text": "米が2ふえる"
+    },
+    {
+      "id": "SENGOKU_R2",
+      "era": "sengoku",
+      "name": "かいどう整備",
+      "type": "resource",
+      "cost": 3,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addKnowledge",
+          "value": 1
+        },
+        {
+          "trigger": "onPlay",
+          "effect": "draw",
+          "value": 1
+        }
+      ],
+      "text": "知識が1ふえ、カードを1まいひく"
+    },
+    {
+      "id": "SENGOKU_R3",
+      "era": "sengoku",
+      "name": "城下町のはったつ",
+      "type": "resource",
+      "cost": 4,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addRice",
+          "value": 1
+        },
+        {
+          "trigger": "onPlay",
+          "effect": "addKnowledge",
+          "value": 1
+        }
+      ],
+      "text": "米が1ふえ、知識が1ふえる"
+    },
+  
+    {
+      "id": "SENGOKU_C1",
+      "era": "sengoku",
+      "name": "織田信長",
+      "type": "character",
+      "cost": 5,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addRice",
+          "value": 2
+        },
+        {
+          "trigger": "onPlay",
+          "condition": {
+            "resource": "knowledge",
+            "operator": ">=",
+            "value": 3
+          },
+          "effect": "addRice",
+          "value": 1
+        }
+      ],
+      "text": "米が2ふえる。もし知識が3いじょうなら、米が1ふえる"
+    },
+    {
+      "id": "SENGOKU_C2",
+      "era": "sengoku",
+      "name": "豊臣秀吉",
+      "type": "character",
+      "cost": 5,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "draw",
+          "value": 1
+        },
+        {
+          "trigger": "onPlay",
+          "effect": "addRice",
+          "value": 1
+        }
+      ],
+      "text": "カードを1まいひき、米が1ふえる"
+    },
+    {
+      "id": "SENGOKU_C3",
+      "era": "sengoku",
+      "name": "徳川家康",
+      "type": "character",
+      "cost": 6,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "discount",
+          "targetType": "victory",
+          "value": 1
+        }
+      ],
+      "text": "このターン、国力カードを買うとき、米が1すくなくてよい"
+    },
+    {
+      "id": "SENGOKU_C4",
+      "era": "sengoku",
+      "name": "武田信玄",
+      "type": "character",
+      "cost": 4,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addKnowledge",
+          "value": 1
+        },
+        {
+          "trigger": "onPlay",
+          "effect": "addRice",
+          "value": 1
+        }
+      ],
+      "text": "知識が1ふえ、米が1ふえる"
+    },
+    {
+      "id": "SENGOKU_C5",
+      "era": "sengoku",
+      "name": "上杉謙信",
+      "type": "character",
+      "cost": 4,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addKnowledge",
+          "value": 2
+        }
+      ],
+      "text": "知識が2ふえる"
+    },
+  
+    {
+      "id": "SENGOKU_E1",
+      "era": "sengoku",
+      "name": "天下統一",
+      "type": "event",
+      "cost": 6,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "addVictory",
+          "value": 1
+        },
+        {
+          "trigger": "onPlay",
+          "effect": "addRice",
+          "value": 1
+        }
+      ],
+      "text": "国力が1あがる。米が1ふえる"
+    },
+    {
+      "id": "SENGOKU_E2",
+      "era": "sengoku",
+      "name": "刀狩",
+      "type": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "trashFromHand",
+          "value": 1
+        },
+        {
+          "trigger": "onPlay",
+          "effect": "draw",
+          "value": 1
+        }
+      ],
+      "text": "手札からカードを1まいすて、カードを1まいひく"
+    },
+    {
+      "id": "SENGOKU_E3",
+      "era": "sengoku",
+      "name": "楽市・楽座",
+      "type": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trigger": "onPlay",
+          "effect": "discount",
+          "targetType": "character",
+          "value": 1
+        }
+      ],
+      "text": "このターン、人物カードを買うとき、米が1すくなくてよい"
+    },
+  
+    {
+      "id": "SENGOKU_V1",
+      "era": "sengoku",
+      "name": "国力（小）",
+      "type": "victory",
+      "cost": 3,
+      "effects": [
+        {
+          "trigger": "endGame",
+          "effect": "addVictory",
+          "value": 1
+        }
+      ],
+      "text": "ゲームがおわったとき、国力+1"
+    }
+  ]
+  
