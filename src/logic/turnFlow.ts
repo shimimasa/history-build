@@ -104,8 +104,11 @@ import {
     // 手札は空のままにしておく
     // → 次の startTurn() で5枚引く
   
-    // ターン交代
+    // ターン交代（人間 → CPU → 人間 …）
     state.currentTurn = owner === "player" ? "cpu" : "player";
+  
+    // 全体のターン数（手番ごとに+1）
+    state.turnNumber += 1;
   
     // ゲーム終了判定（両者とも maxTurnsPerPlayer 回プレイしたら終了）
     const maxTurns = state.maxTurnsPerPlayer;
@@ -297,6 +300,7 @@ import {
   /**
    * 全カードと victoryPointsBonus から最終スコアを計算して勝者を決める
    * - v1では「国力カード（endGame効果）＋ボーナス」の単純な合計
+   * - 将来（v1.1以降）は cardEffects.applyEndGameEffects を使う形に差し替える想定
    */
   function judgeWinner(state: GameState): "player" | "cpu" | "draw" {
     const playerScore = calcTotalVictoryPoints(state.player);
