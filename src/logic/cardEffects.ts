@@ -1,5 +1,3 @@
-// src/logic/cardEffects.ts
-
 //------------------------------------------------------
 // 型定義（プロジェクト全体の型と揃えていく想定）
 //------------------------------------------------------
@@ -12,7 +10,7 @@ export type EffectName =
   | "draw"
   | "discount"
   | "addVictory"
-  | "trashFromHand";
+  | "trashFromHand"; // v1.5では最低限
 
 export type Trigger = "onPlay" | "onBuy" | "endGame";
 
@@ -28,18 +26,19 @@ export interface CardEffect {
   trigger: Trigger;
   effect: EffectName;
   value?: number;
-  targetType?: CardType;       // discount の対象
-  condition?: EffectCondition; // 条件付き効果
+  targetType?: CardType;       // discount対象など
+  condition?: EffectCondition; // 任意
 }
 
 export interface Card {
-  id: string;
-  era: string;
-  name: string;
+  id: string;               // "CHR_NOBUNAGA"
+  era: string;              // "Sengoku"
+  name: string;             // "織田信長"
   type: CardType;
-  cost: number;
+  cost: number;             // 購入コスト（米 + 知識）
+  requiredKnowledge?: number; // 購入に必要な最低知識値（省略時は0扱い）
   effects: CardEffect[];
-  text: string;
+  text: string;             // ゲーム内表示テキスト
 }
 
 export interface DiscountBuff {
@@ -308,14 +307,11 @@ function applySingleEffectEndGame(player: PlayerState, ef: CardEffect): void {
   }
 }
 
+
 //------------------------------------------------------
 // 購入コスト計算用のユーティリティ（割引の反映）
 //------------------------------------------------------
 
-/**
- * あるカードを買うときの実コストを計算する。
- * - card.cost から temporaryDiscounts を引いた値（最低0）を返す。
- */
 export function getEffectiveCostForPlayer(
   player: PlayerState,
   card: Card
@@ -330,6 +326,19 @@ export function getEffectiveCostForPlayer(
 
   const effective = Math.max(0, card.cost - discountTotal);
   return effective;
+}
+
+/**
+ * プレイヤーが特定のカードを購入できるかどうかを判定する。
+ * - 割引後コスト <= 米 + 知識
+ * - 現在の知識 >= requiredKnowledge（未指定なら0）
+ */
+export function canBuyCard(player: PlayerState, card: Card): boolean {
+  const effectiveCost = getEffectiveCostForPlayer(player, card);
+  const available = player.riceThisTurn + player.knowledge;
+  const required = card.requiredKnowledge ?? 0;
+
+  return available >= effectiveCost && player.knowledge >= required;
 }
 
 /**

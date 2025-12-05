@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import type { GameState, Card } from "../logic/cardEffects";
+import { canBuyCard } from "../logic/cardEffects";
 import SupplyCardPile from "../components/SupplyCardPile";
 import HandCard from "../components/HandCard";
 
@@ -90,7 +91,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
                     key={pile.card.id}
                     card={pile.card}
                     remaining={pile.remaining}
-                    riceThisTurn={player.riceThisTurn}
+                    canBuy={canBuyCard(player, pile.card)}
                     disabled={
                       !isPlayerTurn ||
                       state.isGameOver ||
@@ -253,6 +254,9 @@ const GameScreen: React.FC<GameScreenProps> = ({
             </div>
             <div className="text-[11px] text-slate-300 mb-1">
               コスト: 米 {detailCard.cost}
+            </div>
+            <div className="text-[11px] text-slate-300 mb-1">
+              知識条件: {detailCard.requiredKnowledge ?? 0}
             </div>
             <div className="text-[12px] text-slate-100 whitespace-pre-wrap mt-2">
               {detailCard.text}

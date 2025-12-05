@@ -2,13 +2,13 @@
 // 「資源 → 行動 → 購入 → クリーンアップ」の一連の流れを管理するモジュール
 
 import {
-    GameState,
-    PlayerState,
-    Card,
-    applyOnPlayEffects,
-    clearTemporaryDiscounts,
-    getEffectiveCostForPlayer
-  } from "./cardEffects"; // 型と関数はプロジェクトに合わせて調整してください
+  GameState,
+  PlayerState,
+  Card,
+  applyOnPlayEffects,
+  clearTemporaryDiscounts,
+  canBuyCard
+} from "./cardEffects"; // 型と関数はプロジェクトに合わせて調整してください
   
   //------------------------------------------------------
   // 基本ヘルパー
@@ -199,49 +199,47 @@ import {
   }
   
   //------------------------------------------------------
-  // 購入フェーズ：カードを1枚購入
-  //------------------------------------------------------
-  
-  /**
-   * カードを1枚購入する
-   * - supply から cardId のカードを1枚減らし、プレイヤーの捨札に置く
-   * - effectiveCost（割引適用後）が riceThisTurn 以下なら購入成功
-   * - 失敗（お金が足りない or 在庫0）の場合は state を変更しない
-   */
-  export function buyCardById(
-    state: GameState,
-    owner: "player" | "cpu",
-    cardId: string | null
-  ): GameState {
-    if (!cardId) return state;
-  
-    const player = getCurrentPlayer(state, owner);
-    const pile = state.supply[cardId];
-  
-    if (!pile || pile.remaining <= 0) {
-      // 在庫なし
-      return state;
-    }
-  
-    const card = pile.card;
-    const effectiveCost = getEffectiveCostForPlayer(player, card);
-  
-    if (player.riceThisTurn < effectiveCost) {
-      // お金が足りない
-      return state;
-    }
-  
-    // 米を支払い、カードを獲得
-    player.riceThisTurn -= effectiveCost;
-    pile.remaining -= 1;
-    player.discard.push(card);
-  
-    // 購入時効果（onBuy）があれば適用したい場合はここで applyOnBuyEffects を呼ぶ
-    // state = applyOnBuyEffects(state, card, owner);
-  
+// 購入フェーズ：カードを1枚購入
+//------------------------------------------------------
+
+/**
+ * カードを1枚購入する
+ * - supply から cardId のカードを1枚減らし、プレイヤーの捨札に置く
+ * - canBuyCard(player, card) が true のときのみ購入成功
+ *   （米 + 知識 が割引後コスト以上 & 知識が requiredKnowledge 以上）
+ * - 条件を満たさない / 在庫0 の場合は state を変更しない
+ */
+export function buyCardById(
+  state: GameState,
+  owner: "player" | "cpu",
+  cardId: string | null
+): GameState {
+  if (!cardId) return state;
+
+  const player = getCurrentPlayer(state, owner);
+  const pile = state.supply[cardId];
+
+  if (!pile || pile.remaining <= 0) {
+    // 在庫なし
     return state;
   }
-  
+
+  const card = pile.card;
+
+  if (!canBuyCard(player, card)) {
+    // 米 + 知識 / 知識条件 のどちらかが足りない
+    return state;
+  }
+
+  // v1.5 では「支払ったふり」：リソースは消費せず、条件判定のみ
+  pile.remaining -= 1;
+  player.discard.push(card);
+
+  // 購入時効果（onBuy）があれば適用したい場合はここで applyOnBuyEffects を呼ぶ
+  // state = applyOnBuyEffects(state, card, owner);
+
+  return state;
+}
   //------------------------------------------------------
   // 「1ターンまるごと」を自動で回すユーティリティ（CPU用）
   //------------------------------------------------------

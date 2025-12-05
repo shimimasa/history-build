@@ -7,7 +7,7 @@ import { renderTypeLabel } from "./shared";
 interface SupplyCardPileProps {
   card: Card;
   remaining: number;
-  riceThisTurn: number;
+  canBuy: boolean;
   disabled: boolean;
   onBuy: () => void;
   onShowDetail: () => void;
@@ -16,12 +16,11 @@ interface SupplyCardPileProps {
 const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   card,
   remaining,
-  riceThisTurn,
+  canBuy,
   disabled,
   onBuy,
   onShowDetail
 }) => {
-  const canAfford = riceThisTurn >= card.cost;
   const isDepleted = remaining <= 0;
 
   return (
@@ -38,6 +37,9 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
         <div className="text-[10px] text-slate-300 mb-1">
           コスト: 米 {card.cost}
         </div>
+        <div className="text-[10px] text-slate-300 mb-1">
+          知識条件: {card.requiredKnowledge ?? 0}
+        </div>
         <div className="text-[10px] text-slate-400 line-clamp-3">
           {card.text}
         </div>
@@ -51,7 +53,7 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
             e.stopPropagation(); // カードクリック(onShowDetail)と分離
             onBuy();
           }}
-          disabled={disabled || isDepleted || !canAfford}
+          disabled={disabled || isDepleted || !canBuy}
         >
           買う
         </button>

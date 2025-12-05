@@ -2,12 +2,12 @@
 // CPU が「どのカードをプレイするか」「どのカードを買うか」を決めるロジック
 
 import {
-    GameState,
-    PlayerState,
-    Card,
-    CardType,
-    getEffectiveCostForPlayer
-  } from "./cardEffects";
+  GameState,
+  PlayerState,
+  Card,
+  CardType,
+  canBuyCard
+} from "./cardEffects";
   
   //------------------------------------------------------
   // ヘルパー
@@ -115,10 +115,9 @@ import {
    */
   export function chooseCpuBuyCardId(state: GameState): string | null {
     const cpu = getCpu(state);
-    const rice = cpu.riceThisTurn;
     const phase = getPhase(cpu.turnsTaken); // early | mid | late
   
-    // supply から、在庫があり、かつ 支払えるカードだけ抜き出す
+    // supply から、在庫があり、かつ canBuyCard が true のカードだけ抜き出す
     const affordable: Card[] = [];
   
     for (const pileId of Object.keys(state.supply)) {
@@ -126,9 +125,8 @@ import {
       if (!pile || pile.remaining <= 0) continue;
   
       const card = pile.card;
-      const cost = getEffectiveCostForPlayer(cpu, card);
   
-      if (cost <= rice) {
+      if (canBuyCard(cpu, card)) {
         affordable.push(card);
       }
     }
@@ -138,30 +136,30 @@ import {
     }
   
     // フェーズごとの優先タイプ
-    let priority: CardType[];
-  
-    if (phase === "early") {
-      // デッキの基盤づくり：資源優先
-      priority = ["resource", "character", "event", "victory"];
-    } else if (phase === "mid") {
-      // 攻め：人物＆イベント中心
-      priority = ["character", "event", "resource", "victory"];
-    } else {
-      // late：勝ちに行く：国力最優先
-      priority = ["victory", "character", "event", "resource"];
-    }
-  
-    // 優先順に従って候補を絞り、その中でスコア最大を選ぶ
-    for (const t of priority) {
-      const candidates = affordable.filter((c) => c.type === t);
-      if (candidates.length === 0) continue;
-  
-      const sorted = [...candidates].sort((a, b) => scoreCard(b) - scoreCard(a));
-      return sorted[0].id;
-    }
-  
-    // ここまで来ることはほぼないが、安全のため
-    const sortedAll = [...affordable].sort((a, b) => scoreCard(b) - scoreCard(a));
-    return sortedAll[0]?.id ?? null;
+  let priority: CardType[];
+
+  if (phase === "early") {
+    // デッキの基盤づくり：資源優先
+    priority = ["resource", "character", "event", "victory"];
+  } else if (phase === "mid") {
+    // 攻め：人物＆イベント中心
+    priority = ["character", "event", "resource", "victory"];
+  } else {
+    // late：勝ちに行く：国力最優先
+    priority = ["victory", "character", "event", "resource"];
   }
+
+  // 優先順に従って候補を絞り、その中でスコア最大を選ぶ
+  for (const t of priority) {
+    const candidates = affordable.filter((c) => c.type === t);
+    if (candidates.length === 0) continue;
+
+    const sorted = [...candidates].sort((a, b) => scoreCard(b) - scoreCard(a));
+    return sorted[0].id;
+  }
+
+  // ここまで来ることはほぼないが、安全のため
+  const sortedAll = [...affordable].sort((a, b) => scoreCard(b) - scoreCard(a));
+  return sortedAll[0]?.id ?? null;
+}
   

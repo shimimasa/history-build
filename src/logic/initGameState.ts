@@ -40,7 +40,7 @@ const MAX_TURNS_PER_PLAYER = 12;
 export function initGameState(): GameState {
   // cards.json から Card[] を構築
   const allCards: Card[] = (cardsData as Card[]).filter(
-    (c) => c.era === "sengoku"
+    (c) => c.era === "Sengoku"
   );
 
   // ID → Card のマップを作っておくといろいろ便利
@@ -59,6 +59,14 @@ export function initGameState(): GameState {
   // 山札をシャッフル
   player.deck = shuffle(player.deck);
   cpu.deck = shuffle(cpu.deck);
+
+
+  // スタートデッキの構成（カード ID と枚数）
+// v1.5 戦国ミニデッキ：こめ袋（小）×7、村落×3 スタート。
+const STARTING_DECK_CONFIG: { cardId: string; count: number }[] = [
+  { cardId: "RICE_SMALL", count: 7 },
+  { cardId: "VP_VILLAGE", count: 3 }
+];
 
   const initialState: GameState = {
     player,
