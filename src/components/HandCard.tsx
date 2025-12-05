@@ -20,7 +20,7 @@ const HandCard: React.FC<HandCardProps> = ({
   const isAction = card.type === "character" || card.type === "event";
 
   return (
-    <div className="min-w-[120px] max-w-[160px] border border-slate-600 rounded-md p-2 bg-slate-900/80 flex flex-col justify-between">
+    <div className="shrink-0 min-w-[120px] max-w-[160px] border border-slate-600 rounded-md p-2 bg-slate-900/80 flex flex-col justify-between">
       <div>
         <div className="text-xs font-semibold mb-1">{card.name}</div>
         <div className="text-[10px] text-slate-300 mb-1">
