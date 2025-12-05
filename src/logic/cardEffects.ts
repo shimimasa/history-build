@@ -55,6 +55,11 @@ export interface PlayerState {
   knowledge: number;
   victoryPointsBonus: number; // endGame用ボーナス
   turnsTaken: number;
+
+  // フェーズ管理用フラグ（v1.5仕様：1ターンにつき 行動1回 / 購入1回）
+  hasPlayedActionThisTurn: boolean;
+  hasBoughtThisTurn: boolean;
+
   // このターンだけ有効な割引情報
   temporaryDiscounts: DiscountBuff[];
 }

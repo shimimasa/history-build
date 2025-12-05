@@ -41,6 +41,8 @@ function createEmptyPlayer(): PlayerState {
     knowledge: 0,
     victoryPointsBonus: 0,
     turnsTaken: 0,
+    hasPlayedActionThisTurn: false,
+    hasBoughtThisTurn: false,
     temporaryDiscounts: [],
   };
 }

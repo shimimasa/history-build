@@ -95,7 +95,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
                     disabled={
                       !isPlayerTurn ||
                       state.isGameOver ||
-                      pile.remaining <= 0
+                      pile.remaining <= 0 ||
+                      player.hasBoughtThisTurn // すでに今ターン購入済みならボタン無効
                     }
                     onBuy={() => onBuyCard(pile.card.id)}
                     onShowDetail={() => setDetailCard(pile.card)}
@@ -225,7 +226,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
                     disabled={
                       !isPlayerTurn ||
                       state.isGameOver ||
-                      (card.type !== "character" && card.type !== "event")
+                      (card.type !== "character" && card.type !== "event") ||
+                      player.hasPlayedActionThisTurn // 今ターンはすでに行動カードを使っている
                     }
                     onPlay={() => onPlayActionCard(card.id)}
                   />
