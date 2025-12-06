@@ -2,7 +2,10 @@
 // src/logic/cpuLogic.v2.test.ts
 
 import { describe, it, expect } from "vitest";
-import { createInitialGameState, type GameState } from "../game/gameState";
+import {
+  createInitialGameState,
+  type GameState
+} from "../game/gameState";
 import { loadCards } from "../game/cardDefinitions";
 import {
   chooseCpuActionCard,
@@ -18,11 +21,11 @@ describe("cpuLogic v2 - chooseCpuActionCard", () => {
   it("person / event の中から addKnowledge を持つカードを優先して選ぶ", () => {
     const state = createBaseState();
 
-    // CPUの手札を制御：資源 + 知識を増やす人物カード
+    // CPU の手札を制御：資源 + 知識を増やす人物カード
     state.cpu.hand = ["RICE_SMALL", "CHR_KENSHIN"];
 
     const chosenId = chooseCpuActionCard(state);
-    expect(chosenId).toBe("CHR_KENSHIN"); // resource は候補外、人物カードが選ばれる
+    expect(chosenId).toBe("CHR_KENSHIN");
   });
 
   it("行動カードが1枚もない場合は null を返す", () => {
@@ -45,15 +48,23 @@ describe("cpuLogic v2 - chooseCpuBuyCard", () => {
     state.cpu.knowledge = 3;    // VP_COUNTRY.knowledgeRequired = 3
 
     const chosenId = chooseCpuBuyCard(state);
-    // 勝利点カードの中で最もコストが高い VP_COUNTRY を選ぶ想定
     expect(chosenId).toBe("VP_COUNTRY");
   });
 
   it("買えるカードが1枚もない場合は null を返す", () => {
-    const state = createBaseState();
+    let state = createBaseState();
 
-    state.cpu.riceThisTurn = 0;
-    state.cpu.knowledge = 0;
+    // CPU のリソースを完全に 0 にする
+    state = {
+      ...state,
+      cpu: {
+        ...state.cpu,
+        riceThisTurn: 0,
+        knowledge: 0
+      },
+      // さらに supply を空にして「そもそも購入候補が存在しない」状態にしておく
+      supply: {}
+    };
 
     const chosenId = chooseCpuBuyCard(state);
     expect(chosenId).toBeNull();

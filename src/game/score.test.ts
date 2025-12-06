@@ -7,7 +7,7 @@ import { loadCards } from "./cardDefinitions";
 import {
   computeVictoryPointsForPlayer,
   judgeWinner
-} from "./score";
+} from "./socre"; // ← ファイル名に合わせて一旦 socre に統一
 
 function createEmptyState(): GameState {
   const cards = loadCards();

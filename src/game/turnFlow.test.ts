@@ -2,9 +2,16 @@
 // src/game/turnFlow.test.ts
 
 import { describe, it, expect } from "vitest";
-import { createInitialGameState, type GameState } from "./gameState";
+import {
+  createInitialGameState,
+  type GameState
+} from "./gameState";
 import { loadCards } from "./cardDefinitions";
-import { proceedPhase, buyPhase, cleanupPhase } from "./turnFlow";
+import {
+  proceedPhase,
+  cleanupPhase,
+  buyPhase
+} from "./turnFlow";
 
 function createInitialState(): GameState {
   const cards = loadCards();
@@ -21,22 +28,30 @@ describe("turnFlow v2 - 基本フェーズ遷移", () => {
     expect(state.gameEnded).toBe(false);
   });
 
-  it("DRAW → RESOURCE → ACTION → BUY → CLEANUP → DRAW へ正しく遷移する", () => {
+  it("DRAW → RESOURCE → ACTION → BUY → CLEANUP → DRAW と順に遷移する", () => {
     let state = createInitialState();
 
+    // 初期
     expect(state.phase).toBe("DRAW");
 
+    // DRAW -> RESOURCE
     state = proceedPhase(state);
     expect(state.phase).toBe("RESOURCE");
 
+    // RESOURCE -> ACTION
     state = proceedPhase(state);
     expect(state.phase).toBe("ACTION");
 
+    // ACTION -> BUY
     state = proceedPhase(state);
     expect(state.phase).toBe("BUY");
 
+    // BUY -> CLEANUP
     state = proceedPhase(state);
-    // CLEANUP 実行後、次の手番（CPU）の DRAW に戻っているはず
+    expect(state.phase).toBe("CLEANUP");
+
+    // CLEANUP -> 次の手番の DRAW
+    state = proceedPhase(state);
     expect(state.phase).toBe("DRAW");
     expect(state.activePlayer).toBe("cpu");
     expect(state.gameEnded).toBe(false);
@@ -69,7 +84,6 @@ describe("turnFlow v2 - BUY フェーズの挙動", () => {
     const cost = pile.card.cost;
     const knowledgeRequired = pile.card.knowledgeRequired;
 
-    // プレイヤーに十分なリソースを与える
     state.player.riceThisTurn = cost;
     state.player.knowledge = knowledgeRequired;
     state.phase = "BUY";
@@ -77,13 +91,13 @@ describe("turnFlow v2 - BUY フェーズの挙動", () => {
     const beforeDiscardLen = state.player.discard.length;
     const beforeRemaining = pile.remaining;
 
-    const newState = buyPhase(state, targetId);
+    state = buyPhase(state, targetId);
 
-    expect(newState.phase).toBe("CLEANUP");
-    expect(newState.player.riceThisTurn).toBe(0);
-    expect(newState.player.discard.length).toBe(beforeDiscardLen + 1);
-    expect(newState.player.discard).toContain(targetId);
-    expect(newState.supply[targetId].remaining).toBe(beforeRemaining - 1);
+    expect(state.phase).toBe("CLEANUP");
+    expect(state.player.riceThisTurn).toBe(0);
+    expect(state.player.discard.length).toBe(beforeDiscardLen + 1);
+    expect(state.player.discard).toContain(targetId);
+    expect(state.supply[targetId].remaining).toBe(beforeRemaining - 1);
   });
 
   it("米や知識が足りない場合は state を変えず、phase だけ CLEANUP になる", () => {
@@ -93,17 +107,19 @@ describe("turnFlow v2 - BUY フェーズの挙動", () => {
     const pile = state.supply[targetId];
     expect(pile).toBeDefined();
 
-    state.player.riceThisTurn = 0; // 足りない
+    state.player.riceThisTurn = 0;
     state.player.knowledge = 0;
     state.phase = "BUY";
 
-    const before = { ...state.player };
-    const newState = buyPhase(state, targetId);
+    const beforePlayer = { ...state.player };
+    const beforeRemaining = pile.remaining;
 
-    expect(newState.phase).toBe("CLEANUP");
-    expect(newState.player.riceThisTurn).toBe(before.riceThisTurn);
-    expect(newState.player.knowledge).toBe(before.knowledge);
-    expect(newState.player.discard.length).toBe(before.discard.length);
-    expect(newState.supply[targetId].remaining).toBe(pile.remaining);
+    state = buyPhase(state, targetId);
+
+    expect(state.phase).toBe("CLEANUP");
+    expect(state.player.riceThisTurn).toBe(beforePlayer.riceThisTurn);
+    expect(state.player.knowledge).toBe(beforePlayer.knowledge);
+    expect(state.player.discard.length).toBe(beforePlayer.discard.length);
+    expect(state.supply[targetId].remaining).toBe(beforeRemaining);
   });
 });
