@@ -1,13 +1,19 @@
 // src/containers/GameContainer.tsx
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import GameScreen from "../components/GameScreen";
 import { initGameState } from "../logic/initGameState";
 import type { GameState } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
 import { runCpuTurn } from "../logic/cpuLogic";
+import { computeVictoryPointsForPlayer } from "../game/socre";
+import type { GameOutcome } from "../ui/uiTypes";
 
-const GameContainer: React.FC = () => {
+interface GameContainerProps {
+  onGameEnd?: (outcome: GameOutcome) => void;
+}
+
+const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd }) => {
   // v2: initGameState() が createInitialGameState(cards) を呼び出し、
   // GameState（phase="DRAW", activePlayer="player", turnCount=1）を返す。
   const [state, setState] = useState<GameState>(() => initGameState());
@@ -30,6 +36,29 @@ const GameContainer: React.FC = () => {
 
     return s;
   }
+
+  // 直前の gameEnded の値を保持し、「false → true」遷移を検知する
+  const prevGameEndedRef = useRef<boolean>(state.gameEnded);
+
+  useEffect(() => {
+    const prev = prevGameEndedRef.current;
+
+    if (!prev && state.gameEnded && onGameEnd) {
+      const playerScore = computeVictoryPointsForPlayer(state, "player");
+      const cpuScore = computeVictoryPointsForPlayer(state, "cpu");
+
+      const outcome: GameOutcome = {
+        finalState: state,
+        winner: state.winner,
+        playerScore,
+        cpuScore
+      };
+
+      onGameEnd(outcome);
+    }
+
+    prevGameEndedRef.current = state.gameEnded;
+  }, [state, state.gameEnded, onGameEnd]);
 
   // プレイヤー側：フェーズを1つ進める（DRAW → RESOURCE → ACTION → BUY → CLEANUP → 次ターン…）
   const handleProceedPhase = () => {
