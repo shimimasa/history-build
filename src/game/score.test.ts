@@ -7,7 +7,7 @@ import { loadCards } from "./cardDefinitions";
 import {
   computeVictoryPointsForPlayer,
   judgeWinner
-} from "./socre"; // ← ファイル名に合わせて一旦 socre に統一
+} from "./socre"; // ファイル名に合わせて一旦 socre に統一
 
 function createEmptyState(): GameState {
   const cards = loadCards();
@@ -15,13 +15,27 @@ function createEmptyState(): GameState {
 }
 
 describe("score - computeVictoryPointsForPlayer", () => {
-  it("VP_VILLAGE 2枚で勝利点2になること", () => {
-    const state = createEmptyState();
+  it("VP_VILLAGE を2枚捨て札に追加すると勝利点が2点増えること", () => {
+    const cards = loadCards();
+    let state = createInitialGameState(cards);
 
-    state.player.discard = ["VP_VILLAGE", "VP_VILLAGE"];
+    const baseVp = computeVictoryPointsForPlayer(state, "player");
+
+    const player = state.player;
+    const updatedPlayer = {
+      ...player,
+      discard: [...player.discard, "VP_VILLAGE", "VP_VILLAGE"]
+    };
+
+    state = {
+      ...state,
+      player: updatedPlayer
+    };
 
     const vp = computeVictoryPointsForPlayer(state, "player");
-    expect(vp).toBe(2);
+
+    // 追加した VP_VILLAGE 2枚ぶん、勝利点が +2 されていること
+    expect(vp - baseVp).toBe(2);
   });
 });
 
