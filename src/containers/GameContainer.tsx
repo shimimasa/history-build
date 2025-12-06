@@ -3,6 +3,7 @@
 // - GameState と turnFlow / cpuLogic を使って PLAYER vs CPU の1対戦を進行。
 // - プレイヤー操作 → proceedPhase / actionPhase / buyPhase → CPU 自動ターン(runCpuTurn)
 //   → turnFlow 内の gameEnded 判定 → false→true になった瞬間に onGameEnd で親(App)へ通知。
+// - deckConfig は将来、初期デッキやサプライ構成の切り替えに使う予定（現時点では未使用）。
 
 import React, { useState, useRef, useEffect } from "react";
 import GameScreen from "../components/GameScreen";
@@ -11,15 +12,17 @@ import type { GameState } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
 import { runCpuTurn } from "../logic/cpuLogic";
 import { computeVictoryPointsForPlayer } from "../game/socre";
-import type { GameOutcome } from "../ui/uiTypes";
+import type { GameOutcome, DeckConfig } from "../ui/uiTypes";
 
 interface GameContainerProps {
   onGameEnd?: (outcome: GameOutcome) => void;
+  deckConfig?: DeckConfig;
 }
 
-const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd }) => {
+const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) => {
   // v2: initGameState() が createInitialGameState(cards) を呼び出し、
   // GameState（phase="DRAW", activePlayer="player", turnCount=1）を返す。
+  // TODO: 将来的には deckConfig を見て初期デッキやサプライ構成を切り替える。
   const [state, setState] = useState<GameState>(() => initGameState());
 
   /**
