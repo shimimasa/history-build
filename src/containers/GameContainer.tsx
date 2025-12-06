@@ -3,132 +3,65 @@
 import React, { useState } from "react";
 import GameScreen from "../components/GameScreen";
 import { initGameState } from "../logic/initGameState";
-import {
-  GameState,
-  PlayerState,
-  Card
-} from "../logic/cardEffects";
-import {
-  startTurn,
-  playAllResources,
-  playActionCardById,
-  buyCardById,
-  endTurn,
-  runCpuTurn
-} from "../logic/turnFlow";
-import {
-  chooseCpuActionCardId,
-  chooseCpuBuyCardId
-} from "../logic/cpuLogic";
-
-//------------------------------------------------------
-// GameState の簡易ディープコピー
-// （配列・オブジェクトをコピーしてからロジック関数に渡す）
-//------------------------------------------------------
-
-function clonePlayer(p: PlayerState): PlayerState {
-  return {
-    ...p,
-    deck: [...p.deck],
-    hand: [...p.hand],
-    discard: [...p.discard],
-    playArea: [...p.playArea],
-    temporaryDiscounts: [...p.temporaryDiscounts]
-  };
-}
-
-function cloneGameState(state: GameState): GameState {
-  const clonedSupply: GameState["supply"] = {};
-  for (const key of Object.keys(state.supply)) {
-    const pile = state.supply[key];
-    clonedSupply[key] = {
-      card: pile.card,        // Card は不変オブジェクトとして扱う
-      remaining: pile.remaining
-    };
-  }
-
-  return {
-    ...state,
-    player: clonePlayer(state.player),
-    cpu: clonePlayer(state.cpu),
-    supply: clonedSupply
-  };
-}
-
-//------------------------------------------------------
-// コンテナ本体
-//------------------------------------------------------
+import type { GameState } from "../game/gameState";
+import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
+// 将来、CPU ロジックを v2 GameState に寄せる際に使用予定：
+// import { chooseCpuActionCard, chooseCpuBuyCard } from "../logic/cpuLogic";
 
 const GameContainer: React.FC = () => {
-  // 初期状態：ゲームを初期化してから、プレイヤーの最初のターンを開始
-  const [state, setState] = useState<GameState>(() => {
-    const s = initGameState();
-    return startTurn(s);
-  });
+  // v2: initGameState() が createInitialGameState(cards) を呼び出し、
+  // GameState（phase="DRAW", activePlayer="player", turnCount=1）を返す。
+  const [state, setState] = useState<GameState>(() => initGameState());
 
-  // プレイヤー：資源フェーズ（資源カードを全部出す）
-  const handlePlayAllResources = () => {
-    if (state.isGameOver || state.currentTurn !== "player") return;
-
+  // プレイヤー側：フェーズを1つ進める（DRAW → RESOURCE → ACTION → BUY → CLEANUP → 次ターン…）
+  const handleProceedPhase = () => {
     setState((prev) => {
-      const draft = cloneGameState(prev);
-      return playAllResources(draft, "player");
+      if (prev.gameEnded || prev.activePlayer !== "player") {
+        return prev;
+      }
+
+      // v2: プレイヤーの現在フェーズを1ステップ進める。
+      // TODO: activePlayer === "cpu" になったタイミングで、
+      //   while ループ＋ proceedPhase / actionPhase / buyPhase を使って
+      //   CPU のターンを自動処理する実装を追加する。
+      return proceedPhase(prev);
     });
   };
 
-  // プレイヤー：行動カード（人物 or 出来事）を1枚出す
+  // プレイヤー側：ACTION フェーズ中に人物 / 出来事カードを1枚プレイ
   const handlePlayActionCard = (cardId: string) => {
-    if (state.isGameOver || state.currentTurn !== "player") return;
-
     setState((prev) => {
-      const draft = cloneGameState(prev);
-      return playActionCardById(draft, "player", cardId);
+      if (
+        prev.gameEnded ||
+        prev.activePlayer !== "player" ||
+        prev.phase !== "ACTION"
+      ) {
+        return prev;
+      }
+      return actionPhase(prev, cardId);
     });
   };
 
-  // プレイヤー：カードを1枚購入
+  // プレイヤー側：BUY フェーズ中にカードを1枚購入
   const handleBuyCard = (cardId: string) => {
-    if (state.isGameOver || state.currentTurn !== "player") return;
-
     setState((prev) => {
-      const draft = cloneGameState(prev);
-      return buyCardById(draft, "player", cardId);
-    });
-  };
-
-  // プレイヤー：ターン終了 → CPUターン自動 → プレイヤー次ターン開始
-  const handleEndTurn = () => {
-    if (state.isGameOver || state.currentTurn !== "player") return;
-
-    setState((prev) => {
-      let draft = cloneGameState(prev);
-
-      // 1. プレイヤーのターンを終了
-      draft = endTurn(draft);
-      if (draft.isGameOver) {
-        return draft;
+      if (
+        prev.gameEnded ||
+        prev.activePlayer !== "player" ||
+        prev.phase !== "BUY"
+      ) {
+        return prev;
       }
-
-      // 2. CPU のターンを自動で1ターン分まわす
-      draft = runCpuTurn(draft, chooseCpuActionCardId, chooseCpuBuyCardId);
-      if (draft.isGameOver) {
-        return draft;
-      }
-
-      // 3. 現在の手番は再びプレイヤーになっているはずなので、次ターンを開始
-      draft = startTurn(draft);
-
-      return draft;
+      return buyPhase(prev, cardId);
     });
   };
 
   return (
     <GameScreen
       state={state}
-      onPlayAllResources={handlePlayAllResources}
+      onProceedPhase={handleProceedPhase}
       onPlayActionCard={handlePlayActionCard}
       onBuyCard={handleBuyCard}
-      onEndTurn={handleEndTurn}
     />
   );
 };

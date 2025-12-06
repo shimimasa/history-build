@@ -1,40 +1,39 @@
-// src/screens/GameScreen.tsx
+// src/components/GameScreen.tsx
 
 import React, { useState } from "react";
-import type { GameState, Card } from "../logic/cardEffects";
+import type { GameState, Card } from "../game/gameState";
 import { canBuyCard } from "../logic/cardEffects";
 import SupplyCardPile from "./SupplyCard";
 import HandCard from "./HandCard";
 
 interface GameScreenProps {
   state: GameState;
-  // フェーズごとの操作は親コンポーネントが実装して渡す
-  onPlayAllResources: () => void;
+  onProceedPhase: () => void;
   onPlayActionCard: (cardId: string) => void;
   onBuyCard: (cardId: string) => void;
-  onEndTurn: () => void;
 }
 
 const GameScreen: React.FC<GameScreenProps> = ({
   state,
-  onPlayAllResources,
+  onProceedPhase,
   onPlayActionCard,
-  onBuyCard,
-  onEndTurn
+  onBuyCard
 }) => {
   const player = state.player;
   const cpu = state.cpu;
-  const isPlayerTurn = state.currentTurn === "player";
+  const isPlayerTurn = state.activePlayer === "player";
+  const isActionPhase = state.phase === "ACTION";
+  const isBuyPhase = state.phase === "BUY";
 
-  // アクション/購入 残り回数（v1.5: 1 or 0）
-  const actionsLeft = player.hasPlayedActionThisTurn ? 0 : 1;
-  const buysLeft = player.hasBoughtThisTurn ? 0 : 1;
+  // v2: アクション残り1/0・購入残り1/0はフェーズで管理
+  const actionsLeft = isPlayerTurn && isActionPhase ? 1 : 0;
+  const buysLeft = isPlayerTurn && isBuyPhase ? 1 : 0;
 
   // supply を配列に変換（タイプとコスト順に並べて分かりやすく表示）
   const supplyPiles = Object.values(state.supply).sort((a, b) => {
     const order: Record<Card["type"], number> = {
       resource: 0,
-      character: 1,
+      person: 1,
       event: 2,
       victory: 3
     };
@@ -55,9 +54,14 @@ const GameScreen: React.FC<GameScreenProps> = ({
 
   const handlePlayFromHand = (cardId: string) => {
     onPlayActionCard(cardId);
-    // 実際にプレイしたカードは手札から消えるので、選択も解除しておく
     setSelectedHandId((prev) => (prev === cardId ? null : prev));
   };
+
+  const getCardFromId = (cardId: string): Card | null => {
+    return state.supply[cardId]?.card ?? null;
+  };
+
+  const phaseLabel = getPhaseButtonLabel(state.phase);
 
   return (
     <div className="hb-app">
@@ -71,13 +75,19 @@ const GameScreen: React.FC<GameScreenProps> = ({
             <div className="hb-pill">
               ターン{" "}
               <span className="font-bold text-sky-200">
-                {state.turnNumber}
+                {state.turnCount}
               </span>
             </div>
             <div className="hb-pill">
               手番{" "}
               <span className="font-bold text-emerald-200">
                 {isPlayerTurn ? "プレイヤー" : "CPU"}
+              </span>
+            </div>
+            <div className="hb-pill">
+              フェーズ{" "}
+              <span className="font-bold text-amber-200">
+                {renderPhaseLabel(state.phase)}
               </span>
             </div>
           </div>
@@ -130,7 +140,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
                 <div>山札: {player.deck.length}枚</div>
                 <div>手札: {player.hand.length}枚</div>
                 <div>捨札: {player.discard.length}枚</div>
-                <div>プレイ中: {player.playArea.length}枚</div>
+                <div>プレイ中: {player.played.length}枚</div>
                 <div>自分のターン数: {player.turnsTaken}</div>
                 <div>知識: {player.knowledge}</div>
               </div>
@@ -143,11 +153,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
                 <div>山札: {cpu.deck.length}枚</div>
                 <div>手札: {cpu.hand.length}枚</div>
                 <div>捨札: {cpu.discard.length}枚</div>
-                <div>プレイ中: {cpu.playArea.length}枚</div>
+                <div>プレイ中: {cpu.played.length}枚</div>
               </div>
             </div>
 
-            {state.isGameOver && (
+            {state.gameEnded && (
               <div className="hb-sidebar-panel border-amber-500/60 bg-amber-900/30">
                 <h2 className="text-sm font-semibold mb-1 text-amber-200">
                   ゲーム終了
@@ -201,9 +211,9 @@ const GameScreen: React.FC<GameScreenProps> = ({
                   canBuy={canBuyCard(player, pile.card)}
                   disabled={
                     !isPlayerTurn ||
-                    state.isGameOver ||
+                    state.gameEnded ||
                     pile.remaining <= 0 ||
-                    player.hasBoughtThisTurn
+                    state.phase !== "BUY"
                   }
                   onBuy={() => onBuyCard(pile.card.id)}
                   onShowDetail={() => setDetailCard(pile.card)}
@@ -217,10 +227,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
                 このターンで できること
               </div>
               <ol className="list-decimal list-inside space-y-0.5">
-                <li>資源カードをぜんぶ出して、米と知識をふやす</li>
-                <li>手札から 人物 / 出来事カードを1まい えらんで つかう</li>
-                <li>米と知識をつかって、場のカードを1まい「買う」</li>
-                <li>おわったら「ターン終了」ボタンを おす</li>
+                <li>DRAW：手札が5枚になるまで引く</li>
+                <li>RESOURCE：資源カードをぜんぶ出して、米と知識をふやす</li>
+                <li>ACTION：手札から 人物 / 出来事カードを1まい えらんで つかう</li>
+                <li>BUY：米と知識をつかって、場のカードを1まい「買う」</li>
+                <li>CLEANUP：カードを片づけて、次のプレイヤーへ手番を回す</li>
               </ol>
             </div>
           </main>
@@ -242,42 +253,39 @@ const GameScreen: React.FC<GameScreenProps> = ({
             </div>
           ) : (
             <div className="hb-hand-scroll">
-              {player.hand.map((card) => (
-                <HandCard
-                  key={card.id}
-                  card={card}
-                  selected={selectedHandId === card.id}
-                  onSelect={() => handleSelectHandCard(card.id)}
-                  disabled={
-                    !isPlayerTurn ||
-                    state.isGameOver ||
-                    (card.type !== "character" && card.type !== "event") ||
-                    player.hasPlayedActionThisTurn
-                  }
-                  onShowDetail={() => setDetailCard(card)}
-                  onPlay={() => handlePlayFromHand(card.id)}
-                />
-              ))}
+              {player.hand.map((cardId) => {
+                const card = getCardFromId(cardId);
+                if (!card) return null;
+                return (
+                  <HandCard
+                    key={card.id}
+                    card={card}
+                    selected={selectedHandId === card.id}
+                    onSelect={() => handleSelectHandCard(card.id)}
+                    disabled={
+                      !isPlayerTurn ||
+                      state.gameEnded ||
+                      state.phase !== "ACTION" ||
+                      (card.type !== "person" && card.type !== "event")
+                    }
+                    onShowDetail={() => setDetailCard(card)}
+                    onPlay={() => handlePlayFromHand(card.id)}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
       </section>
 
-      {/* ===== 右下：フェイズボタン ===== */}
+      {/* ===== 右下：フェーズボタン ===== */}
       <div className="hb-phase-buttons">
         <button
           className="px-4 py-2 text-xs rounded-full bg-sky-600 hover:bg-sky-500 text-white shadow-md disabled:bg-slate-600 disabled:opacity-60"
-          onClick={onPlayAllResources}
-          disabled={!isPlayerTurn || state.isGameOver}
+          onClick={onProceedPhase}
+          disabled={!isPlayerTurn || state.gameEnded}
         >
-          ① 資源カードをぜんぶ出す
-        </button>
-        <button
-          className="px-4 py-2 text-xs rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-md disabled:bg-slate-600 disabled:opacity-60"
-          onClick={onEndTurn}
-          disabled={!isPlayerTurn || state.isGameOver}
-        >
-          ④ ターン終了
+          {phaseLabel}
         </button>
       </div>
 
@@ -301,7 +309,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
               コスト: 米 {detailCard.cost}
             </div>
             <div className="text-[11px] text-slate-300 mb-1">
-              知識条件: {detailCard.requiredKnowledge ?? 0}
+              知識条件: {detailCard.knowledgeRequired}
             </div>
             <div className="text-[12px] text-slate-100 whitespace-pre-wrap mt-2">
               {detailCard.text}
@@ -323,7 +331,7 @@ function renderTypeLabel(type: Card["type"]): string {
   switch (type) {
     case "resource":
       return "資源";
-    case "character":
+    case "person":
       return "人物";
     case "event":
       return "出来事";
@@ -334,23 +342,60 @@ function renderTypeLabel(type: Card["type"]): string {
   }
 }
 
+function renderPhaseLabel(phase: GameState["phase"]): string {
+  switch (phase) {
+    case "DRAW":
+      return "DRAW（ドロー）";
+    case "RESOURCE":
+      return "RESOURCE（資源）";
+    case "ACTION":
+      return "ACTION（行動）";
+    case "BUY":
+      return "BUY（購入）";
+    case "CLEANUP":
+      return "CLEANUP（片づけ）";
+    default:
+      return "";
+  }
+}
+
+function getPhaseButtonLabel(phase: GameState["phase"]): string {
+  switch (phase) {
+    case "DRAW":
+      return "① DRAW を終えて RESOURCE へ進む";
+    case "RESOURCE":
+      return "② RESOURCE を終えて ACTION へ進む";
+    case "ACTION":
+      return "③ ACTION を終えて BUY へ進む";
+    case "BUY":
+      return "④ BUY を終えて CLEANUP へ進む";
+    case "CLEANUP":
+      return "ターン終了して次の手番へ";
+    default:
+      return "次のフェーズへ進む";
+  }
+}
+
 /**
  * このゲームで登場した「人物」「出来事」カード名をユニークに集める。
- * v1 では結果画面を分けないため、GameScreen 内でミニ復習用に使う。
+ * - v2 GameState（deck/hand/discard/played は CardId 配列）を前提とし、
+ *   state.supply から Card 定義を引き当てる。
  */
 function collectHistoryCardNames(state: GameState): string[] {
   const names = new Set<string>();
 
   const collectFromPlayer = (p: GameState["player"]) => {
-    const allCards: Card[] = [
+    const allIds: string[] = [
       ...p.deck,
       ...p.hand,
       ...p.discard,
-      ...p.playArea
+      ...p.played
     ];
 
-    for (const card of allCards) {
-      if (card.type === "character" || card.type === "event") {
+    for (const id of allIds) {
+      const card = state.supply[id]?.card;
+      if (!card) continue;
+      if (card.type === "person" || card.type === "event") {
         names.add(card.name);
       }
     }

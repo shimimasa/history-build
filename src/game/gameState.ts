@@ -110,29 +110,30 @@ export function createInitialPlayerState(initialDeck: string[]): PlayerState {
     played: [],
     riceThisTurn: 0,
     knowledge: 0,
-    turnsTaken: 0,
+    turnsTaken: 0
   };
 }
 
 /**
  * ゲーム全体の初期状態を作成する。
- * - 初期デッキは「こめ袋（小）×7 ＋ 村落×3」（CardId は spec に従う）。
+ * - 初期デッキは「こめ袋（小）×7 ＋ 村落×3」
+ *   （cards.json v2 の Card.id として "RICE_SMALL" / "VP_VILLAGE" を使用）。
  * - player / cpu ともに同じ初期デッキを使用する。
  * - phase = "DRAW"、activePlayer = "player"、turnCount = 1 から開始。
  * - サプライは cards 一覧から一括生成する。
  */
 export function createInitialGameState(cards: Card[]): GameState {
   const initialDeck: string[] = [
-    "rice_small",
-    "rice_small",
-    "rice_small",
-    "rice_small",
-    "rice_small",
-    "rice_small",
-    "rice_small",
-    "village",
-    "village",
-    "village",
+    "RICE_SMALL",
+    "RICE_SMALL",
+    "RICE_SMALL",
+    "RICE_SMALL",
+    "RICE_SMALL",
+    "RICE_SMALL",
+    "RICE_SMALL",
+    "VP_VILLAGE",
+    "VP_VILLAGE",
+    "VP_VILLAGE"
   ];
 
   const player = createInitialPlayerState(initialDeck);
@@ -147,7 +148,7 @@ export function createInitialGameState(cards: Card[]): GameState {
     activePlayer: "player",
     turnCount: 1,
     gameEnded: false,
-    winner: null,
+    winner: null
   };
 }
 
@@ -159,6 +160,7 @@ export function createInitialGameState(cards: Card[]): GameState {
 /**
  * サプライ初期化
  * - v1.5 ではカード種別ごとの固定枚数でよい（将来設定ファイル化可）。
+ * - supply のキーは常に Card.id（cards.json の id）を使用する。
  */
 function createInitialSupply(cards: Card[]): Record<string, SupplyPile> {
   const supply: Record<string, SupplyPile> = {};
@@ -166,7 +168,7 @@ function createInitialSupply(cards: Card[]): Record<string, SupplyPile> {
   for (const card of cards) {
     supply[card.id] = {
       card,
-      remaining: getInitialSupplyCount(card),
+      remaining: getInitialSupplyCount(card)
     };
   }
 
@@ -176,6 +178,7 @@ function createInitialSupply(cards: Card[]): Record<string, SupplyPile> {
 /**
  * 種別ごとのデフォルト供給枚数
  * - 値は v1.5 の簡易仕様（必要に応じて調整可能）
+ *   TODO: バランス調整の際に、カードごと・デッキごとに設定ファイル化する。
  */
 function getInitialSupplyCount(card: Card): number {
   switch (card.type) {
