@@ -1,6 +1,6 @@
 // src/App.tsx
 // アプリ全体の画面遷移を管理するコンテナ。
-// - Start → DeckSelect → Game → Result の4画面構成。
+// - Start → DeckSelect → Game → Result →（再戦/タイトル）に加え、CardDex（カード図鑑）画面を扱う。
 // - GameContainer からの onGameEnd 通知で Result 画面に遷移し、再戦 / タイトル戻りを制御する。
 
 import React, { useState } from "react";
@@ -8,6 +8,7 @@ import GameContainer from "./containers/GameContainer";
 import { StartScreen } from "./components/StartScreen";
 import { ResultScreen } from "./components/ResultScreen";
 import { DeckSelectScreen } from "./components/DeckSelectScreen";
+import { CardDexScreen } from "./components/CardDexScreen";
 import type {
   UiScreen,
   GameOutcome,
@@ -56,7 +57,12 @@ const App: React.FC = () => {
   };
 
   if (currentScreen === "start") {
-    return <StartScreen onStartGame={handleGoToDeckSelect} />;
+    return (
+      <StartScreen
+        onStartGame={handleGoToDeckSelect}
+        onShowCardDex={() => setCurrentScreen("cardDex")}
+      />
+    );
   }
 
   if (currentScreen === "deckSelect") {
@@ -65,6 +71,14 @@ const App: React.FC = () => {
         decks={DEFAULT_DECKS}
         onSelectDeck={handleSelectDeck}
         onBackToTitle={handleBackToTitle}
+      />
+    );
+  }
+
+  if (currentScreen === "cardDex") {
+    return (
+      <CardDexScreen
+        onBackToTitle={() => setCurrentScreen("start")}
       />
     );
   }
@@ -81,8 +95,13 @@ const App: React.FC = () => {
 
   // result 画面
   if (!lastOutcome) {
-    // 理論上ここには来ないが、安全策としてデッキ選択 or タイトルに戻す
-    return <StartScreen onStartGame={handleGoToDeckSelect} />;
+    // 理論上ここには来ないが、安全策としてタイトルに戻す
+    return (
+      <StartScreen
+        onStartGame={handleGoToDeckSelect}
+        onShowCardDex={() => setCurrentScreen("cardDex")}
+      />
+    );
   }
 
   return (

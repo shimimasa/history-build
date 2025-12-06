@@ -3,7 +3,7 @@
 
 import type { GameState, ActivePlayer } from "../game/gameState";
 
-export type UiScreen = "start" | "deckSelect" | "game" | "result";
+export type UiScreen = "start" | "deckSelect" | "game" | "result" | "cardDex";
 
 export interface GameOutcome {
   finalState: GameState;
