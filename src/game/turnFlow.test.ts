@@ -6,7 +6,7 @@ import {
   type GameState,
   type PlayerState,
   type Card
-} from "./cardEffects";
+} from "../logic/cardEffects";
 import { startTurn, endTurn } from "./turnFlow";
 
 function createEmptyPlayer(): PlayerState {
@@ -99,6 +99,4 @@ describe("turnFlow - startTurn / endTurn", () => {
     expect(state.player.turnsTaken).toBe(1);
     expect(state.turnNumber).toBe(beforeTurnNumber + 1);
   });
-}
-
-
+});
