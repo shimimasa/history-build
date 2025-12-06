@@ -12,18 +12,50 @@ export interface GameOutcome {
   cpuScore: number;
 }
 
-// デッキ設定（将来の拡張を見越した最小構成）
+// デッキ設定（将来の拡張を見越した構成）
 export interface DeckConfig {
   id: string;
   name: string;
   description: string;
-  // TODO: 必要になったら初期デッキ・サプライ構成などをここに追加する（initialDeck など）
+  initialDeck: string[]; // CardId の配列（cards.json の id と一致させる）
 }
 
+// 例として 2 種類のデッキを定義
 export const DEFAULT_DECKS: DeckConfig[] = [
   {
     id: "sengoku-basic",
     name: "戦国基本デッキ",
-    description: "こめ袋（小）と村落から始まる、標準的な戦国デッキ。"
+    description:
+      "こめ袋（小）7枚と村落3枚の、もっとも標準的なデッキ。",
+    initialDeck: [
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "VP_VILLAGE",
+      "VP_VILLAGE",
+      "VP_VILLAGE"
+    ]
+  },
+  {
+    id: "sengoku-challenge",
+    name: "戦国チャレンジデッキ",
+    description:
+      "こめ袋（小）を減らし、中サイズの米を混ぜた上級者向け構成。",
+    initialDeck: [
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_SMALL",
+      "RICE_MEDIUM",
+      "RICE_MEDIUM",
+      "VP_VILLAGE",
+      "VP_VILLAGE",
+      "VP_VILLAGE"
+    ]
   }
 ];

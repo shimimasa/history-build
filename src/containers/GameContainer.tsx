@@ -3,11 +3,11 @@
 // - GameState と turnFlow / cpuLogic を使って PLAYER vs CPU の1対戦を進行。
 // - プレイヤー操作 → proceedPhase / actionPhase / buyPhase → CPU 自動ターン(runCpuTurn)
 //   → turnFlow 内の gameEnded 判定 → false→true になった瞬間に onGameEnd で親(App)へ通知。
-// - deckConfig は将来、初期デッキやサプライ構成の切り替えに使う予定（現時点では未使用）。
+// - deckConfig は createGameStateFromDeck に渡され、初期デッキ構成に反映される。
 
 import React, { useState, useRef, useEffect } from "react";
 import GameScreen from "../components/GameScreen";
-import { initGameState } from "../logic/initGameState";
+import { createGameStateFromDeck } from "../logic/initGameState";
 import type { GameState } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
 import { runCpuTurn } from "../logic/cpuLogic";
@@ -20,10 +20,12 @@ interface GameContainerProps {
 }
 
 const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) => {
-  // v2: initGameState() が createInitialGameState(cards) を呼び出し、
-  // GameState（phase="DRAW", activePlayer="player", turnCount=1）を返す。
-  // TODO: 将来的には deckConfig を見て初期デッキやサプライ構成を切り替える。
-  const [state, setState] = useState<GameState>(() => initGameState());
+  // 初期 GameState を DeckConfig に基づいて生成。
+  // App.tsx 側で key={gameSessionId} を付けているため、
+  // 再戦やデッキ変更時には GameContainer が再マウントされ、この初期化が再実行される。
+  const [state, setState] = useState<GameState>(() =>
+    createGameStateFromDeck(deckConfig)
+  );
 
   /**
    * プレイヤー操作後に、必要なら CPU のターンを自動実行する共通ヘルパー。
