@@ -1,7 +1,7 @@
 // src/components/HandCard.tsx
 
 import React from "react";
-import type { Card } from "../logic/cardEffects";
+import type { Card } from "../game/gameState";
 import { renderTypeLabel } from "./shared";
 
 interface HandCardProps {
@@ -21,7 +21,7 @@ const HandCard: React.FC<HandCardProps> = ({
   onPlay,
   onShowDetail
 }) => {
-  const isAction = card.type === "character" || card.type === "event";
+  const isAction = card.type === "person" || card.type === "event";
 
   const baseClass = "hb-hand-card";
   const selectedClass = selected ? " hb-hand-card-selected" : "";

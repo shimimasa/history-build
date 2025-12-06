@@ -1,5 +1,5 @@
 // src/game/turnFlow.ts
-// history-spec v2 / tech.md v2 準拠の 5 フェーズ純関数フェーズマシン
+// 先頭あたりの import 部分のみ
 
 import type {
   ActivePlayer,

@@ -1,4 +1,8 @@
 // src/containers/GameContainer.tsx
+// 1ゲーム分の状態管理コンテナ。
+// - GameState と turnFlow / cpuLogic を使って PLAYER vs CPU の1対戦を進行。
+// - プレイヤー操作 → proceedPhase / actionPhase / buyPhase → CPU 自動ターン(runCpuTurn)
+//   → turnFlow 内の gameEnded 判定 → false→true になった瞬間に onGameEnd で親(App)へ通知。
 
 import React, { useState, useRef, useEffect } from "react";
 import GameScreen from "../components/GameScreen";

@@ -1,4 +1,7 @@
 // src/App.tsx
+// 画面遷移の中枢コンポーネント。
+// - StartScreen → GameContainer → ResultScreen の3画面を切り替える。
+// - GameContainer からの onGameEnd 通知を受け取り、結果画面に遷移する。
 
 import React, { useState } from "react";
 import GameContainer from "./containers/GameContainer";
