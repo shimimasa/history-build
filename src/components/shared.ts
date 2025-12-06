@@ -1,21 +1,19 @@
 // src/components/shared.ts
 // UI 用の小さな共通ヘルパー
 
-import type { Card } from "../logic/cardEffects";
+import type { Card } from "../game/gameState";
 
 export function renderTypeLabel(type: Card["type"]): string {
   switch (type) {
     case "resource":
       return "資源";
-    case "character":
+    case "person":
       return "人物";
     case "event":
       return "出来事";
     case "victory":
       return "国力";
     default:
-      return "";
+      return "不明";
   }
 }
-
-

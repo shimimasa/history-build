@@ -1,7 +1,7 @@
 // src/components/SupplyCardPile.tsx
 
 import React from "react";
-import type { Card } from "../logic/cardEffects";
+import type { Card } from "../game/gameState";
 import { renderTypeLabel } from "./shared";
 
 interface SupplyCardPileProps {
@@ -23,6 +23,8 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
 }) => {
   const isDepleted = remaining <= 0;
 
+  // GameScreen 側の disabled ロジックを尊重しつつ、
+  // ここでは在庫切れ or canBuy=false もあわせて無効化条件に含める。
   const isDisabled = disabled || isDepleted || !canBuy;
 
   return (
@@ -45,7 +47,7 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
           コスト: 米 {card.cost}
         </div>
         <div className="text-[10px] text-slate-300 mb-1">
-          知識条件: {card.requiredKnowledge ?? 0}
+          知識条件: {card.knowledgeRequired}
         </div>
         <div className="text-[10px] text-slate-400 line-clamp-3">
           {card.text}
@@ -53,7 +55,11 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
       </div>
       <div className="mt-2 flex items-center justify-between text-[10px]">
         <span className="text-slate-300">
-          {isDepleted ? "在庫なし" : "購入できます"}
+          {isDepleted
+            ? "在庫なし"
+            : canBuy
+            ? "購入できます"
+            : "条件不足（米 or 知識）"}
         </span>
         <button
           type="button"
@@ -72,4 +78,3 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
 };
 
 export default SupplyCardPile;
-
