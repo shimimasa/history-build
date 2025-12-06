@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import type { GameState, Card } from "../game/gameState";
 import { canBuyCard } from "../logic/cardEffects";
+import { computeVictoryPointsForPlayer } from "../game/socre";
 import SupplyCardPile from "./SupplyCard";
 import HandCard from "./HandCard";
 
@@ -28,6 +29,12 @@ const GameScreen: React.FC<GameScreenProps> = ({
   // v2: アクション残り1/0・購入残り1/0はフェーズで管理
   const actionsLeft = isPlayerTurn && isActionPhase ? 1 : 0;
   const buysLeft = isPlayerTurn && isBuyPhase ? 1 : 0;
+
+  // ゲーム終了時のみスコアを計算
+  const playerScore =
+    state.gameEnded ? computeVictoryPointsForPlayer(state, "player") : null;
+  const cpuScore =
+    state.gameEnded ? computeVictoryPointsForPlayer(state, "cpu") : null;
 
   // supply を配列に変換（タイプとコスト順に並べて分かりやすく表示）
   const supplyPiles = Object.values(state.supply).sort((a, b) => {
@@ -62,6 +69,13 @@ const GameScreen: React.FC<GameScreenProps> = ({
   };
 
   const phaseLabel = getPhaseButtonLabel(state.phase);
+
+  const winnerLabel =
+    state.winner === "player"
+      ? "あなたの勝ち！"
+      : state.winner === "cpu"
+      ? "CPU の勝ち"
+      : "引き分け";
 
   return (
     <div className="hb-app">
@@ -173,7 +187,19 @@ const GameScreen: React.FC<GameScreenProps> = ({
                         : "引き分け"}
                     </span>
                   </div>
-                  <div className="mt-2 text-[11px] text-amber-100">
+
+                  {/* 最終スコア表示 */}
+                  {playerScore !== null && cpuScore !== null && (
+                    <div className="mt-1 space-y-0.5">
+                      <div>プレイヤー: {playerScore} 点</div>
+                      <div>CPU: {cpuScore} 点</div>
+                      <div className="mt-1 text-[11px] text-amber-100">
+                        結果: <span className="font-semibold">{winnerLabel}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-3 text-[11px] text-amber-100">
                     このゲームで出てきた 人物・出来事
                   </div>
                   <div className="flex flex-wrap gap-1 mt-1">
