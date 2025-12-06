@@ -8,6 +8,7 @@ import type {
   PlayerState
 } from "./gameState";
 import { applyEffects } from "./applyEffect";
+import { judgeWinner } from "./socre";
 
 // ------------------------------------------------------
 // 公開 API：フェーズごとの純関数
@@ -265,37 +266,31 @@ export function cleanupPhase(state: GameState): GameState {
   const nextTurnCount =
     nextActive === "player" ? state.turnCount + 1 : state.turnCount;
 
-  let newState: GameState = {
+  // 次の手番・ターン数・フェーズ（DRAW）までを反映
+  const withNextTurn: GameState = {
     ...state,
     player: current === "player" ? updatedActive : state.player,
     cpu: current === "cpu" ? updatedActive : state.cpu,
     activePlayer: nextActive,
-    turnCount: nextTurnCount
-  };
-
-  const endCheck = evaluateGameEnd(newState);
-
-  if (endCheck.gameEnded) {
-    newState = {
-      ...newState,
-      gameEnded: true,
-      winner: endCheck.winner
-    };
-    return newState;
-  }
-
-  return {
-    ...newState,
-    gameEnded: false,
-    winner: null,
+    turnCount: nextTurnCount,
     phase: "DRAW"
   };
+
+  // ゲーム終了判定＋勝者決定
+  const finalState = evaluateGameEnd(withNextTurn);
+
+  return finalState;
 }
 
 /**
  * 現在の phase に応じて適切なフェーズ処理を呼び出す。
+ * - すでに gameEnded の場合はそのまま state を返す。
  */
 export function proceedPhase(state: GameState): GameState {
+  if (state.gameEnded) {
+    return state;
+  }
+
   switch (state.phase) {
     case "DRAW":
       return drawPhase(state);
@@ -424,32 +419,46 @@ function drawUntilHandSizeFive(
 }
 
 /**
- * 簡易なゲーム終了判定。
- * - v1.5 では「ターン上限」＋「サプライ枯渇」の最低限のみ実装しておき、
- *   勝者判定（score.ts）との連携は別途実装する。
+ * ゲーム終了判定 + 勝者決定。
+ *
+ * 終了条件（暫定実装）:
+ * - ターン数上限に達した場合: state.turnCount >= MAX_TURN_COUNT
+ * - サプライ枯渇:
+ *   - remaining === 0 のサプライ山が 3つ以上ある もしくは
+ *   - victory タイプのサプライが 1種類でも remaining <= 0
+ *
+ * 条件を満たしたら judgeWinner(state) で勝者を決め、
+ * gameEnded / winner をセットした新しい GameState を返す。
+ * 条件を満たさない場合は引数の state をそのまま返す。
  */
-const MAX_TURN_COUNT = 25;
+const MAX_TURN_COUNT = 25; // TODO: バランス調整に応じて変更
 
-function evaluateGameEnd(
-  state: GameState
-): { gameEnded: boolean; winner: ActivePlayer | "draw" | null } {
-  // ターン上限
-  if (state.turnCount >= MAX_TURN_COUNT) {
-    // TODO: score.ts の実装に合わせて勝者判定を行う
-    return { gameEnded: true, winner: null };
+function evaluateGameEnd(state: GameState): GameState {
+  // すでにゲーム終了している場合はそのまま返す
+  if (state.gameEnded) {
+    return state;
   }
 
-  // サプライの「主要カード」枯渇チェック（暫定版：victory 山札がいずれか 0 枚）
-  const anyVictoryEmpty = Object.values(state.supply).some(
-    (pile) => pile.card.type === "victory" && pile.remaining <= 0
+  const piles = Object.values(state.supply);
+
+  const emptyPileCount = piles.filter((p) => p.remaining <= 0).length;
+  const anyVictoryEmpty = piles.some(
+    (p) => p.card.type === "victory" && p.remaining <= 0
   );
 
-  if (anyVictoryEmpty) {
-    // TODO: 勝利点集計処理と連携して winner を決定する
-    return { gameEnded: true, winner: null };
+  const reachedTurnLimit = state.turnCount >= MAX_TURN_COUNT;
+  const supplyDepleted = emptyPileCount >= 3 || anyVictoryEmpty;
+
+  if (reachedTurnLimit || supplyDepleted) {
+    const winner = judgeWinner(state);
+    return {
+      ...state,
+      gameEnded: true,
+      winner
+    };
   }
 
-  return { gameEnded: false, winner: null };
+  return state;
 }
 
 /**

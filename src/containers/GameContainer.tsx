@@ -5,13 +5,31 @@ import GameScreen from "../components/GameScreen";
 import { initGameState } from "../logic/initGameState";
 import type { GameState } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
-// 将来、CPU ロジックを v2 GameState に寄せる際に使用予定：
-// import { chooseCpuActionCard, chooseCpuBuyCard } from "../logic/cpuLogic";
+import { runCpuTurn } from "../logic/cpuLogic";
 
 const GameContainer: React.FC = () => {
   // v2: initGameState() が createInitialGameState(cards) を呼び出し、
   // GameState（phase="DRAW", activePlayer="player", turnCount=1）を返す。
   const [state, setState] = useState<GameState>(() => initGameState());
+
+  /**
+   * プレイヤー操作後に、必要なら CPU のターンを自動実行する共通ヘルパー。
+   * - nextState.gameEnded === true の場合はそのまま返す
+   * - activePlayer === "cpu" の場合のみ runCpuTurn を呼ぶ
+   */
+  function applyWithCpuTurn(nextState: GameState): GameState {
+    let s = nextState;
+
+    if (s.gameEnded) {
+      return s;
+    }
+
+    if (s.activePlayer === "cpu") {
+      s = runCpuTurn(s);
+    }
+
+    return s;
+  }
 
   // プレイヤー側：フェーズを1つ進める（DRAW → RESOURCE → ACTION → BUY → CLEANUP → 次ターン…）
   const handleProceedPhase = () => {
@@ -20,11 +38,8 @@ const GameContainer: React.FC = () => {
         return prev;
       }
 
-      // v2: プレイヤーの現在フェーズを1ステップ進める。
-      // TODO: activePlayer === "cpu" になったタイミングで、
-      //   while ループ＋ proceedPhase / actionPhase / buyPhase を使って
-      //   CPU のターンを自動処理する実装を追加する。
-      return proceedPhase(prev);
+      const afterPlayer = proceedPhase(prev);
+      return applyWithCpuTurn(afterPlayer);
     });
   };
 
@@ -38,7 +53,9 @@ const GameContainer: React.FC = () => {
       ) {
         return prev;
       }
-      return actionPhase(prev, cardId);
+
+      const afterAction = actionPhase(prev, cardId);
+      return applyWithCpuTurn(afterAction);
     });
   };
 
@@ -52,7 +69,9 @@ const GameContainer: React.FC = () => {
       ) {
         return prev;
       }
-      return buyPhase(prev, cardId);
+
+      const afterBuy = buyPhase(prev, cardId);
+      return applyWithCpuTurn(afterBuy);
     });
   };
 
