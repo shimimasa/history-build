@@ -8,6 +8,7 @@ import type {
   PlayerState
 } from "./gameState";
 import { applyEffects } from "./applyEffect";
+import { canBuyCard, applyOnBuyEffects } from "../logic/cardEffects";
 import { judgeWinner } from "./socre";
 
 // ------------------------------------------------------
@@ -164,6 +165,7 @@ export function actionPhase(
  *     - riceThisTurn -= card.cost
  *     - discard に card.id を追加
  *     - supply[card.id].remaining--
+ *     - applyOnBuyEffects(state, card, activePlayer) を呼ぶ
  * - chosenCardId が null/未指定の場合は何も買わずに CLEANUP に進む
  * - 終了後：phase = "CLEANUP"
  */
@@ -193,43 +195,50 @@ export function buyPhase(
   const card = pile.card;
   const activePlayer = current === "player" ? state.player : state.cpu;
 
-  const canAfford =
-    activePlayer.riceThisTurn >= card.cost &&
-    activePlayer.knowledge >= card.knowledgeRequired;
-
-  if (!canAfford) {
-    // 条件を満たさない：購入失敗、CLEANUP へ
+  // v2: 購入条件は canBuyCard に委譲（米・知識のみ判定）
+  if (!canBuyCard(activePlayer, card)) {
     return {
       ...state,
       phase: "CLEANUP"
     };
   }
 
+  // ---- ここから新しい GameState を構築（state は mutate しない）----
+
+  // プレイヤー側の更新
   const updatedActive: PlayerState = {
     ...activePlayer,
     riceThisTurn: activePlayer.riceThisTurn - card.cost,
-    discard: [...activePlayer.discard, card.id]
+    discard: [...activePlayer.discard, chosenCardId]
   };
 
+  // サプライ側の更新
   const updatedPile = {
     ...pile,
     remaining: pile.remaining - 1
   };
 
-  const newSupply = {
+  const updatedSupply = {
     ...state.supply,
     [chosenCardId]: updatedPile
   };
 
-  const newState: GameState = {
+  // GameState に反映
+  let newState: GameState = {
     ...state,
     player: current === "player" ? updatedActive : state.player,
     cpu: current === "cpu" ? updatedActive : state.cpu,
-    supply: newSupply,
-    phase: "CLEANUP"
+    supply: updatedSupply
   };
 
-  return newState;
+  // 購入時効果（将来拡張用）：現状はそのまま state を返す実装
+  newState = applyOnBuyEffects(newState, card, current);
+
+  // BUY フェーズ終了 → CLEANUP へ
+  return {
+    ...newState,
+    phase: "CLEANUP"
+  };
 }
 
 /**

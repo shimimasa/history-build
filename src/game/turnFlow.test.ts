@@ -1,102 +1,109 @@
 // @ts-nocheck
-// src/logic/turnFlow.test.ts
+// src/game/turnFlow.test.ts
 
 import { describe, it, expect } from "vitest";
-import {
-  type GameState,
-  type PlayerState,
-  type Card
-} from "../logic/cardEffects";
-import { startTurn, endTurn } from "./turnFlow";
+import { createInitialGameState, type GameState } from "./gameState";
+import { loadCards } from "./cardDefinitions";
+import { proceedPhase, buyPhase, cleanupPhase } from "./turnFlow";
 
-function createEmptyPlayer(): PlayerState {
-  return {
-    deck: [],
-    hand: [],
-    discard: [],
-    playArea: [],
-    riceThisTurn: 0,
-    knowledge: 0,
-    victoryPointsBonus: 0,
-    turnsTaken: 0,
-    temporaryDiscounts: []
-  };
+function createInitialState(): GameState {
+  const cards = loadCards();
+  return createInitialGameState(cards);
 }
 
-function createStateWithDeck(handSize = 5): GameState {
-  const baseCard: Card = {
-    id: "TEST_CARD",
-    era: "sengoku",
-    name: "テストカード",
-    type: "resource",
-    cost: 0,
-    text: "",
-    effects: []
-  };
+describe("turnFlow v2 - 基本フェーズ遷移", () => {
+  it("初期状態が DRAW / player / gameEnded=false であること", () => {
+    const state = createInitialState();
 
-  const player: PlayerState = {
-    ...createEmptyPlayer(),
-    deck: Array.from({ length: handSize }, () => baseCard)
-  };
-
-  const cpu: PlayerState = createEmptyPlayer();
-
-  return {
-    player,
-    cpu,
-    currentTurn: "player",
-    turnNumber: 1,
-    maxTurnsPerPlayer: 12,
-    supply: {},
-    isGameOver: false,
-    winner: null
-  };
-}
-
-describe("turnFlow - startTurn / endTurn", () => {
-  it("startTurn で手札が空なら 5枚引く", () => {
-    const state = createStateWithDeck(5);
-    expect(state.player.hand.length).toBe(0);
-
-    startTurn(state);
-
-    expect(state.player.hand.length).toBe(5);
-    expect(state.player.deck.length).toBe(0);
+    expect(state.phase).toBe("DRAW");
+    expect(state.activePlayer).toBe("player");
+    expect(state.turnCount).toBe(1);
+    expect(state.gameEnded).toBe(false);
   });
 
-  it("endTurn で手札とプレイエリアが捨札に行き、ターン数が進む", () => {
-    const state = createStateWithDeck(0);
-    state.player.hand = [
-      {
-        id: "H1",
-        era: "sengoku",
-        name: "手札1",
-        type: "resource",
-        cost: 0,
-        text: "",
-        effects: []
-      }
-    ];
-    state.player.playArea = [
-      {
-        id: "P1",
-        era: "sengoku",
-        name: "プレイ中1",
-        type: "resource",
-        cost: 0,
-        text: "",
-        effects: []
-      }
-    ];
+  it("DRAW → RESOURCE → ACTION → BUY → CLEANUP → DRAW へ正しく遷移する", () => {
+    let state = createInitialState();
 
-    const beforeTurnNumber = state.turnNumber;
+    expect(state.phase).toBe("DRAW");
 
-    endTurn(state);
+    state = proceedPhase(state);
+    expect(state.phase).toBe("RESOURCE");
 
-    expect(state.player.hand.length).toBe(0);
-    expect(state.player.playArea.length).toBe(0);
-    expect(state.player.discard.length).toBe(2);
-    expect(state.player.turnsTaken).toBe(1);
-    expect(state.turnNumber).toBe(beforeTurnNumber + 1);
+    state = proceedPhase(state);
+    expect(state.phase).toBe("ACTION");
+
+    state = proceedPhase(state);
+    expect(state.phase).toBe("BUY");
+
+    state = proceedPhase(state);
+    // CLEANUP 実行後、次の手番（CPU）の DRAW に戻っているはず
+    expect(state.phase).toBe("DRAW");
+    expect(state.activePlayer).toBe("cpu");
+    expect(state.gameEnded).toBe(false);
+  });
+
+  it("CLEANUP で player に戻ったタイミングで turnCount が増える", () => {
+    let state = createInitialState();
+
+    // テスト簡略化のため、activePlayer='cpu', phase='CLEANUP' の状態を直接作る
+    state.activePlayer = "cpu";
+    state.phase = "CLEANUP";
+    const beforeTurnCount = state.turnCount;
+
+    state = cleanupPhase(state);
+
+    expect(state.activePlayer).toBe("player");
+    expect(state.turnCount).toBe(beforeTurnCount + 1);
+    expect(state.phase).toBe("DRAW");
+  });
+});
+
+describe("turnFlow v2 - BUY フェーズの挙動", () => {
+  it("条件を満たす場合に victory カードを正しく購入できる", () => {
+    let state = createInitialState();
+
+    const targetId = "VP_VILLAGE";
+    const pile = state.supply[targetId];
+    expect(pile).toBeDefined();
+
+    const cost = pile.card.cost;
+    const knowledgeRequired = pile.card.knowledgeRequired;
+
+    // プレイヤーに十分なリソースを与える
+    state.player.riceThisTurn = cost;
+    state.player.knowledge = knowledgeRequired;
+    state.phase = "BUY";
+
+    const beforeDiscardLen = state.player.discard.length;
+    const beforeRemaining = pile.remaining;
+
+    const newState = buyPhase(state, targetId);
+
+    expect(newState.phase).toBe("CLEANUP");
+    expect(newState.player.riceThisTurn).toBe(0);
+    expect(newState.player.discard.length).toBe(beforeDiscardLen + 1);
+    expect(newState.player.discard).toContain(targetId);
+    expect(newState.supply[targetId].remaining).toBe(beforeRemaining - 1);
+  });
+
+  it("米や知識が足りない場合は state を変えず、phase だけ CLEANUP になる", () => {
+    let state = createInitialState();
+
+    const targetId = "VP_VILLAGE";
+    const pile = state.supply[targetId];
+    expect(pile).toBeDefined();
+
+    state.player.riceThisTurn = 0; // 足りない
+    state.player.knowledge = 0;
+    state.phase = "BUY";
+
+    const before = { ...state.player };
+    const newState = buyPhase(state, targetId);
+
+    expect(newState.phase).toBe("CLEANUP");
+    expect(newState.player.riceThisTurn).toBe(before.riceThisTurn);
+    expect(newState.player.knowledge).toBe(before.knowledge);
+    expect(newState.player.discard.length).toBe(before.discard.length);
+    expect(newState.supply[targetId].remaining).toBe(pile.remaining);
   });
 });
