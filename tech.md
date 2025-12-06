@@ -1,101 +1,115 @@
-# 技術仕様書（Technical Spec）  
+技術仕様書（Technical Spec）
+
 History Build – 戦国ミニデッキ v1.5
 
----
+2-0. 技術スタック
 
-## 2-0. 技術スタック
+言語：TypeScript
 
-- 言語：TypeScript
-- フロント：React + Vite
-- スタイリング：Tailwind CSS
-- 状態管理：Zustand（またはシンプルな useReducer でもOK）
-- データ形式：`cards.json`（静的ファイル）
-- ビルド＆ホスティング：Vercel
-- 開発補助：Cursor / GitHub
+フロントエンド：React + Vite
 
----
+スタイリング：Tailwind CSS
 
-## 2-1. ディレクトリ構造（案）
+状態管理：
 
-```text
-/src
-  /components
-    Card.tsx
-    HandArea.tsx
-    CardPool.tsx
-    ResourceBar.tsx
-    DiscardPile.tsx
-    DeckCounter.tsx
-    CpuStatus.tsx
-    TurnIndicator.tsx
-  /screens
-    TitleScreen.tsx
-    GameScreen.tsx
-    ResultScreen.tsx
-  /logic
-    gameState.ts      // 状態の型・初期化
-    turnFlow.ts       // ターン進行処理
-    cardEffects.ts    // 効果の解決ロジック
-    cpuLogic.ts       // CPUの思考ルーチン
-    shuffle.ts        // シャッフルなどのユーティリティ
-  /data
-    cards.json        // 全カード定義
-  /types
-    card.ts           // Card, Effect, Condition 型など
-    game.ts           // GameState, PlayerState など
+小規模のため基本は useReducer または useState
 
-2-2. 型設計（card.ts / game.ts）
-🔹 カード型
-export type CardType = "resource" | "character" | "event" | "victory";
+将来的に拡張する場合は Zustand でラップしてもよい
 
-export type EffectName =
-  | "addRice"
-  | "addKnowledge"
-  | "draw"
-  | "discount"
-  | "addVictory"
-  | "trashFromHand"; // v1.5では最低限
+データ形式：cards.json（静的ファイル／デッキごとに分割可）
 
-export type Trigger = "onPlay" | "onBuy" | "endGame";
+ビルド＆ホスティング：Vercel
 
-export type ConditionOperator = ">=" | "<=" | "==" | ">" | "<";
+開発補助：Cursor / GitHub
 
-export interface EffectCondition {
-  resource: "rice" | "knowledge";
-  operator: ConditionOperator;
-  value: number;
-}
+※ ゲーム内ロジックの詳細な状態遷移は history-spec.md（エンジン仕様）を参照する。
 
-export interface CardEffect {
-  trigger: Trigger;
-  effect: EffectName;
-  value?: number;
-  targetType?: CardType;       // discount対象など
-  condition?: EffectCondition; // 任意
+2-1. ディレクトリ構成
+
+v1.5 では、戦国ミニデッキ専用の最小構成とする。
+
+src/
+  game/
+    cards.json            # 戦国ミニデッキのカード定義
+    cardDefinitions.ts    # Card 型と cards.json ロード処理
+    gameState.ts          # GameState / PlayerState 型定義と初期化
+    turnFlow.ts           # ターン進行（DRAW → RESOURCE → ACTION → BUY → CLEANUP）
+    applyEffect.ts        # Effect DSL の処理
+    cpuLogic.ts           # CPU の意思決定ロジック
+    score.ts              # 勝利点計算（必要に応じて）
+  components/
+    GameScreen.tsx        # ゲーム全体の画面
+    PlayerBoard.tsx       # プレイヤー情報（人間 / CPU の共通UI）
+    HandCard.tsx          # 手札カード表示
+    SupplyCard.tsx        # サプライのカード表示
+    PhaseControl.tsx      # フェーズ遷移ボタン（行動終了 / 購入終了など）
+    LogArea.tsx           # ログ・メッセージ表示
+  hooks/
+    useGameEngine.ts      # GameState と UI をつなぐカスタムフック（任意）
+
+public/
+  # アイコン類・OGP 等（必要に応じて）
+
+2-2. データモデル
+2-2-1. カード型（Card）
+
+cards.json を TypeScript 上で扱うための型定義。
+
+export type CardType = "resource" | "person" | "event" | "victory";
+
+export interface Effect {
+  // DSL の各オペレーションは「1フィールドだけを持つオブジェクト」として表現
+  addRice?: number;
+  addKnowledge?: number;
+  draw?: number;
+  discard?: number;
+  gain?: string;         // CardId
+  trashSelf?: boolean;   // 自分を廃棄
+  addVictory?: number;   // 勝利点をカードに付与（必要なら）
+  // 今後 conditional や対象選択系を追加する余地を残す
 }
 
 export interface Card {
-  id: string;              // "CHR_NOBUNAGA"
-  era: string;             // "Sengoku"
-  name: string;            // "織田信長"
+  id: string;                 // ユニークID（例: "rice_small"）
+  name: string;               // 表示名（例: "こめ袋（小）"）
   type: CardType;
-  cost: number;            // 購入コスト（米 + 知識）
-  requiredKnowledge?: number; // 購入に必要な最低知識値（省略時は0扱い）
-  effects: CardEffect[];
-  text: string;            // ゲーム内表示テキスト
+  cost: number;               // 米コスト
+  knowledgeRequired: number;  // 購入に必要な知識（0 なら制限なし）
+  effects: Effect[];          // 効果の配列（順番に適用）
+  text: string;               // UI に表示する説明文
 }
 
-🔹 ゲーム状態型
+
+カードの効果は DSL（Effect）で統一し、
+ベタ書きの if/else ではなく applyEffect() で解釈する。
+
+デッキが増えた場合も、新しい cards-edo.json 等を同じ型で追加できる。
+
+2-2-2. プレイヤー状態（PlayerState）
 export interface PlayerState {
-  deck: Card[];
-  hand: Card[];
-  discard: Card[];
-  playArea: Card[];
-  riceThisTurn: number;       // このターンの米
-  knowledge: number;          // 累積知識
-  victoryPointsBonus: number; // endGame効果などの加算用
-  turnsTaken: number;
+  deck: string[];      // 山札（CardId の配列）
+  hand: string[];      // 手札
+  discard: string[];   // 捨て札
+  played: string[];    // このターンにプレイしたカード
+
+  riceThisTurn: number;  // このターンに使用できる米
+  knowledge: number;     // 累積知識（ゲームを通じて保持）
+  turnsTaken: number;    // 行動したターン数（先手有利の調整などに使用可能）
 }
+
+
+※ actions や buys などの Dominion 的なカウンタは v1.5 では使用しない。
+アクションは「1ターンに人物/出来事カード 1枚まで」というルールで固定する。
+
+2-2-3. ゲーム状態（GameState）
+export type ActivePlayer = "player" | "cpu";
+
+export type TurnPhase =
+  | "DRAW"
+  | "RESOURCE"
+  | "ACTION"
+  | "BUY"
+  | "CLEANUP";
 
 export interface SupplyPile {
   card: Card;
@@ -103,196 +117,344 @@ export interface SupplyPile {
 }
 
 export interface GameState {
-  player: PlayerState;
-  cpu: PlayerState;
-  currentTurn: "player" | "cpu";
-  turnNumber: number;           // 両者共通のターンカウント
-  maxTurnsPerPlayer: number;    // v1.5 は 12
-  supply: {
-    [cardId: string]: SupplyPile;
-  };
-  isGameOver: boolean;
-  winner: "player" | "cpu" | "draw" | null;
+  player: PlayerState;        // 人間プレイヤー
+  cpu: PlayerState;           // CPUプレイヤー
+
+  supply: Record<string, SupplyPile>;  // cardId → サプライ情報
+
+  phase: TurnPhase;           // 現在のフェーズ
+  activePlayer: ActivePlayer; // 現在の手番（player / cpu）
+  turnCount: number;          // 人間のターン数（1ターン＝player+cpu のセットでもよい）
+
+  gameEnded: boolean;
+  winner: ActivePlayer | "draw" | null;
 }
 
-2-3. cards.json スキーマ（最終形 v1.5）
+
+エンジン内部の状態遷移は必ず GameState を入力・出力とする純関数で扱う。
+
+詳細なフェーズ挙動は history-spec.md のエンジン仕様に従う。
+
+2-3. cards.json スキーマ
+2-3-1. ファイル構造
 [
   {
-    "id": "CHR_NOBUNAGA",
-    "era": "Sengoku",
-    "name": "織田信長",
-    "type": "character",
-    "cost": 5,
-    "requiredKnowledge": 3,
+    "id": "rice_small",
+    "name": "こめ袋（小）",
+    "type": "resource",
+    "cost": 0,
+    "knowledgeRequired": 0,
     "effects": [
-      {
-        "trigger": "onPlay",
-        "effect": "addRice",
-        "value": 1
-      },
-      {
-        "trigger": "onPlay",
-        "condition": {
-          "resource": "knowledge",
-          "operator": ">=",
-          "value": 3
-        },
-        "effect": "addRice",
-        "value": 1
-      }
+      { "addRice": 1 }
     ],
-    "text": "米が1ふえる。もし知識が3いじょうなら、米がもう1ふえる。"
+    "text": "米を1増やす。"
+  },
+  {
+    "id": "village",
+    "name": "村落",
+    "type": "victory",
+    "cost": 2,
+    "knowledgeRequired": 0,
+    "effects": [
+      { "addVictory": 1 }
+    ],
+    "text": "ゲーム終了時、勝利点1。"
   }
+  // ...
 ]
 
-🔹 スキーマの約束事
+2-3-2. 読み込み処理（cardDefinitions.ts の責務）
 
-effects は配列。上から順に処理する。
+cards.json を fetch もしくは import で読み込み、Card[] として扱う。
 
-addRice：
+createInitialSupply() でサプライ（Record<string, SupplyPile>）を構築する。
 
-player.riceThisTurn に value 分を加算
+export function createInitialSupply(cards: Card[]): Record<string, SupplyPile> {
+  const supply: Record<string, SupplyPile> = {};
 
-addKnowledge：
-
-player.knowledge に value 分を加算（永続）
-
-draw：
-
-value 分カードを引く（デッキ切れ時は捨札シャッフル）
-
-discount：
-
-このターンの「購入コスト計算」に使う。
-例：targetType: "character", value: 1 → 人物カードの cost -1
-
-addVictory：
-
-player.victoryPointsBonus に加算（ゲーム終了時に国力合計へ加算）
-
-trashFromHand：
-
-手札から任意のカードを1枚選び、ゲームから除外する（捨札ではない）
-
-2-4. ターン進行ロジック（turnFlow.ts）
-
-擬似コードレベルで仕様を固定：
-
-function startTurn(state: GameState): GameState {
-  const current = state.currentTurn === "player" ? state.player : state.cpu;
-
-  // 必要なら手札をリセットして5枚引く
-  if (current.hand.length === 0) {
-    drawCards(current, 5);
+  for (const card of cards) {
+    const initialCount = getInitialCount(card); // カード種別に応じた枚数
+    supply[card.id] = {
+      card,
+      remaining: initialCount,
+    };
   }
 
-  // riceはターン開始時に0に
-  current.riceThisTurn = 0;
-
-  return state;
+  return supply;
 }
 
-function endTurn(state: GameState): GameState {
-  const current = state.currentTurn === "player" ? state.player : state.cpu;
 
-  // プレイエリア + 手札 → 捨札
-  moveAll(current.playArea, current.discard);
-  moveAll(current.hand, current.discard);
-  current.riceThisTurn = 0;
-  current.turnsTaken += 1;
+getInitialCount(card) は v1.5 ではハードコードでよい（将来は設定ファイル化）。
 
-  // 次のプレイヤーにターン交代
-  state.currentTurn = state.currentTurn === "player" ? "cpu" : "player";
-  state.turnNumber += 1;
+2-4. ゲームフロー（エンジン呼び出しレベル）
+2-4-1. 初期化（gameState.ts）
+export function createInitialPlayerState(deck: string[]): PlayerState {
+  const shuffled = shuffle(deck);
+  const { newDeck, drawn } = drawCards(shuffled, 5);
 
-  // 両者とも maxTurnsPerPlayer に達したらゲーム終了
-  if (
-    state.player.turnsTaken >= state.maxTurnsPerPlayer &&
-    state.cpu.turnsTaken >= state.maxTurnsPerPlayer
-  ) {
-    state.isGameOver = true;
-    state.winner = judgeWinner(state);
+  return {
+    deck: newDeck,
+    hand: drawn,
+    discard: [],
+    played: [],
+    riceThisTurn: 0,
+    knowledge: 0,
+    turnsTaken: 0,
+  };
+}
+
+export function createInitialGameState(cards: Card[]): GameState {
+  const initialDeck = [
+    "rice_small",
+    "rice_small",
+    "rice_small",
+    "rice_small",
+    "rice_small",
+    "rice_small",
+    "rice_small",
+    "village",
+    "village",
+    "village"
+  ];
+
+  const supply = createInitialSupply(cards);
+
+  return {
+    player: createInitialPlayerState(initialDeck),
+    cpu: createInitialPlayerState(initialDeck),
+    supply,
+    phase: "DRAW",
+    activePlayer: "player",
+    turnCount: 1,
+    gameEnded: false,
+    winner: null,
+  };
+}
+
+2-4-2. ターン進行（turnFlow.ts）
+
+history-spec.md に定義された 5フェーズに対応する関数を用意する：
+
+export function proceedPhase(state: GameState): GameState {
+  switch (state.phase) {
+    case "DRAW":
+      return drawPhase(state);
+    case "RESOURCE":
+      return resourcePhase(state);
+    case "ACTION":
+      return actionPhase(state);
+    case "BUY":
+      return buyPhase(state);
+    case "CLEANUP":
+      return cleanupPhase(state);
   }
-
-  return state;
 }
 
-2-5. カード購入ロジック
-🔹 プレイヤー・CPU共通の購入判定
+DRAW フェーズ
 
-canBuyCard(player: PlayerState, card: Card, discounts: DiscountState): boolean の仕様：
+アクティブプレイヤーの手札が 5 枚になるまでドロー。
 
-有効コストの計算
+終了後、phase = "RESOURCE" に遷移。
 
-const effectiveCost = getEffectiveCostForPlayer(player, card, discounts);
+RESOURCE フェーズ
 
-割引効果（discount）を反映した最終コスト
+手札の type = "resource" のカードをすべて自動プレイ。
 
-プレイヤーの支払い可能リソース
+applyEffect() で addRice を処理。
 
-const available = player.riceThisTurn + player.knowledge;
+終了後、phase = "ACTION"。
 
-知識条件
+ACTION フェーズ
 
-const required = card.requiredKnowledge ?? 0;
+人間の場合：UI から「どの人物/出来事カードを使うか」が指示される。
 
-購入可能条件
+CPU の場合：cpuLogic.ts で 1枚選択する。
 
-return available >= effectiveCost && player.knowledge >= required;
+1枚プレイしたら effects を処理して phase = "BUY"。
 
-🔹 プレイヤー購入フロー
+行動しない場合も phase = "BUY" へスキップ。
 
-UIでサプライのカードをクリック → cardId が渡される
+BUY フェーズ
 
-canBuyCard が true の場合のみ購入処理を実行
+購入可能なカードのうち 1枚だけ購入可能。
 
-購入したカードは player.discard に追加
+人間：UI で選択された cardId を buyCard() に渡す。
 
-player.riceThisTurn は支払い後もリセットせずにそのまま（v1.5は簡略化のため「支払ったふり」のみでOKにしてもよいが、将来拡張を考えるなら引き算する実装も可）
+CPU：cpuLogic.ts で候補を選択。
 
-🔹 CPU購入フロー
+購入処理後、phase = "CLEANUP"。
 
-cpuLogic.ts 内で canBuyCard を使い、購入可能なカード一覧を作る
+CLEANUP フェーズ
 
-その中から「優先度の高いカード」を Early/Mid/Late 戦略に応じて選択し、1枚だけ購入する
+手札・played を捨て札へ移動。
 
-2-6. UI構成（最低限）
-TitleScreen
+riceThisTurn = 0 にリセット。
 
-ロゴ「History Build」
+アクティブプレイヤーの turnsTaken++。
 
-「ゲームスタート」ボタン
+activePlayer を player ↔ cpu で切り替え。
 
-GameScreen
+player に戻ったタイミングで turnCount++。
 
-上部：CPUのデッキ枚数・捨札枚数・概略の国力表示
+ゲーム終了条件をチェックし、続行なら phase = "DRAW" に戻る。
 
-中央：カード供給エリア（supply）
+2-5. Effect 処理（applyEffect.ts）
+2-5-1. 基本方針
 
-グリッド表示（資源 / 人物 / 出来事 / 国力 をまとめて表示）
+Effect は 1つのオペレーションだけを持つオブジェクト
 
-下部：
+配列として順に適用する
 
-自分の手札（5枚）
+export function applyEffects(
+  state: GameState,
+  target: ActivePlayer,
+  effects: Effect[]
+): GameState {
+  return effects.reduce((s, effect) => applyEffect(s, target, effect), state);
+}
 
-資源バー（米 / 知識）
+function applyEffect(
+  state: GameState,
+  target: ActivePlayer,
+  effect: Effect
+): GameState {
+  const player = target === "player" ? state.player : state.cpu;
+  const updated = { ...state };
 
-「人物/出来事をつかう」「カードを買う」「ターン終了」など
+  if (effect.addRice) {
+    player.riceThisTurn += effect.addRice;
+  }
+  if (effect.addKnowledge) {
+    player.knowledge += effect.addKnowledge;
+  }
+  if (effect.draw) {
+    // drawCards を用いて N枚ドロー
+  }
+  // ...必要なオペレーションを順次実装
 
-ResultScreen
+  return updated;
+}
 
-プレイヤー国力 vs CPU国力
 
-勝敗メッセージ
+UI から Effect を直接呼び出さない。
+すべて turnFlow 経由で呼び出す。
 
-このゲームで登場した人物・出来事リスト（復習用）
+2-6. CPU ロジック概要（cpuLogic.ts）
+2-6-1. 行動フェーズ（ACTION）
+export function chooseCpuActionCard(state: GameState): string | null {
+  const cpu = state.cpu;
+  // 手札から person / event を抽出
+  const actionCardIds = cpu.hand.filter((id) => {
+    const card = state.supply[id]?.card;
+    return card && (card.type === "person" || card.type === "event");
+  });
 
-2-7. v1.5 実装スコープ
+  if (actionCardIds.length === 0) return null;
+
+  // シンプルな優先順位：知識が増えるカード → ドロー系
+  // v1.5 はハードコードでOK
+  return actionCardIds[0];
+}
+
+2-6-2. 購入フェーズ（BUY）
+export function chooseCpuBuyCard(state: GameState): string | null {
+  const cpu = state.cpu;
+
+  const candidates = Object.values(state.supply)
+    .filter(({ card, remaining }) => {
+      return (
+        remaining > 0 &&
+        card.cost <= cpu.riceThisTurn &&
+        cpu.knowledge >= card.knowledgeRequired
+      );
+    })
+    .map(({ card }) => card);
+
+  if (candidates.length === 0) return null;
+
+  // 優先順位：victory > knowledge 系 > resource > その他
+  candidates.sort((a, b) => {
+    const score = (card: Card): number => {
+      if (card.type === "victory") return 100 + card.cost;
+      if (card.effects.some((e) => e.addKnowledge)) return 80 + card.cost;
+      if (card.type === "resource") return 60 + card.cost;
+      return card.cost;
+    };
+    return score(b) - score(a);
+  });
+
+  return candidates[0].id;
+}
+
+2-7. UI / コンポーネント構成
+2-7-1. GameScreen.tsx
+
+GameState を受け取り、全体レイアウトを構築。
+
+主な構成要素：
+
+上部：フェーズ表示 / 現在の米 / 知識 / ターン数
+
+中央上：サプライ（SupplyCard の一覧）
+
+中央下：人間プレイヤーの手札（HandCard の一覧）
+
+左右：PlayerBoard（人間 / CPU の情報）
+
+下部：PhaseControl（行動終了 / 購入終了ボタン）
+
+右下：LogArea（ゲームログ）
+
+2-7-2. PlayerBoard.tsx
+
+プレイヤー名（人間 / CPU）
+
+山札枚数 / 捨て札枚数 / 手札枚数
+
+米・知識・獲得カード数などのサマリ
+
+2-7-3. HandCard.tsx
+
+カード名・種別・簡易効果説明
+
+ACTION フェーズ中はクリックで「プレイ」イベントを発火
+
+BUY フェーズ中はクリックしても何もしない（混乱防止）
+
+2-7-4. SupplyCard.tsx
+
+カード名・コスト・知識条件・残り枚数
+
+BUY フェーズ中、購入可能ならボタンを有効化
+
+購入不可の場合はボタン disabled + 視覚的にグレーアウト
+
+2-7-5. PhaseControl.tsx
+
+現在フェーズに応じてボタンを出し分け：
+
+ACTION フェーズ：
+
+「行動せずに進む」
+
+BUY フェーズ：
+
+「購入せずに進む」
+
+ボタン押下で proceedPhase() を呼ぶ。
+
+2-8. v1.5 実装スコープ
 
 シングルプレイ（人間 vs CPU 1体）
 
-戦国ミニデッキのみ対応
+戦国ミニデッキの cards.json のみ対応
 
-画面はシンプルな1画面構成（固定レイアウト）
+ターン進行は 5フェーズ固定（DRAW → RESOURCE → ACTION → BUY → CLEANUP）
 
-モバイルでも最低限プレイ可能なレイアウト（タッチ操作対応は v2 以降）
+スマホでもプレイ可能なシンプルな1画面レイアウト
+
+横スクロールなし
+
+ボタンとカードのタップ領域を十分大きくする
+
+演出（アニメーション・効果音など）は最小限（v2 以降で拡張）

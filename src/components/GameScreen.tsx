@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import type { GameState, Card } from "../logic/cardEffects";
 import { canBuyCard } from "../logic/cardEffects";
-import SupplyCardPile from "../components/SupplyCardPile";
-import HandCard from "../components/HandCard";
+import SupplyCardPile from "./SupplyCard";
+import HandCard from "./HandCard";
 
 interface GameScreenProps {
   state: GameState;

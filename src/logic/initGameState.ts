@@ -1,7 +1,7 @@
 // src/logic/initGameState.ts
 // cards.json から v1 戦国デッキの初期 GameState を作成する
 
-import cardsData from "../data/cards.json";
+import cardsData from "../game/cards.json";
 import type { Card, PlayerState, GameState } from "./cardEffects";
 
 //------------------------------------------------------

@@ -1,7 +1,7 @@
 // src/containers/GameContainer.tsx
 
 import React, { useState } from "react";
-import GameScreen from "../screens/GameScreen";
+import GameScreen from "../components/GameScreen";
 import { initGameState } from "../logic/initGameState";
 import {
   GameState,
