@@ -7,25 +7,11 @@
 import React from "react";
 import type { Card } from "../game/gameState";
 import { loadCards } from "../game/cardDefinitions";
+import { CardView } from "./CardView";
 
 interface CardDexScreenProps {
   onBackToTitle: () => void;
 }
-
-const typeLabel = (type: Card["type"]): string => {
-  switch (type) {
-    case "resource":
-      return "資源";
-    case "person":
-      return "人物";
-    case "event":
-      return "出来事";
-    case "victory":
-      return "国力";
-    default:
-      return type;
-  }
-};
 
 export const CardDexScreen: React.FC<CardDexScreenProps> = ({
   onBackToTitle
@@ -53,25 +39,13 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
       </header>
 
       <main className="flex-1 overflow-auto px-4 py-3">
-        <div className="space-y-3">
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {cards.map((card) => (
             <article
               key={card.id}
-              className="hb-carddex-item border border-slate-700 rounded-lg bg-slate-900/80 px-3 py-2 text-[12px]"
+              className="hb-carddex-item border border-slate-700 rounded-lg bg-slate-900/80 px-2 py-2 flex justify-center"
             >
-              <div className="flex items-center justify-between mb-1">
-                <h2 className="font-semibold text-slate-50">{card.name}</h2>
-                <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-200 text-[10px]">
-                  {typeLabel(card.type)}
-                </span>
-              </div>
-              <div className="flex gap-3 mb-1 text-[11px] text-slate-300">
-                <span>コスト: 米 {card.cost}</span>
-                <span>知識: {card.knowledgeRequired}</span>
-              </div>
-              <p className="text-[11px] text-slate-200 whitespace-pre-wrap">
-                {card.text}
-              </p>
+              <CardView card={card} disabled={true} showDetails={true} />
             </article>
           ))}
         </div>
@@ -86,8 +60,6 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
           タイトルへ戻る
         </button>
       </footer>
-
-      {/* TODO: v2.2 以降でカードイラスト imageUrl を表示する */}
     </div>
   );
 };

@@ -33,6 +33,7 @@ export interface Card {
   knowledgeRequired: number;
   effects: Effect[];
   text: string;
+  image: string;
 }
 
 // ------------------------------------------------------

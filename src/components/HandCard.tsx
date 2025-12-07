@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { Card } from "../game/gameState";
+import { CardView } from "./CardView";
 import { renderTypeLabel } from "./shared";
 
 interface HandCardProps {
@@ -25,26 +26,29 @@ const HandCard: React.FC<HandCardProps> = ({
 
   const baseClass = "hb-hand-card";
   const selectedClass = selected ? " hb-hand-card-selected" : "";
-  const disabledClass = disabled ? " opacity-60 cursor-not-allowed" : " hover:-translate-y-1";
+  const disabledClass = disabled
+    ? " opacity-60 cursor-not-allowed"
+    : " hover:-translate-y-1";
 
   return (
     <div
       className={baseClass + selectedClass + disabledClass}
       onClick={disabled ? undefined : onSelect}
     >
-      <div>
-        <div className="text-xs font-semibold mb-1">{card.name}</div>
-        <div className="text-[10px] text-slate-300 mb-1">
-          種類: {renderTypeLabel(card.type)}
-        </div>
-        <div className="text-[10px] text-slate-300 mb-1">
-          コスト: 米 {card.cost}
-        </div>
-        <div className="text-[10px] text-slate-400 line-clamp-3">
-          {card.text}
-        </div>
+      {/* カード本体の見た目 */}
+      <div className="mb-1">
+        <CardView
+          card={card}
+          // 選択状態は highlight で枠カラーを変える
+          highlight={selected && !disabled}
+          // クリックでの選択は親 div の onClick で処理するため CardView には onClick 渡さない
+          disabled={disabled}
+          showDetails={false}
+        />
       </div>
-      <div className="mt-2 flex items-center justify-between">
+
+      {/* 下部の「くわしく」/「つかう」エリア（旧UIを維持） */}
+      <div className="mt-1 flex items-center justify-between">
         <button
           type="button"
           className="text-[10px] text-sky-300 hover:text-sky-100 underline"

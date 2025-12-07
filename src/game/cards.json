@@ -8,7 +8,8 @@
     "effects": [
       { "addRice": 1 }
     ],
-    "text": "米を1うるおす。基本的な資源カード。"
+    "text": "米を1うるおす。基本的な資源カード。",
+    "image": "/assets/cards/RICE_SMALL.webp"
   },
   {
     "id": "RICE_MEDIUM",
@@ -19,7 +20,8 @@
     "effects": [
       { "addRice": 2 }
     ],
-    "text": "米を2うるおす。こめ袋よりも多くの年貢を集められる。"
+    "text": "米を2うるおす。こめ袋よりも多くの年貢を集められる。",
+    "image": "/assets/cards/RICE_MEDIUM.webp"
   },
   {
     "id": "RICE_LARGE",
@@ -30,7 +32,8 @@
     "effects": [
       { "addRice": 3 }
     ],
-    "text": "米を3うるおす。大名として多くの年貢を集めている状態。"
+    "text": "米を3うるおす。大名として多くの年貢を集めている状態。",
+    "image": "/assets/cards/RICE_LARGE.webp"
   },
   {
     "id": "VP_VILLAGE",
@@ -41,7 +44,8 @@
     "effects": [
       { "addVictory": 1 }
     ],
-    "text": "小さな村。ゲーム終了時、国力+1。"
+    "text": "小さな村。ゲーム終了時、国力+1。",
+    "image": "/assets/cards/VP_VILLAGE.webp"
   },
   {
     "id": "VP_CASTLE_TOWN",
@@ -52,7 +56,8 @@
     "effects": [
       { "addVictory": 3 }
     ],
-    "text": "城のまわりに人・物・金が集まる町。ゲーム終了時、国力+3。"
+    "text": "城のまわりに人・物・金が集まる町。ゲーム終了時、国力+3。",
+    "image": "/assets/cards/VP_CASTLE_TOWN.webp"
   },
   {
     "id": "VP_COUNTRY",
@@ -63,7 +68,8 @@
     "effects": [
       { "addVictory": 6 }
     ],
-    "text": "ひとつの国をおさめた状態。ゲーム終了時、国力+6。"
+    "text": "ひとつの国をおさめた状態。ゲーム終了時、国力+6。",
+    "image": "/assets/cards/VP_COUNTRY.webp"
   },
   {
     "id": "CHR_MITSUHIDE",
@@ -74,7 +80,8 @@
     "effects": [
       { "addKnowledge": 1 }
     ],
-    "text": "知識+1。いらないカードを整理して頭を切り替える。（プロトタイプではトラッシュ効果を省略）"
+    "text": "知識+1。いらないカードを整理して頭を切り替える。（プロトタイプではトラッシュ効果を省略）",
+    "image": "/assets/cards/CHR_MITSUHIDE.webp"
   },
   {
     "id": "CHR_SHINGEN",
@@ -86,7 +93,8 @@
       { "draw": 2 },
       { "addKnowledge": 1 }
     ],
-    "text": "山札から2枚引き、知識+1。戦術に長けた甲斐の虎。"
+    "text": "山札から2枚引き、知識+1。戦術に長けた甲斐の虎。",
+    "image": "/assets/cards/CHR_SHINGEN.webp"
   },
   {
     "id": "CHR_KENSHIN",
@@ -98,7 +106,8 @@
       { "addKnowledge": 2 },
       { "addRice": 1 }
     ],
-    "text": "知識+2、米+1。義を重んじる軍神。"
+    "text": "知識+2、米+1。義を重んじる軍神。",
+    "image": "/assets/cards/CHR_KENSHIN.webp"
   },
   {
     "id": "CHR_NOBUNAGA",
@@ -109,7 +118,8 @@
     "effects": [
       { "addRice": 2 }
     ],
-    "text": "米+2。革新的な戦い方で国をゆさぶる。（プロトタイプでは条件付き効果を常時発動扱いに簡略化）"
+    "text": "米+2。革新的な戦い方で国をゆさぶる。（プロトタイプでは条件付き効果を常時発動扱いに簡略化）",
+    "image": "/assets/cards/CHR_NOBUNAGA.webp"
   },
   {
     "id": "CHR_HIDEYOSHI",
@@ -121,7 +131,8 @@
       { "addRice": 1 },
       { "addKnowledge": 1 }
     ],
-    "text": "米+1、知識+1。足軽から天下人へとのし上がった立身出世の象徴。"
+    "text": "米+1、知識+1。足軽から天下人へとのし上がった立身出世の象徴。",
+    "image": "/assets/cards/CHR_HIDEYOSHI.webp"
   },
   {
     "id": "CHR_IEYASU",
@@ -133,7 +144,8 @@
       { "addRice": 1 },
       { "addKnowledge": 1 }
     ],
-    "text": "米+1、知識+1。長期的な安定政権をきずく。（プロトタイプでは国力カード割引効果を省略）"
+    "text": "米+1、知識+1。長期的な安定政権をきずく。（プロトタイプでは国力カード割引効果を省略）",
+    "image": "/assets/cards/CHR_IEYASU.webp"
   },
   {
     "id": "EV_GATE",
@@ -145,7 +157,8 @@
       { "draw": 1 },
       { "addKnowledge": 1 }
     ],
-    "text": "山札から1枚引き、知識+1。人と物の出入りを見きわめる。"
+    "text": "山札から1枚引き、知識+1。人と物の出入りを見きわめる。",
+    "image": "/assets/cards/EV_GATE.webp"
   },
   {
     "id": "EV_RAKUICHI",
@@ -156,7 +169,8 @@
     "effects": [
       { "addRice": 1 }
     ],
-    "text": "米+1。商いの自由化で町が活気づく。（プロトタイプでは割引効果を省略）"
+    "text": "米+1。商いの自由化で町が活気づく。（プロトタイプでは割引効果を省略）",
+    "image": "/assets/cards/EV_RAKUICHI.webp"
   },
   {
     "id": "EV_KATANAGARI",
@@ -168,7 +182,8 @@
       { "addKnowledge": 1 },
       { "addVictory": 1 }
     ],
-    "text": "知識+1、国力+1。武器をあつめて国をまとめる。（プロトタイプではトラッシュ効果を省略）"
+    "text": "知識+1、国力+1。武器をあつめて国をまとめる。（プロトタイプではトラッシュ効果を省略）",
+    "image": "/assets/cards/EV_KATANAGARI.webp"
   },
   {
     "id": "EV_TENKA",
@@ -180,6 +195,7 @@
       { "addVictory": 1 },
       { "addRice": 1 }
     ],
-    "text": "国力+1、米+1。天下をしずめ、一つの国にまとめあげる。"
+    "text": "国力+1、米+1。天下をしずめ、一つの国にまとめあげる。",
+    "image": "/assets/cards/EV_TENKA.webp"
   }
 ]
