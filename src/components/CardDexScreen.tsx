@@ -8,6 +8,7 @@ import React from "react";
 import type { Card } from "../game/gameState";
 import { loadCards } from "../game/cardDefinitions";
 import { CardView } from "./CardView";
+import { CardDetailModal } from "./CardDetailModal";
 
 interface CardDexScreenProps {
   onBackToTitle: () => void;
@@ -29,6 +30,18 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
     });
   }, []);
 
+  const [selectedCard, setSelectedCard] = React.useState<Card | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = React.useState(false);
+
+  const handleOpenDetail = (card: Card) => {
+    setSelectedCard(card);
+    setIsDetailOpen(true);
+  };
+
+  const handleCloseDetail = () => {
+    setIsDetailOpen(false);
+  };
+
   return (
     <div className="hb-carddex min-h-screen flex flex-col bg-slate-900 text-slate-100">
       <header className="px-4 py-4 border-b border-slate-700 bg-slate-950/80">
@@ -45,7 +58,12 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
               key={card.id}
               className="hb-carddex-item border border-slate-700 rounded-lg bg-slate-900/80 px-2 py-2 flex justify-center"
             >
-              <CardView card={card} disabled={true} showDetails={true} />
+              <CardView
+                card={card}
+                disabled={true}
+                showDetails={false}
+                onClick={() => handleOpenDetail(card)}
+              />
             </article>
           ))}
         </div>
@@ -60,6 +78,12 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
           タイトルへ戻る
         </button>
       </footer>
+
+      <CardDetailModal
+        card={selectedCard}
+        isOpen={isDetailOpen}
+        onClose={handleCloseDetail}
+      />
     </div>
   );
 };

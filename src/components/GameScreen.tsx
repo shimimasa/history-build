@@ -12,13 +12,15 @@ interface GameScreenProps {
   onProceedPhase: () => void;
   onPlayActionCard: (cardId: string) => void;
   onBuyCard: (cardId: string) => void;
+  onShowCardDetail: (card: Card) => void;
 }
 
 const GameScreen: React.FC<GameScreenProps> = ({
   state,
   onProceedPhase,
   onPlayActionCard,
-  onBuyCard
+  onBuyCard,
+  onShowCardDetail
 }) => {
   const player = state.player;
   const cpu = state.cpu;
@@ -52,7 +54,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
     return a.card.cost - b.card.cost;
   });
 
-  const [detailCard, setDetailCard] = useState<Card | null>(null);
+  // ↓ ここは detailCard ではなく、選択中の手札 id だけを持つ
+  // const [detailCard, setDetailCard] = useState<Card | null>(null);
   const [selectedHandId, setSelectedHandId] = useState<string | null>(null);
 
   const handleSelectHandCard = (cardId: string) => {
@@ -242,7 +245,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
                     state.phase !== "BUY"
                   }
                   onBuy={() => onBuyCard(pile.card.id)}
-                  onShowDetail={() => setDetailCard(pile.card)}
+                  onShowDetail={() => onShowCardDetail(pile.card)}
                 />
               ))}
             </div>
@@ -294,7 +297,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
                       state.phase !== "ACTION" ||
                       (card.type !== "person" && card.type !== "event")
                     }
-                    onShowDetail={() => setDetailCard(card)}
+                    onShowDetail={() => onShowCardDetail(card)}
                     onPlay={() => handlePlayFromHand(card.id)}
                   />
                 );
@@ -315,34 +318,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
         </button>
       </div>
 
-      {/* カード詳細ポップアップ（学習モードライト版） */}
-      {detailCard && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-slate-900 border border-slate-600 rounded-lg shadow-xl p-4 w-[90%] max-w-sm">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-sm font-bold">{detailCard.name}</h2>
-              <button
-                className="text-xs text-slate-300 hover:text-white"
-                onClick={() => setDetailCard(null)}
-              >
-                とじる
-              </button>
-            </div>
-            <div className="text-[11px] text-slate-300 mb-1">
-              種類: {renderTypeLabel(detailCard.type)}
-            </div>
-            <div className="text-[11px] text-slate-300 mb-1">
-              コスト: 米 {detailCard.cost}
-            </div>
-            <div className="text-[11px] text-slate-300 mb-1">
-              知識条件: {detailCard.knowledgeRequired}
-            </div>
-            <div className="text-[12px] text-slate-100 whitespace-pre-wrap mt-2">
-              {detailCard.text}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 旧：detailCard ローカルポップアップは削除 */}
     </div>
   );
 };

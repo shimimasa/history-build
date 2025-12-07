@@ -8,11 +8,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import GameScreen from "../components/GameScreen";
 import { createGameStateFromDeck } from "../logic/initGameState";
-import type { GameState } from "../game/gameState";
+import type { GameState, Card } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
 import { runCpuTurn } from "../logic/cpuLogic";
 import { computeVictoryPointsForPlayer } from "../game/socre";
 import type { GameOutcome, DeckConfig } from "../ui/uiTypes";
+import { CardDetailModal } from "../components/CardDetailModal";
 
 interface GameContainerProps {
   onGameEnd?: (outcome: GameOutcome) => void;
@@ -26,6 +27,8 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   const [state, setState] = useState<GameState>(() =>
     createGameStateFromDeck(deckConfig)
   );
+  const [selectedCardForDetail, setSelectedCardForDetail] = useState<Card | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   /**
    * プレイヤー操作後に、必要なら CPU のターンを自動実行する共通ヘルパー。
@@ -68,6 +71,15 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
 
     prevGameEndedRef.current = state.gameEnded;
   }, [state, state.gameEnded, onGameEnd]);
+
+  const handleShowCardDetail = (card: Card) => {
+    setSelectedCardForDetail(card);
+    setIsDetailOpen(true);
+  };
+
+  const handleCloseCardDetail = () => {
+    setIsDetailOpen(false);
+  };
 
   // プレイヤー側：フェーズを1つ進める（DRAW → RESOURCE → ACTION → BUY → CLEANUP → 次ターン…）
   const handleProceedPhase = () => {
@@ -114,12 +126,20 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   };
 
   return (
-    <GameScreen
-      state={state}
-      onProceedPhase={handleProceedPhase}
-      onPlayActionCard={handlePlayActionCard}
-      onBuyCard={handleBuyCard}
-    />
+    <>
+      <GameScreen
+        state={state}
+        onProceedPhase={handleProceedPhase}
+        onPlayActionCard={handlePlayActionCard}
+        onBuyCard={handleBuyCard}
+        onShowCardDetail={handleShowCardDetail}
+      />
+      <CardDetailModal
+        card={selectedCardForDetail}
+        isOpen={isDetailOpen}
+        onClose={handleCloseCardDetail}
+      />
+    </>
   );
 };
 
