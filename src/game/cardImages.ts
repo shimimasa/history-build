@@ -1,5 +1,7 @@
 import type { Card } from "./gameState";
 
+const CARD_IMAGE_BASE_PATH = "/assets/cards";
+
 /**
  * カードイラストの URL を解決する。
  * - card.image があればそれを優先
@@ -9,5 +11,5 @@ export function getCardImageUrl(card: Card): string {
   if (card.image && card.image.trim().length > 0) {
     return card.image;
   }
-  return `/assets/cards/${card.id}.webp`;
+  return `${CARD_IMAGE_BASE_PATH}/${card.id}.webp`;
 }

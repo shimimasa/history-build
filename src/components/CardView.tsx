@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Card } from "../game/gameState";
 import "../styles/CardView.css";
 import { getCardImageUrl } from "../game/cardImages";
@@ -35,6 +35,11 @@ export const CardView: React.FC<CardViewProps> = ({
 }) => {
   const [hasError, setHasError] = useState(false);
 
+  // カードが変わったらエラーフラグをリセット
+  useEffect(() => {
+    setHasError(false);
+  }, [card.id]);
+
   const handleClick = () => {
     if (disabled || !onClick) return;
     onClick();
@@ -48,6 +53,8 @@ export const CardView: React.FC<CardViewProps> = ({
     .join(" ")
     .trim();
 
+  const resolvedImageUrl = getCardImageUrl(card);
+
   return (
     <button
       type="button"
@@ -56,9 +63,9 @@ export const CardView: React.FC<CardViewProps> = ({
       disabled={disabled}
     >
       <div className="hb-card-view-image-wrapper">
-        {!hasError ? (
+        {!hasError && resolvedImageUrl ? (
           <img
-            src={getCardImageUrl(card)}
+            src={resolvedImageUrl}
             alt={card.name}
             className="hb-card-view-image"
             onError={() => setHasError(true)}

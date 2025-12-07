@@ -33,7 +33,7 @@ export interface Card {
   knowledgeRequired: number;
   effects: Effect[];
   text: string;
-  image?: string; // 任意: 明示指定があればそれを優先し、なければ id ベースで解決
+  image?: string; // 任意: 指定があれば優先し、なければ id ベースで解決
 }
 
 // ------------------------------------------------------
