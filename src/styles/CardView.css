@@ -1,6 +1,15 @@
-/* カード全体の枠（ボタン要素） */
+/* =========================================================
+ * CardView 基本レイアウト
+ * - .hb-card-view        : ボタン全体（クリック・hover 状態）
+ * - .hb-card-view-inner  : 外側の光・影など（選択時のハイライトもここ）
+ * - .hb-card-frame       : 実際のカード本体の枠（縦長・角丸）
+ * - .hb-card-art-wrapper : イラスト額縁エリア（上部 55〜60%）
+ * - .hb-card-view-body   : テキストエリア（下部 40〜45%）
+ * =======================================================*/
+
+/* カード全体のボタン枠 */
 .hb-card-view {
-  width: 220px;         /* サプライ／手札／図鑑で共通の横幅 */
+  width: 220px;            /* サプライ／手札／図鑑共通の横幅 */
   max-width: 100%;
   cursor: pointer;
   border: none;
@@ -21,7 +30,9 @@
 }
 
 .hb-card-view--highlight .hb-card-view-inner {
-  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6), 0 12px 24px rgba(0, 0, 0, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.7),
+    0 16px 30px rgba(15, 23, 42, 0.9);
 }
 
 .hb-card-view--disabled {
@@ -33,29 +44,50 @@
   box-shadow: none;
 }
 
-/* 内側のコンテナ：カード1枚分（縦長比率固定） */
+/* 外側のコンテナ（光と影） */
 .hb-card-view-inner {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 8px 8px 10px;
-  border-radius: 18px;
-  border: 1px solid #1e293b; /* slate-800 */
-  background: radial-gradient(circle at top left, #17223a, #020617);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
-  overflow: hidden;            /* 枠から画像がはみ出さないようにする */
-  aspect-ratio: 2 / 3;        /* カード全体の縦横比を固定 */
+  border-radius: 20px;
+  padding: 4px;
+  background: radial-gradient(circle at top left, #1f2937, #020617);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* 画像エリア：カード上部 ≒ 全体の 60% を占める */
+/* カード本体のフレーム（縦長カード） */
+.hb-card-frame {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  padding: 8px 8px 10px;
+  background: linear-gradient(145deg, #111827, #020617);
+  border: 1px solid rgba(148, 163, 184, 0.3); /* 細い縁 */
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+  aspect-ratio: 2 / 3; /* カード全体の縦横比を固定 */
+}
+
+/* =========================================================
+ * イラストエリア（上部）
+ * =======================================================*/
+
+/* 額縁的なラッパー：フチを見せるために padding を入れる */
+.hb-card-art-wrapper {
+  position: relative;
+  flex: 0 0 58%;          /* カード全体の ~58% をイラストエリアに */
+  padding: 4px 4px 6px;
+  border-radius: 16px;
+  background: radial-gradient(circle at top, #020617, #020617 40%, #020617 100%);
+  overflow: hidden;
+}
+
+/* 実際の画像コンテナ */
 .hb-card-view-image-wrapper {
   position: relative;
   width: 100%;
-  flex: 0 0 60%;              /* 全体の 6 割を画像エリアに */
-  margin-bottom: 6px;
+  height: 100%;
   border-radius: 14px;
-  overflow: hidden;            /* 枠の外は見えないように */
-  background: #020617;         /* 画像がないときの背景色 */
+  overflow: hidden;        /* 画像が枠からはみ出さないように */
+  background: #020617;     /* 画像がない場合のベースカラー */
 }
 
 /* 実際のイメージ */
@@ -63,8 +95,8 @@
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;           /* 全体を埋めるように表示（上下だけ少し切れる） */
-  object-position: center top; /* 顔や城の上部が見えるよう「やや上寄せ」にする */
+  object-fit: cover;       /* 全体を埋める（上下が少し切れてもOK） */
+  object-position: center top; /* 顔や城の上部が見えやすいよう上寄せ */
 }
 
 /* プレースホルダ（画像なしカード用） */
@@ -83,9 +115,11 @@
   justify-content: center;
   color: #9ca3af;
   font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
-/* コストバッジ（画像右下） */
+/* コストバッジ（イラスト右下） */
 .hb-card-view-cost {
   position: absolute;
   bottom: 4px;
@@ -98,25 +132,29 @@
   border: 1px solid rgba(148, 163, 184, 0.7);
 }
 
-/* 画像の下のテキスト部分（名前／タイプ／知識／効果概要） */
+/* =========================================================
+ * テキストエリア（下部）
+ * =======================================================*/
+
+.hb-card-body,
 .hb-card-view-body {
-  flex: 0 0 40%;              /* 下部 4 割をテキストエリアに */
-  padding: 4px 4px 2px;
+  flex: 1 1 auto;
+  padding-top: 4px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
-/* 1行目：カード名＋タイプバッジ */
+/* 1行目：カード名 + 種別バッジ */
 .hb-card-view-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .hb-card-view-name {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #e5e7eb;
 }
@@ -133,24 +171,45 @@
 
 /* 2行目：知識などメタ情報 */
 .hb-card-view-meta {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: #e5e7eb;
 }
 
-/* 効果テキスト概要（2〜3行で省略） */
+/* 効果テキスト概要（4〜5行＋フェード） */
 .hb-card-view-text {
+  position: relative;
   margin-top: 2px;
-  font-size: 0.7rem;
-  line-height: 1.4;
+  font-size: 0.75rem;
+  line-height: 1.35;
   color: #e5e7eb;
   display: -webkit-box;
-  -webkit-line-clamp: 3;       /* 2〜3行におさめる */
+  -webkit-line-clamp: 5;         /* 最大5行まで表示 */
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
+  padding-right: 2px;
 }
 
-/* --- ここから下は既存のモーダル用スタイルをそのまま残す --- */
+/* 下部にほんのりフェードを入れて「…」の雰囲気を出す */
+.hb-card-view-text::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.1em;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0) 0%,
+    rgba(15, 23, 42, 0.95) 100%
+  );
+  pointer-events: none;
+}
+
+/* =========================================================
+ * CardDetailModal 用スタイル（既存）
+ * =======================================================*/
+
 .hb-card-modal-overlay {
   position: fixed;
   inset: 0;
@@ -208,9 +267,9 @@
   margin-bottom: 8px;
 }
 
-/* モーダル内では少し大きめに表示 */
+/* モーダル内では CardView を少し大きめに */
 .hb-card-modal-card-wrapper .hb-card-view {
-  width: 180px;
+  width: 200px;
 }
 
 .hb-card-modal-meta {

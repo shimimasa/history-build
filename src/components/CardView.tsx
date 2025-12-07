@@ -8,7 +8,7 @@ interface CardViewProps {
   onClick?: () => void;
   disabled?: boolean;
   highlight?: boolean;
-  showDetails?: boolean;
+  showDetails?: boolean; // 今後の拡張用（現在は常に概要テキストを表示）
 }
 
 const typeLabel = (type: Card["type"]) => {
@@ -35,7 +35,7 @@ export const CardView: React.FC<CardViewProps> = ({
 }) => {
   const [hasError, setHasError] = useState(false);
 
-  // カードが変わったらエラーフラグをリセット
+  // カードが変わったら画像読み込みエラー状態をリセット
   useEffect(() => {
     setHasError(false);
   }, [card.id]);
@@ -63,40 +63,51 @@ export const CardView: React.FC<CardViewProps> = ({
       disabled={disabled}
     >
       <div className="hb-card-view-inner">
-        <div className="hb-card-view-image-wrapper">
-          {!hasError && resolvedImageUrl ? (
-            <img
-              src={resolvedImageUrl}
-              alt={card.name}
-              className="hb-card-view-image"
-              onError={() => setHasError(true)}
-            />
-          ) : (
-            <div className="hb-card-view-image-placeholder">
-              <span>{card.name.slice(0, 2)}</span>
+        {/* カード本体のフレーム */}
+        <div className="hb-card-frame">
+          {/* イラスト＋額縁エリア（上部 55〜60%） */}
+          <div className="hb-card-art-wrapper">
+            <div className="hb-card-view-image-wrapper">
+              {!hasError && resolvedImageUrl ? (
+                <img
+                  src={resolvedImageUrl}
+                  alt={card.name}
+                  className="hb-card-view-image"
+                  onError={() => setHasError(true)}
+                />
+              ) : (
+                <div className="hb-card-view-image-placeholder">
+                  <span>{card.name.slice(0, 2)}</span>
+                </div>
+              )}
+
+              {/* コストバッジ（イラスト右下） */}
+              <div className="hb-card-view-cost">
+                <span>米 {card.cost}</span>
+              </div>
             </div>
-          )}
-
-          <div className="hb-card-view-cost">
-            <span>米 {card.cost}</span>
-          </div>
-        </div>
-
-        <div className="hb-card-view-body">
-          <div className="hb-card-view-header">
-            <span className="hb-card-view-name">{card.name}</span>
-            <span className="hb-card-view-type">{typeLabel(card.type)}</span>
           </div>
 
-          <div className="hb-card-view-meta">
-            <span>知識 {card.knowledgeRequired}</span>
-          </div>
+          {/* テキストエリア（下部 40〜45%） */}
+          <div className="hb-card-body hb-card-view-body">
+            {/* タイトル行：名前 + タイプバッジ */}
+            <div className="hb-card-view-header">
+              <span className="hb-card-view-name">{card.name}</span>
+              <span className="hb-card-view-type">{typeLabel(card.type)}</span>
+            </div>
 
-          {card.text && (
-            <p className="hb-card-view-text">
-              {card.text}
-            </p>
-          )}
+            {/* サブ行：知識などメタ情報 */}
+            <div className="hb-card-view-meta">
+              <span>知識 {card.knowledgeRequired}</span>
+            </div>
+
+            {/* 効果テキスト概要（4〜5行まで） */}
+            {card.text && (
+              <p className="hb-card-view-text">
+                {card.text}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </button>
