@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Card } from "../game/gameState";
 import "../styles/CardView.css";
+import { getCardImageUrl } from "../game/cardImages";
 
 interface CardViewProps {
   card: Card;
@@ -32,6 +33,8 @@ export const CardView: React.FC<CardViewProps> = ({
   highlight = false,
   showDetails = false
 }) => {
+  const [hasError, setHasError] = useState(false);
+
   const handleClick = () => {
     if (disabled || !onClick) return;
     onClick();
@@ -53,11 +56,12 @@ export const CardView: React.FC<CardViewProps> = ({
       disabled={disabled}
     >
       <div className="hb-card-view-image-wrapper">
-        {card.image ? (
+        {!hasError ? (
           <img
-            src={card.image}
+            src={getCardImageUrl(card)}
             alt={card.name}
             className="hb-card-view-image"
+            onError={() => setHasError(true)}
           />
         ) : (
           <div className="hb-card-view-image-placeholder">
