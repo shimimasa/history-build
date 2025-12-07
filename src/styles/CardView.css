@@ -1,94 +1,63 @@
+/* カード全体の枠 */
 .hb-card-view {
-  display: inline-flex;
-  width: 140px;
-  border-radius: 0.75rem;
-  border: 1px solid #1e293b; /* slate-800 */
-  background: transparent;
-  color: #e5e7eb; /* slate-200 */
-  padding: 0;
+  width: 220px;
+  max-width: 100%;
   cursor: pointer;
-  text-align: left;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    border-color 0.15s ease,
-    background-color 0.15s ease;
 }
 
-/* カード本体（縦長比率固定） */
+/* 内側のコンテナ */
 .hb-card-view-inner {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  background: radial-gradient(circle at top, #020617 0%, #020617 40%, #020617 100%);
+  padding: 8px 8px 10px;
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, #17223a, #020617);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  overflow: hidden;            /* 枠から画像がはみ出さないようにする */
 }
 
-.hb-card-view:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
-  border-color: #38bdf8; /* sky-400 */
-}
-
-.hb-card-view--highlight {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
-}
-
-.hb-card-view--disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
+/* ★ 画像エリア：カード上部に固定比率で確保 */
 .hb-card-view-image-wrapper {
   position: relative;
   width: 100%;
-  flex: 1 0 60%;
-  background: linear-gradient(135deg, #020617, #0f172a);
-  overflow: hidden;
+  aspect-ratio: 3 / 4;         /* ここがポイント：縦長の比率を固定 */
+  margin-bottom: 8px;
+  border-radius: 14px;
+  overflow: hidden;            /* 枠の外は見えないように */
+  background: #020617;         /* 画像がないときの背景色 */
 }
 
+/* 実際のイメージ */
 .hb-card-view-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  display: block;
+  object-fit: cover;           /* 全体を埋めるように表示（上下だけ少し切れる） */
+  object-position: top center; /* 顔や城の上部が見えるよう「上寄せ」にする */
 }
 
+/* プレースホルダ（画像なしカード用） */
 .hb-card-view-image-placeholder {
   width: 100%;
   height: 100%;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(148, 163, 184, 0.18),
+    rgba(148, 163, 184, 0.18) 6px,
+    transparent 6px,
+    transparent 12px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  background: repeating-linear-gradient(
-    135deg,
-    #0f172a,
-    #0f172a 6px,
-    #020617 6px,
-    #020617 12px
-  );
-  color: #e5e7eb;
+  color: #9ca3af;
+  font-size: 0.9rem;
 }
 
-.hb-card-view-cost {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  padding: 2px 6px;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  background: rgba(15, 23, 42, 0.9);
-  color: #facc15; /* amber-400 */
-  border: 1px solid rgba(148, 163, 184, 0.7);
+/* 画像の下のテキスト部分（名前／タイプなど） */
+.hb-card-view-body {
+  margin-top: 4px;
 }
 
 .hb-card-view-body {
