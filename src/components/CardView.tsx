@@ -3,23 +3,22 @@ import type { Card } from "../game/gameState";
 import "../styles/CardView.css";
 import { getCardImageUrl } from "../game/cardImages";
 
-type CardViewVariant = "base" | "supply" | "hand" | "dex";
-
-interface SupplyFooterProps {
-  remaining: number;
-  canBuy: boolean;
-  isDisabled: boolean;
-  onBuy?: () => void;
-}
+export type CardViewVariant = "supply" | "hand" | "dex" | "modal";
 
 interface CardViewProps {
   card: Card;
+  variant?: CardViewVariant;      // デフォルト: "supply"
   onClick?: () => void;
   disabled?: boolean;
   highlight?: boolean;
-  showDetails?: boolean; // 将来の拡張用（いまは常に概要テキストを表示）
-  variant?: CardViewVariant;
-  supplyInfo?: SupplyFooterProps; // variant==="supply" のときのみ使用
+  showDetails?: boolean;          // いまは未使用（将来の拡張用）
+
+  // --- サプライ専用フッター / 残り枚数 ---
+  canBuy?: boolean;               // 「実際に買える」状態か（ボタン enable 条件）
+  buyDisabledReason?: string;     // 買えないときのメッセージ
+  onBuyClick?: () => void;        // 「買う」ボタンを押したとき
+  showRemaining?: boolean;        // 残り枚数バッジを表示するか
+  remainingCount?: number;        // 残り枚数
 }
 
 const typeLabel = (type: Card["type"]) => {
@@ -39,12 +38,16 @@ const typeLabel = (type: Card["type"]) => {
 
 export const CardView: React.FC<CardViewProps> = ({
   card,
+  variant = "supply",
   onClick,
   disabled = false,
   highlight = false,
   showDetails = false, // eslint 用ダミー
-  variant = "base",
-  supplyInfo
+  canBuy,
+  buyDisabledReason,
+  onBuyClick,
+  showRemaining,
+  remainingCount
 }) => {
   const [hasError, setHasError] = useState(false);
 
@@ -68,19 +71,30 @@ export const CardView: React.FC<CardViewProps> = ({
 
   const resolvedImageUrl = getCardImageUrl(card);
 
-  const supply = variant === "supply" && supplyInfo ? supplyInfo : null;
+  const isSupply = variant === "supply";
+  const showRemainingBadge =
+    isSupply && showRemaining && typeof remainingCount === "number";
 
-  const isDepleted = supply ? supply.remaining <= 0 : false;
-  const canBuy =
-    supply && !supply.isDisabled && supply.canBuy && !isDepleted;
+  const remaining =
+    typeof remainingCount === "number" ? remainingCount : undefined;
+  const isDepleted = typeof remaining === "number" && remaining <= 0;
 
-  const supplyStatusText = !supply
+  // canBuy は「最終的にボタンを有効にしてよいか」を SupplyCard 側で計算して渡す前提
+  const buyEnabled = isSupply && !!canBuy && !isDepleted;
+
+  const statusText = !isSupply
     ? ""
     : isDepleted
     ? "在庫なし"
-    : canBuy
+    : buyEnabled
     ? "購入できます"
-    : "条件不足（米 or 知識）";
+    : buyDisabledReason ?? "条件不足（米 or 知識）";
+
+  const handleBuyClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    if (!buyEnabled || !onBuyClick) return;
+    onBuyClick();
+  };
 
   return (
     <button
@@ -93,13 +107,13 @@ export const CardView: React.FC<CardViewProps> = ({
         {/* 実際のカード本体（1枚分） */}
         <div className="hb-card-frame">
           {/* サプライ用：残り枚数バッジ（カード左上） */}
-          {supply && (
+          {showRemainingBadge && remaining !== undefined && (
             <div className="hb-card-view-remaining-badge">
-              残り {supply.remaining}
+              残り {remaining}
             </div>
           )}
 
-          {/* イラスト領域（上部 55〜60%） */}
+          {/* イラスト領域（上部） */}
           <div className="hb-card-art-wrapper">
             <div className="hb-card-view-image-wrapper">
               {!hasError && resolvedImageUrl ? (
@@ -122,7 +136,7 @@ export const CardView: React.FC<CardViewProps> = ({
             </div>
           </div>
 
-          {/* テキストエリア（下部 40〜45%） */}
+          {/* テキストエリア（下部） */}
           <div className="hb-card-body hb-card-view-body">
             {/* タイトル行：名前 + 種別バッジ */}
             <div className="hb-card-view-header">
@@ -135,7 +149,7 @@ export const CardView: React.FC<CardViewProps> = ({
               <span>知識 {card.knowledgeRequired}</span>
             </div>
 
-            {/* 効果テキスト概要（4 行前後） */}
+            {/* 効果テキスト概要（4行前後） */}
             {card.text && (
               <p className="hb-card-view-text">
                 {card.text}
@@ -144,20 +158,16 @@ export const CardView: React.FC<CardViewProps> = ({
           </div>
 
           {/* サプライ専用フッター：購入可否＋買うボタン */}
-          {supply && (
+          {isSupply && (
             <div className="hb-card-view-footer">
               <span className="hb-card-view-footer-status">
-                {supplyStatusText}
+                {statusText}
               </span>
               <button
                 type="button"
                 className="hb-card-view-footer-button"
-                onClick={(e) => {
-                  e.stopPropagation(); // カード本体クリック(onClick)とは分離
-                  if (!supply.onBuy || supply.isDisabled) return;
-                  supply.onBuy();
-                }}
-                disabled={supply.isDisabled}
+                onClick={handleBuyClick}
+                disabled={!buyEnabled}
               >
                 買う
               </button>

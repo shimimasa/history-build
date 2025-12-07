@@ -3,7 +3,7 @@
 import React from "react";
 import type { Card } from "../game/gameState";
 import { CardView } from "./CardView";
-import { renderTypeLabel } from "./shared"; // 既存のまま（他の場所で使用）
+import { renderTypeLabel } from "./shared"; // 他の箇所で利用しているので残す
 
 interface HandCardProps {
   card: Card;
