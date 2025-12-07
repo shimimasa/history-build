@@ -65,17 +65,16 @@
   border: 1px solid rgba(148, 163, 184, 0.35); /* 唯一の「カード枠」 */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
   overflow: hidden;
-  aspect-ratio: 2 / 3; /* カード全体の縦横比を固定 */
 }
 
 /* =========================================================
  * イラストエリア（上部）
  * =======================================================*/
 
-/* カード内のイラスト領域（額縁ではなく「上部の絵」感に寄せる） */
+/* カード内のイラスト領域（カード上部） */
 .hb-card-art-wrapper {
   position: relative;
-  flex: 0 0 57%;          /* カード全体の ~57% をイラストエリアに */
+  flex: 0 0 auto;         /* 高さは中の画像の比率に任せる */
   padding-bottom: 4px;    /* 下に少しだけ余白 */
 }
 
@@ -83,7 +82,8 @@
 .hb-card-view-image-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 2 / 3;    /* イラスト部分だけ 2:3 で固定 */
+  height: auto;
   border-radius: 14px;
   overflow: hidden;        /* 画像が枠からはみ出さないように */
   background: #020617;     /* 画像がない場合のベースカラー */
