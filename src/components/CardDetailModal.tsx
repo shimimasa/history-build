@@ -53,7 +53,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
 
         <div className="hb-card-modal-body">
           <div className="hb-card-modal-card-wrapper">
-            <CardView card={card} disabled={true} showDetails={true} />
+            <CardView card={card} disabled={true} showDetails={false} />
           </div>
 
           <div className="hb-card-modal-meta">
@@ -66,6 +66,17 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               <span>{card.knowledgeRequired}</span>
             </div>
           </div>
+
+          {card.text && (
+            <div className="mt-3">
+              <div className="text-[11px] font-semibold text-slate-200 mb-1">
+                効果
+              </div>
+              <p className="text-[12px] text-slate-100 whitespace-pre-wrap">
+                {card.text}
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="hb-card-modal-footer">

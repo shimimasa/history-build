@@ -79,15 +79,18 @@
   }
 
   .hb-hand-inner {
-    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-3;
+    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
   }
 
   .hb-hand-scroll {
-    @apply flex gap-3 overflow-x-auto pb-2;
+    /* 横スクロール前提で高さを抑え、縦方向には伸びないようにする */
+    @apply flex gap-3 overflow-x-auto overflow-y-hidden pb-1;
+    max-height: 230px; /* 230〜260px の範囲で抑える */
   }
 
   .hb-hand-card {
-    @apply shrink-0 min-w-[120px] max-w-[160px] hb-card cursor-pointer transition-transform duration-150;
+    /* 1行に並べやすいように若干コンパクトに */
+    @apply shrink-0 min-w-[120px] max-w-[150px] hb-card cursor-pointer transition-transform duration-150;
   }
 
   .hb-hand-card-selected {
