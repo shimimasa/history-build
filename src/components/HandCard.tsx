@@ -3,7 +3,7 @@
 import React from "react";
 import type { Card } from "../game/gameState";
 import { CardView } from "./CardView";
-import { renderTypeLabel } from "./shared";
+import { renderTypeLabel } from "./shared"; // 既存のまま（他の場所で使用）
 
 interface HandCardProps {
   card: Card;
@@ -39,11 +39,11 @@ const HandCard: React.FC<HandCardProps> = ({
       <div className="mb-1">
         <CardView
           card={card}
+          variant="hand"
           // 選択状態は highlight で枠カラーを変える
           highlight={selected && !disabled}
-          // クリックでの選択は親 div の onClick で処理するため CardView には onClick 渡さない
+          // クリックでの選択は親 div の onClick で処理するため CardView には onClick を渡さない
           disabled={disabled}
-          showDetails={false}
         />
       </div>
 

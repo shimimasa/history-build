@@ -3,12 +3,23 @@ import type { Card } from "../game/gameState";
 import "../styles/CardView.css";
 import { getCardImageUrl } from "../game/cardImages";
 
+type CardViewVariant = "base" | "supply" | "hand" | "dex";
+
+interface SupplyFooterProps {
+  remaining: number;
+  canBuy: boolean;
+  isDisabled: boolean;
+  onBuy?: () => void;
+}
+
 interface CardViewProps {
   card: Card;
   onClick?: () => void;
   disabled?: boolean;
   highlight?: boolean;
-  showDetails?: boolean; // 今後の拡張用（現在は常に概要テキストを表示）
+  showDetails?: boolean; // 将来の拡張用（いまは常に概要テキストを表示）
+  variant?: CardViewVariant;
+  supplyInfo?: SupplyFooterProps; // variant==="supply" のときのみ使用
 }
 
 const typeLabel = (type: Card["type"]) => {
@@ -31,7 +42,9 @@ export const CardView: React.FC<CardViewProps> = ({
   onClick,
   disabled = false,
   highlight = false,
-  showDetails = false
+  showDetails = false, // eslint 用ダミー
+  variant = "base",
+  supplyInfo
 }) => {
   const [hasError, setHasError] = useState(false);
 
@@ -55,6 +68,20 @@ export const CardView: React.FC<CardViewProps> = ({
 
   const resolvedImageUrl = getCardImageUrl(card);
 
+  const supply = variant === "supply" && supplyInfo ? supplyInfo : null;
+
+  const isDepleted = supply ? supply.remaining <= 0 : false;
+  const canBuy =
+    supply && !supply.isDisabled && supply.canBuy && !isDepleted;
+
+  const supplyStatusText = !supply
+    ? ""
+    : isDepleted
+    ? "在庫なし"
+    : canBuy
+    ? "購入できます"
+    : "条件不足（米 or 知識）";
+
   return (
     <button
       type="button"
@@ -63,9 +90,16 @@ export const CardView: React.FC<CardViewProps> = ({
       disabled={disabled}
     >
       <div className="hb-card-view-inner">
-        {/* カード本体のフレーム */}
+        {/* 実際のカード本体（1枚分） */}
         <div className="hb-card-frame">
-          {/* イラスト＋額縁エリア（上部 55〜60%） */}
+          {/* サプライ用：残り枚数バッジ（カード左上） */}
+          {supply && (
+            <div className="hb-card-view-remaining-badge">
+              残り {supply.remaining}
+            </div>
+          )}
+
+          {/* イラスト領域（上部 55〜60%） */}
           <div className="hb-card-art-wrapper">
             <div className="hb-card-view-image-wrapper">
               {!hasError && resolvedImageUrl ? (
@@ -90,7 +124,7 @@ export const CardView: React.FC<CardViewProps> = ({
 
           {/* テキストエリア（下部 40〜45%） */}
           <div className="hb-card-body hb-card-view-body">
-            {/* タイトル行：名前 + タイプバッジ */}
+            {/* タイトル行：名前 + 種別バッジ */}
             <div className="hb-card-view-header">
               <span className="hb-card-view-name">{card.name}</span>
               <span className="hb-card-view-type">{typeLabel(card.type)}</span>
@@ -101,13 +135,34 @@ export const CardView: React.FC<CardViewProps> = ({
               <span>知識 {card.knowledgeRequired}</span>
             </div>
 
-            {/* 効果テキスト概要（4〜5行まで） */}
+            {/* 効果テキスト概要（4 行前後） */}
             {card.text && (
               <p className="hb-card-view-text">
                 {card.text}
               </p>
             )}
           </div>
+
+          {/* サプライ専用フッター：購入可否＋買うボタン */}
+          {supply && (
+            <div className="hb-card-view-footer">
+              <span className="hb-card-view-footer-status">
+                {supplyStatusText}
+              </span>
+              <button
+                type="button"
+                className="hb-card-view-footer-button"
+                onClick={(e) => {
+                  e.stopPropagation(); // カード本体クリック(onClick)とは分離
+                  if (!supply.onBuy || supply.isDisabled) return;
+                  supply.onBuy();
+                }}
+                disabled={supply.isDisabled}
+              >
+                買う
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </button>

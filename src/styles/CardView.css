@@ -1,10 +1,11 @@
 /* =========================================================
  * CardView 基本レイアウト
  * - .hb-card-view        : ボタン全体（クリック・hover 状態）
- * - .hb-card-view-inner  : 外側の光・影など（選択時のハイライトもここ）
- * - .hb-card-frame       : 実際のカード本体の枠（縦長・角丸）
- * - .hb-card-art-wrapper : イラスト額縁エリア（上部 55〜60%）
- * - .hb-card-view-body   : テキストエリア（下部 40〜45%）
+ * - .hb-card-view-inner  : 外側の「クリック領域＋影」（視覚的な枠は持たない）
+ * - .hb-card-frame       : 実際のカード本体枠（角丸・縦長 2:3）
+ * - .hb-card-art-wrapper : イラスト領域（カード上部 55〜60%）
+ * - .hb-card-view-body   : テキスト領域（カード下部 40〜45%）
+ * - .hb-card-view-footer : サプライ専用フッター（購入可否＋買うボタン）
  * =======================================================*/
 
 /* カード全体のボタン枠 */
@@ -44,24 +45,25 @@
   box-shadow: none;
 }
 
-/* 外側のコンテナ（光と影） */
+/* 外側のコンテナ（クリック領域＋わずかな影） */
 .hb-card-view-inner {
   position: relative;
   border-radius: 20px;
-  padding: 4px;
-  background: radial-gradient(circle at top left, #1f2937, #020617);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+  padding: 3px;                     /* わずかな余白だけ持つ */
+  background: transparent;          /* 視覚的な枠はカード本体側に任せる */
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
 }
 
 /* カード本体のフレーム（縦長カード） */
 .hb-card-frame {
+  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 18px;
   padding: 8px 8px 10px;
   background: linear-gradient(145deg, #111827, #020617);
-  border: 1px solid rgba(148, 163, 184, 0.3); /* 細い縁 */
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35); /* 唯一の「カード枠」 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
   overflow: hidden;
   aspect-ratio: 2 / 3; /* カード全体の縦横比を固定 */
 }
@@ -70,14 +72,11 @@
  * イラストエリア（上部）
  * =======================================================*/
 
-/* 額縁的なラッパー：フチを見せるために padding を入れる */
+/* カード内のイラスト領域（額縁ではなく「上部の絵」感に寄せる） */
 .hb-card-art-wrapper {
   position: relative;
-  flex: 0 0 58%;          /* カード全体の ~58% をイラストエリアに */
-  padding: 4px 4px 6px;
-  border-radius: 16px;
-  background: radial-gradient(circle at top, #020617, #020617 40%, #020617 100%);
-  overflow: hidden;
+  flex: 0 0 57%;          /* カード全体の ~57% をイラストエリアに */
+  padding-bottom: 4px;    /* 下に少しだけ余白 */
 }
 
 /* 実際の画像コンテナ */
@@ -132,6 +131,19 @@
   border: 1px solid rgba(148, 163, 184, 0.7);
 }
 
+/* サプライ用：残り枚数バッジ（カード左上） */
+.hb-card-view-remaining-badge {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  background: rgba(15, 23, 42, 0.95);
+  color: #e5e7eb;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+}
+
 /* =========================================================
  * テキストエリア（下部）
  * =======================================================*/
@@ -175,15 +187,17 @@
   color: #e5e7eb;
 }
 
-/* 効果テキスト概要（4〜5行＋フェード） */
+/* 効果テキスト概要（4行＋薄いフェード） */
 .hb-card-view-text {
   position: relative;
   margin-top: 2px;
+  padding-top: 3px;
   font-size: 0.75rem;
   line-height: 1.35;
   color: #e5e7eb;
+  border-top: 1px solid rgba(51, 65, 85, 0.8); /* 上に薄い仕切り線 */
   display: -webkit-box;
-  -webkit-line-clamp: 5;         /* 最大5行まで表示 */
+  -webkit-line-clamp: 4;         /* 最大4行まで表示 */
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
@@ -201,9 +215,44 @@
   background: linear-gradient(
     to bottom,
     rgba(15, 23, 42, 0) 0%,
-    rgba(15, 23, 42, 0.95) 100%
+    rgba(15, 23, 42, 0.7) 100%
   );
   pointer-events: none;
+}
+
+/* =========================================================
+ * サプライ専用フッター（購入可否＋買うボタン）
+ * =======================================================*/
+
+.hb-card-view-footer {
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(51, 65, 85, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 0.7rem;
+}
+
+.hb-card-view-footer-status {
+  color: #e5e7eb;
+}
+
+.hb-card-view-footer-button {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: none;
+  font-size: 0.7rem;
+  background: #4f46e5; /* indigo-600 */
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.hb-card-view-footer-button:disabled {
+  background: #334155; /* slate-700 */
+  opacity: 0.7;
+  cursor: default;
 }
 
 /* =========================================================
