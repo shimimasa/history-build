@@ -145,7 +145,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
             />
           </section>
 
-          <section className="hb-play-area">
+          <section
+            className={`hb-play-area ${
+              state.phase === "BUY" ? "hb-play-area-compact" : ""
+            }`}
+          >
             <PlayArea state={state} getCardFromId={getCardFromId} />
           </section>
         </section>
@@ -549,6 +553,7 @@ const HandArea: React.FC<HandAreaProps> = ({
             return (
               <div
                 key={card.id}
+                className="hb-hand-card-wrapper"
                 onMouseEnter={() => onHoverCard?.(card)}
                 onMouseLeave={() => onHoverCard?.(null)}
               >

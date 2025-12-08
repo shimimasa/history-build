@@ -97,6 +97,13 @@
     @apply ring-2 ring-amber-400 shadow-amber-500/50;
   }
 
+  /* 手札カードを少し縮小して高さを抑える */
+  .hb-hand-card-wrapper {
+    @apply shrink-0;
+    transform: scale(0.8);
+    transform-origin: top center;
+  }
+
   /* 右下のフェイズボタン */
   .hb-phase-buttons {
     @apply fixed bottom-4 right-4 flex flex-col gap-2 z-40;
@@ -106,7 +113,7 @@
 @layer components {
   /* 全体レイアウト */
   .hb-game-layout {
-    @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col;
+    @apply h-screen bg-slate-900 text-slate-100 flex flex-col;
   }
 
   .hb-game-header {
@@ -153,7 +160,7 @@
 
   /* 中央 3 カラム */
   .hb-game-main {
-    @apply flex-1 w-full flex justify-center;
+    @apply flex-1 w-full flex justify-center overflow-hidden;
   }
 
   .hb-column {
@@ -167,7 +174,7 @@
   .hb-center-area {
     @apply flex-1 flex flex-col gap-3 px-0 py-4;
     /* ヘッダー＋手札＋フッターの分を差し引いて、中央カラム全体の高さを制限 */
-    max-height: calc(100vh - 230px);
+    max-height: calc(100vh - 260px);
     overflow: hidden;
   }
 
@@ -217,13 +224,22 @@
     @apply text-[11px] text-slate-400;
   }
 
+  /* BUY フェーズ用にプレイエリアをコンパクトにする */
+  .hb-play-area-compact {
+    max-height: 140px;
+    overflow-y: auto;
+  }
+
   /* 手札エリア（自分のカード感を出す） */
   .hb-hand-area {
     @apply border-t border-slate-800 bg-slate-950/95;
+    flex-shrink: 0;
+    max-height: 260px; /* 手札エリア全体の上限高さ */
   }
 
   .hb-hand-area-inner {
     @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
+    height: 100%;
   }
 
   .hb-hand-header {
@@ -231,7 +247,8 @@
   }
 
   .hb-hand-row {
-    @apply flex justify-center gap-2 overflow-x-auto pb-1;
+    @apply flex justify-center gap-2 overflow-x-auto overflow-y-hidden pb-1;
+    height: 200px; /* カードの見せる高さ */
   }
 
   .hb-hand-empty {
@@ -241,6 +258,7 @@
   /* フッター（操作ボタン） */
   .hb-footer {
     @apply border-t border-slate-800 bg-slate-950/90;
+    flex-shrink: 0;
   }
 
   .hb-footer-inner {
