@@ -2,13 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== 既存の hb-app 系（今はほぼ未使用） ===== */
 @layer components {
-  /* アプリ全体のベースレイアウト */
   .hb-app {
     @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col;
   }
 
-  /* ヘッダー + ターン情報 */
   .hb-header {
     @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur;
   }
@@ -29,7 +28,6 @@
     @apply px-3 py-1 rounded-full bg-slate-800/80 border border-slate-600 text-xs font-semibold;
   }
 
-  /* 上部ステータスバー（アクション/購入/米/知識） */
   .hb-status-row {
     @apply w-full max-w-6xl mx-auto px-4 pb-3 flex gap-4;
   }
@@ -42,7 +40,6 @@
     @apply w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold bg-slate-800;
   }
 
-  /* 中央ボードレイアウト */
   .hb-main-board {
     @apply flex-1 w-full flex justify-center;
   }
@@ -59,12 +56,10 @@
     @apply hb-card text-xs;
   }
 
-  /* 汎用カードコンテナ（Supply/サイドバーなど） */
   .hb-card {
     @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
   }
 
-  /* サプライボード */
   .hb-supply {
     @apply flex-1 flex flex-col gap-3;
   }
@@ -73,7 +68,7 @@
     @apply grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
   }
 
-  /* 手札バー（sticky bottom） */
+  /* 手札カード（旧レイアウト用） */
   .hb-hand-bar {
     @apply w-full border-t border-slate-800 bg-slate-950/95;
   }
@@ -83,13 +78,11 @@
   }
 
   .hb-hand-scroll {
-    /* 横スクロール前提で高さを抑え、縦方向には伸びないようにする */
     @apply flex gap-3 overflow-x-auto overflow-y-hidden pb-1;
-    max-height: 230px; /* 230〜260px の範囲で抑える */
+    max-height: 230px;
   }
 
   .hb-hand-card {
-    /* 1行に並べやすいように若干コンパクトに */
     @apply shrink-0 min-w-[120px] max-w-[150px] hb-card cursor-pointer transition-transform duration-150;
   }
 
@@ -97,21 +90,21 @@
     @apply ring-2 ring-amber-400 shadow-amber-500/50;
   }
 
-  /* 手札カードを少し縮小して高さを抑える */
+  /* 手札カードの縮小用ラッパー（新レイアウトでも使う） */
   .hb-hand-card-wrapper {
     @apply shrink-0;
     transform: scale(0.8);
     transform-origin: top center;
   }
 
-  /* 右下のフェイズボタン */
   .hb-phase-buttons {
     @apply fixed bottom-4 right-4 flex flex-col gap-2 z-40;
   }
 }
 
+/* ===== 新レイアウト（hb-game-〜）ここから本命 ===== */
 @layer components {
-  /* 全体レイアウト */
+  /* 全体 */
   .hb-game-layout {
     @apply h-screen bg-slate-900 text-slate-100 flex flex-col;
   }
@@ -130,6 +123,10 @@
 
   .hb-game-status {
     @apply flex items-center gap-2 text-xs;
+  }
+
+  .hb-pill {
+    @apply px-3 py-1 rounded-full bg-slate-800/80 border border-slate-600 text-xs font-semibold;
   }
 
   .hb-game-resources {
@@ -161,6 +158,8 @@
   /* 中央 3 カラム */
   .hb-game-main {
     @apply flex-1 w-full flex justify-center overflow-hidden;
+    /* ドミニオンっぽく中央 6xl 幅に固定 */
+    @apply max-w-6xl mx-auto;
   }
 
   .hb-column {
@@ -173,8 +172,8 @@
 
   .hb-center-area {
     @apply flex-1 flex flex-col gap-3 px-0 py-4;
-    /* ヘッダー＋手札＋フッターの分を差し引いて、中央カラム全体の高さを制限 */
-    max-height: calc(100vh - 260px);
+    /* ヘッダー + 手札 + フッター の分を余裕をもって差し引く */
+    max-height: calc(100vh - 320px);
     overflow: hidden;
   }
 
@@ -191,35 +190,38 @@
   }
 
   /* サプライエリア */
+  .hb-card {
+    @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
+  }
+
   .hb-supply-area {
     @apply flex-1;
     overflow-y: auto;
     padding-right: 4px;
   }
 
-  .hb-supply-area-grid {
-    @apply grid gap-3 grid-cols-2 md:grid-cols-3 xl:grid-cols-4;
+  /* サプライ：左に基本カード列、右に王国カードグリッド */
+  .hb-supply-board {
+    @apply w-full;
   }
 
-  /* サプライレイアウト: 左に基本カード列、中央に王国カードグリッド */
   .hb-supply-layout {
     @apply flex gap-3 items-start;
   }
 
   .hb-supply-basic-column {
     @apply flex flex-col gap-2 flex-shrink-0;
-    width: 180px; /* サプライ1列分の幅 */
+    width: 160px;
   }
 
   .hb-supply-kingdom-grid {
     @apply grid gap-3;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
-  /* プレイエリア */
+  /* プレイエリア（必要なときだけ見せる） */
   .hb-play-area {
     @apply mt-2;
-    /* サプライスクロールで押しつぶされないよう固定高さ扱いに */
     flex-shrink: 0;
   }
 
@@ -243,17 +245,24 @@
     @apply text-[11px] text-slate-400;
   }
 
-  /* BUY フェーズ用にプレイエリアをコンパクトにする */
   .hb-play-area-compact {
     max-height: 140px;
     overflow-y: auto;
   }
 
-  /* 手札エリア（自分のカード感を出す） */
+  .hb-play-summary {
+    @apply mt-2 text-[11px] text-slate-300 flex gap-4;
+  }
+
+  .hb-play-label {
+    @apply text-xs font-semibold mb-1;
+  }
+
+  /* 手札エリア（かなりコンパクトに） */
   .hb-hand-area {
     @apply border-t border-slate-800 bg-slate-950/95;
     flex-shrink: 0;
-    max-height: 260px; /* 手札エリア全体の上限高さ */
+    max-height: 210px;
   }
 
   .hb-hand-area-inner {
@@ -266,15 +275,16 @@
   }
 
   .hb-hand-row {
-    @apply flex justify-center gap-2 overflow-x-auto overflow-y-hidden pb-1;
-    height: 200px; /* カードの見せる高さ */
+    @apply flex justify-center gap-2 overflow-x-auto overflow-y-hidden;
+    height: 150px; /* ここで手札の見せる高さを抑える */
+    padding-bottom: 0.25rem;
   }
 
   .hb-hand-empty {
     @apply py-3 text-xs text-slate-300;
   }
 
-  /* フッター（操作ボタン） */
+  /* フッター（ボタン） */
   .hb-footer {
     @apply border-t border-slate-800 bg-slate-950/90;
     flex-shrink: 0;
@@ -317,7 +327,6 @@
     @apply text-[11px];
   }
 
-  /* シンプルなレスポンシブ（幅が狭いとき右パネルを下に） */
   @media (max-width: 900px) {
     .hb-game-main {
       @apply flex flex-col;
@@ -327,27 +336,26 @@
     }
   }
 
-  /* サプライカード（通常） */
+  /* サプライカード（標準 & コンパクト） */
   .hb-supply-card {
     @apply hb-card p-3;
   }
 
-  /* サプライカード（コンパクト表示） */
   .hb-supply-card-compact {
     @apply hb-card p-2;
-    max-width: 180px;
-    max-height: 260px;
+    max-width: 150px;
+    max-height: 220px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
   .hb-supply-card-compact .hb-card-view {
-    width: 180px;
+    width: 150px;
   }
 
   .hb-supply-card-compact .hb-card-frame {
-    padding: 6px 6px 8px;
+    padding: 4px 4px 6px;
   }
 
   .hb-supply-card-compact .hb-card-view-text {
@@ -355,7 +363,6 @@
     -webkit-line-clamp: 3;
   }
 
-  /* サプライカード選択時の軽いハイライト */
   .hb-supply-card-selected {
     @apply ring-2 ring-sky-400 shadow-sky-500/40;
   }

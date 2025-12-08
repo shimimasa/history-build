@@ -29,11 +29,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
   const isActionPhase = state.phase === "ACTION";
   const isBuyPhase = state.phase === "BUY";
 
-  // v2: アクション残り1/0・購入残り1/0はフェーズで管理
+  // v2: 残りアクション / 残り購入はフェーズ基準で簡易表示
   const actionsLeft = isPlayerTurn && isActionPhase ? 1 : 0;
   const buysLeft = isPlayerTurn && isBuyPhase ? 1 : 0;
 
-  // supply を配列に変換（タイプとコスト順に並べて分かりやすく表示）
+  // サプライを type → cost 順で並べる
   const supplyPiles = Object.values(state.supply).sort((a, b) => {
     const order: Record<Card["type"], number> = {
       resource: 0,
@@ -41,35 +41,31 @@ const GameScreen: React.FC<GameScreenProps> = ({
       event: 2,
       victory: 3
     };
-
-    const typeOrderDiff = order[a.card.type] - order[b.card.type];
-    if (typeOrderDiff !== 0) return typeOrderDiff;
-
-    // 同じタイプならコストの安い順
+    const diff = order[a.card.type] - order[b.card.type];
+    if (diff !== 0) return diff;
     return a.card.cost - b.card.cost;
   });
 
-  // 選択中の手札 / サプライ / ホバー中カード
+  // 選択中 / ホバー中
   const [selectedHandId, setSelectedHandId] = useState<string | null>(null);
   const [selectedSupplyId, setSelectedSupplyId] = useState<string | null>(null);
   const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
 
   const handleSelectHandCard = (cardId: string) => {
-    setSelectedHandId((prev) => (prev === cardId ? null : cardId));
+    setSelectedHandId(prev => (prev === cardId ? null : cardId));
   };
 
   const handlePlayFromHand = (cardId: string) => {
     onPlayActionCard(cardId);
-    setSelectedHandId((prev) => (prev === cardId ? null : prev));
+    setSelectedHandId(prev => (prev === cardId ? null : prev));
   };
 
   const handleSelectSupply = (cardId: string) => {
-    setSelectedSupplyId((prev) => (prev === cardId ? null : cardId));
+    setSelectedSupplyId(prev => (prev === cardId ? null : cardId));
   };
 
-  const getCardFromId = (cardId: string): Card | null => {
-    return state.supply[cardId]?.card ?? null;
-  };
+  const getCardFromId = (cardId: string): Card | null =>
+    state.supply[cardId]?.card ?? null;
 
   const canPlaySelected =
     isPlayerTurn && state.phase === "ACTION" && selectedHandId !== null;
@@ -90,12 +86,10 @@ const GameScreen: React.FC<GameScreenProps> = ({
 
   return (
     <div className="hb-game-layout">
-      {/* 1. 上部 HUD */}
+      {/* 1. ヘッダー */}
       <header className="hb-game-header">
         <div className="hb-game-header-top">
-          <div className="hb-game-title">
-            History Build - 戦国デッキ v1.5
-          </div>
+          <div className="hb-game-title">History Build - 戦国デッキ v1.5</div>
           <div className="hb-game-status">
             <span className="hb-pill">ターン {state.turnCount}</span>
             <span className="hb-pill">
@@ -125,13 +119,13 @@ const GameScreen: React.FC<GameScreenProps> = ({
 
       {/* 2. 中央 3 カラム */}
       <main className="hb-game-main">
-        {/* 左: プレイヤー / CPU 情報 */}
+        {/* 左：プレイヤー / CPU 情報 */}
         <aside className="hb-column hb-player-panel">
           <PlayerHud player={player} />
           <CpuHud cpu={cpu} gameEnded={state.gameEnded} state={state} />
         </aside>
 
-        {/* 中央: サプライ + プレイエリア */}
+        {/* 中央：サプライ + プレイエリア */}
         <section className="hb-column hb-center-area">
           <section className="hb-supply-area">
             <SupplyBoard
@@ -145,6 +139,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
             />
           </section>
 
+          {/* プレイエリアは ACTION / CLEANUP のときだけ表示 */}
           <section
             className={`hb-play-area ${
               state.phase === "BUY" ? "hb-play-area-compact" : ""
@@ -158,14 +153,14 @@ const GameScreen: React.FC<GameScreenProps> = ({
           </section>
         </section>
 
-        {/* 右: ログ / ガイド + カード簡易説明 */}
+        {/* 右：ログ + カード説明 */}
         <aside className="hb-column hb-log-panel">
           <GameLog phase={state.phase} />
           <CardHelpPanel hoveredCard={hoveredCard} />
         </aside>
       </main>
 
-      {/* 3. 手札エリア */}
+      {/* 3. 手札エリア（画面下） */}
       <section className="hb-hand-area">
         <HandArea
           player={player}
@@ -199,9 +194,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
 
 export default GameScreen;
 
-//------------------------------------------------------
-// 表示用ヘルパー
-//------------------------------------------------------
+/* ================= ヘルパー群 ================= */
 
 function renderTypeLabel(type: Card["type"]): string {
   switch (type) {
@@ -252,11 +245,7 @@ function getPhaseButtonLabel(phase: GameState["phase"]): string {
   }
 }
 
-/**
- * このゲームで登場した「人物」「出来事」カード名をユニークに集める。
- * - v2 GameState（deck/hand/discard/played は CardId 配列）を前提とし、
- *   state.supply から Card 定義を引き当てる。
- */
+/** このゲームで登場した「人物」「出来事」カード名をユニークに集める */
 function collectHistoryCardNames(state: GameState): string[] {
   const names = new Set<string>();
 
@@ -267,7 +256,6 @@ function collectHistoryCardNames(state: GameState): string[] {
       ...p.discard,
       ...p.played
     ];
-
     for (const id of allIds) {
       const card = state.supply[id]?.card;
       if (!card) continue;
@@ -283,7 +271,7 @@ function collectHistoryCardNames(state: GameState): string[] {
   return Array.from(names).sort();
 }
 
-// GameScreen.tsx の下部などに追加
+/* ==== 小コンポーネント ==== */
 
 interface ResourceBadgeProps {
   label: string;
@@ -370,7 +358,7 @@ const CpuHud: React.FC<CpuHudProps> = ({ cpu, gameEnded, state }) => {
                   このゲームで出てきた 人物・出来事
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {historyNames.map((name) => (
+                  {historyNames.map(name => (
                     <span
                       key={name}
                       className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/60 text-[11px]"
@@ -420,10 +408,10 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
 
   // 基本カード（資源・国力）と王国カード（人物・出来事）に分割
   const basicPiles = supplyPiles.filter(
-    (p) => p.card.type === "resource" || p.card.type === "victory"
+    p => p.card.type === "resource" || p.card.type === "victory"
   );
   const kingdomPiles = supplyPiles.filter(
-    (p) => p.card.type === "person" || p.card.type === "event"
+    p => p.card.type === "person" || p.card.type === "event"
   );
 
   const renderPile = (pile: { card: Card; remaining: number }) => (
@@ -495,9 +483,8 @@ const PlayArea: React.FC<PlayAreaProps> = ({ state, getCardFromId }) => {
             {playedCards.length === 0 ? (
               <span className="hb-play-empty">（まだカードは出ていません）</span>
             ) : (
-              playedCards.map((card) => (
+              playedCards.map(card => (
                 <div key={card.id} className="hb-play-card">
-                  {/* 小さめ表示: CardView に variant="hand" などで流用 */}
                   <CardView card={card} variant="hand" />
                 </div>
               ))
@@ -550,9 +537,7 @@ const HandArea: React.FC<HandAreaProps> = ({
     <div className="hb-hand-area-inner">
       <div className="hb-hand-header">
         <h2 className="text-sm font-semibold">手札</h2>
-        <span className="text-[11px] text-slate-300">
-          {helperText}
-        </span>
+        <span className="text-[11px] text-slate-300">{helperText}</span>
       </div>
 
       {player.hand.length === 0 ? (
@@ -561,9 +546,11 @@ const HandArea: React.FC<HandAreaProps> = ({
         </div>
       ) : (
         <div className="hb-hand-row">
-          {player.hand.map((cardId) => {
+          {player.hand.map(cardId => {
             const card = getCardFromId(cardId);
             if (!card) return null;
+
+            // ACTION フェーズ以外や、人 ･ 出来事以外はプレイ不可
             const disabled =
               !isPlayerTurn ||
               phase !== "ACTION" ||
@@ -600,7 +587,8 @@ interface GameLogProps {
 const GameLog: React.FC<GameLogProps> = ({ phase }) => (
   <div className="hb-card hb-log">
     <div className="text-xs text-slate-300 mb-2">
-      現在のフェーズ: <span className="font-semibold">{renderPhaseLabel(phase)}</span>
+      現在のフェーズ:{" "}
+      <span className="font-semibold">{renderPhaseLabel(phase)}</span>
     </div>
     <div className="hb-log-section">
       <div className="font-semibold mb-1 text-sm">このターンで できること</div>
@@ -630,8 +618,8 @@ const CardHelpPanel: React.FC<CardHelpPanelProps> = ({ hoveredCard }) => (
       <div className="text-[11px] space-y-1">
         <div className="font-bold text-slate-50">{hoveredCard.name}</div>
         <div className="text-slate-300">
-          種別: {renderTypeLabel(hoveredCard.type)} / コスト: 米 {hoveredCard.cost} / 知識{" "}
-          {hoveredCard.knowledgeRequired}
+          種別: {renderTypeLabel(hoveredCard.type)} / コスト: 米{" "}
+          {hoveredCard.cost} / 知識 {hoveredCard.knowledgeRequired}
         </div>
         {hoveredCard.text && (
           <p className="mt-1 whitespace-pre-wrap">{hoveredCard.text}</p>
@@ -673,10 +661,9 @@ const GameControls: React.FC<GameControlsProps> = ({
       <div className="hb-footer-buttons">
         <button
           type="button"
-          className={`
-            hb-footer-button
-            ${isActionPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"}
-          `}
+          className={`hb-footer-button ${
+            isActionPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"
+          }`}
           onClick={
             canPlaySelected && onPlaySelected ? onPlaySelected : undefined
           }
@@ -687,10 +674,9 @@ const GameControls: React.FC<GameControlsProps> = ({
 
         <button
           type="button"
-          className={`
-            hb-footer-button
-            ${isBuyPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"}
-          `}
+          className={`hb-footer-button ${
+            isBuyPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"
+          }`}
           onClick={canBuySelected && onBuySelected ? onBuySelected : undefined}
           disabled={!canBuySelected}
         >
@@ -699,10 +685,11 @@ const GameControls: React.FC<GameControlsProps> = ({
 
         <button
           type="button"
-          className={`
-            hb-footer-button
-            ${!isCleanupPhase ? "hb-footer-button-secondary" : "hb-footer-button-primary"}
-          `}
+          className={`hb-footer-button ${
+            !isCleanupPhase
+              ? "hb-footer-button-secondary"
+              : "hb-footer-button-primary"
+          }`}
           onClick={canProceed ? onProceedPhase : undefined}
           disabled={!canProceed}
         >
@@ -711,10 +698,9 @@ const GameControls: React.FC<GameControlsProps> = ({
 
         <button
           type="button"
-          className={`
-            hb-footer-button
-            ${isCleanupPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"}
-          `}
+          className={`hb-footer-button ${
+            isCleanupPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"
+          }`}
           onClick={canProceed && isCleanupPhase ? onProceedPhase : undefined}
           disabled={!canProceed || !isCleanupPhase}
         >
