@@ -47,7 +47,7 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
     <div className={rootClass}>
       <CardView
         card={card}
-        variant="supply"
+        variant="supplyMini"
         // カード本体クリックで詳細を開く
         onClick={onShowDetail}
         // 購入可能なときだけハイライト

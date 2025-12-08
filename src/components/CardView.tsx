@@ -3,7 +3,7 @@ import type { Card } from "../game/gameState";
 import "../styles/CardView.css";
 import { getCardImageUrl } from "../game/cardImages";
 
-export type CardViewVariant = "supply" | "hand" | "dex" | "modal";
+export type CardViewVariant = "supply" | "hand" | "dex" | "modal" | "supplyMini";
 
 interface CardViewProps {
   card: Card;
@@ -61,8 +61,12 @@ export const CardView: React.FC<CardViewProps> = ({
     onClick();
   };
 
+  const isSupply = variant === "supply" || variant === "supplyMini";
+  const isSupplyMini = variant === "supplyMini";
+
   const className = [
     "hb-card-view",
+    isSupplyMini ? "hb-card-view--supply-mini" : "",
     highlight ? "hb-card-view--highlight" : "",
     disabled ? "hb-card-view--disabled" : ""
   ]
@@ -70,8 +74,6 @@ export const CardView: React.FC<CardViewProps> = ({
     .trim();
 
   const resolvedImageUrl = getCardImageUrl(card);
-
-  const isSupply = variant === "supply";
   const showRemainingBadge =
     isSupply && showRemaining && typeof remainingCount === "number";
 
