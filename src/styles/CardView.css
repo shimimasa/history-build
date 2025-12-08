@@ -10,7 +10,7 @@
 
 /* カード全体のボタン枠 */
 .hb-card-view {
-  width: 220px;            /* サプライ／手札／図鑑共通の横幅 */
+  width: 160px;            /* サプライ／手札／図鑑共通の横幅（コンパクト化） */
   max-width: 100%;
   cursor: pointer;
   border: none;
@@ -78,13 +78,13 @@
   padding-bottom: 4px;    /* 下に少しだけ余白 */
 }
 
-/* 実際の画像コンテナ */
+/* 実際の画像コンテナ（横長のうすい帯） */
 .hb-card-view-image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3;    /* イラスト部分だけ 2:3 で固定 */
+  aspect-ratio: 16 / 9;    /* 縦を低くした比率に変更 */
   height: auto;
-  border-radius: 14px;
+  border-radius: 10px;
   overflow: hidden;        /* 画像が枠からはみ出さないように */
   background: #020617;     /* 画像がない場合のベースカラー */
 }
@@ -151,7 +151,7 @@
 .hb-card-body,
 .hb-card-view-body {
   flex: 1 1 auto;
-  padding-top: 4px;
+  padding-top: 6px; /* 余白を少しだけ詰める */
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -166,7 +166,7 @@
 }
 
 .hb-card-view-name {
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* タイトルを少し小さく */
   font-weight: 700;
   color: #e5e7eb;
 }
@@ -192,12 +192,12 @@
   position: relative;
   margin-top: 2px;
   padding-top: 3px;
-  font-size: 0.75rem;
+  font-size: 0.75rem; /* 本文も少しだけコンパクトに */
   line-height: 1.35;
   color: #e5e7eb;
   border-top: 1px solid rgba(51, 65, 85, 0.8); /* 上に薄い仕切り線 */
   display: -webkit-box;
-  -webkit-line-clamp: 4;         /* 最大4行まで表示 */
+  -webkit-line-clamp: 4;         /* 最大4行まで表示（現状維持） */
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
