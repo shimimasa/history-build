@@ -67,7 +67,27 @@
   .hb-supply-grid {
     @apply grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
   }
+/* --- サプライエリア共通 --- */
+.hb-supply-area {
+  @apply flex-1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
 
+/* デフォルト（狭い画面）では 2 列 */
+.hb-supply-area-grid,
+.hb-supply-grid {
+  @apply grid gap-3;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* PC 幅では 5 列固定 → 5×2 で10枚表示しやすくする */
+@screen md {
+  .hb-supply-area-grid,
+  .hb-supply-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
   /* 手札カード（旧レイアウト用） */
   .hb-hand-bar {
     @apply w-full border-t border-slate-800 bg-slate-950/95;
@@ -194,11 +214,7 @@
     @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
   }
 
-  .hb-supply-area {
-    @apply flex-1;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
+  
 
   /* サプライ：左に基本カード列、右に王国カードグリッド */
   .hb-supply-board {
