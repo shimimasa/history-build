@@ -49,10 +49,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
     return a.card.cost - b.card.cost;
   });
 
-  // 選択中の手札 / サプライ / ホバー中カード
+  // 選択中の手札 / サプライ / ホバー中カード / ガイド開閉
   const [selectedHandId, setSelectedHandId] = useState<string | null>(null);
   const [selectedSupplyId, setSelectedSupplyId] = useState<string | null>(null);
   const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
+  const [guideOpen, setGuideOpen] = useState<boolean>(true);
 
   const handleSelectHandCard = (cardId: string) => {
     setSelectedHandId((prev) => (prev === cardId ? null : cardId));
@@ -87,6 +88,12 @@ const GameScreen: React.FC<GameScreenProps> = ({
     onBuyCard(selectedSupplyId);
     setSelectedSupplyId(null);
   };
+
+  const shouldShowPlayArea =
+    player.played.length > 0 ||
+    player.discard.length > 0 ||
+    state.phase === "ACTION" ||
+    state.phase === "CLEANUP";
 
   return (
     <div className="hb-game-layout">
@@ -145,18 +152,24 @@ const GameScreen: React.FC<GameScreenProps> = ({
             />
           </section>
 
-          <section
-            className={`hb-play-area ${
-              state.phase === "BUY" ? "hb-play-area-compact" : ""
-            }`}
-          >
-            <PlayArea state={state} getCardFromId={getCardFromId} />
-          </section>
+          {shouldShowPlayArea && (
+            <section
+              className={`hb-play-area ${
+                state.phase === "BUY" ? "hb-play-area-compact" : ""
+              }`}
+            >
+              <PlayArea state={state} getCardFromId={getCardFromId} />
+            </section>
+          )}
         </section>
 
         {/* 右: ログ / ガイド + カード簡易説明 */}
         <aside className="hb-column hb-log-panel">
-          <GameLog phase={state.phase} />
+          <GameLog
+            phase={state.phase}
+            guideOpen={guideOpen}
+            onToggleGuide={() => setGuideOpen((prev) => !prev)}
+          />
           <CardHelpPanel hoveredCard={hoveredCard} />
         </aside>
       </main>
@@ -384,6 +397,22 @@ const CpuHud: React.FC<CpuHudProps> = ({ cpu, gameEnded, state }) => {
   );
 };
 
+type SupplyGroup = "resource" | "victory" | "action" | "other";
+
+function getSupplyGroup(card: Card): SupplyGroup {
+  switch (card.type) {
+    case "resource":
+      return "resource";
+    case "victory":
+      return "victory";
+    case "person":
+    case "event":
+      return "action";
+    default:
+      return "other";
+  }
+}
+
 interface SupplyBoardProps {
   supplyPiles: { card: Card; remaining: number }[];
   state: GameState;
@@ -414,6 +443,58 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
     ? "text-[11px] text-slate-300"
     : "text-[11px] text-slate-500";
 
+  const actionPiles: { card: Card; remaining: number }[] = [];
+  const resourcePiles: { card: Card; remaining: number }[] = [];
+  const victoryPiles: { card: Card; remaining: number }[] = [];
+  const otherPiles: { card: Card; remaining: number }[] = [];
+
+  for (const pile of supplyPiles) {
+    const group = getSupplyGroup(pile.card);
+    switch (group) {
+      case "action":
+        actionPiles.push(pile);
+        break;
+      case "resource":
+        resourcePiles.push(pile);
+        break;
+      case "victory":
+        victoryPiles.push(pile);
+        break;
+      case "other":
+      default:
+        otherPiles.push(pile);
+        break;
+    }
+  }
+
+  const hasBasicRow = resourcePiles.length > 0 || victoryPiles.length > 0;
+  const showBasicRow = hasBasicRow && state.phase !== "ACTION";
+
+  const renderPile = (pile: { card: Card; remaining: number }) => (
+    <div
+      key={pile.card.id}
+      onClick={() => onSelectSupply(pile.card.id)}
+      onMouseEnter={() => onHoverCard?.(pile.card)}
+      onMouseLeave={() => onHoverCard?.(null)}
+    >
+      <SupplyCardPile
+        card={pile.card}
+        remaining={pile.remaining}
+        canBuy={canBuyCard(player, pile.card)}
+        disabled={
+          !isPlayerTurn ||
+          state.gameEnded ||
+          pile.remaining <= 0 ||
+          state.phase !== "BUY"
+        }
+        onBuy={() => onBuyCard(pile.card.id)}
+        onShowDetail={() => onShowCardDetail(pile.card)}
+        compact
+        selected={selectedSupplyId === pile.card.id}
+      />
+    </div>
+  );
+
   return (
     <div className="hb-card hb-supply-board">
       <div className="flex items-center justify-between mb-2">
@@ -421,31 +502,27 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
         <span className={hintClass}>{hintText}</span>
       </div>
 
-      <div className="hb-supply-area-grid">
-        {supplyPiles.map((pile) => (
-          <div
-            key={pile.card.id}
-            onClick={() => onSelectSupply(pile.card.id)}
-            onMouseEnter={() => onHoverCard?.(pile.card)}
-            onMouseLeave={() => onHoverCard?.(null)}
-          >
-            <SupplyCardPile
-              card={pile.card}
-              remaining={pile.remaining}
-              canBuy={canBuyCard(player, pile.card)}
-              disabled={
-                !isPlayerTurn ||
-                state.gameEnded ||
-                pile.remaining <= 0 ||
-                state.phase !== "BUY"
-              }
-              onBuy={() => onBuyCard(pile.card.id)}
-              onShowDetail={() => onShowCardDetail(pile.card)}
-              compact
-              selected={selectedSupplyId === pile.card.id}
-            />
+      <div className="hb-supply-rows">
+        {actionPiles.length > 0 && (
+          <div className="hb-supply-row hb-supply-row-main">
+            {actionPiles.map(renderPile)}
           </div>
-        ))}
+        )}
+
+        {showBasicRow && (
+          <div className="hb-supply-row hb-supply-row-basic">
+            {resourcePiles.map(renderPile)}
+            {victoryPiles.map(renderPile)}
+          </div>
+        )}
+
+        {state.phase !== "ACTION" &&
+          state.phase !== "BUY" &&
+          otherPiles.length > 0 && (
+            <div className="hb-supply-row hb-supply-row-other">
+              {otherPiles.map(renderPile)}
+            </div>
+          )}
       </div>
     </div>
   );
@@ -576,22 +653,36 @@ const HandArea: React.FC<HandAreaProps> = ({
 
 interface GameLogProps {
   phase: GameState["phase"];
+  guideOpen: boolean;
+  onToggleGuide: () => void;
 }
 
-const GameLog: React.FC<GameLogProps> = ({ phase }) => (
+const GameLog: React.FC<GameLogProps> = ({ phase, guideOpen, onToggleGuide }) => (
   <div className="hb-card hb-log">
     <div className="text-xs text-slate-300 mb-2">
-      現在のフェーズ: <span className="font-semibold">{renderPhaseLabel(phase)}</span>
+      現在のフェーズ:{" "}
+      <span className="font-semibold">{renderPhaseLabel(phase)}</span>
     </div>
     <div className="hb-log-section">
-      <div className="font-semibold mb-1 text-sm">このターンで できること</div>
-      <ol className="list-decimal list-inside space-y-0.5 text-[11px]">
-        <li>DRAW：手札が5枚になるまで引く</li>
-        <li>RESOURCE：資源カードをぜんぶ出して、米と知識をふやす</li>
-        <li>ACTION：手札から 人物 / 出来事カードを1まい えらんで つかう</li>
-        <li>BUY：米と知識をつかって、場のカードを1まい「買う」</li>
-        <li>CLEANUP：カードを片づけて、次のプレイヤーへ手番を回す</li>
-      </ol>
+      <div className="hb-log-section-header">
+        <span className="font-semibold text-sm">このターンで できること</span>
+        <button
+          type="button"
+          className="hb-log-toggle-button"
+          onClick={onToggleGuide}
+        >
+          {guideOpen ? "▲" : "▼"}
+        </button>
+      </div>
+      {guideOpen && (
+        <ol className="list-decimal list-inside space-y-0.5 text-[11px]">
+          <li>DRAW：手札が5枚になるまで引く</li>
+          <li>RESOURCE：資源カードをぜんぶ出して、米と知識をふやす</li>
+          <li>ACTION：手札から 人物 / 出来事カードを1まい えらんで つかう</li>
+          <li>BUY：米と知識をつかって、場のカードを1まい「買う」</li>
+          <li>CLEANUP：カードを片づけて、次のプレイヤーへ手番を回す</li>
+        </ol>
+      )}
     </div>
   </div>
 );
