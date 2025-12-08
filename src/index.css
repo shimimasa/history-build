@@ -175,71 +175,73 @@
   .hb-phase-badge-buy { @apply bg-emerald-900 border-emerald-500 text-emerald-100; }
   .hb-phase-badge-cleanup { @apply bg-slate-800 border-slate-500 text-slate-100; }
 
-  /* 中央 3 カラム */
-  .hb-game-main {
-    @apply flex-1 w-full flex justify-center overflow-hidden max-w-6xl mx-auto;
-  }
-
-  .hb-column {
-    @apply h-full;
-  }
-
-  .hb-player-panel {
-    @apply flex-shrink-0 space-y-2 px-2 py-3;
-    width: 180px;
-  }
-
-  .hb-center-area {
-    @apply flex-1 flex flex-col gap-2 px-0 py-3;
-    /* ヘッダー + 手札 + フッター の分を余裕をもって差し引く */
-    max-height: calc(100vh - 260px);
-    overflow: hidden;
-  }
-
-  .hb-log-panel {
-    @apply w-64 flex-shrink-0 space-y-3 px-3 py-3;
-  }
-
-  @screen md {
+    /* 中央 3 カラム */
     .hb-game-main {
-      @apply grid;
-      grid-template-columns: 180px minmax(0, 1fr) 260px;
-      column-gap: 12px;
+      @apply flex-1 w-full flex justify-center overflow-hidden;
+      /* ドミニオンっぽく中央 6xl 幅に固定 */
+      @apply max-w-6xl mx-auto;
     }
-  }
+  
+    .hb-column {
+      @apply h-full;
+    }
+  
+    .hb-player-panel {
+      @apply w-56 flex-shrink-0 space-y-3 px-4 py-4;
+    }
+  
+    .hb-center-area {
+      @apply flex-1 flex flex-col gap-3 px-0 py-3;
+      /* ヘッダー + 手札 + フッター の分を余裕をもって差し引く */
+      max-height: calc(100vh - 260px);
+      overflow: hidden;
+    }
+  
+    .hb-log-panel {
+      @apply w-64 flex-shrink-0 space-y-3 px-4 py-4;
+    }
+  
+    @screen md {
+      .hb-game-main {
+        @apply grid;
+        grid-template-columns: 220px minmax(0, 1fr) 260px;
+        column-gap: 16px;
+      }
+    }
 
-  /* サプライエリア */
-  .hb-card {
-    @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
-  }
-
-  /* サプライ：左に基本カード列、右に王国カードグリッド */
-  .hb-supply-board {
-    @apply w-full;
-  }
-
-  .hb-supply-layout {
-    @apply flex gap-3 items-start;
-  }
-
-  /* 左側：基本カード（資源・国力）縦並び */
-  .hb-supply-basic-column {
-    @apply flex flex-col gap-2 flex-shrink-0;
-    width: 140px;
-  }
-
-  /* 右側：王国カード（人物・出来事）のグリッド */
-  .hb-supply-kingdom-grid {
-    @apply grid gap-2;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  /* PC 幅では 5 列固定 → 5×2 で 10 枚表示しやすくする */
-  @screen md {
+    /* サプライエリア */
+    .hb-card {
+      @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
+    }
+  
+    /* サプライ：左に基本カード列、右に王国カードグリッド */
+    .hb-supply-board {
+      @apply w-full;
+    }
+  
+    .hb-supply-layout {
+      @apply flex gap-3 items-start;
+    }
+  
+    /* 左側：基本カード（資源・国力）縦並び */
+    .hb-supply-basic-column {
+      @apply flex flex-col gap-2 flex-shrink-0;
+      width: 140px; /* サプライ1列分の幅 */
+    }
+  
+    /* 右側：王国カード（人物・出来事）のグリッド */
     .hb-supply-kingdom-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      @apply grid gap-2;
+      /* スマホ〜タブレットでは 2 列 */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
+  
+    /* PC 幅では 5 列固定 → 5×2 で 10 枚表示しやすくする */
+    @screen md {
+      .hb-supply-kingdom-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
 
   /* プレイエリア（必要なときだけ見せる） */
   .hb-play-area {
@@ -280,28 +282,28 @@
     @apply text-xs font-semibold mb-1;
   }
 
-  /* 手札エリア（かなりコンパクトに） */
-  .hb-hand-area {
-    @apply border-t border-slate-800 bg-slate-950/95;
-    flex-shrink: 0;
-    max-height: 170px;
-    position: relative; /* ★追加：フェーズガイドを重ねるため */
-  }
-
-  .hb-hand-area-inner {
-    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
-    height: 100%;
-  }
-
-  .hb-hand-header {
-    @apply flex items-center justify-between border-b border-slate-800 pb-1 mb-2;
-  }
-
-  .hb-hand-row {
-    @apply flex justify-center gap-2 overflow-x-auto overflow-y-hidden;
-    height: 120px; /* ここで手札の見せる高さを抑える */
-    padding-bottom: 0.25rem;
-  }
+    /* 手札エリア（かなりコンパクトに） */
+    .hb-hand-area {
+      @apply border-t border-slate-800 bg-slate-950/95;
+      flex-shrink: 0;
+      max-height: 170px;
+      position: relative; /* ★追加：フェーズガイドを重ねるため */
+    }
+  
+    .hb-hand-area-inner {
+      @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
+      height: 100%;
+    }
+  
+    .hb-hand-header {
+      @apply flex items-center justify-between border-b border-slate-800 pb-1 mb-2;
+    }
+  
+    .hb-hand-row {
+      @apply flex justify-center gap-2 overflow-x-auto overflow-y-hidden;
+      height: 120px; /* ここで手札の見せる高さを抑える */
+      padding-bottom: 0.25rem;
+    }
 
   .hb-hand-empty {
     @apply py-3 text-xs text-slate-300;
@@ -341,31 +343,64 @@
     @apply opacity-50 cursor-not-allowed;
   }
 
-  /* 右カラム: ログ / ヘルプ */
-  .hb-log {
-    @apply text-[11px] space-y-2;
-  }
-
-  .hb-help-panel {
-    @apply text-[11px];
-  }
-
-    /* 手札エリア左上に重ねるフェーズガイド */
-    .hb-phase-guide {
-      @apply absolute;
-      left: 1rem;      /* 手札エリア左から少し内側 */
-      top: -4.5rem;    /* 手札エリアの少し上にかぶせる */
-      width: 260px;
-      pointer-events: none; /* クリックは手札側を優先 */
+    /* 右カラム: ログ / ヘルプ */
+    .hb-log {
+      @apply text-[11px] space-y-2;
     }
   
-    .hb-phase-guide .hb-card {
-      @apply p-2;
+    .hb-help-panel {
+      @apply text-[11px];
     }
   
-    .hb-phase-guide .hb-log {
-      @apply text-[10px];
+      /* 手札エリア左上に重ねるフェーズガイド */
+      .hb-phase-guide {
+        @apply absolute;
+        left: 1rem;      /* 手札エリア左から少し内側 */
+        top: -4.5rem;    /* 手札エリアの少し上にかぶせる */
+        width: 260px;
+        pointer-events: none; /* クリックは手札側を優先 */
+      }
+    
+      .hb-phase-guide .hb-card {
+        @apply p-2;
+      }
+    
+      .hb-phase-guide .hb-log {
+        @apply text-[10px];
+      }
+    
+  
+    /* サプライカード（標準 & コンパクト） */
+    .hb-supply-card {
+      @apply hb-card p-3;
     }
+  
+    .hb-supply-card-compact {
+      @apply hb-card p-2;
+      max-width: 130px;
+      max-height: 190px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  
+    .hb-supply-card-compact .hb-card-view {
+      width: 130px;
+    }
+  
+    .hb-supply-card-compact .hb-card-frame {
+      padding: 4px 4px 6px;
+    }
+  
+    .hb-supply-card-compact .hb-card-view-text {
+      font-size: 0.7rem;
+      -webkit-line-clamp: 3;
+    }
+  
+    .hb-supply-card-selected {
+      @apply ring-2 ring-sky-400 shadow-sky-500/40;
+    }
+  }
   
 
   /* 右側のカード説明パネル（ドミニオン風の位置） */
@@ -397,20 +432,41 @@
     overflow: hidden;
   }
 
-  .hb-supply-card-compact .hb-card-view {
-    width: 130px;
-  }
+  /* =========================================================
+ * サプライカード用コンパクトレイアウト
+ * - 手札やモーダルには影響させたくないので .hb-supply-card-compact 配下だけ調整
+ * =======================================================*/
 
-  .hb-supply-card-compact .hb-card-frame {
-    padding: 4px 4px 6px;
-  }
+/* サプライカードだけ、さらに一段小さく */
+.hb-supply-card-compact .hb-card-view {
+  width: 130px;
+}
 
-  .hb-supply-card-compact .hb-card-view-text {
-    font-size: 0.7rem;
-    -webkit-line-clamp: 3;
-  }
+.hb-supply-card-compact .hb-card-frame {
+  padding: 4px 4px 6px;
+  border-radius: 10px;
+}
+
+.hb-supply-card-compact .hb-card-view-image-wrapper {
+  aspect-ratio: auto;
+  height: 80px;           /* かなり低めの帯にする */
+  max-height: 80px;
+}
+
+.hb-supply-card-compact .hb-card-view-name {
+  font-size: 0.78rem;
+}
+
+.hb-supply-card-compact .hb-card-view-meta {
+  font-size: 0.68rem;
+}
+
+.hb-supply-card-compact .hb-card-view-text {
+  font-size: 0.7rem;
+  -webkit-line-clamp: 3;
+}
 
   .hb-supply-card-selected {
     @apply ring-2 ring-sky-400 shadow-sky-500/40;
   }
-}
+

@@ -117,8 +117,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
         </div>
       </header>
 
-      {/* 2. 中央 3 カラム */}
-      <main className="hb-game-main">
+            {/* 2. 中央 3 カラム */}
+            <main className="hb-game-main">
         {/* 左：プレイヤー / CPU 情報 */}
         <aside className="hb-column hb-player-panel">
           <PlayerHud player={player} />
