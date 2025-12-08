@@ -10,7 +10,7 @@
 
 /* カード全体のボタン枠 */
 .hb-card-view {
-  width: 150px;            /* サプライ／手札／図鑑共通の横幅（コンパクト化） */
+  width: 220px;            /* サプライ／手札／図鑑共通の横幅 */
   max-width: 100%;
   cursor: pointer;
   border: none;
@@ -45,12 +45,6 @@
   box-shadow: none;
 }
 
-/* 手札用：さらに小さい画像高さ（60〜80px） */
-.hb-hand-card .hb-card-view-image-wrapper {
-  height: 70px;
-  max-height: 70px;
-}
-
 /* 外側のコンテナ（クリック領域＋わずかな影） */
 .hb-card-view-inner {
   position: relative;
@@ -80,7 +74,7 @@
 /* カード内のイラスト領域（カード上部） */
 .hb-card-art-wrapper {
   position: relative;
-  flex: 0 0 auto;
+  flex: 0 0 auto;         /* 高さは中の画像の比率に任せる */
   padding-bottom: 4px;    /* 下に少しだけ余白 */
 }
 
@@ -88,9 +82,9 @@
 .hb-card-view-image-wrapper {
   position: relative;
   width: 100%;
-  height: 90px;           /* イラスト部分の高さを強制的に小さく（Dominion 風） */
-  max-height: 90px;
-  border-radius: 8px;
+  aspect-ratio: 2 / 3;    /* イラスト部分だけ 2:3 で固定 */
+  height: auto;
+  border-radius: 14px;
   overflow: hidden;        /* 画像が枠からはみ出さないように */
   background: #020617;     /* 画像がない場合のベースカラー */
 }
@@ -193,7 +187,7 @@
   color: #e5e7eb;
 }
 
-/* 効果テキスト概要（コンパクト表示。最大3行＋薄いフェード） */
+/* 効果テキスト概要（4行＋薄いフェード） */
 .hb-card-view-text {
   position: relative;
   margin-top: 2px;
@@ -203,7 +197,7 @@
   color: #e5e7eb;
   border-top: 1px solid rgba(51, 65, 85, 0.8); /* 上に薄い仕切り線 */
   display: -webkit-box;
-  -webkit-line-clamp: 3;         /* 最大3行まで表示 */
+  -webkit-line-clamp: 4;         /* 最大4行まで表示 */
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
@@ -325,21 +319,6 @@
 /* モーダル内では CardView を少し大きめに */
 .hb-card-modal-card-wrapper .hb-card-view {
   width: 200px;
-}
-
-/* サプライ専用：さらに小さいミニレイアウト（Dominion 風） */
-.hb-card-view--supply-mini {
-  width: 140px;
-}
-
-.hb-card-view--supply-mini .hb-card-view-image-wrapper {
-  height: 80px;
-  max-height: 80px;
-}
-
-.hb-card-view--supply-mini .hb-card-view-text {
-  font-size: 0.7rem;
-  -webkit-line-clamp: 2; /* 2行までに圧縮 */
 }
 
 .hb-card-modal-meta {

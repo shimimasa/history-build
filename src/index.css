@@ -197,20 +197,8 @@
     padding-right: 4px;
   }
 
-  .hb-supply-rows {
-    @apply flex flex-col gap-3;
-  }
-
-  .hb-supply-row {
-    @apply w-full;
-  }
-
-  .hb-supply-row-main {
+  .hb-supply-area-grid {
     @apply grid gap-3 grid-cols-2 md:grid-cols-3 xl:grid-cols-4;
-  }
-
-  .hb-supply-row-basic {
-    @apply mt-2 grid gap-2 grid-cols-2 md:grid-cols-3;
   }
 
   /* プレイエリア */
@@ -306,14 +294,6 @@
     @apply text-[11px] space-y-2;
   }
 
-  .hb-log-section-header {
-    @apply flex items-center justify-between mb-1;
-  }
-
-  .hb-log-toggle-button {
-    @apply text-[10px] px-2 py-0.5 rounded-full border border-slate-600 text-slate-300 hover:bg-slate-800;
-  }
-
   .hb-help-panel {
     @apply text-[11px];
   }
@@ -336,15 +316,15 @@
   /* サプライカード（コンパクト表示） */
   .hb-supply-card-compact {
     @apply hb-card p-2;
-    max-width: 150px;
-    max-height: 230px;
+    max-width: 180px;
+    max-height: 260px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
   .hb-supply-card-compact .hb-card-view {
-    width: 150px;
+    width: 180px;
   }
 
   .hb-supply-card-compact .hb-card-frame {
