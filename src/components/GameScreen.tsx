@@ -153,12 +153,18 @@ const GameScreen: React.FC<GameScreenProps> = ({
           </section>
         </section>
 
-        {/* 右：ログ + カード説明 */}
+        {/* 右：カード説明パネル */}
         <aside className="hb-column hb-log-panel">
-          <GameLog phase={state.phase} />
-          <CardHelpPanel hoveredCard={hoveredCard} />
+          <div className="hb-card-detail-panel">
+            <CardHelpPanel hoveredCard={hoveredCard} />
+          </div>
         </aside>
       </main>
+
+      {/* フェーズガイド（このターンで できること）を手札の少し上に配置 */}
+      <div className="hb-phase-guide">
+        <GameLog phase={state.phase} />
+      </div>
 
       {/* 3. 手札エリア（画面下） */}
       <section className="hb-hand-area">

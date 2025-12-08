@@ -177,9 +177,7 @@
 
   /* 中央 3 カラム */
   .hb-game-main {
-    @apply flex-1 w-full flex justify-center overflow-hidden;
-    /* ドミニオンっぽく中央 6xl 幅に固定 */
-    @apply max-w-6xl mx-auto;
+    @apply flex-1 w-full flex justify-center overflow-hidden max-w-6xl mx-auto;
   }
 
   .hb-column {
@@ -187,25 +185,26 @@
   }
 
   .hb-player-panel {
-    @apply w-56 flex-shrink-0 space-y-3 px-4 py-4;
+    @apply flex-shrink-0 space-y-2 px-2 py-3;
+    width: 180px;
   }
 
   .hb-center-area {
-    @apply flex-1 flex flex-col gap-3 px-0 py-3;
+    @apply flex-1 flex flex-col gap-2 px-0 py-3;
     /* ヘッダー + 手札 + フッター の分を余裕をもって差し引く */
     max-height: calc(100vh - 260px);
     overflow: hidden;
   }
 
   .hb-log-panel {
-    @apply w-64 flex-shrink-0 space-y-3 px-4 py-4;
+    @apply w-64 flex-shrink-0 space-y-3 px-3 py-3;
   }
 
   @screen md {
     .hb-game-main {
       @apply grid;
-      grid-template-columns: 220px minmax(0, 1fr) 260px;
-      column-gap: 16px;
+      grid-template-columns: 180px minmax(0, 1fr) 260px;
+      column-gap: 12px;
     }
   }
 
@@ -214,37 +213,33 @@
     @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
   }
 
-    /* サプライ：左に基本カード列、右に王国カードグリッド */
-    .hb-supply-board {
-      @apply w-full;
-    }
-  
-    .hb-supply-layout {
-      @apply flex gap-3 items-start;
-    }
-  
-    /* 左側：基本カード（資源・国力）縦並び */
-    .hb-supply-basic-column {
-      @apply flex flex-col gap-2 flex-shrink-0;
-      width: 140px; /* 少し細くして右側のスペースを広くする */
-    }
-  
-    /* 右側：王国カード（人物・出来事）のグリッド */
-    .hb-supply-kingdom-grid {
-      @apply grid gap-2;
-      /* スマホ〜タブレットでは 2 列 */
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  
-    /* PC 幅では 5 列固定 → 5×2 で 10 枚表示しやすくする */
-    @screen md {
-      .hb-supply-kingdom-grid {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
-    }
-  
+  /* サプライ：左に基本カード列、右に王国カードグリッド */
+  .hb-supply-board {
+    @apply w-full;
+  }
 
-  
+  .hb-supply-layout {
+    @apply flex gap-3 items-start;
+  }
+
+  /* 左側：基本カード（資源・国力）縦並び */
+  .hb-supply-basic-column {
+    @apply flex flex-col gap-2 flex-shrink-0;
+    width: 140px;
+  }
+
+  /* 右側：王国カード（人物・出来事）のグリッド */
+  .hb-supply-kingdom-grid {
+    @apply grid gap-2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* PC 幅では 5 列固定 → 5×2 で 10 枚表示しやすくする */
+  @screen md {
+    .hb-supply-kingdom-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
 
   /* プレイエリア（必要なときだけ見せる） */
   .hb-play-area {
@@ -352,6 +347,17 @@
 
   .hb-help-panel {
     @apply text-[11px];
+  }
+
+  /* 手札エリア左側に移したフェーズガイド用 */
+  .hb-phase-guide {
+    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-1;
+  }
+
+  /* 右側のカード説明パネル（ドミニオン風の位置） */
+  .hb-card-detail-panel {
+    @apply bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-xs;
+    width: 260px;
   }
 
   @media (max-width: 900px) {
