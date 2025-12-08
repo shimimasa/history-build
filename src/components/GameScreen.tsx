@@ -49,9 +49,9 @@ const GameScreen: React.FC<GameScreenProps> = ({
     return a.card.cost - b.card.cost;
   });
 
-  // ↓ ここは detailCard ではなく、選択中の手札 id だけを持つ
-  // const [detailCard, setDetailCard] = useState<Card | null>(null);
+  // 選択中の手札 / サプライ / ホバー中カード
   const [selectedHandId, setSelectedHandId] = useState<string | null>(null);
+  const [selectedSupplyId, setSelectedSupplyId] = useState<string | null>(null);
   const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
 
   const handleSelectHandCard = (cardId: string) => {
@@ -63,8 +63,29 @@ const GameScreen: React.FC<GameScreenProps> = ({
     setSelectedHandId((prev) => (prev === cardId ? null : prev));
   };
 
+  const handleSelectSupply = (cardId: string) => {
+    setSelectedSupplyId((prev) => (prev === cardId ? null : cardId));
+  };
+
   const getCardFromId = (cardId: string): Card | null => {
     return state.supply[cardId]?.card ?? null;
+  };
+
+  const canPlaySelected =
+    isPlayerTurn && state.phase === "ACTION" && selectedHandId !== null;
+  const canBuySelected =
+    isPlayerTurn && state.phase === "BUY" && selectedSupplyId !== null;
+
+  const handlePlaySelected = () => {
+    if (!canPlaySelected || !selectedHandId) return;
+    onPlayActionCard(selectedHandId);
+    setSelectedHandId(null);
+  };
+
+  const handleBuySelected = () => {
+    if (!canBuySelected || !selectedSupplyId) return;
+    onBuyCard(selectedSupplyId);
+    setSelectedSupplyId(null);
   };
 
   return (
@@ -119,6 +140,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
               onBuyCard={onBuyCard}
               onShowCardDetail={onShowCardDetail}
               onHoverCard={setHoveredCard}
+              selectedSupplyId={selectedSupplyId}
+              onSelectSupply={handleSelectSupply}
             />
           </section>
 
@@ -156,6 +179,10 @@ const GameScreen: React.FC<GameScreenProps> = ({
           isPlayerTurn={isPlayerTurn}
           gameEnded={state.gameEnded}
           onProceedPhase={onProceedPhase}
+          canPlaySelected={canPlaySelected}
+          canBuySelected={canBuySelected}
+          onPlaySelected={handlePlaySelected}
+          onBuySelected={handleBuySelected}
         />
       </footer>
     </div>
@@ -359,6 +386,8 @@ interface SupplyBoardProps {
   onBuyCard: (cardId: string) => void;
   onShowCardDetail: (card: Card) => void;
   onHoverCard?: (card: Card | null) => void;
+  selectedSupplyId: string | null;
+  onSelectSupply: (cardId: string) => void;
 }
 
 const SupplyBoard: React.FC<SupplyBoardProps> = ({
@@ -366,24 +395,33 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
   state,
   onBuyCard,
   onShowCardDetail,
-  onHoverCard
+  onHoverCard,
+  selectedSupplyId,
+  onSelectSupply
 }) => {
   const player = state.player;
   const isPlayerTurn = state.activePlayer === "player";
+  const isBuyPhase = state.phase === "BUY";
+
+  const hintText = isBuyPhase
+    ? "サプライのカードを選んで、下の「カードを購入」を押そう"
+    : "カードの効果を見ておこう。BUY フェーズになったらここからカードを買えます。";
+  const hintClass = isBuyPhase
+    ? "text-[11px] text-slate-300"
+    : "text-[11px] text-slate-500";
 
   return (
     <div className="hb-card hb-supply-board">
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-sm font-semibold">場のカード（サプライ）</h2>
-        <span className="text-[11px] text-slate-300">
-          コストと知識条件をみて、どのカードを買うか考えよう
-        </span>
+        <span className={hintClass}>{hintText}</span>
       </div>
 
       <div className="hb-supply-area-grid">
         {supplyPiles.map((pile) => (
           <div
             key={pile.card.id}
+            onClick={() => onSelectSupply(pile.card.id)}
             onMouseEnter={() => onHoverCard?.(pile.card)}
             onMouseLeave={() => onHoverCard?.(null)}
           >
@@ -400,6 +438,7 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
               onBuy={() => onBuyCard(pile.card.id)}
               onShowDetail={() => onShowCardDetail(pile.card)}
               compact
+              selected={selectedSupplyId === pile.card.id}
             />
           </div>
         ))}
@@ -475,12 +514,21 @@ const HandArea: React.FC<HandAreaProps> = ({
   onHoverCard,
   getCardFromId
 }) => {
+  let helperText = "カードをクリックして選び、「つかう」ボタンでプレイ";
+  if (phase === "ACTION") {
+    helperText =
+      "手札のカードを選んで、下の「カードをプレイ」ボタンを押そう。";
+  } else if (phase === "BUY") {
+    helperText =
+      "今は購入フェーズです。サプライのカードを選んで「カードを購入」ボタンを押そう。";
+  }
+
   return (
     <div className="hb-hand-area-inner">
       <div className="hb-hand-header">
         <h2 className="text-sm font-semibold">手札</h2>
         <span className="text-[11px] text-slate-300">
-          カードをクリックして選び、「つかう」ボタンでプレイ
+          {helperText}
         </span>
       </div>
 
@@ -574,6 +622,10 @@ interface GameControlsProps {
   isPlayerTurn: boolean;
   gameEnded: boolean;
   onProceedPhase: () => void;
+  canPlaySelected: boolean;
+  canBuySelected: boolean;
+  onPlaySelected?: () => void;
+  onBuySelected?: () => void;
 }
 
 const GameControls: React.FC<GameControlsProps> = ({
@@ -581,6 +633,10 @@ const GameControls: React.FC<GameControlsProps> = ({
   isPlayerTurn,
   gameEnded,
   onProceedPhase,
+  canPlaySelected,
+  canBuySelected,
+  onPlaySelected,
+  onBuySelected
 }) => {
   const isActionPhase = phase === "ACTION";
   const isBuyPhase = phase === "BUY";
@@ -597,7 +653,10 @@ const GameControls: React.FC<GameControlsProps> = ({
             hb-footer-button
             ${isActionPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"}
           `}
-          disabled={!isActionPhase}
+          onClick={
+            canPlaySelected && onPlaySelected ? onPlaySelected : undefined
+          }
+          disabled={!canPlaySelected}
         >
           カードをプレイ
         </button>
@@ -608,7 +667,8 @@ const GameControls: React.FC<GameControlsProps> = ({
             hb-footer-button
             ${isBuyPhase ? "hb-footer-button-primary" : "hb-footer-button-muted"}
           `}
-          disabled={!isBuyPhase}
+          onClick={canBuySelected && onBuySelected ? onBuySelected : undefined}
+          disabled={!canBuySelected}
         >
           カードを購入
         </button>

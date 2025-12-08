@@ -317,4 +317,9 @@
     font-size: 0.7rem;
     -webkit-line-clamp: 3;
   }
+
+  /* サプライカード選択時の軽いハイライト */
+  .hb-supply-card-selected {
+    @apply ring-2 ring-sky-400 shadow-sky-500/40;
+  }
 }

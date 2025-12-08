@@ -12,6 +12,7 @@ interface SupplyCardPileProps {
   onBuy: () => void;
   onShowDetail: () => void;
   compact?: boolean; // サプライ一覧用のコンパクト表示
+   selected?: boolean; // GameScreen からの選択状態
 }
 
 const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
@@ -21,7 +22,8 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   disabled,
   onBuy,
   onShowDetail,
-  compact
+  compact,
+  selected
 }) => {
   const isDepleted = remaining <= 0;
 
@@ -37,7 +39,9 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
     buyDisabledReason = "今は購入できません";
   }
 
-  const rootClass = compact ? "hb-supply-card-compact" : "hb-supply-card";
+  const baseClass = compact ? "hb-supply-card-compact" : "hb-supply-card";
+  const selectedClass = selected ? " hb-supply-card-selected" : "";
+  const rootClass = baseClass + selectedClass;
 
   return (
     <div className={rootClass}>
