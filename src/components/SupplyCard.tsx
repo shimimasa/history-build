@@ -7,10 +7,11 @@ import { CardView } from "./CardView";
 interface SupplyCardPileProps {
   card: Card;
   remaining: number;
-  canBuy: boolean;         // 資源・知識条件だけを見た「買えるかどうか」
-  disabled: boolean;      // 手番・フェーズなど UI 上の制約
+  canBuy: boolean; // 資源・知識条件だけを見た「買えるかどうか」
+  disabled: boolean; // 手番・フェーズなど UI 上の制約
   onBuy: () => void;
   onShowDetail: () => void;
+  compact?: boolean; // サプライ一覧用のコンパクト表示
 }
 
 const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
@@ -19,7 +20,8 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   canBuy,
   disabled,
   onBuy,
-  onShowDetail
+  onShowDetail,
+  compact
 }) => {
   const isDepleted = remaining <= 0;
 
@@ -35,8 +37,10 @@ const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
     buyDisabledReason = "今は購入できません";
   }
 
+  const rootClass = compact ? "hb-supply-card-compact" : "hb-supply-card";
+
   return (
-    <div className="hb-supply-card">
+    <div className={rootClass}>
       <CardView
         card={card}
         variant="supply"

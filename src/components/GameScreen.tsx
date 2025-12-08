@@ -399,6 +399,7 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
               }
               onBuy={() => onBuyCard(pile.card.id)}
               onShowDetail={() => onShowCardDetail(pile.card)}
+              compact
             />
           </div>
         ))}

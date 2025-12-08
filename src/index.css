@@ -166,6 +166,9 @@
 
   .hb-center-area {
     @apply flex-1 flex flex-col gap-3 px-0 py-4;
+    /* ヘッダー＋手札＋フッターの分を差し引いて、中央カラム全体の高さを制限 */
+    max-height: calc(100vh - 230px);
+    overflow: hidden;
   }
 
   .hb-log-panel {
@@ -183,6 +186,8 @@
   /* サプライエリア */
   .hb-supply-area {
     @apply flex-1;
+    overflow-y: auto;
+    padding-right: 4px;
   }
 
   .hb-supply-area-grid {
@@ -192,6 +197,8 @@
   /* プレイエリア */
   .hb-play-area {
     @apply mt-2;
+    /* サプライスクロールで押しつぶされないよう固定高さ扱いに */
+    flex-shrink: 0;
   }
 
   .hb-play-area-inner {
@@ -281,5 +288,33 @@
     .hb-log-panel {
       @apply order-last w-full;
     }
+  }
+
+  /* サプライカード（通常） */
+  .hb-supply-card {
+    @apply hb-card p-3;
+  }
+
+  /* サプライカード（コンパクト表示） */
+  .hb-supply-card-compact {
+    @apply hb-card p-2;
+    max-width: 180px;
+    max-height: 260px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .hb-supply-card-compact .hb-card-view {
+    width: 180px;
+  }
+
+  .hb-supply-card-compact .hb-card-frame {
+    padding: 6px 6px 8px;
+  }
+
+  .hb-supply-card-compact .hb-card-view-text {
+    font-size: 0.7rem;
+    -webkit-line-clamp: 3;
   }
 }
