@@ -255,6 +255,32 @@
   cursor: default;
 }
 
+/* サプライカード用コンパクトレイアウト（.hb-supply-card-*, 他には影響させない） */
+.hb-supply-card-compact .hb-card-frame {
+  max-width: 180px;
+  aspect-ratio: 2 / 3;
+  padding: 6px 6px 8px;
+  border-radius: 12px;
+}
+
+.hb-supply-card-compact .hb-card-view-image-wrapper {
+  height: 110px;           /* カードの約 55〜60% 程度 */
+  max-height: 120px;
+}
+
+.hb-supply-card-compact .hb-card-view-name {
+  font-size: 0.8rem;
+}
+
+.hb-supply-card-compact .hb-card-view-meta {
+  font-size: 0.7rem;
+}
+
+.hb-supply-card-compact .hb-card-view-text {
+  font-size: 0.7rem;
+  -webkit-line-clamp: 3;   /* コンパクト表示で最大3行 */
+}
+
 /* =========================================================
  * CardDetailModal 用スタイル（既存）
  * =======================================================*/

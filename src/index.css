@@ -201,11 +201,30 @@
     @apply grid gap-3 grid-cols-2 md:grid-cols-3 xl:grid-cols-4;
   }
 
+  /* サプライレイアウト: 左に基本カード列、中央に王国カードグリッド */
+  .hb-supply-layout {
+    @apply flex gap-3 items-start;
+  }
+
+  .hb-supply-basic-column {
+    @apply flex flex-col gap-2 flex-shrink-0;
+    width: 180px; /* サプライ1列分の幅 */
+  }
+
+  .hb-supply-kingdom-grid {
+    @apply grid gap-3;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
   /* プレイエリア */
   .hb-play-area {
     @apply mt-2;
     /* サプライスクロールで押しつぶされないよう固定高さ扱いに */
     flex-shrink: 0;
+  }
+
+  .hb-play-area--hidden {
+    display: none;
   }
 
   .hb-play-area-inner {

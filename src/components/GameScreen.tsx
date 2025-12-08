@@ -148,6 +148,10 @@ const GameScreen: React.FC<GameScreenProps> = ({
           <section
             className={`hb-play-area ${
               state.phase === "BUY" ? "hb-play-area-compact" : ""
+            } ${
+              state.phase === "ACTION" || state.phase === "CLEANUP"
+                ? ""
+                : "hb-play-area--hidden"
             }`}
           >
             <PlayArea state={state} getCardFromId={getCardFromId} />
@@ -414,6 +418,39 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
     ? "text-[11px] text-slate-300"
     : "text-[11px] text-slate-500";
 
+  // 基本カード（資源・国力）と王国カード（人物・出来事）に分割
+  const basicPiles = supplyPiles.filter(
+    (p) => p.card.type === "resource" || p.card.type === "victory"
+  );
+  const kingdomPiles = supplyPiles.filter(
+    (p) => p.card.type === "person" || p.card.type === "event"
+  );
+
+  const renderPile = (pile: { card: Card; remaining: number }) => (
+    <div
+      key={pile.card.id}
+      onClick={() => onSelectSupply(pile.card.id)}
+      onMouseEnter={() => onHoverCard?.(pile.card)}
+      onMouseLeave={() => onHoverCard?.(null)}
+    >
+      <SupplyCardPile
+        card={pile.card}
+        remaining={pile.remaining}
+        canBuy={canBuyCard(player, pile.card)}
+        disabled={
+          !isPlayerTurn ||
+          state.gameEnded ||
+          pile.remaining <= 0 ||
+          state.phase !== "BUY"
+        }
+        onBuy={() => onBuyCard(pile.card.id)}
+        onShowDetail={() => onShowCardDetail(pile.card)}
+        compact
+        selected={selectedSupplyId === pile.card.id}
+      />
+    </div>
+  );
+
   return (
     <div className="hb-card hb-supply-board">
       <div className="flex items-center justify-between mb-2">
@@ -421,31 +458,13 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
         <span className={hintClass}>{hintText}</span>
       </div>
 
-      <div className="hb-supply-area-grid">
-        {supplyPiles.map((pile) => (
-          <div
-            key={pile.card.id}
-            onClick={() => onSelectSupply(pile.card.id)}
-            onMouseEnter={() => onHoverCard?.(pile.card)}
-            onMouseLeave={() => onHoverCard?.(null)}
-          >
-            <SupplyCardPile
-              card={pile.card}
-              remaining={pile.remaining}
-              canBuy={canBuyCard(player, pile.card)}
-              disabled={
-                !isPlayerTurn ||
-                state.gameEnded ||
-                pile.remaining <= 0 ||
-                state.phase !== "BUY"
-              }
-              onBuy={() => onBuyCard(pile.card.id)}
-              onShowDetail={() => onShowCardDetail(pile.card)}
-              compact
-              selected={selectedSupplyId === pile.card.id}
-            />
-          </div>
-        ))}
+      <div className="hb-supply-layout">
+        <div className="hb-supply-basic-column">
+          {basicPiles.map(renderPile)}
+        </div>
+        <div className="hb-supply-kingdom-grid">
+          {kingdomPiles.map(renderPile)}
+        </div>
       </div>
     </div>
   );
