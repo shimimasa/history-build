@@ -6,6 +6,7 @@ import { canBuyCard } from "../logic/cardEffects";
 import { computeVictoryPointsForPlayer } from "../game/socre";
 import SupplyCardPile from "./SupplyCard";
 import HandCard from "./HandCard";
+import { CardView } from "./CardView";
 
 interface GameScreenProps {
   state: GameState;
@@ -32,12 +33,6 @@ const GameScreen: React.FC<GameScreenProps> = ({
   const actionsLeft = isPlayerTurn && isActionPhase ? 1 : 0;
   const buysLeft = isPlayerTurn && isBuyPhase ? 1 : 0;
 
-  // ゲーム終了時のみスコアを計算
-  const playerScore =
-    state.gameEnded ? computeVictoryPointsForPlayer(state, "player") : null;
-  const cpuScore =
-    state.gameEnded ? computeVictoryPointsForPlayer(state, "cpu") : null;
-
   // supply を配列に変換（タイプとコスト順に並べて分かりやすく表示）
   const supplyPiles = Object.values(state.supply).sort((a, b) => {
     const order: Record<Card["type"], number> = {
@@ -57,6 +52,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
   // ↓ ここは detailCard ではなく、選択中の手札 id だけを持つ
   // const [detailCard, setDetailCard] = useState<Card | null>(null);
   const [selectedHandId, setSelectedHandId] = useState<string | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
 
   const handleSelectHandCard = (cardId: string) => {
     setSelectedHandId((prev) => (prev === cardId ? null : cardId));
@@ -71,115 +67,99 @@ const GameScreen: React.FC<GameScreenProps> = ({
     return state.supply[cardId]?.card ?? null;
   };
 
-  const phaseLabel = getPhaseButtonLabel(state.phase);
-
-  const winnerLabel =
-    state.winner === "player"
-      ? "あなたの勝ち！"
-      : state.winner === "cpu"
-      ? "CPU の勝ち"
-      : "引き分け";
-
-  // src/components/GameScreen.tsx （イメージ：return 部分）
-
-return (
-  <div className="hb-game-layout">
-    {/* 1. 上部 HUD */}
-    <header className="hb-game-header">
-      <div className="hb-game-header-top">
-        <div className="hb-game-title">
-          History Build - 戦国デッキ v1.5
-        </div>
-        <div className="hb-game-status">
-          <span className="hb-pill">ターン {state.turnCount}</span>
-          <span className="hb-pill">
-            手番{" "}
-            <span className="font-bold">
-              {isPlayerTurn ? "プレイヤー" : "CPU"}
+  return (
+    <div className="hb-game-layout">
+      {/* 1. 上部 HUD */}
+      <header className="hb-game-header">
+        <div className="hb-game-header-top">
+          <div className="hb-game-title">
+            History Build - 戦国デッキ v1.5
+          </div>
+          <div className="hb-game-status">
+            <span className="hb-pill">ターン {state.turnCount}</span>
+            <span className="hb-pill">
+              手番{" "}
+              <span className="font-bold">
+                {isPlayerTurn ? "プレイヤー" : "CPU"}
+              </span>
             </span>
-          </span>
-          <span
-            className={`
-              hb-phase-badge
-              hb-phase-badge-${state.phase.toLowerCase()}
-            `}
-          >
-            フェーズ: {renderPhaseLabel(state.phase)}
-          </span>
-          <span className="hb-pill">
-            山札 {player.deck.length} / 手札 {player.hand.length}
-          </span>
+            <span
+              className={`hb-phase-badge hb-phase-badge-${state.phase.toLowerCase()}`}
+            >
+              フェーズ: {renderPhaseLabel(state.phase)}
+            </span>
+            <span className="hb-pill">
+              山札 {player.deck.length} / 手札 {player.hand.length}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="hb-game-resources">
-        <ResourceBadge label="アクション" value={actionsLeft} />
-        <ResourceBadge label="購入" value={buysLeft} />
-        <ResourceBadge label="米" value={player.riceThisTurn} />
-        <ResourceBadge label="知識" value={player.knowledge} />
-      </div>
-    </header>
+        <div className="hb-game-resources">
+          <ResourceBadge label="アクション" value={actionsLeft} />
+          <ResourceBadge label="購入" value={buysLeft} />
+          <ResourceBadge label="米" value={player.riceThisTurn} />
+          <ResourceBadge label="知識" value={player.knowledge} />
+        </div>
+      </header>
 
-    {/* 2. 中央 3 カラム */}
-    <main className="hb-game-main">
-      {/* 左: プレイヤー / CPU 情報 */}
-      <aside className="hb-column hb-player-panel">
-        <PlayerHud player={player} />
-        <CpuHud cpu={cpu} gameEnded={state.gameEnded} state={state} />
-      </aside>
+      {/* 2. 中央 3 カラム */}
+      <main className="hb-game-main">
+        {/* 左: プレイヤー / CPU 情報 */}
+        <aside className="hb-column hb-player-panel">
+          <PlayerHud player={player} />
+          <CpuHud cpu={cpu} gameEnded={state.gameEnded} state={state} />
+        </aside>
 
-      {/* 中央: サプライ + プレイエリア */}
-      <section className="hb-column hb-center-area">
-        <section className="hb-supply-area">
-          <SupplyBoard
-            supplyPiles={supplyPiles}
-            state={state}
-            onBuyCard={onBuyCard}
-            onShowCardDetail={onShowCardDetail}
-            onHoverCard={setHoveredCard}
-          />
+        {/* 中央: サプライ + プレイエリア */}
+        <section className="hb-column hb-center-area">
+          <section className="hb-supply-area">
+            <SupplyBoard
+              supplyPiles={supplyPiles}
+              state={state}
+              onBuyCard={onBuyCard}
+              onShowCardDetail={onShowCardDetail}
+              onHoverCard={setHoveredCard}
+            />
+          </section>
+
+          <section className="hb-play-area">
+            <PlayArea state={state} getCardFromId={getCardFromId} />
+          </section>
         </section>
 
-        <section className="hb-play-area">
-          <PlayArea
-            state={state}
-            getCardFromId={getCardFromId}
-          />
-        </section>
+        {/* 右: ログ / ガイド + カード簡易説明 */}
+        <aside className="hb-column hb-log-panel">
+          <GameLog phase={state.phase} />
+          <CardHelpPanel hoveredCard={hoveredCard} />
+        </aside>
+      </main>
+
+      {/* 3. 手札エリア */}
+      <section className="hb-hand-area">
+        <HandArea
+          player={player}
+          isPlayerTurn={isPlayerTurn}
+          phase={state.phase}
+          selectedHandId={selectedHandId}
+          onSelectHandCard={handleSelectHandCard}
+          onPlayFromHand={handlePlayFromHand}
+          onShowDetail={onShowCardDetail}
+          onHoverCard={setHoveredCard}
+          getCardFromId={getCardFromId}
+        />
       </section>
 
-      {/* 右: ログ / ガイド + カード簡易説明 */}
-      <aside className="hb-column hb-log-panel">
-        <GameLog phase={state.phase} />
-        <CardHelpPanel hoveredCard={hoveredCard} />
-      </aside>
-    </main>
-
-    {/* 3. 手札エリア */}
-    <section className="hb-hand-area">
-      <HandArea
-        player={player}
-        isPlayerTurn={isPlayerTurn}
-        phase={state.phase}
-        selectedHandId={selectedHandId}
-        onSelectHandCard={handleSelectHandCard}
-        onPlayFromHand={handlePlayFromHand}
-        onShowDetail={onShowCardDetail}
-        onHoverCard={setHoveredCard}
-      />
-    </section>
-
-    {/* 4. 操作ボタン */}
-    <footer className="hb-footer">
-      <GameControls
-        phase={state.phase}
-        isPlayerTurn={isPlayerTurn}
-        gameEnded={state.gameEnded}
-        onProceedPhase={onProceedPhase}
-      />
-    </footer>
-  </div>
-);
+      {/* 4. 操作ボタン */}
+      <footer className="hb-footer">
+        <GameControls
+          phase={state.phase}
+          isPlayerTurn={isPlayerTurn}
+          gameEnded={state.gameEnded}
+          onProceedPhase={onProceedPhase}
+        />
+      </footer>
+    </div>
+  );
 };
 
 export default GameScreen;
@@ -319,6 +299,8 @@ const CpuHud: React.FC<CpuHudProps> = ({ cpu, gameEnded, state }) => {
       ? "CPU の勝ち"
       : "引き分け";
 
+  const historyNames = collectHistoryCardNames(state);
+
   return (
     <>
       <div className="hb-sidebar-panel">
@@ -334,11 +316,36 @@ const CpuHud: React.FC<CpuHudProps> = ({ cpu, gameEnded, state }) => {
 
       {gameEnded && (
         <div className="hb-sidebar-panel border-amber-500/60 bg-amber-900/30">
-          {/* 既存のゲーム終了パネルをそのまま移植 */}
-          {/* ... */}
-          <div className="text-xs space-y-1">
-            <div>結果: {winnerLabel}</div>
-            {/* 既存の collectHistoryCardNames の表示もここに */}
+          <h2 className="text-sm font-semibold mb-1 text-amber-200">
+            ゲーム終了
+          </h2>
+          <div className="text-xs space-y-1 text-amber-100">
+            <div>
+              勝者: <span className="font-bold">{winnerLabel}</span>
+            </div>
+            {playerScore !== null && cpuScore !== null && (
+              <div className="mt-1 space-y-0.5">
+                <div>プレイヤー: {playerScore} 点</div>
+                <div>CPU: {cpuScore} 点</div>
+              </div>
+            )}
+            {historyNames.length > 0 && (
+              <div className="mt-3">
+                <div className="text-[11px] mb-1">
+                  このゲームで出てきた 人物・出来事
+                </div>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {historyNames.map((name) => (
+                    <span
+                      key={name}
+                      className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/60 text-[11px]"
+                    >
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -347,7 +354,7 @@ const CpuHud: React.FC<CpuHudProps> = ({ cpu, gameEnded, state }) => {
 };
 
 interface SupplyBoardProps {
-  supplyPiles: ReturnType<typeof Object.values<GameState["supply"]>>;
+  supplyPiles: { card: Card; remaining: number }[];
   state: GameState;
   onBuyCard: (cardId: string) => void;
   onShowCardDetail: (card: Card) => void;
@@ -359,7 +366,7 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
   state,
   onBuyCard,
   onShowCardDetail,
-  onHoverCard,
+  onHoverCard
 }) => {
   const player = state.player;
   const isPlayerTurn = state.activePlayer === "player";
@@ -453,6 +460,7 @@ interface HandAreaProps {
   onPlayFromHand: (id: string) => void;
   onShowDetail: (card: Card) => void;
   onHoverCard?: (card: Card | null) => void;
+  getCardFromId: (id: string) => Card | null;
 }
 
 const HandArea: React.FC<HandAreaProps> = ({
@@ -464,10 +472,8 @@ const HandArea: React.FC<HandAreaProps> = ({
   onPlayFromHand,
   onShowDetail,
   onHoverCard,
+  getCardFromId
 }) => {
-  const getCardFromId = (id: string) =>
-    player.hand.includes(id) ? id : null; // 実コードでは GameScreen 側の getCardFromId を渡す
-
   return (
     <div className="hb-hand-area-inner">
       <div className="hb-hand-header">
@@ -484,7 +490,7 @@ const HandArea: React.FC<HandAreaProps> = ({
       ) : (
         <div className="hb-hand-row">
           {player.hand.map((cardId) => {
-            const card = (window as any).getCardFromId?.(cardId); // 実装時は props で渡す
+            const card = getCardFromId(cardId);
             if (!card) return null;
             const disabled =
               !isPlayerTurn ||
