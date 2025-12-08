@@ -59,6 +59,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  max-width: 130px;
   border-radius: 14px;
   padding: 6px 6px 8px;             /* 縦方向の余白を削る */
   background: linear-gradient(145deg, #111827, #020617);

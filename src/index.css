@@ -93,7 +93,7 @@
   /* 手札カードの縮小用ラッパー（新レイアウトでも使う） */
   .hb-hand-card-wrapper {
     @apply shrink-0;
-    transform: scale(0.8);
+    transform: scale(0.68);
     transform-origin: top center;
   }
 
@@ -171,9 +171,9 @@
   }
 
   .hb-center-area {
-    @apply flex-1 flex flex-col gap-3 px-0 py-4;
+    @apply flex-1 flex flex-col gap-3 px-0 py-3;
     /* ヘッダー + 手札 + フッター の分を余裕をもって差し引く */
-    max-height: calc(100vh - 320px);
+    max-height: calc(100vh - 260px);
     overflow: hidden;
   }
 
@@ -262,7 +262,7 @@
   .hb-hand-area {
     @apply border-t border-slate-800 bg-slate-950/95;
     flex-shrink: 0;
-    max-height: 210px;
+    max-height: 170px;
   }
 
   .hb-hand-area-inner {
@@ -276,7 +276,7 @@
 
   .hb-hand-row {
     @apply flex justify-center gap-2 overflow-x-auto overflow-y-hidden;
-    height: 150px; /* ここで手札の見せる高さを抑える */
+    height: 120px; /* ここで手札の見せる高さを抑える */
     padding-bottom: 0.25rem;
   }
 
@@ -343,15 +343,15 @@
 
   .hb-supply-card-compact {
     @apply hb-card p-2;
-    max-width: 150px;
-    max-height: 220px;
+    max-width: 130px;
+    max-height: 190px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
   .hb-supply-card-compact .hb-card-view {
-    width: 150px;
+    width: 130px;
   }
 
   .hb-supply-card-compact .hb-card-frame {
