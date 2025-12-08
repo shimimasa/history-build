@@ -102,3 +102,184 @@
     @apply fixed bottom-4 right-4 flex flex-col gap-2 z-40;
   }
 }
+
+@layer components {
+  /* 全体レイアウト */
+  .hb-game-layout {
+    @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col;
+  }
+
+  .hb-game-header {
+    @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur flex flex-col gap-2;
+  }
+
+  .hb-game-header-top {
+    @apply w-full max-w-6xl mx-auto px-4 pt-3 flex items-center justify-between;
+  }
+
+  .hb-game-title {
+    @apply text-xl font-bold tracking-wide;
+  }
+
+  .hb-game-status {
+    @apply flex items-center gap-2 text-xs;
+  }
+
+  .hb-game-resources {
+    @apply w-full max-w-6xl mx-auto px-4 pb-3 flex gap-3;
+  }
+
+  .hb-resource-badge {
+    @apply flex-1 flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700;
+  }
+
+  .hb-resource-label {
+    @apply text-xs text-slate-300;
+  }
+
+  .hb-resource-value {
+    @apply text-lg font-bold;
+  }
+
+  /* フェーズバッジ色分け */
+  .hb-phase-badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold border;
+  }
+  .hb-phase-badge-draw { @apply bg-slate-800 border-slate-600 text-slate-100; }
+  .hb-phase-badge-resource { @apply bg-amber-900 border-amber-500 text-amber-100; }
+  .hb-phase-badge-action { @apply bg-sky-900 border-sky-500 text-sky-100; }
+  .hb-phase-badge-buy { @apply bg-emerald-900 border-emerald-500 text-emerald-100; }
+  .hb-phase-badge-cleanup { @apply bg-slate-800 border-slate-500 text-slate-100; }
+
+  /* 中央 3 カラム */
+  .hb-game-main {
+    @apply flex-1 w-full flex justify-center;
+  }
+
+  .hb-column {
+    @apply h-full;
+  }
+
+  .hb-player-panel {
+    @apply w-56 flex-shrink-0 space-y-3 px-4 py-4;
+  }
+
+  .hb-center-area {
+    @apply flex-1 flex flex-col gap-3 px-0 py-4;
+  }
+
+  .hb-log-panel {
+    @apply w-64 flex-shrink-0 space-y-3 px-4 py-4;
+  }
+
+  @screen md {
+    .hb-game-main {
+      @apply grid;
+      grid-template-columns: 220px minmax(0, 1fr) 260px;
+      column-gap: 16px;
+    }
+  }
+
+  /* サプライエリア */
+  .hb-supply-area {
+    @apply flex-1;
+  }
+
+  .hb-supply-area-grid {
+    @apply grid gap-3 grid-cols-2 md:grid-cols-3 xl:grid-cols-4;
+  }
+
+  /* プレイエリア */
+  .hb-play-area {
+    @apply mt-2;
+  }
+
+  .hb-play-area-inner {
+    @apply w-full;
+  }
+
+  .hb-play-rows {
+    @apply flex flex-col gap-3;
+  }
+
+  .hb-play-cards {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .hb-play-empty {
+    @apply text-[11px] text-slate-400;
+  }
+
+  /* 手札エリア（自分のカード感を出す） */
+  .hb-hand-area {
+    @apply border-t border-slate-800 bg-slate-950/95;
+  }
+
+  .hb-hand-area-inner {
+    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
+  }
+
+  .hb-hand-header {
+    @apply flex items-center justify-between border-b border-slate-800 pb-1 mb-2;
+  }
+
+  .hb-hand-row {
+    @apply flex justify-center gap-2 overflow-x-auto pb-1;
+  }
+
+  .hb-hand-empty {
+    @apply py-3 text-xs text-slate-300;
+  }
+
+  /* フッター（操作ボタン） */
+  .hb-footer {
+    @apply border-t border-slate-800 bg-slate-950/90;
+  }
+
+  .hb-footer-inner {
+    @apply w-full max-w-6xl mx-auto px-4 py-2 flex justify-end;
+  }
+
+  .hb-footer-buttons {
+    @apply flex gap-2;
+  }
+
+  .hb-footer-button {
+    @apply px-3 py-2 text-xs rounded-full border transition-colors;
+  }
+
+  .hb-footer-button-primary {
+    @apply bg-sky-600 text-white border-sky-500 hover:bg-sky-500;
+  }
+
+  .hb-footer-button-secondary {
+    @apply bg-slate-800 text-slate-100 border-slate-600 hover:bg-slate-700;
+  }
+
+  .hb-footer-button-muted {
+    @apply bg-slate-900 text-slate-500 border-slate-700;
+  }
+
+  .hb-footer-button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* 右カラム: ログ / ヘルプ */
+  .hb-log {
+    @apply text-[11px] space-y-2;
+  }
+
+  .hb-help-panel {
+    @apply text-[11px];
+  }
+
+  /* シンプルなレスポンシブ（幅が狭いとき右パネルを下に） */
+  @media (max-width: 900px) {
+    .hb-game-main {
+      @apply flex flex-col;
+    }
+    .hb-log-panel {
+      @apply order-last w-full;
+    }
+  }
+}
