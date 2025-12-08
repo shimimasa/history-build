@@ -161,13 +161,12 @@ const GameScreen: React.FC<GameScreenProps> = ({
         </aside>
       </main>
 
-      {/* フェーズガイド（このターンで できること）を手札の少し上に配置 */}
-      <div className="hb-phase-guide">
-        <GameLog phase={state.phase} />
-      </div>
-
-      {/* 3. 手札エリア（画面下） */}
+      {/* 3. 手札エリア（フェーズガイドを重ねて表示） */}
       <section className="hb-hand-area">
+        <div className="hb-phase-guide">
+          <GameLog phase={state.phase} />
+        </div>
+
         <HandArea
           player={player}
           isPlayerTurn={isPlayerTurn}
@@ -420,30 +419,36 @@ const SupplyBoard: React.FC<SupplyBoardProps> = ({
     p => p.card.type === "person" || p.card.type === "event"
   );
 
-  const renderPile = (pile: { card: Card; remaining: number }) => (
-    <div
-      key={pile.card.id}
-      onClick={() => onSelectSupply(pile.card.id)}
-      onMouseEnter={() => onHoverCard?.(pile.card)}
-      onMouseLeave={() => onHoverCard?.(null)}
-    >
-      <SupplyCardPile
-        card={pile.card}
-        remaining={pile.remaining}
-        canBuy={canBuyCard(player, pile.card)}
-        disabled={
-          !isPlayerTurn ||
-          state.gameEnded ||
-          pile.remaining <= 0 ||
-          state.phase !== "BUY"
-        }
-        onBuy={() => onBuyCard(pile.card.id)}
-        onShowDetail={() => onShowCardDetail(pile.card)}
-        compact
-        selected={selectedSupplyId === pile.card.id}
-      />
-    </div>
-  );
+  const renderPile = (pile: { card: Card; remaining: number }) => {
+    const isBasic =
+      pile.card.type === "resource" || pile.card.type === "victory";
+
+    return (
+      <div
+        key={pile.card.id}
+        onClick={() => onSelectSupply(pile.card.id)}
+        onMouseEnter={() => onHoverCard?.(pile.card)}
+        onMouseLeave={() => onHoverCard?.(null)}
+      >
+        <SupplyCardPile
+          card={pile.card}
+          remaining={pile.remaining}
+          canBuy={canBuyCard(player, pile.card)}
+          disabled={
+            !isPlayerTurn ||
+            state.gameEnded ||
+            pile.remaining <= 0 ||
+            state.phase !== "BUY"
+          }
+          onBuy={() => onBuyCard(pile.card.id)}
+          onShowDetail={() => onShowCardDetail(pile.card)}
+          // 基本カードだけコンパクト表示にして、王国カードとの差をつける
+          compact={isBasic}
+          selected={selectedSupplyId === pile.card.id}
+        />
+      </div>
+    );
+  };
 
   return (
     <div className="hb-card hb-supply-board">
@@ -592,13 +597,15 @@ interface GameLogProps {
 
 const GameLog: React.FC<GameLogProps> = ({ phase }) => (
   <div className="hb-card hb-log">
-    <div className="text-xs text-slate-300 mb-2">
+    <div className="text-xs text-slate-300 mb-1">
       現在のフェーズ:{" "}
       <span className="font-semibold">{renderPhaseLabel(phase)}</span>
     </div>
     <div className="hb-log-section">
-      <div className="font-semibold mb-1 text-sm">このターンで できること</div>
-      <ol className="list-decimal list-inside space-y-0.5 text-[11px]">
+      <div className="font-semibold mb-1 text-[11px]">
+        このターンで できること
+      </div>
+      <ol className="list-decimal list-inside space-y-0.5 text-[10px]">
         <li>DRAW：手札が5枚になるまで引く</li>
         <li>RESOURCE：資源カードをぜんぶ出して、米と知識をふやす</li>
         <li>ACTION：手札から 人物 / 出来事カードを1まい えらんで つかう</li>

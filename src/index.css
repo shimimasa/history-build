@@ -285,6 +285,7 @@
     @apply border-t border-slate-800 bg-slate-950/95;
     flex-shrink: 0;
     max-height: 170px;
+    position: relative; /* ★追加：フェーズガイドを重ねるため */
   }
 
   .hb-hand-area-inner {
@@ -349,10 +350,23 @@
     @apply text-[11px];
   }
 
-  /* 手札エリア左側に移したフェーズガイド用 */
-  .hb-phase-guide {
-    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-1;
-  }
+    /* 手札エリア左上に重ねるフェーズガイド */
+    .hb-phase-guide {
+      @apply absolute;
+      left: 1rem;      /* 手札エリア左から少し内側 */
+      top: -4.5rem;    /* 手札エリアの少し上にかぶせる */
+      width: 260px;
+      pointer-events: none; /* クリックは手札側を優先 */
+    }
+  
+    .hb-phase-guide .hb-card {
+      @apply p-2;
+    }
+  
+    .hb-phase-guide .hb-log {
+      @apply text-[10px];
+    }
+  
 
   /* 右側のカード説明パネル（ドミニオン風の位置） */
   .hb-card-detail-panel {
