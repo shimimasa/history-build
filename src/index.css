@@ -173,8 +173,9 @@
   /* 中央：サプライ＆プレイエリア */
   .hb-center-area {
     @apply flex-1 flex flex-col gap-3 px-0 py-3;
-    max-height: calc(100vh - 260px); /* ヘッダー + 手札 + フッター 分 */
-    overflow: hidden;
+        max-height: calc(100vh - 260px); /* ヘッダー + 手札 + フッター 分 */
+        /* 中央エリアの中だけ縦スクロールできるようにする */
+        overflow-y: auto;
   }
 
   .hb-board-inner-main {
