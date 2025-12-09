@@ -5,7 +5,7 @@
 @layer components {
   /* ====== 全体レイアウト ====== */
 
-  .hb-game-layout {
+  .hb-game-screen {
     @apply min-h-screen bg-slate-950 text-slate-50 flex flex-col;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
       sans-serif;
@@ -51,20 +51,28 @@
     @apply inline-flex items-center px-3 py-1 rounded-full bg-indigo-700/70 text-xs font-semibold;
   }
 
-  .hb-main-area {
+  /* 3カラムのメインレイアウト（左サイドバー / 中央サプライ / 右詳細） */
+  .hb-main-layout {
     @apply flex-1 flex flex-row gap-4 px-6 pb-4 pt-2;
+    min-height: 0; /* 中央・右カラム内でスクロールできるようにする */
   }
 
-  .hb-side-panel {
-    @apply w-56 flex flex-col gap-4;
+  /* 左サイドバー（プレイヤー情報 / CPU 情報） */
+  .hb-left-sidebar {
+    @apply flex flex-col gap-4 flex-none;
+    width: 260px;
   }
 
+  /* 中央カラム（サプライ＋プレイエリア） */
   .hb-center-area {
     @apply flex-1 flex flex-col gap-4;
+    min-height: 0;
   }
 
-  .hb-detail-panel {
-    @apply w-80 flex flex-col gap-2;
+  /* 右カラム（カード詳細＋ログ） */
+  .hb-card-detail-panel {
+    @apply w-80 flex flex-col gap-3 flex-none;
+    min-height: 0;
   }
 
   .hb-section-title {
@@ -92,23 +100,22 @@
   /* ====== サプライボード ====== */
 
   .hb-supply-section {
-    @apply bg-slate-900/70 border border-slate-700 rounded-3xl px-4 pt-3 pb-4 shadow-inner flex flex-col gap-2;
+    @apply bg-slate-900/70 border border-slate-700 rounded-3xl px-4 pt-3 pb-4 shadow-inner flex flex-col gap-2 flex-1;
+    min-height: 0;
   }
 
+  /* Dominion Online 風：2行 x 5列グリッドでサプライを表示 */
   .hb-supply-board {
-    @apply flex flex-row gap-4;
-  }
-
-  .hb-supply-basic-column {
-    @apply flex flex-col gap-3 w-40;
-  }
-
-  .hb-supply-kingdom-grid {
-    @apply flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
+    grid-auto-rows: auto;
+    gap: 20px;
+    padding: 16px 24px;
+    overflow-y: auto;
   }
 
   .hb-supply-card {
-    @apply relative w-full h-full bg-transparent rounded-3xl overflow-visible focus:outline-none;
+    @apply relative w-full h-full focus:outline-none cursor-pointer;
   }
 
   .hb-supply-card--disabled {
@@ -117,60 +124,56 @@
 
   /* ====== カード汎用スタイル ====== */
 
-  .hb-card-view {
-    @apply relative bg-slate-950/80 rounded-3xl border border-slate-700 shadow-lg overflow-hidden flex flex-col;
+  /* カード本体：2:3 の縦長矩形カード */
+  .hb-card {
+    @apply relative bg-slate-950/80 rounded-2xl border border-slate-700 shadow-lg overflow-hidden flex flex-col;
+    aspect-ratio: 2 / 3;
   }
 
-  .hb-card-view--supply {
-    @apply h-[220px];
+  /* バリアントごとのサイズは外側ラッパーで制御する想定だが、
+     必要に応じて微調整用のクラスを用意しておく */
+  .hb-card--supply {
+    @apply w-full;
   }
 
-  .hb-card-view--hand {
-    @apply h-[210px];
+  .hb-card--hand {
+    @apply w-full;
   }
 
-  .hb-card-view--play {
-    @apply h-[210px];
+  .hb-card--play {
+    @apply w-full;
   }
 
-  .hb-card-view-image-wrapper {
-    @apply relative w-full flex-1 overflow-hidden;
+  .hb-card-image-wrapper {
+    @apply relative w-full h-full overflow-hidden;
   }
 
-  .hb-card-view-image {
+  .hb-card-image {
     @apply w-full h-full object-cover;
   }
 
-  .hb-card-view-remaining-badge {
-    @apply absolute top-2 left-2 px-2 py-1 rounded-full bg-slate-950/80 border border-amber-400 text-[11px] text-amber-200;
+  .hb-card-cost-badge {
+    @apply absolute bottom-2 right-2 px-2 py-[2px] rounded-full bg-amber-700/90 text-[11px] text-amber-50 font-semibold shadow;
   }
 
-  .hb-card-view-footer {
+  .hb-card-remaining-badge {
+    @apply absolute top-2 left-2 px-2 py-[2px] rounded-full bg-slate-950/85 border border-amber-400 text-[11px] text-amber-200;
+  }
+
+  .hb-card-footer {
     @apply px-3 pt-2 pb-2 bg-slate-950/95 border-t border-slate-700 flex flex-col gap-1;
   }
 
-  .hb-card-view-title-row {
+  .hb-card-title-row {
     @apply flex items-center justify-between gap-2;
   }
 
-  .hb-card-view-name {
+  .hb-card-name {
     @apply text-[13px] font-semibold text-slate-100 truncate;
   }
 
-  .hb-card-view-type-pill {
+  .hb-card-type {
     @apply px-2 py-[2px] rounded-full bg-sky-900/80 text-[11px] text-sky-100 shrink-0;
-  }
-
-  .hb-card-view-cost-row {
-    @apply flex items-center gap-1 text-[11px];
-  }
-
-  .hb-card-cost-pill {
-    @apply px-2 py-[1px] rounded-full bg-amber-700/80 text-amber-100;
-  }
-
-  .hb-card-cost-pill--knowledge {
-    @apply bg-emerald-700/80 text-emerald-100;
   }
 
   /* ====== プレイエリア ====== */
@@ -217,6 +220,11 @@
     @apply text-xs text-slate-200 leading-relaxed mt-1;
   }
 
+  /* カード詳細パネル内のログエリア */
+  .hb-detail-log-panel {
+    @apply mt-3 flex flex-col gap-1;
+  }
+
   /* ====== 手札エリア ====== */
 
   .hb-hand-area {
@@ -231,12 +239,13 @@
     @apply text-[11px] text-slate-400;
   }
 
-  .hb-hand-row {
-    @apply flex flex-row justify-center gap-3 overflow-x-auto pb-1;
+  /* 手札：横一列に並べ、オーバーフロー時は横スクロールにする */
+  .hb-hand-cards {
+    @apply flex flex-row gap-16 overflow-x-auto pb-1 px-1;
   }
 
   .hb-hand-card-slot {
-    @apply w-[180px] cursor-pointer transition-transform duration-150 ease-out;
+    @apply w-[170px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
   }
 
   .hb-hand-card-slot:hover {
@@ -247,14 +256,10 @@
     @apply ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-900;
   }
 
-  /* ====== フッター（ボタン＋ログ） ====== */
+  /* ====== 手札アクションボタン ====== */
 
-  .hb-footer {
-    @apply border-t border-slate-900 bg-slate-950/95 px-6 py-3 flex flex-col md:flex-row gap-3;
-  }
-
-  .hb-footer-controls {
-    @apply flex flex-row gap-2 items-center;
+  .hb-hand-actions {
+    @apply flex flex-row justify-end gap-12 px-24 pt-2;
   }
 
   .hb-btn {
@@ -267,10 +272,6 @@
 
   .hb-btn-secondary {
     @apply bg-slate-700 hover:bg-slate-600 text-slate-50;
-  }
-
-  .hb-footer-log {
-    @apply flex-1 flex flex-col gap-1;
   }
 
   .hb-log-scroll {
