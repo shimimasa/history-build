@@ -357,7 +357,7 @@
 }
   /* サプライ（標準サイズ → 王国カード用） */
   .hb-supply-card .hb-card-view {
-      width: 150px;             /* 王国カードは少し大きめ */
+      width: 140px;           /* 以前より少し細くする（→ 全体高さも少し縮む） */
     }
     .hb-supply-kingdom-grid {
       @apply grid gap-2;
@@ -484,10 +484,11 @@
     @apply flex flex-col h-full;
   }
 
-  .hb-card-view-image-wrapper {
-    @apply relative w-full overflow-hidden rounded-lg mb-2 bg-slate-800/70;
-    padding-top: 150%; /* 2:3 縦長比率 */
-  }
+  /* 画像比率を少しだけ低くして、縦を詰める */
+.hb-card-view-image-wrapper {
+  @apply relative w-full overflow-hidden rounded-lg mb-2 bg-slate-800/70;
+  padding-top: 135%;   /* もともと 150% → 少し低くしてカードを短く */
+}
 
   .hb-card-view-image {
     @apply absolute inset-0 w-full h-full object-cover;
@@ -666,16 +667,17 @@
     @apply text-[10px] text-slate-500;
   }
 
-  .hb-supply-card-compact {
-    @apply hb-card p-2;
-    max-width: 120px;         /* 基本カードは一回り細く */
-    max-height: 170px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transform: scale(0.9);    /* 全体を 90% に縮小 */
-    transform-origin: top center;
-  }
+  /* コンパクト版（資源・一部勝利点など左列用） */
+.hb-supply-card-compact {
+  @apply hb-card p-2;
+  max-width: 110px;
+  max-height: 160px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.9);        /* 一回り小さく見せる */
+  transform-origin: top center;
+}
 
   /* =========================================================
      サプライカード用コンパクトレイアウト
