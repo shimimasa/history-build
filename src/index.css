@@ -51,27 +51,35 @@
     @apply inline-flex items-center px-3 py-1 rounded-full bg-indigo-700/70 text-xs font-semibold;
   }
 
-  /* 3カラムのメインレイアウト（左サイドバー / 中央サプライ / 右詳細） */
-  .hb-main-layout {
-    @apply flex-1 flex flex-row gap-4 px-6 pb-4 pt-2;
-    min-height: 0; /* 中央・右カラム内でスクロールできるようにする */
+  /* メインボード：左サイドバー + 右ボード全体（Dominion 風） */
+  .hb-game-layout {
+    @apply flex-1 px-6 pb-4 pt-2;
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 1.5rem;
+    min-height: 0;
   }
 
   /* 左サイドバー（プレイヤー情報 / CPU 情報） */
-  .hb-left-sidebar {
-    @apply flex flex-col gap-4 flex-none;
-    width: 260px;
+  .hb-sidebar {
+    @apply flex flex-col gap-4;
   }
 
-  /* 中央カラム（サプライ＋プレイエリア） */
-  .hb-center-area {
-    @apply flex-1 flex flex-col gap-4;
+  /* 右側ボード：左にサプライ、右にカード詳細パネル */
+  .hb-board {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) 320px;
+    gap: 1.5rem;
     min-height: 0;
   }
 
   /* 右カラム（カード詳細＋ログ） */
   .hb-card-detail-panel {
-    @apply w-80 flex flex-col gap-3 flex-none;
+    @apply flex flex-col gap-3;
+    background: #050811;
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
+    padding: 1rem 1.25rem;
     min-height: 0;
   }
 
@@ -99,19 +107,38 @@
 
   /* ====== サプライボード ====== */
 
-  .hb-supply-section {
-    @apply bg-slate-900/70 border border-slate-700 rounded-3xl px-4 pt-3 pb-4 shadow-inner flex flex-col gap-2 flex-1;
+  .hb-supply-board {
+    background: #050811;
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
+    padding: 1rem 1.25rem 1.5rem;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hb-section-title {
+    @apply text-sm font-semibold text-slate-200 mb-3;
+  }
+
+  /* サプライ全体を「基本カード列 + 王国カードグリッド」に分割 */
+  .hb-supply-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 1rem;
     min-height: 0;
   }
 
-  /* Dominion Online 風：2行 x 5列グリッドでサプライを表示 */
-  .hb-supply-board {
+  .hb-supply-basic-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hb-supply-kingdom-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(160px, 1fr));
-    grid-auto-rows: auto;
-    gap: 20px;
-    padding: 16px 24px;
-    overflow-y: auto;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
   }
 
   .hb-supply-card {
@@ -122,76 +149,87 @@
     @apply cursor-not-allowed opacity-60;
   }
 
-  /* ====== カード汎用スタイル ====== */
-
-  /* カード本体：2:3 の縦長矩形カード */
-  .hb-card {
-    @apply relative bg-slate-950/80 rounded-2xl border border-slate-700 shadow-lg overflow-hidden flex flex-col;
-    aspect-ratio: 2 / 3;
+  .hb-supply-remaining-badge {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.96);
+    color: #fefce8;
+    box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.4);
   }
 
-  /* バリアントごとのサイズは外側ラッパーで制御する想定だが、
-     必要に応じて微調整用のクラスを用意しておく */
+  .hb-supply-cost-row {
+    margin-top: 0.3rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* ====== カード汎用スタイル ====== */
+
+  /* カード本体：縦長矩形カード（画像＋名前＋コスト＋タイプ） */
+  .hb-card {
+    background: radial-gradient(circle at top, #1f2937, #020617);
+    border-radius: 18px;
+    padding: 0.5rem 0.5rem 0.55rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   .hb-card--supply {
     @apply w-full;
   }
 
   .hb-card--hand {
-    @apply w-full;
-  }
-
-  .hb-card--play {
-    @apply w-full;
+    @apply w-full max-w-[170px];
   }
 
   .hb-card-image-wrapper {
-    @apply relative w-full h-full overflow-hidden;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    margin-bottom: 0.4rem;
   }
 
   .hb-card-image {
-    @apply w-full h-full object-cover;
-  }
-
-  .hb-card-cost-badge {
-    @apply absolute bottom-2 right-2 px-2 py-[2px] rounded-full bg-amber-700/90 text-[11px] text-amber-50 font-semibold shadow;
-  }
-
-  .hb-card-remaining-badge {
-    @apply absolute top-2 left-2 px-2 py-[2px] rounded-full bg-slate-950/85 border border-amber-400 text-[11px] text-amber-200;
+    @apply w-full h-full object-cover block;
   }
 
   .hb-card-footer {
-    @apply px-3 pt-2 pb-2 bg-slate-950/95 border-t border-slate-700 flex flex-col gap-1;
+    @apply flex flex-col gap-1;
   }
 
-  .hb-card-title-row {
-    @apply flex items-center justify-between gap-2;
+  .hb-card-name-row {
+    @apply flex items-center justify-between text-[0.9rem];
   }
 
   .hb-card-name {
-    @apply text-[13px] font-semibold text-slate-100 truncate;
+    @apply font-semibold text-slate-100 truncate;
   }
 
-  .hb-card-type {
-    @apply px-2 py-[2px] rounded-full bg-sky-900/80 text-[11px] text-sky-100 shrink-0;
+  .hb-cost-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: #fbbf24;
+    color: #111827;
+    font-weight: 600;
   }
 
-  /* ====== プレイエリア ====== */
-
-  .hb-play-area {
-    @apply bg-slate-900/70 border border-slate-700 rounded-3xl px-4 pt-3 pb-3 flex flex-col gap-2 mt-2;
+  .hb-card-type-row {
+    @apply flex justify-start;
   }
 
-  .hb-play-cards-row {
-    @apply flex flex-row flex-wrap gap-3;
+  .hb-card-type-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px;
+    background: rgba(248, 250, 252, 0.12);
   }
-
-  .hb-play-card-wrapper {
-    @apply w-[180px];
-  }
-
-  .hb-play-empty {
-    @apply text-xs text-slate-400;
   }
 
   /* ====== カード詳細 ====== */
@@ -240,19 +278,19 @@
   }
 
   /* 手札：横一列に並べ、オーバーフロー時は横スクロールにする */
-  .hb-hand-cards {
-    @apply flex flex-row gap-16 overflow-x-auto pb-1 px-1;
+  .hb-hand-scroll {
+    @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
   }
 
-  .hb-hand-card-slot {
+  .hb-hand-card {
     @apply w-[170px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
   }
 
-  .hb-hand-card-slot:hover {
+  .hb-hand-card:hover {
     @apply -translate-y-1;
   }
 
-  .hb-hand-card-slot--selected {
+  .hb-hand-card--selected {
     @apply ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-900;
   }
 
@@ -285,5 +323,5 @@
   .hb-log-line {
     @apply leading-tight;
   }
-}
+
 

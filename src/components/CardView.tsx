@@ -1,16 +1,21 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import "../index.css";
 
-type CardViewVariant = "supply" | "hand" | "play";
+type CardViewVariant = "supply" | "hand";
+
+// カード種別 → 日本語ラベル
+const typeLabelMap: Record<string, string> = {
+  resource: "資源",
+  person: "人物",
+  event: "出来事",
+  victory: "勝利点",
+};
 
 export interface CardViewProps {
-  card: any; // Card 型（v1/v2 両対応）。ここでは any にしておく
+  // v2 Card 型を想定しつつ、互換性のため any としておく
+  card: any;
   /**
-   * サプライ山札の残り枚数（ある場合のみ、カード上部バッジとして表示）
-   */
-  remaining?: number;
-  /**
-   * 表示バリアント（サイズやレイアウト差分のみ、ロジックには影響しない）
+   * 表示バリアント（サプライ or 手札）
    */
   variant?: CardViewVariant;
   /**
@@ -18,38 +23,34 @@ export interface CardViewProps {
    */
   onHover?: (card: any | null) => void;
   /**
-   * 追加の小さなフッターコンテンツ（例：残り枚数ラベル、ボタンなど）
-   */
-  children?: ReactNode;
-  /**
-   * 既存コンポーネント互換用。見た目の切り替えは外側のラッパーで行うのでここでは未使用。
+   * 既存コンポーネント互換用（HandCard から渡される）。見た目の切り替えはここでは行わない。
    */
   highlight?: boolean;
   disabled?: boolean;
 }
 
 // 中央のカード表示コンポーネント。
-// ・イラスト
-// ・コストバッジ（米）
-// ・カード名
-// ・種別バッジ
-// ・任意の小さなフッター children
+// - 画像
+// - カード名
+// - 米コスト
+// - 種別バッジ（日本語）
 // だけを担当し、長い効果テキストは描画しない。
 export const CardView: React.FC<CardViewProps> = ({
   card,
-  remaining,
   variant = "supply",
   onHover,
-  children,
 }) => {
   const handleMouseEnter = () => onHover?.(card);
   const handleMouseLeave = () => onHover?.(null);
 
-  // v2: card.cost?.rice / card.cost?.knowledge
-  // v1: card.cost (number), card.knowledgeRequired など
+  // v2: card.cost は number
+  // v1 互換: card.cost.rice などがあればそちらを優先
   const riceCost =
     (typeof card.cost === "number" ? card.cost : card.cost?.rice) ?? 0;
-  const typeLabel = card.cardTypeLabel ?? card.cardType ?? card.type ?? "";
+
+  const rawType: string =
+    card.type ?? card.cardType ?? card.cardTypeLabel ?? "";
+  const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
 
   const imageUrl =
     card.image ||
@@ -64,24 +65,19 @@ export const CardView: React.FC<CardViewProps> = ({
     >
       <div className="hb-card-image-wrapper">
         <img src={imageUrl} alt={card.name} className="hb-card-image" />
-
-        {/* コスト：イラスト右下のバッジ */}
-        <span className="hb-card-cost-badge">米 {riceCost}</span>
-
-        {/* サプライの残り枚数バッジ（左上） */}
-        {typeof remaining === "number" && (
-          <span className="hb-card-remaining-badge">残り {remaining}</span>
-        )}
       </div>
 
       <div className="hb-card-footer">
-        <div className="hb-card-title-row">
+        <div className="hb-card-name-row">
           <span className="hb-card-name">{card.name}</span>
-          {typeLabel && <span className="hb-card-type">{typeLabel}</span>}
+          <span className="hb-cost-badge">米 {riceCost}</span>
         </div>
 
-        {/* 追加の小さなフッター要素（残り枚数テキストやボタンなど） */}
-        {children}
+        <div className="hb-card-type-row">
+          {typeLabel && (
+            <span className="hb-card-type-badge">{typeLabel}</span>
+          )}
+        </div>
       </div>
     </div>
   );

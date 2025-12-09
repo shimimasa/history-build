@@ -30,10 +30,10 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   };
 
   return (
-    // サプライの 1 山札。CardView にレイアウトを任せつつ、
-    // ・残り枚数バッジ
-    // ・「買う」ボタン
-    // だけを小さくフッターに配置する。
+    // サプライの 1 山札。
+    // - CardView にカード本体（画像＋名前＋コスト＋タイプ）を描画させる
+    // - 残り枚数バッジは外側ボタンにオーバーレイする
+    // - クリック時の挙動は既存の onClick ハンドラを維持
     <button
       type="button"
       className={`hb-supply-card${
@@ -43,27 +43,11 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <CardView card={card} remaining={remaining} variant="supply">
-        <div className="hb-supply-card-footer">
-          {/* 残り枚数（テキストとしても表示。数値バッジは CardView 内の remaining バッジを使用） */}
-          {typeof remaining === "number" && (
-            <span className="hb-supply-remaining-text">残り {remaining}</span>
-          )}
+      {typeof remaining === "number" && (
+        <div className="hb-supply-remaining-badge">残り {remaining}</div>
+      )}
 
-          {/* 購入ボタン：山札をクリックしたときと同じハンドラを使う */}
-          <button
-            type="button"
-            className="hb-supply-buy-button"
-            disabled={isDisabled}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClick();
-            }}
-          >
-            買う
-          </button>
-        </div>
-      </CardView>
+      <CardView card={card} variant="supply" />
     </button>
   );
 };
