@@ -2,79 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== 既存の hb-app 系（今はほぼ未使用） ===== */
+/* ===== History Build ゲーム画面用レイアウト ===== */
 @layer components {
-  .hb-app {
+  /* ルートレイアウト */
+  .hb-game-layout {
     @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col;
   }
 
-  .hb-header {
-    @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur;
-  }
-
-  .hb-header-inner {
-    @apply w-full max-w-6xl mx-auto px-4 py-3 flex items-center justify-between;
-  }
-
-  .hb-header-title {
-    @apply text-lg font-semibold tracking-wide;
-  }
-
-  .hb-header-turn {
-    @apply flex items-center gap-2 text-sm;
-  }
-
-  .hb-main-board {
-    @apply flex-1 w-full max-w-6xl mx-auto flex gap-4 px-4 py-4;
-  }
-
-  .hb-board-inner {
-    @apply flex-1 flex gap-4;
-  }
-
-  .hb-log-panel {
-    @apply w-72 border-l border-slate-800 pl-4 text-xs leading-relaxed;
-  }
-
-  .hb-log-panel h3 {
-    @apply text-slate-200 font-semibold mb-2;
-  }
-
-  .hb-log-panel p {
-    @apply text-slate-300;
-  }
-
-  /* ====== 共通カードスタイル ====== */
-  .hb-card {
-    @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
-  }
-
-  .hb-card-frame {
-    @apply relative w-full rounded-xl border border-slate-700 bg-slate-900/80 shadow-lg shadow-black/40;
-  }
-
-  .hb-card-inner {
-    @apply flex flex-col gap-2 p-3;
-  }
-
-  .hb-card-title {
-    @apply text-sm font-semibold tracking-wide;
-  }
-
-  .hb-card-type {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] border border-slate-600 bg-slate-800/60;
-  }
-
-  .hb-card-body {
-    @apply text-xs leading-snug text-slate-200;
-  }
-
-  /* ====== ゲーム画面用レイアウト ====== */
-
-  .hb-game-layout {
-    @apply h-screen bg-slate-900 text-slate-100 flex flex-col;
-  }
-
+  /* ---------- ヘッダー ---------- */
   .hb-game-header {
     @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur flex flex-col gap-2;
   }
@@ -87,32 +22,20 @@
     @apply text-xl font-bold tracking-wide;
   }
 
-  .hb-header-controls {
-    @apply flex items-center gap-3;
+  .hb-game-status {
+    @apply flex items-center gap-2 text-xs;
   }
 
-  .hb-header-pill {
-    @apply px-4 py-1 rounded-full border border-slate-700 bg-slate-900/80 text-sm flex items-center gap-2;
+  .hb-pill {
+    @apply px-3 py-1 rounded-full border border-slate-700 bg-slate-900/80 text-xs flex items-center gap-1;
   }
 
-  .hb-header-pill-label {
-    @apply text-xs text-slate-300;
+  .hb-game-resources {
+    @apply w-full max-w-6xl mx-auto px-4 pb-3 flex items-center gap-3;
   }
 
-  .hb-header-pill-value {
-    @apply text-sm font-semibold;
-  }
-
-  .hb-game-header-bottom {
-    @apply w-full max-w-6xl mx-auto px-4 pb-3 flex items-center justify-between text-xs text-slate-300;
-  }
-
-  .hb-header-resources {
-    @apply flex items-center gap-3;
-  }
-
-  .hb-resource-pill {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full border border-slate-700 bg-slate-900/80 text-xs;
+  .hb-resource-badge {
+    @apply inline-flex flex-col px-3 py-1 rounded-xl border border-slate-700 bg-slate-900/80 text-xs;
   }
 
   .hb-resource-label {
@@ -133,19 +56,18 @@
   .hb-phase-badge-buy { @apply bg-emerald-900 border-emerald-500 text-emerald-100; }
   .hb-phase-badge-cleanup { @apply bg-slate-800 border-slate-500 text-slate-100; }
 
-  /* 中央 3 カラム */
+  /* ---------- メイン 3 カラム ---------- */
   .hb-game-main {
-    @apply flex-1 w-full flex justify-center overflow-hidden;
-    @apply max-w-6xl mx-auto;
+    @apply flex-1 w-full max-w-6xl mx-auto flex gap-3 px-4 py-3 overflow-hidden;
   }
 
   .hb-column {
     @apply h-full;
   }
 
-  /* 左サイド：プレイヤー / CPU 情報 */
+  /* 左サイド：プレイヤー / CPU */
   .hb-player-panel {
-    @apply w-56 flex-shrink-0 px-4 py-4 flex flex-col gap-3;
+    @apply w-56 flex-shrink-0 px-0 py-1 flex flex-col gap-2;
   }
 
   .hb-sidebar-panel {
@@ -154,84 +76,78 @@
     align-self: flex-start;
   }
 
-  .hb-sidebar-panel h3 {
-    @apply text-sm font-semibold mb-2 border-b border-slate-700 pb-1;
-  }
-
-  .hb-sidebar-row {
-    @apply flex justify-between py-0.5;
-  }
-
-  .hb-sidebar-label {
-    @apply text-slate-300;
-  }
-
-  .hb-sidebar-value {
-    @apply font-semibold;
-  }
-
-  /* 中央：サプライ＆プレイエリア */
-  .hb-center-area {
-    @apply flex-1 flex flex-col gap-3 px-0 py-3;
-        max-height: calc(100vh - 260px); /* ヘッダー + 手札 + フッター 分 */
-        /* 中央エリアの中だけ縦スクロールできるようにする */
-        overflow-y: auto;
-  }
-
-  .hb-board-inner-main {
-    @apply flex-1 flex gap-3 px-4;
-  }
-
-  .hb-supply-column {
-    @apply flex-1 flex flex-col gap-3;
-  }
-
-  .hb-board-header {
-    @apply text-sm font-semibold mb-1;
-  }
-
-  .hb-board-header-sub {
-    @apply text-[11px] text-slate-400;
-  }
-
-  .hb-main-board {
-    @apply hb-card flex-1 flex flex-col gap-2;
-  }
-
-  .hb-main-board-header {
-    @apply flex items-center justify-between mb-1;
-  }
-
-  .hb-main-board-title {
-    @apply text-sm font-semibold;
-  }
-
-  .hb-main-board-sub {
-    @apply text-[11px] text-slate-400;
-  }
-
-  .hb-main-board-body {
-    @apply flex-1 flex flex-col;
-  }
-
-  /* 右サイド：カード詳細パネル */
-  .hb-detail-panel {
-    @apply w-80 flex-shrink-0 px-4 py-4;
+  /* 右サイド：カード説明 */
+  .hb-log-panel {
+    @apply w-72 flex-shrink-0 px-0 py-1 text-xs leading-relaxed;
   }
 
   .hb-card-detail-panel {
     @apply hb-card text-xs;
   }
 
-  .hb-card-detail-panel h3 {
-    @apply text-sm font-semibold mb-2;
+  /* 中央：サプライ & プレイエリア */
+  .hb-center-area {
+    @apply flex-1 flex flex-col gap-3 px-0 py-1;
   }
 
-  .hb-card-detail-body {
-    @apply text-xs leading-relaxed text-slate-200;
+  .hb-supply-area {
+    @apply flex-1;
   }
 
-  /* サプライ全体のボード */
+  .hb-play-area {
+    @apply mt-2 text-xs text-slate-300;
+  }
+
+  .hb-play-area--hidden {
+    @apply hidden;
+  }
+
+  .hb-play-area-compact {
+    @apply opacity-60;
+  }
+
+  .hb-play-area-inner {
+    @apply hb-card;
+  }
+
+  .hb-play-rows {
+    @apply flex flex-col gap-3;
+  }
+
+  .hb-play-label {
+    @apply text-[11px] text-slate-300 mb-1;
+  }
+
+  .hb-play-cards {
+    @apply flex gap-2 overflow-x-auto;
+  }
+
+  .hb-play-card {
+    @apply shrink-0 w-32;
+  }
+
+  .hb-play-empty {
+    @apply text-[11px] text-slate-500;
+  }
+
+  .hb-play-summary {
+    @apply mt-2 text-[11px] text-slate-300 flex gap-4;
+  }
+
+  /* ---------- 共通カード枠 ---------- */
+  .hb-card {
+    @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
+  }
+
+  .hb-card-frame {
+    @apply relative w-full rounded-xl border border-slate-700 bg-slate-900/80 shadow-lg shadow-black/40;
+  }
+
+  .hb-card-body {
+    @apply text-xs leading-snug text-slate-200;
+  }
+
+  /* ---------- サプライボード ---------- */
   .hb-supply-board {
     @apply w-full;
   }
@@ -243,7 +159,7 @@
   /* 左側：基本カード（資源・国力）縦並び */
   .hb-supply-basic-column {
     @apply flex flex-col gap-2 flex-shrink-0;
-    width: 140px;
+    width: 150px;
   }
 
   /* 右側：王国カード（人物・出来事）のグリッド */
@@ -251,175 +167,10 @@
     @apply grid gap-2;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
   @screen md {
     .hb-supply-kingdom-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
-  }
-
-  /* プレイエリア（今後拡張用） */
-  .hb-play-area {
-    @apply mt-2 text-xs text-slate-300;
-  }
-
-  .hb-play-area-placeholder {
-    @apply h-16 border border-dashed border-slate-700 rounded-lg flex items-center justify-center text-[11px] text-slate-500;
-  }
-
-  /* 手札エリア */
-  .hb-hand-area {
-    @apply border-t border-slate-800 bg-slate-950/95;
-    flex-shrink: 0;
-    max-height: 170px;
-    position: relative;
-  }
-
-  .hb-hand-area-inner {
-    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
-    height: 100%;
-  }
-
-  .hb-hand-header {
-    @apply flex items-center justify-between border-b border-slate-800 pb-1 mb-2;
-  }
-
-  .hb-hand-title {
-    @apply text-sm font-semibold;
-  }
-
-  .hb-hand-help {
-    @apply text-[11px] text-slate-400;
-  }
-
-  .hb-hand-scroll {
-    @apply flex justify-center gap-4 overflow-x-auto overflow-y-hidden pb-1;
-    max-height: 170px;
-  }
-
-  .hb-hand-empty {
-    @apply py-3 text-xs text-slate-300;
-  }
-
-  /* 手札のカードラッパ（ミニサイズ表示） */
-  .hb-hand-card-wrapper {
-    @apply shrink-0;
-    transform: scale(0.62);
-    transform-origin: top center;
-  }
-
-  /* フッター（ボタン） */
-  .hb-footer {
-    @apply border-t border-slate-800 bg-slate-950/90;
-    flex-shrink: 0;
-  }
-
-  .hb-footer-inner {
-    @apply w-full max-w-6xl mx-auto px-4 py-2 flex items-center justify-end gap-2;
-  }
-
-  .hb-footer-buttons {
-    @apply flex flex-wrap gap-2;
-  }
-
-  .hb-footer-button {
-    @apply px-4 py-2 rounded-full bg-sky-600 text-white text-sm font-semibold shadow-md shadow-sky-900/40 hover:bg-sky-500 transition-colors;
-  }
-
-  .hb-footer-button-muted {
-    @apply px-3 py-2 rounded-full bg-slate-800 text-slate-200 text-xs border border-slate-600 hover:bg-slate-700 transition-colors;
-  }
-
-  /* ====== 共通ボタン ====== */
-  .hb-btn {
-    @apply inline-flex items-center justify-center gap-1 rounded-full border border-slate-600 bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-100 hover:bg-slate-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed;
-  }
-
-  .hb-btn-primary {
-    @apply border-sky-500 bg-sky-600 hover:bg-sky-500;
-  }
-
-  .hb-btn-danger {
-    @apply border-rose-500 bg-rose-600 hover:bg-rose-500;
-  }
-
-  /* ====== CardView 共通 ====== */
-  .hb-card-view {
-    @apply flex flex-col h-full;
-  }
-
-  .hb-card-view-image-wrapper {
-    @apply relative w-full overflow-hidden rounded-lg mb-2 bg-slate-800/70;
-    padding-top: 140%;
-  }
-
-  .hb-card-view-body {
-    @apply flex-1 flex flex-col gap-1;
-  }
-
-  .hb-card-view-name {
-    @apply text-sm font-semibold leading-snug;
-  }
-
-  .hb-card-view-meta {
-    @apply flex items-center justify-between text-[11px] text-slate-300 mt-0.5;
-  }
-
-  .hb-card-view-meta-left {
-    @apply flex items-center gap-2;
-  }
-
-  .hb-card-view-meta-pill {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-600 bg-slate-900/60 text-[11px];
-  }
-
-  .hb-card-view-meta-cost {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-900/80 text-amber-100 text-[11px];
-  }
-
-  .hb-card-view-text {
-    font-size: 0.7rem;
-    -webkit-line-clamp: 3;
-  }
-
-  /* 手札カード（旧レイアウト用・一部で使用） */
-  .hb-hand-bar {
-    @apply w-full border-t border-slate-800 
-    bg-slate-900/95 flex items-center justify-center gap-2 px-4 py-2 text-xs;
-  }
-
-  .hb-hand-label {
-    @apply font-semibold mr-2;
-  }
-
-  .hb-hand-inner {
-    @apply flex gap-2 overflow-x-auto;
-  }
-
-  /* ログ / ガイドなど細かい表示 */
-  .hb-log {
-    @apply text-[11px] space-y-2;
-  }
-
-  .hb-help-panel {
-    @apply text-[11px];
-  }
-
-  /* 手札エリア左上に重ねるフェーズガイド（未使用なら無視） */
-  .hb-phase-guide {
-    @apply absolute;
-    left: 1rem;
-    top: -4.5rem;
-    width: 260px;
-    pointer-events: none;
-  }
-
-  .hb-phase-guide .hb-card {
-    @apply p-2;
-  }
-
-  .hb-phase-guide .hb-log {
-    @apply text-[10px];
   }
 
   /* サプライカード（標準 & コンパクト） */
@@ -461,9 +212,176 @@
   .hb-supply-card-selected {
     @apply ring-2 ring-sky-400 shadow-sky-500/40;
   }
+
+  /* ---------- CardView 共通 ---------- */
+  .hb-card-view {
+    @apply flex flex-col h-full;
+  }
+
+  .hb-card-view-inner {
+    @apply p-2;
+  }
+
+  .hb-card-art-wrapper {
+    @apply p-3 pb-2;
+  }
+
+  .hb-card-view-image-wrapper {
+    @apply relative w-full overflow-hidden rounded-lg mb-2 bg-slate-800/70;
+    padding-top: 135%;
+  }
+
+  .hb-card-view-image {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+
+  .hb-card-view-image-placeholder {
+    @apply absolute inset-0 flex items-center justify-center text-xs text-slate-300;
+  }
+
+  .hb-card-view-cost {
+    @apply absolute bottom-1 right-1 px-2 py-0.5 rounded-full bg-amber-900/80 text-[11px] text-amber-100;
+  }
+
+  .hb-card-view-body {
+    @apply flex-1 flex flex-col gap-1 pb-2 px-3;
+  }
+
+  .hb-card-view-header {
+    @apply flex items-center justify-between gap-1;
+  }
+
+  .hb-card-view-name {
+    @apply text-sm font-semibold leading-snug;
+  }
+
+  .hb-card-view-type {
+    @apply px-2 py-0.5 rounded-full bg-slate-800 text-[11px];
+  }
+
+  .hb-card-view-meta {
+    @apply flex items-center justify-between text-[11px] text-slate-300 mt-0.5;
+  }
+
+  .hb-card-view-text {
+    font-size: 0.7rem;
+    line-height: 1.1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .hb-card-view-footer {
+    @apply flex items-center justify-between border-t border-slate-700 pt-1 px-3 pb-2 text-[11px];
+  }
+
+  .hb-card-view-footer-status {
+    @apply text-slate-300;
+  }
+
+  .hb-card-view-footer-button {
+    @apply px-3 py-1 rounded-full bg-emerald-600 text-[11px] font-semibold text-white disabled:bg-slate-700 disabled:opacity-50;
+  }
+
+  .hb-card-view-remaining-badge {
+    @apply absolute top-1 left-1 px-2 py-0.5 rounded-full bg-slate-900/80 text-[11px];
+  }
+
+  .hb-card-view--highlight {
+    @apply ring-2 ring-emerald-400;
+  }
+
+  .hb-card-view--disabled {
+    @apply opacity-60 cursor-not-allowed;
+  }
+
+  /* ---------- 手札エリア ---------- */
+  .hb-hand-area {
+    @apply border-t border-slate-800 bg-slate-950/95;
+    flex-shrink: 0;
+    max-height: 190px;
+    position: relative;
+  }
+
+  .hb-hand-area-inner {
+    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
+    height: 100%;
+  }
+
+  .hb-hand-header {
+    @apply flex items-center justify-between border-b border-slate-800 pb-1 mb-2;
+  }
+
+  .hb-hand-scroll {
+    @apply flex justify-center gap-4 overflow-x-auto overflow-y-hidden pb-1;
+    max-height: 160px;
+  }
+
+  .hb-hand-empty {
+    @apply py-3 text-xs text-slate-300;
+  }
+
+  .hb-hand-card-wrapper {
+    @apply shrink-0;
+    transform: scale(0.75);
+    transform-origin: top center;
+  }
+
+  .hb-hand-card {
+    @apply cursor-pointer transition-transform;
+  }
+
+  .hb-hand-card-selected {
+    @apply ring-2 ring-sky-400;
+  }
+
+  /* ---------- フッター（ボタン） ---------- */
+  .hb-footer {
+    @apply border-t border-slate-800 bg-slate-950/90;
+    flex-shrink: 0;
+  }
+
+  .hb-footer-inner {
+    @apply w-full max-w-6xl mx-auto px-4 py-2 flex items-center justify-end;
+  }
+
+  .hb-footer-buttons {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .hb-footer-button {
+    @apply px-4 py-2 rounded-full text-sm font-semibold shadow-md transition-colors;
+  }
+
+  .hb-footer-button-primary {
+    @apply bg-sky-600 text-white shadow-sky-900/40 hover:bg-sky-500;
+  }
+
+  .hb-footer-button-secondary {
+    @apply bg-emerald-600 text-white shadow-emerald-900/40 hover:bg-emerald-500;
+  }
+
+  .hb-footer-button-muted {
+    @apply bg-slate-800 text-slate-200 text-xs border border-slate-600 hover:bg-slate-700;
+  }
+
+  /* 汎用ボタン */
+  .hb-btn {
+    @apply inline-flex items-center justify-center gap-1 rounded-full border border-slate-600 bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-100 hover:bg-slate-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .hb-btn-primary {
+    @apply border-sky-500 bg-sky-600 hover:bg-sky-500;
+  }
+
+  .hb-btn-danger {
+    @apply border-rose-500 bg-rose-600 hover:bg-rose-500;
+  }
 }
 
-/* Supply cards: slightly shorter art area for Dominion-like ratio */
+/* ===== サプライカードだけ少し横長にして、人物/出来事との高さ差を出す ===== */
 .hb-supply-card .hb-card-view-image-wrapper {
-  padding-top: 130%;
+  padding-top: 115%; /* もとの 130% より少し横長 */
 }
