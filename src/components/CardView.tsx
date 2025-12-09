@@ -1,3 +1,5 @@
+// src/components/CardView.tsx
+
 import React, { useState, useEffect } from "react";
 import type { Card } from "../game/gameState";
 import "../styles/CardView.css";
@@ -11,7 +13,7 @@ interface CardViewProps {
   onClick?: () => void;
   disabled?: boolean;
   highlight?: boolean;
-  showDetails?: boolean;          // いまは未使用（将来の拡張用）
+  showDetails?: boolean;          // 今後の拡張用
 
   // --- サプライ専用フッター / 残り枚数 ---
   canBuy?: boolean;               // 「実際に買える」状態か（ボタン enable 条件）
@@ -42,7 +44,7 @@ export const CardView: React.FC<CardViewProps> = ({
   onClick,
   disabled = false,
   highlight = false,
-  showDetails = false, // eslint 用ダミー
+  showDetails = false, // eslint-disable-line @typescript-eslint/no-unused-vars
   canBuy,
   buyDisabledReason,
   onBuyClick,
@@ -61,32 +63,19 @@ export const CardView: React.FC<CardViewProps> = ({
     onClick();
   };
 
+  const isSupply = variant === "supply";
+
   const className = [
     "hb-card-view",
-    variant === "supply" ? "hb-card-view--supply" : "",
+    isSupply ? "hb-card-view--supply" : "",
     highlight ? "hb-card-view--highlight" : "",
     disabled ? "hb-card-view--disabled" : ""
   ]
     .join(" ")
     .trim();
 
-    {/* サブ行：知識などメタ情報（サプライでは非表示） */}
-{variant !== "supply" && (
-  <div className="hb-card-view-meta">
-    <span>知識 {card.knowledgeRequired}</span>
-  </div>
-)}
-
-{/* 効果テキスト概要（サプライでは非表示） */}
-{variant !== "supply" && card.text && (
-  <p className="hb-card-view-text">
-    {card.text}
-  </p>
-)}
-
   const resolvedImageUrl = getCardImageUrl(card);
 
-  const isSupply = variant === "supply";
   const showRemainingBadge =
     isSupply && showRemaining && typeof remainingCount === "number";
 
@@ -156,19 +145,26 @@ export const CardView: React.FC<CardViewProps> = ({
             {/* タイトル行：名前 + 種別バッジ */}
             <div className="hb-card-view-header">
               <span className="hb-card-view-name">{card.name}</span>
-              <span className="hb-card-view-type">{typeLabel(card.type)}</span>
+              <span className="hb-card-view-type">
+                {typeLabel(card.type)}
+              </span>
             </div>
 
-            {/* サブ行：知識などメタ情報 */}
-            <div className="hb-card-view-meta">
-              <span>知識 {card.knowledgeRequired}</span>
-            </div>
+            {/* サプライ以外のときだけ詳細情報を表示 */}
+            {!isSupply && (
+              <>
+                {/* サブ行：知識などメタ情報 */}
+                <div className="hb-card-view-meta">
+                  <span>知識 {card.knowledgeRequired}</span>
+                </div>
 
-            {/* 効果テキスト概要（4行前後） */}
-            {card.text && (
-              <p className="hb-card-view-text">
-                {card.text}
-              </p>
+                {/* 効果テキスト概要（4行前後） */}
+                {card.text && (
+                  <p className="hb-card-view-text">
+                    {card.text}
+                  </p>
+                )}
+              </>
             )}
           </div>
 
@@ -194,4 +190,4 @@ export const CardView: React.FC<CardViewProps> = ({
   );
 };
 
-// TODO: v2.2 以降で rarity（レアリティ）やカードフレームの色分け、hover時のフレーバーテキスト表示などを追加する。
+// TODO: v2.2 以降で rarity（レアリティ）やカードフレームの色分け、hover 時のフレーバーテキスト表示などを追加する。
