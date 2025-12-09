@@ -552,7 +552,7 @@ const HandArea: React.FC<HandAreaProps> = ({
           手札がありません。次の自分のターン開始時に 5枚引きます。
         </div>
       ) : (
-        <div className="hb-hand-row">
+        <div className="hb-hand-scroll">
           {player.hand.map(cardId => {
             const card = getCardFromId(cardId);
             if (!card) return null;
