@@ -117,8 +117,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
         </div>
       </header>
 
-            {/* 2. 中央 3 カラム */}
-            <main className="hb-game-main">
+      {/* 2. 中央 3 カラム */}
+      <main className="hb-game-main">
         {/* 左：プレイヤー / CPU 情報 */}
         <aside className="hb-column hb-player-panel">
           <PlayerHud player={player} />
@@ -161,12 +161,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
         </aside>
       </main>
 
-      {/* 3. 手札エリア（フェーズガイドを重ねて表示） */}
+      {/* 3. 手札エリア（フェーズガイドは削除済み） */}
       <section className="hb-hand-area">
-        <div className="hb-phase-guide">
-          <GameLog phase={state.phase} />
-        </div>
-
         <HandArea
           player={player}
           isPlayerTurn={isPlayerTurn}
@@ -590,31 +586,6 @@ const HandArea: React.FC<HandAreaProps> = ({
     </div>
   );
 };
-
-interface GameLogProps {
-  phase: GameState["phase"];
-}
-
-const GameLog: React.FC<GameLogProps> = ({ phase }) => (
-  <div className="hb-card hb-log">
-    <div className="text-xs text-slate-300 mb-1">
-      現在のフェーズ:{" "}
-      <span className="font-semibold">{renderPhaseLabel(phase)}</span>
-    </div>
-    <div className="hb-log-section">
-      <div className="font-semibold mb-1 text-[11px]">
-        このターンで できること
-      </div>
-      <ol className="list-decimal list-inside space-y-0.5 text-[10px]">
-        <li>DRAW：手札が5枚になるまで引く</li>
-        <li>RESOURCE：資源カードをぜんぶ出して、米と知識をふやす</li>
-        <li>ACTION：手札から 人物 / 出来事カードを1まい えらんで つかう</li>
-        <li>BUY：米と知識をつかって、場のカードを1まい「買う」</li>
-        <li>CLEANUP：カードを片づけて、次のプレイヤーへ手番を回す</li>
-      </ol>
-    </div>
-  </div>
-);
 
 interface CardHelpPanelProps {
   hoveredCard: Card | null;
