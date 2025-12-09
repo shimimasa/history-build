@@ -185,7 +185,8 @@
 
   /* ★ 左カラム：180px 固定 */
   .hb-player-panel {
-    @apply flex-shrink-0 space-y-3 px-4 py-4;
+    /* 左カラム：幅は固定、縦方向に2つのカードを並べる */
+          @apply w-56 flex-shrink-0 px-4 py-4 flex flex-col gap-3;
     width: 180px;
     overflow-y: auto;          /* 中だけスクロールできるようにする */
   }
@@ -194,7 +195,7 @@
 .hb-center-area {
   @apply flex-1 flex flex-col gap-3 px-0 py-2;
   /* ヘッダー + 手札 + フッター分を多めに確保して、高さを抑える */
-  max-height: calc(100vh - 260px);
+  max-height: calc(100vh - 250px);
   overflow-y: auto;
 }
 
@@ -245,7 +246,7 @@
 .hb-hand-area {
   @apply border-t border-slate-800 bg-slate-950/95;
   flex-shrink: 0;
-  max-height: 140px;
+  max-height: 200px;
   position: relative;
 }
 
@@ -268,7 +269,7 @@
 
   .hb-hand-scroll {
     @apply flex gap-3 overflow-x-auto overflow-y-hidden pb-1;
-    max-height: 230px;
+    max-height: 190px;
   }
 
   .hb-hand-card-wrapper {
@@ -378,8 +379,10 @@
   }
 
   .hb-sidebar-panel {
-    @apply hb-card h-full flex flex-col;
-  }
+        @apply hb-card text-xs;
+        height: auto;               /* 列の高さに引きずられないようにする */
+        align-self: flex-start;     /* 余白があっても上詰め表示 */
+      }
 
   .hb-log-section {
     @apply mb-2;
