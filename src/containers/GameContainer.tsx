@@ -6,7 +6,7 @@
 // - deckConfig は createGameStateFromDeck に渡され、初期デッキ構成に反映される。
 
 import React, { useState, useRef, useEffect } from "react";
-import GameScreen from "../components/GameScreen";
+import { GameScreen } from "../components/GameScreen";
 import { createGameStateFromDeck } from "../logic/initGameState";
 import type { GameState, Card } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
@@ -94,7 +94,7 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   };
 
   // プレイヤー側：ACTION フェーズ中に人物 / 出来事カードを1枚プレイ
-  const handlePlayActionCard = (cardId: string) => {
+  const handlePlayHandCard = (cardId: string) => {
     setState((prev) => {
       if (
         prev.gameEnded ||
@@ -129,10 +129,14 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
     <>
       <GameScreen
         state={state}
-        onProceedPhase={handleProceedPhase}
-        onPlayActionCard={handlePlayActionCard}
+        logs={[]}
+        onPlayHandCard={handlePlayHandCard}
         onBuyCard={handleBuyCard}
-        onShowCardDetail={handleShowCardDetail}
+        onEndPhase={handleProceedPhase}
+        onEndTurn={() => {}}
+        selectedHandCardId={null}
+        onSelectHandCard={() => {}}
+        onHoverCard={() => {}}
       />
       <CardDetailModal
         card={selectedCardForDetail}

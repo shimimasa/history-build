@@ -60,9 +60,8 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
             >
               <CardView
                 card={card}
-                variant="dex"
-                disabled={true}
-                onClick={() => handleOpenDetail(card)}
+                variant="supply"
+                onHover={() => handleOpenDetail(card)}
               />
             </article>
           ))}
