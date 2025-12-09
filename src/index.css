@@ -117,8 +117,8 @@
     flex-direction: column;
   }
 
-  .hb-section-title {
-    @apply text-sm font-semibold text-slate-200 mb-3;
+  .hb-supply-board .hb-section-title {
+    @apply mb-3;
   }
 
   /* サプライ全体を「基本カード列 + 王国カードグリッド」に分割 */
@@ -141,8 +141,10 @@
     gap: 0.75rem;
   }
 
+  /* サプライカード：高さ固定をやめてカード自身の高さに任せる */
   .hb-supply-card {
-    @apply relative w-full h-full focus:outline-none cursor-pointer;
+    @apply relative w-full focus:outline-none cursor-pointer;
+    align-self: flex-start;
   }
 
   .hb-supply-card--disabled {
@@ -177,7 +179,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto; /* ★ 100% をやめて自然な高さに */
   }
 
   .hb-card--supply {
@@ -229,7 +231,6 @@
     padding: 0.15rem 0.4rem;
     border-radius: 999px;
     background: rgba(248, 250, 252, 0.12);
-  }
   }
 
   /* ====== カード詳細 ====== */
@@ -323,5 +324,4 @@
   .hb-log-line {
     @apply leading-tight;
   }
-
-
+}

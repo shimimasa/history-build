@@ -52,10 +52,15 @@ export const CardView: React.FC<CardViewProps> = ({
     card.type ?? card.cardType ?? card.cardTypeLabel ?? "";
   const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
 
+  // 画像プロパティはいくつかパターンがある想定
   const imageUrl =
     card.image ||
     card.imageUrl ||
-    "/images/cards/placeholder.webp"; // フォールバック
+    card.imageURL ||
+    card.cardImage ||
+    card.baseCard?.image ||
+    card.cardDef?.image ||
+    "/images/cards/placeholder.webp";
 
   return (
     <div
