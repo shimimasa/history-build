@@ -94,8 +94,8 @@
 @layer components {
   /* 全体 */
   .hb-game-layout {
-    @apply h-screen bg-slate-900 text-slate-100 flex flex-col;
-  }
+        @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col overflow-y-auto;
+      }
 
   .hb-game-header {
     @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur flex flex-col gap-2;
@@ -349,9 +349,12 @@
   /* 左側：基本カード（資源・国力）縦並び */
   .hb-supply-basic-column {
     @apply flex flex-col gap-2 flex-shrink-0;
-    width: 140px; /* サプライ1列分の幅 */
+    width: 120px; /* 基本カード列は細め */
   }
-
+  /* サプライ（標準サイズ → 王国カード用） */
+  .hb-supply-card .hb-card-view {
+      width: 150px;             /* 王国カードは少し大きめ */
+    }
   /* 右側：王国カード（人物・出来事）のグリッド */
   .hb-supply-kingdom-grid {
     @apply grid gap-2;
@@ -664,11 +667,13 @@
 
   .hb-supply-card-compact {
     @apply hb-card p-2;
-    max-width: 130px;
-    max-height: 190px;
+    max-width: 120px;         /* 基本カードは一回り細く */
+    max-height: 170px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transform: scale(0.9);    /* 全体を 90% に縮小 */
+    transform-origin: top center;
   }
 
   /* =========================================================
