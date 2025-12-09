@@ -94,8 +94,9 @@
 @layer components {
   /* 全体 */
   .hb-game-layout {
-        @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col overflow-y-auto;
-      }
+    @apply h-screen bg-slate-900 text-slate-100 flex flex-col;
+    overflow: hidden;          /* ページ全体はスクロールさせない */
+  }
 
   .hb-game-header {
     @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur flex flex-col gap-2;
@@ -186,15 +187,16 @@
   .hb-player-panel {
     @apply flex-shrink-0 space-y-3 px-4 py-4;
     width: 180px;
+    overflow-y: auto;          /* 中だけスクロールできるようにする */
   }
 
-  /* ★ 中央カラム：若干余裕をもたせつつスクロール可 */
-  .hb-center-area {
-    @apply flex-1 flex flex-col gap-3 px-0 py-3;
-    /* ヘッダー + 手札 + フッター の分を余裕をもって差し引く */
-    max-height: calc(100vh - 240px);
-    overflow-y: auto;
-  }
+  /* 中央カラム：サプライ＋プレイエリア */
+.hb-center-area {
+  @apply flex-1 flex flex-col gap-3 px-0 py-2;
+  /* ヘッダー + 手札 + フッター分を多めに確保して、高さを抑える */
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+}
 
   /* プレイエリア（必要なときだけ見せる） */
   .hb-play-area {
@@ -239,13 +241,13 @@
     @apply text-[11px] text-slate-400 mt-1;
   }
 
-  /* 手札エリア（かなりコンパクトに） */
-  .hb-hand-area {
-    @apply border-t border-slate-800 bg-slate-950/95;
-    flex-shrink: 0;
-    max-height: 170px;
-    position: relative; /* フェーズガイド重ね用 */
-  }
+ /* 手札エリアは少しだけ薄くする */
+.hb-hand-area {
+  @apply border-t border-slate-800 bg-slate-950/95;
+  flex-shrink: 0;
+  max-height: 140px;
+  position: relative;
+}
 
   .hb-hand-area-inner {
     @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
@@ -337,30 +339,30 @@
     @apply border border-slate-700 rounded-xl bg-slate-900/80 shadow-lg shadow-black/40 p-3;
   }
 
-  /* サプライ：左に基本カード列、右に王国カードグリッド */
-  .hb-supply-board {
-    @apply w-full;
-  }
+  /* サプライ全体のボックス */
+.hb-supply-board {
+  @apply w-full;
+  max-height: 380px;        /* だいたい「王国カード 2 段」分に収める */
+  overflow-y: auto;         /* それ以上はボックス内スクロール */
+}
 
-  .hb-supply-layout {
-    @apply flex gap-3 items-start;
-  }
+  /* 左：基本カード列、右：王国グリッド */
+.hb-supply-layout {
+  @apply flex gap-3 items-start;
+}
 
-  /* 左側：基本カード（資源・国力）縦並び */
-  .hb-supply-basic-column {
-    @apply flex flex-col gap-2 flex-shrink-0;
-    width: 120px; /* 基本カード列は細め */
-  }
+.hb-supply-basic-column {
+  @apply flex flex-col gap-2 flex-shrink-0;
+  width: 110px;             /* 基本カード列は細め */
+}
   /* サプライ（標準サイズ → 王国カード用） */
   .hb-supply-card .hb-card-view {
       width: 150px;             /* 王国カードは少し大きめ */
     }
-  /* 右側：王国カード（人物・出来事）のグリッド */
-  .hb-supply-kingdom-grid {
-    @apply grid gap-2;
-    /* スマホ〜タブレットでは 2 列 */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+    .hb-supply-kingdom-grid {
+      @apply grid gap-2;
+      grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 列 */
+    }
 
   @screen md {
     .hb-supply-kingdom-grid {
@@ -448,14 +450,13 @@
     @apply text-[10px] text-slate-200;
   }
 
-  /* フッター（ターンボタン） */
-  .hb-footer {
-    @apply border-t border-slate-800 bg-slate-950/95;
-  }
-
-  .hb-footer-inner {
-    @apply w-full max-w-6xl mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-2;
-  }
+  /* フッターも薄めに */
+.hb-footer {
+  @apply border-t border-slate-800 bg-slate-950/95;
+}
+.hb-footer-inner {
+  @apply w-full max-w-6xl mx-auto px-4 py-1 flex flex-col md:flex-row items-center justify-between gap-2;
+}
 
   .hb-footer-buttons {
     @apply flex flex-wrap gap-2;
