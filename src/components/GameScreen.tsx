@@ -63,7 +63,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   const phaseLabel = getPhaseLabel(currentPhase);
 
   return (
-    <div className="hb-game-layout">
+    // 新レイアウト: 全体を縦方向フレックスにし、
+    // 中央は「左サイドバー / サプライ＋プレイ / 右カード詳細」の3カラム、
+    // 下部は「手札＋アクションボタン」の専用エリアに分割する
+    <div className="hb-game-screen">
       {/* --- 上部ヘッダー（タイトル＋ターン情報） --- */}
       <header className="hb-game-header">
         <div className="hb-game-title">
@@ -86,9 +89,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       </header>
 
       {/* --- メイン 3 カラム --- */}
-      <main className="hb-main-area">
-        {/* 左：プレイヤー情報 / CPU 情報 */}
-        <aside className="hb-side-panel">
+      <main className="hb-main-layout">
+        {/* 左：プレイヤー情報 / CPU 情報（固定幅サイドバー） */}
+        <aside className="hb-left-sidebar">
           <PlayerHud title="プレイヤー" data={player} />
           <PlayerHud title="CPU" data={cpu} compact />
         </aside>
@@ -98,32 +101,17 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           <section className="hb-supply-section">
             <div className="hb-section-title">場のカード（サプライ）</div>
 
+            {/* Dominion Online 風：最大 10 山札を 2 行 x 5 列で並べるサプライグリッド */}
             <div className="hb-supply-board">
-              {/* 上段：基本カード（縦 1 列） */}
-              <div className="hb-supply-basic-column">
-                {basicPiles.map((pile: any) => (
-                  <SupplyCardPile
-                    key={pile.card.id}
-                    pile={pile}
-                    isDisabled={!isPlayerTurn}
-                    onClick={() => handleSupplyClick(pile)}
-                    onHover={onHoverCard}
-                  />
-                ))}
-              </div>
-
-              {/* 右側：人物＋出来事カード 5x2 グリッド */}
-              <div className="hb-supply-kingdom-grid">
-                {kingdomPiles.map((pile: any) => (
-                  <SupplyCardPile
-                    key={pile.card.id}
-                    pile={pile}
-                    isDisabled={!isPlayerTurn}
-                    onClick={() => handleSupplyClick(pile)}
-                    onHover={onHoverCard}
-                  />
-                ))}
-              </div>
+              {[...basicPiles, ...kingdomPiles].map((pile: any) => (
+                <SupplyCardPile
+                  key={pile.card.id}
+                  pile={pile}
+                  isDisabled={!isPlayerTurn}
+                  onClick={() => handleSupplyClick(pile)}
+                  onHover={onHoverCard}
+                />
+              ))}
             </div>
           </section>
 
@@ -149,8 +137,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           </section>
         </section>
 
-        {/* 右：カード詳細パネル */}
-        <aside className="hb-detail-panel">
+        {/* 右：カード詳細＋ログパネル（高さを中央カラムと揃える） */}
+        <aside className="hb-card-detail-panel">
           <div className="hb-section-title">カードの説明</div>
           <div className="hb-card-detail-scroll">
             {hoveredCard ? (
@@ -161,10 +149,29 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               </p>
             )}
           </div>
+
+          {/* ログは右カラム下部に配置し、メインエリア内でスクロールさせる */}
+          <div className="hb-detail-log-panel">
+            <div className="hb-section-title">ログ</div>
+            <div className="hb-log-scroll">
+              {logs.length === 0 ? (
+                <p className="hb-log-empty">まだログはありません。</p>
+              ) : (
+                logs
+                  .slice()
+                  .reverse()
+                  .map((line, idx) => (
+                    <div key={idx} className="hb-log-line">
+                      {line}
+                    </div>
+                  ))
+              )}
+            </div>
+          </div>
         </aside>
       </main>
 
-      {/* --- 下：手札エリア --- */}
+      {/* --- 下：手札エリア＋アクションボタン --- */}
       <section className="hb-hand-area">
         <div className="hb-hand-header">
           <span className="hb-section-title">手札</span>
@@ -172,7 +179,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             クリックで選択 / ダブルクリックで即プレイ
           </span>
         </div>
-        <div className="hb-hand-row">
+
+        {/* 下部いっぱいに横一列に並ぶ手札。多い場合は横スクロール */}
+        <div className="hb-hand-cards">
           {player.hand?.map((card: any) => (
             <div
               key={card.instanceId ?? card.id}
@@ -192,17 +201,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             >
               <CardView
                 card={card}
-                remaining={undefined}
                 variant="hand"
               />
             </div>
           ))}
         </div>
-      </section>
 
-      {/* --- フッター：ボタン＋ログ --- */}
-      <footer className="hb-footer">
-        <div className="hb-footer-controls">
+        {/* アクションボタンは右下寄せで横並び。カードとは重ならないように別コンテナにする */}
+        <div className="hb-hand-actions">
           <button
             className="hb-btn hb-btn-secondary"
             onClick={onEndPhase}
@@ -213,24 +219,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             ターンを終了
           </button>
         </div>
-        <div className="hb-footer-log">
-          <div className="hb-section-title">ログ</div>
-          <div className="hb-log-scroll">
-            {logs.length === 0 ? (
-              <p className="hb-log-empty">まだログはありません。</p>
-            ) : (
-              logs
-                .slice()
-                .reverse()
-                .map((line, idx) => (
-                  <div key={idx} className="hb-log-line">
-                    {line}
-                  </div>
-                ))
-            )}
-          </div>
-        </div>
-      </footer>
+      </section>
     </div>
   );
 };
