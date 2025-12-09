@@ -466,6 +466,46 @@
   }
 }
 
+/* ===========================
+   v1.5.3 – Supply card compact layout
+   Dominion-style: art + name only
+   =========================== */
+
+/* サプライカードの幅をやや広めに固定 */
+.hb-supply-card .hb-card-view {
+  width: 8.6rem;
+  max-width: 8.6rem;
+}
+
+/* Compact variant tag set in CardView.tsx */
+.hb-card-view--supply {
+  width: 8.6rem;
+}
+
+/* 念のため、meta行とテキストを CSS 側でも消す */
+.hb-card-view--supply .hb-card-view-meta,
+.hb-card-view--supply .hb-card-view-text {
+  display: none;
+}
+
+/* サプライ用カード内の上下の余白を少し詰める */
+.hb-card-view--supply .hb-card-view-body {
+  padding-top: 0.3rem;
+  padding-bottom: 0.6rem;
+}
+
+/* デスクトップでサプライボードを少し横に広げる */
+@media (min-width: 1024px) {
+  .hb-center-area {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .hb-supply-board {
+    column-gap: 0.9rem;
+  }
+}
+
 }
 
 

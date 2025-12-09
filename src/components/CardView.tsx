@@ -63,11 +63,26 @@ export const CardView: React.FC<CardViewProps> = ({
 
   const className = [
     "hb-card-view",
+    variant === "supply" ? "hb-card-view--supply" : "",
     highlight ? "hb-card-view--highlight" : "",
     disabled ? "hb-card-view--disabled" : ""
   ]
     .join(" ")
     .trim();
+
+    {/* サブ行：知識などメタ情報（サプライでは非表示） */}
+{variant !== "supply" && (
+  <div className="hb-card-view-meta">
+    <span>知識 {card.knowledgeRequired}</span>
+  </div>
+)}
+
+{/* 効果テキスト概要（サプライでは非表示） */}
+{variant !== "supply" && card.text && (
+  <p className="hb-card-view-text">
+    {card.text}
+  </p>
+)}
 
   const resolvedImageUrl = getCardImageUrl(card);
 
