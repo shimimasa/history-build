@@ -1,5 +1,6 @@
 import React from "react";
 import "../index.css";
+import { getCardImageUrl } from "../game/cardImages"; // ★ 追加
 
 type CardViewVariant = "supply" | "hand";
 
@@ -53,14 +54,16 @@ export const CardView: React.FC<CardViewProps> = ({
   const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
 
   // 画像プロパティはいくつかパターンがある想定
-  const imageUrl =
+  const explicitImage =
     card.image ||
     card.imageUrl ||
     card.imageURL ||
     card.cardImage ||
     card.baseCard?.image ||
-    card.cardDef?.image ||
-    "/images/cards/placeholder.webp";
+    card.cardDef?.image;
+
+  // 明示的な image があればそれを優先し、なければ card.id ベースの共通ヘルパーを使う
+  const imageUrl = explicitImage || getCardImageUrl(card as any);
 
   return (
     <div

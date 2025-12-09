@@ -116,8 +116,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <h2 className="hb-section-title">場のカード（サプライ）</h2>
 
             <div className="hb-supply-layout">
-              {/* 基本カード：左に縦 1 列 */}
-              <div className="hb-supply-basic-column">
+              {/* 基本カード：上部 1 行に横並び */}
+              <div className="hb-supply-basic-row">
                 {basicSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
                     key={pile.card.id}
@@ -129,7 +129,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 ))}
               </div>
 
-              {/* 王国カード：右側に 5 列グリッド */}
+              {/* 王国カード：右側に 5 列グリッド（縦スクロール可） */}
               <div className="hb-supply-kingdom-grid">
                 {kingdomSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
