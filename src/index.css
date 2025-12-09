@@ -385,3 +385,87 @@
 .hb-supply-card .hb-card-view-image-wrapper {
   padding-top: 115%; /* もとの 130% より少し横長 */
 }
+
+/* =========================================================
+ * 追加のレイアウト調整（2025-12-09）
+ * index.css の一番下にそのまま追記してください
+ * 既存定義より後ろに書くことでこちらを優先させます
+ * =======================================================*/
+
+ @layer components {
+  /* ---- サプライ（人物・出来事）カードの比率調整 ---- */
+
+  /* 王国カードのグリッドを 4 列にして 1 枚あたりの横幅を確保 */
+  @screen md {
+    .hb-supply-kingdom-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* サプライ用カードを少し横長＆低めにする */
+  .hb-supply-card-compact .hb-card-view {
+    width: 150px;              /* 130px → 150px に拡張 */
+  }
+
+  /* カード本体を「上：イラスト」「下：テキスト」でバランスよく分割 */
+  .hb-supply-card-compact .hb-card-frame {
+    display: flex;
+    flex-direction: column;
+    height: 260px;             /* 全体の高さを固定して縦長になりすぎないように */
+  }
+
+  /* イラストエリア：上側 55% くらい */
+  .hb-supply-card-compact .hb-card-art-wrapper {
+    flex: 0 0 55%;
+  }
+
+  /* テキストエリア：残り 45% くらい。溢れた分はカット */
+  .hb-supply-card-compact .hb-card-view-body {
+    flex: 1 1 auto;
+    max-height: 110px;
+    overflow: hidden;
+  }
+
+  /* 効果テキストは 3 行程度で切る（縦長防止） */
+  .hb-supply-card-compact .hb-card-view-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* =========================================
+ * 人物・出来事カード（compact）の見た目を調整
+ * =======================================*/
+
+@layer components {
+  /* イラストエリアを通常のカードと同じ比率に戻す */
+  .hb-supply-card-compact .hb-card-view-image-wrapper {
+    padding-top: 135%;  /* デフォルトと同じくらいの縦横比 */
+    height: auto;
+    max-height: none;
+  }
+
+  /* カード自体を細長くしすぎないように高さ制御を外す */
+  .hb-supply-card-compact .hb-card-frame {
+    height: auto;
+  }
+
+  /* テキストが縦長になりすぎないよう、最大行数を制限 */
+  .hb-supply-card-compact .hb-card-view-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;  /* 4行くらいで切る */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 王国カードの列幅を少し広げて、1文字ごとの折り返しを防ぐ */
+  @screen md {
+    .hb-supply-kingdom-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+}
+
+
