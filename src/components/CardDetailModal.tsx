@@ -53,7 +53,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
 
         <div className="hb-card-modal-body">
           <div className="hb-card-modal-card-wrapper">
-            <CardView card={card} variant="modal" disabled={true} />
+            <CardView card={card} variant="supply" />
           </div>
 
           <div className="hb-card-modal-meta">
