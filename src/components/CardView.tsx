@@ -1,193 +1,68 @@
-// src/components/CardView.tsx
+import React from "react";
+import "../index.css";
 
-import React, { useState, useEffect } from "react";
-import type { Card } from "../game/gameState";
-import "../styles/CardView.css";
-import { getCardImageUrl } from "../game/cardImages";
+type CardViewVariant = "supply" | "hand" | "play";
 
-export type CardViewVariant = "supply" | "hand" | "dex" | "modal";
-
-interface CardViewProps {
-  card: Card;
-  variant?: CardViewVariant;      // デフォルト: "supply"
-  onClick?: () => void;
-  disabled?: boolean;
-  highlight?: boolean;
-  showDetails?: boolean;          // 今後の拡張用
-
-  // --- サプライ専用フッター / 残り枚数 ---
-  canBuy?: boolean;               // 「実際に買える」状態か（ボタン enable 条件）
-  buyDisabledReason?: string;     // 買えないときのメッセージ
-  onBuyClick?: () => void;        // 「買う」ボタンを押したとき
-  showRemaining?: boolean;        // 残り枚数バッジを表示するか
-  remainingCount?: number;        // 残り枚数
+export interface CardViewProps {
+  card: any;              // Card 型。ここでは any にしておく
+  remaining?: number;
+  variant?: CardViewVariant;
+  onHover?: (card: any | null) => void;
 }
-
-const typeLabel = (type: Card["type"]) => {
-  switch (type) {
-    case "resource":
-      return "資源";
-    case "person":
-      return "人物";
-    case "event":
-      return "出来事";
-    case "victory":
-      return "国力";
-    default:
-      return type;
-  }
-};
 
 export const CardView: React.FC<CardViewProps> = ({
   card,
+  remaining,
   variant = "supply",
-  onClick,
-  disabled = false,
-  highlight = false,
-  showDetails = false, // eslint-disable-line @typescript-eslint/no-unused-vars
-  canBuy,
-  buyDisabledReason,
-  onBuyClick,
-  showRemaining,
-  remainingCount
+  onHover,
 }) => {
-  const [hasError, setHasError] = useState(false);
-
-  // カードが変わったら画像読み込みエラー状態をリセット
-  useEffect(() => {
-    setHasError(false);
-  }, [card.id]);
-
-  const handleClick = () => {
-    if (disabled || !onClick) return;
-    onClick();
-  };
-
   const isSupply = variant === "supply";
 
-  const className = [
-    "hb-card-view",
-    isSupply ? "hb-card-view--supply" : "",
-    highlight ? "hb-card-view--highlight" : "",
-    disabled ? "hb-card-view--disabled" : ""
-  ]
-    .join(" ")
-    .trim();
+  const handleMouseEnter = () => onHover?.(card);
+  const handleMouseLeave = () => onHover?.(null);
 
-  const resolvedImageUrl = getCardImageUrl(card);
+  const riceCost = card.cost?.rice ?? 0;
+  const knowledgeCost = card.cost?.knowledge ?? 0;
+  const typeLabel = card.cardTypeLabel ?? card.cardType ?? "";
 
-  const showRemainingBadge =
-    isSupply && showRemaining && typeof remainingCount === "number";
-
-  const remaining =
-    typeof remainingCount === "number" ? remainingCount : undefined;
-  const isDepleted = typeof remaining === "number" && remaining <= 0;
-
-  // canBuy は「最終的にボタンを有効にしてよいか」を SupplyCard 側で計算して渡す前提
-  const buyEnabled = isSupply && !!canBuy && !isDepleted;
-
-  const statusText = !isSupply
-    ? ""
-    : isDepleted
-    ? "在庫なし"
-    : buyEnabled
-    ? "購入できます"
-    : buyDisabledReason ?? "条件不足（米 or 知識）";
-
-  const handleBuyClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-    if (!buyEnabled || !onBuyClick) return;
-    onBuyClick();
-  };
+  const imageUrl =
+    card.image ||
+    card.imageUrl ||
+    "/images/cards/placeholder.webp"; // フォールバック
 
   return (
-    <button
-      type="button"
-      className={className}
-      onClick={handleClick}
-      disabled={disabled}
+    <div
+      className={`hb-card-view hb-card-view--${variant}${
+        isSupply ? " hb-card-view--supply" : ""
+      }`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <div className="hb-card-view-inner">
-        {/* 実際のカード本体（1枚分） */}
-        <div className="hb-card-frame">
-          {/* サプライ用：残り枚数バッジ（カード左上） */}
-          {showRemainingBadge && remaining !== undefined && (
-            <div className="hb-card-view-remaining-badge">
-              残り {remaining}
-            </div>
-          )}
-
-          {/* イラスト領域（上部） */}
-          <div className="hb-card-art-wrapper">
-            <div className="hb-card-view-image-wrapper">
-              {!hasError && resolvedImageUrl ? (
-                <img
-                  src={resolvedImageUrl}
-                  alt={card.name}
-                  className="hb-card-view-image"
-                  onError={() => setHasError(true)}
-                />
-              ) : (
-                <div className="hb-card-view-image-placeholder">
-                  <span>{card.name.slice(0, 2)}</span>
-                </div>
-              )}
-
-              {/* コストバッジ（イラスト右下） */}
-              <div className="hb-card-view-cost">
-                <span>米 {card.cost}</span>
-              </div>
-            </div>
+      {/* 上：イラスト部分 */}
+      <div className="hb-card-view-image-wrapper">
+        <img src={imageUrl} alt={card.name} className="hb-card-view-image" />
+        {typeof remaining === "number" && (
+          <div className="hb-card-view-remaining-badge">
+            残り {remaining}
           </div>
+        )}
+      </div>
 
-          {/* テキストエリア（下部） */}
-          <div className="hb-card-body hb-card-view-body">
-            {/* タイトル行：名前 + 種別バッジ */}
-            <div className="hb-card-view-header">
-              <span className="hb-card-view-name">{card.name}</span>
-              <span className="hb-card-view-type">
-                {typeLabel(card.type)}
-              </span>
-            </div>
-
-            {/* サプライ以外のときだけ詳細情報を表示 */}
-            {!isSupply && (
-              <>
-                {/* サブ行：知識などメタ情報 */}
-                <div className="hb-card-view-meta">
-                  <span>知識 {card.knowledgeRequired}</span>
-                </div>
-
-                {/* 効果テキスト概要（4行前後） */}
-                {card.text && (
-                  <p className="hb-card-view-text">
-                    {card.text}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
-
-          {/* サプライ専用フッター：購入可否＋買うボタン */}
-          {isSupply && (
-            <div className="hb-card-view-footer">
-              <span className="hb-card-view-footer-status">
-                {statusText}
-              </span>
-              <button
-                type="button"
-                className="hb-card-view-footer-button"
-                onClick={handleBuyClick}
-                disabled={!buyEnabled}
-              >
-                買う
-              </button>
-            </div>
+      {/* 下：名前＋種別＋コスト */}
+      <div className="hb-card-view-footer">
+        <div className="hb-card-view-title-row">
+          <div className="hb-card-view-name">{card.name}</div>
+          <div className="hb-card-view-type-pill">{typeLabel}</div>
+        </div>
+        <div className="hb-card-view-cost-row">
+          <span className="hb-card-cost-pill">米 {riceCost}</span>
+          {knowledgeCost > 0 && (
+            <span className="hb-card-cost-pill hb-card-cost-pill--knowledge">
+              知 {knowledgeCost}
+            </span>
           )}
         </div>
       </div>
-    </button>
+    </div>
   );
 };
-
-// TODO: v2.2 以降で rarity（レアリティ）やカードフレームの色分け、hover 時のフレーバーテキスト表示などを追加する。

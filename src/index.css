@@ -2,325 +2,287 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===========================
-   History Build v1.5 – Layout
-   3 カラム + 下部手札
-   =========================== */
-
 @layer components {
+  /* ====== 全体レイアウト ====== */
+
   .hb-game-layout {
-    @apply min-h-screen bg-slate-900 text-slate-100 flex flex-col;
+    @apply min-h-screen bg-slate-950 text-slate-50 flex flex-col;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
   }
 
   .hb-game-header {
-    @apply border-b border-slate-800 bg-slate-950/90 backdrop-blur;
-  }
-
-  .hb-game-header-top {
-    @apply w-full max-w-6xl mx-auto px-4 py-3 flex items-center justify-between;
+    @apply flex flex-col md:flex-row items-start md:items-center justify-between px-8 pt-4 pb-2 gap-4;
   }
 
   .hb-game-title {
-    @apply text-sm md:text-base font-semibold tracking-wide;
+    @apply text-xl md:text-2xl font-semibold text-slate-50;
   }
 
-  .hb-game-status {
-    @apply flex flex-wrap gap-2 text-xs;
+  .hb-top-status {
+    @apply flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-6;
   }
 
-  .hb-pill {
-    @apply inline-flex items-center px-2 py-0.5 rounded-full bg-slate-800/80 text-[11px] text-slate-100 border border-slate-700/70;
+  .hb-status-group {
+    @apply flex flex-row flex-wrap gap-2;
   }
 
-  .hb-game-resources {
-    @apply w-full max-w-6xl mx-auto px-4 pb-2 flex flex-wrap gap-2 text-xs;
+  .hb-status-badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs;
   }
 
-  .hb-resource-badge {
-    @apply inline-flex items-center gap-1 px-2 py-1 rounded bg-slate-800/80 border border-slate-700/70;
+  .hb-status-label {
+    @apply text-slate-300;
   }
 
-  .hb-resource-label {
-    @apply text-[11px] text-slate-300;
+  .hb-status-value {
+    @apply font-semibold text-amber-300;
   }
 
-  .hb-resource-value {
-    @apply text-xs font-semibold text-amber-300;
+  .hb-turn-indicator {
+    @apply flex flex-col items-start gap-1 text-sm;
   }
 
-  /* ===== メイン 3 カラム ===== */
-
-  .hb-game-main {
-    @apply flex-1 w-full flex justify-center;
+  .hb-turn-text {
+    @apply text-slate-300;
   }
 
-  .hb-column {
-    @apply py-3;
+  .hb-phase-pill {
+    @apply inline-flex items-center px-3 py-1 rounded-full bg-indigo-700/70 text-xs font-semibold;
   }
 
-  .hb-player-panel {
-    @apply w-[180px] px-3 hidden lg:block;
+  .hb-main-area {
+    @apply flex-1 flex flex-row gap-4 px-6 pb-4 pt-2;
+  }
+
+  .hb-side-panel {
+    @apply w-56 flex flex-col gap-4;
   }
 
   .hb-center-area {
-    @apply flex-1 px-2 md:px-3 lg:px-4 max-w-4xl;
+    @apply flex-1 flex flex-col gap-4;
   }
 
   .hb-detail-panel {
-    @apply w-[260px] px-3 hidden lg:block;
-  }
-
-  /* ===== プレイヤー / CPU 情報 ===== */
-
-  .hb-player-box {
-    @apply mb-3 rounded-xl border border-slate-800 bg-slate-900/80 p-3;
-  }
-
-  .hb-player-box-cpu {
-    @apply bg-slate-900/60;
-  }
-
-  .hb-player-title {
-    @apply text-xs font-semibold text-slate-100 mb-2;
-  }
-
-  .hb-player-body {
-    @apply space-y-1.5 text-[11px];
-  }
-
-  .hb-player-row {
-    @apply flex justify-between;
-  }
-
-  .hb-player-label {
-    @apply text-slate-400;
-  }
-
-  .hb-player-value {
-    @apply text-slate-100;
-  }
-
-  /* ===== サプライエリア ===== */
-
-  .hb-supply-area {
-    @apply mt-3;
+    @apply w-80 flex flex-col gap-2;
   }
 
   .hb-section-title {
-    @apply text-xs font-semibold text-slate-100;
+    @apply text-sm font-semibold text-slate-200 mb-1;
+  }
+
+  /* ====== プレイヤーパネル ====== */
+
+  .hb-player-panel {
+    @apply bg-slate-900/80 border border-slate-700 rounded-2xl px-4 py-3 shadow-md flex flex-col gap-1 text-sm;
+  }
+
+  .hb-player-panel--compact {
+    @apply opacity-80 text-xs;
+  }
+
+  .hb-panel-title {
+    @apply text-slate-100 font-semibold mb-1;
+  }
+
+  .hb-panel-row {
+    @apply flex items-center justify-between text-slate-300;
+  }
+
+  /* ====== サプライボード ====== */
+
+  .hb-supply-section {
+    @apply bg-slate-900/70 border border-slate-700 rounded-3xl px-4 pt-3 pb-4 shadow-inner flex flex-col gap-2;
   }
 
   .hb-supply-board {
-    @apply mt-2 rounded-xl border border-slate-800 bg-slate-950/80 p-2;
-  }
-
-  .hb-supply-layout {
-    @apply flex gap-3;
+    @apply flex flex-row gap-4;
   }
 
   .hb-supply-basic-column {
-    @apply flex flex-col gap-2 pr-1;
-    width: 7.5rem;
-    flex-shrink: 0;
+    @apply flex flex-col gap-3 w-40;
   }
 
   .hb-supply-kingdom-grid {
-    @apply grid gap-2 flex-1;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    @apply flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3;
   }
 
-  /* ===== カードビュー（共通） ===== */
+  .hb-supply-card {
+    @apply relative w-full h-full bg-transparent rounded-3xl overflow-visible focus:outline-none;
+  }
+
+  .hb-supply-card--disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  /* ====== カード汎用スタイル ====== */
 
   .hb-card-view {
-    @apply inline-block text-left;
+    @apply relative bg-slate-950/80 rounded-3xl border border-slate-700 shadow-lg overflow-hidden flex flex-col;
   }
 
-  .hb-card-view-inner {
-    @apply relative;
+  .hb-card-view--supply {
+    @apply h-[220px];
   }
 
-  .hb-card-frame {
-    @apply relative rounded-xl border border-slate-700/80 bg-slate-900/90 shadow-sm overflow-hidden;
+  .hb-card-view--hand {
+    @apply h-[210px];
   }
 
-  .hb-card-view--highlight .hb-card-frame {
-    @apply ring-2 ring-sky-400 shadow-sky-500/40;
-  }
-
-  .hb-card-view--disabled {
-    @apply opacity-60 cursor-not-allowed;
-  }
-
-  .hb-card-art-wrapper {
-    @apply p-1.5 pb-0;
+  .hb-card-view--play {
+    @apply h-[210px];
   }
 
   .hb-card-view-image-wrapper {
-    @apply relative w-full rounded-lg overflow-hidden;
-    aspect-ratio: 2 / 3;
+    @apply relative w-full flex-1 overflow-hidden;
   }
 
   .hb-card-view-image {
     @apply w-full h-full object-cover;
   }
 
-  .hb-card-view-image-placeholder {
-    @apply w-full h-full flex items-center justify-center text-xs text-slate-400 bg-slate-800;
-  }
-
-  .hb-card-view-cost {
-    @apply absolute right-1 bottom-1 px-1.5 py-0.5 rounded-full bg-slate-900/85 border border-amber-400/70 text-[10px] text-amber-200;
-  }
-
   .hb-card-view-remaining-badge {
-    @apply absolute left-1 top-1 px-1.5 py-0.5 rounded-full bg-emerald-900/90 border border-emerald-500/70 text-[10px] text-emerald-200;
-  }
-
-  .hb-card-view-body {
-    @apply px-2 pb-2 pt-1;
-  }
-
-  .hb-card-view-header {
-    @apply flex items-center justify-between gap-1 mb-0.5;
-  }
-
-  .hb-card-view-name {
-    @apply text-[11px] font-semibold leading-tight text-slate-100;
-  }
-
-  .hb-card-view-type {
-    @apply text-[9px] px-1 py-0.5 rounded-full bg-slate-800/80 text-slate-200;
-  }
-
-  .hb-card-view-meta {
-    @apply text-[10px] text-slate-400;
-  }
-
-  .hb-card-view-text {
-    @apply mt-0.5 text-[10px] leading-snug text-slate-200 line-clamp-4;
-  }
-
-  /* サプライ用コンパクトカード（イラスト + 名前のみ） */
-
-  .hb-card-view--supply {
-    width: 9rem;
-  }
-
-  .hb-card-view--supply .hb-card-view-body {
-    @apply pt-1 pb-1.5;
-  }
-
-  .hb-card-view--supply .hb-card-view-meta,
-  .hb-card-view--supply .hb-card-view-text {
-    @apply hidden;
+    @apply absolute top-2 left-2 px-2 py-1 rounded-full bg-slate-950/80 border border-amber-400 text-[11px] text-amber-200;
   }
 
   .hb-card-view-footer {
-    @apply flex items-center justify-between gap-1 px-2 py-1 border-t border-slate-800 bg-slate-900/90;
+    @apply px-3 pt-2 pb-2 bg-slate-950/95 border-t border-slate-700 flex flex-col gap-1;
   }
 
-  .hb-card-view-footer-status {
-    @apply text-[10px] text-slate-300 truncate;
+  .hb-card-view-title-row {
+    @apply flex items-center justify-between gap-2;
   }
 
-  .hb-card-view-footer-button {
-    @apply text-[10px] px-2 py-0.5 rounded bg-sky-600 text-white hover:bg-sky-500 disabled:opacity-40 disabled:cursor-not-allowed;
+  .hb-card-view-name {
+    @apply text-[13px] font-semibold text-slate-100 truncate;
   }
 
-  /* ===== サプライカードのラッパ ===== */
-
-  .hb-supply-card {
-    @apply cursor-pointer;
+  .hb-card-view-type-pill {
+    @apply px-2 py-[2px] rounded-full bg-sky-900/80 text-[11px] text-sky-100 shrink-0;
   }
 
-  .hb-supply-card-compact .hb-card-frame {
-    @apply text-[11px];
+  .hb-card-view-cost-row {
+    @apply flex items-center gap-1 text-[11px];
   }
 
-  .hb-supply-card-selected .hb-card-frame {
-    @apply ring-2 ring-sky-400 shadow-sky-500/40;
+  .hb-card-cost-pill {
+    @apply px-2 py-[1px] rounded-full bg-amber-700/80 text-amber-100;
   }
 
-  /* ===== 右側カード詳細パネル ===== */
-
-  .hb-card-detail-panel {
-    @apply rounded-xl border border-slate-800 bg-slate-950/80 p-3 text-xs leading-snug h-full;
+  .hb-card-cost-pill--knowledge {
+    @apply bg-emerald-700/80 text-emerald-100;
   }
 
-  .hb-detail-name {
-    @apply text-sm font-semibold text-slate-50 mb-1;
+  /* ====== プレイエリア ====== */
+
+  .hb-play-area {
+    @apply bg-slate-900/70 border border-slate-700 rounded-3xl px-4 pt-3 pb-3 flex flex-col gap-2 mt-2;
   }
 
-  .hb-detail-type {
-    @apply text-[11px] text-slate-300 mb-2;
+  .hb-play-cards-row {
+    @apply flex flex-row flex-wrap gap-3;
   }
 
-  .hb-detail-text {
-    @apply text-[11px] text-slate-100 whitespace-pre-wrap;
+  .hb-play-card-wrapper {
+    @apply w-[180px];
   }
 
-  .hb-detail-placeholder {
-    @apply text-[11px] text-slate-400;
+  .hb-play-empty {
+    @apply text-xs text-slate-400;
   }
 
-  /* ===== 手札エリア ===== */
+  /* ====== カード詳細 ====== */
+
+  .hb-card-detail-scroll {
+    @apply flex-1 bg-slate-900/80 border border-slate-700 rounded-3xl px-4 py-3 overflow-y-auto;
+  }
+
+  .hb-card-detail-placeholder {
+    @apply text-xs text-slate-400;
+  }
+
+  .hb-card-detail {
+    @apply flex flex-col gap-1 text-sm text-slate-100;
+  }
+
+  .hb-card-detail-name {
+    @apply text-base font-semibold;
+  }
+
+  .hb-card-detail-meta {
+    @apply text-xs text-slate-300 flex flex-wrap gap-1;
+  }
+
+  .hb-card-detail-text {
+    @apply text-xs text-slate-200 leading-relaxed mt-1;
+  }
+
+  /* ====== 手札エリア ====== */
 
   .hb-hand-area {
-    @apply border-t border-slate-800 bg-slate-950/95;
-  }
-
-  .hb-hand-area-inner {
-    @apply w-full max-w-6xl mx-auto px-4 pt-2 pb-2;
+    @apply border-t border-slate-800 bg-slate-950/95 px-6 pt-3 pb-4 flex flex-col gap-2;
   }
 
   .hb-hand-header {
-    @apply flex items-center justify-between mb-1;
+    @apply flex items-baseline justify-between;
   }
 
-  .hb-hand-helper {
-    @apply text-[10px] text-slate-400;
+  .hb-hand-hint {
+    @apply text-[11px] text-slate-400;
   }
 
-  .hb-hand-empty {
-    @apply text-[11px] text-slate-400 py-2;
+  .hb-hand-row {
+    @apply flex flex-row justify-center gap-3 overflow-x-auto pb-1;
   }
 
-  .hb-hand-scroll {
-    @apply flex gap-3 overflow-x-auto overflow-y-hidden pb-1;
+  .hb-hand-card-slot {
+    @apply w-[180px] cursor-pointer transition-transform duration-150 ease-out;
   }
 
-  .hb-hand-card-wrapper {
-    @apply flex-shrink-0;
+  .hb-hand-card-slot:hover {
+    @apply -translate-y-1;
   }
 
-  .hb-hand-card-selected {
-    @apply ring-2 ring-sky-400 rounded-xl;
+  .hb-hand-card-slot--selected {
+    @apply ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-900;
   }
 
-  /* ===== フッター ===== */
+  /* ====== フッター（ボタン＋ログ） ====== */
 
   .hb-footer {
-    @apply border-t border-slate-800 bg-slate-950/95;
+    @apply border-t border-slate-900 bg-slate-950/95 px-6 py-3 flex flex-col md:flex-row gap-3;
   }
 
-  .hb-footer-inner {
-    @apply w-full max-w-6xl mx-auto px-4 py-2;
+  .hb-footer-controls {
+    @apply flex flex-row gap-2 items-center;
   }
 
-  .hb-footer-buttons {
-    @apply flex flex-wrap gap-2 justify-end;
+  .hb-btn {
+    @apply px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-150;
   }
 
-  .hb-footer-button {
-    @apply text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-100 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed;
+  .hb-btn-primary {
+    @apply bg-emerald-600 hover:bg-emerald-500 text-white;
   }
 
-  .hb-footer-button-primary {
-    @apply border-sky-500 bg-sky-600 hover:bg-sky-500;
+  .hb-btn-secondary {
+    @apply bg-slate-700 hover:bg-slate-600 text-slate-50;
   }
 
-  .hb-footer-button-muted {
-    @apply border-slate-700 bg-slate-900 text-slate-300;
+  .hb-footer-log {
+    @apply flex-1 flex flex-col gap-1;
+  }
+
+  .hb-log-scroll {
+    @apply bg-slate-900/80 border border-slate-700 rounded-2xl px-3 py-2 text-xs text-slate-100 max-h-32 overflow-y-auto;
+  }
+
+  .hb-log-empty {
+    @apply text-slate-400;
+  }
+
+  .hb-log-line {
+    @apply leading-tight;
   }
 }
 

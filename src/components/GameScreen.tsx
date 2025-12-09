@@ -1,340 +1,232 @@
-// src/components/GameScreen.tsx
-
-import React, { useState } from "react";
-import type { GameState, Card } from "../game/gameState";
-import { canBuyCard } from "../logic/cardEffects";
-import { computeVictoryPointsForPlayer } from "../game/socre";
-import SupplyCardPile from "./SupplyCard";
-import HandCard from "./HandCard";
+import React from "react";
 import { CardView } from "./CardView";
+import { SupplyCardPile } from "./SupplyCard";
+import "../index.css";
 
+export type GamePhase = "DRAW" | "ACTION" | "BUY" | "CLEANUP";
 
-interface GameScreenProps {
-  state: GameState;
-  onProceedPhase: () => void;
-  onPlayActionCard: (cardId: string) => void;
+export interface GameScreenProps {
+  state: any; // ExtendedGameState 相当。必要に応じて差し替え
+  logs: string[];
+  onPlayHandCard: (cardId: string) => void;
   onBuyCard: (cardId: string) => void;
-  onShowCardDetail: (card: Card) => void;
+  onEndPhase: () => void;
+  onEndTurn: () => void;
+  selectedHandCardId: string | null;
+  onSelectHandCard: (cardId: string | null) => void;
+  onHoverCard: (card: any | null) => void;
 }
 
-const GameScreen: React.FC<GameScreenProps> = ({
+export const GameScreen: React.FC<GameScreenProps> = ({
   state,
-  onProceedPhase,
-  onPlayActionCard,
+  logs,
+  onPlayHandCard,
   onBuyCard,
-  onShowCardDetail
+  onEndPhase,
+  onEndTurn,
+  selectedHandCardId,
+  onSelectHandCard,
+  onHoverCard,
 }) => {
-  const { player, cpu } = state;
-  const isPlayerTurn = state.activePlayer === "player";
-  const isActionPhase = state.phase === "ACTION";
-  const isBuyPhase = state.phase === "BUY";
-  const isCleanupPhase = state.phase === "CLEANUP";
+  const { player, cpu, currentPhase, turn, supply } = state;
 
-  // v2: 残りアクション / 残り購入はフェーズ基準で簡易表示
-  const actionsLeft = isPlayerTurn && isActionPhase ? 1 : 0;
-  const buysLeft = isPlayerTurn && isBuyPhase ? 1 : 0;
+  const isPlayerTurn = state.currentPlayer === "player";
 
-  const [selectedHandId, setSelectedHandId] = useState<string | null>(null);
-  const [selectedSupplyId, setSelectedSupplyId] = useState<string | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
+  // サプライを「基本（米袋・村落など）」と「人物・出来事」に分割
+  const basicPiles = Object.values(supply).filter(
+    (p: any) => p.card.cardType === "resource" || p.card.cardType === "base"
+  );
+  const kingdomPiles = Object.values(supply).filter(
+    (p: any) => p.card.cardType !== "resource" && p.card.cardType !== "base"
+  );
 
-  // サプライを type → cost 順で並べる
-  const supplyPiles = Object.values(state.supply).sort((a, b) => {
-    const order: Record<Card["type"], number> = {
-      resource: 0,
-      person: 1,
-      event: 2,
-      victory: 3
-    };
-    const diff = order[a.card.type] - order[b.card.type];
-    if (diff !== 0) return diff;
-    return a.card.cost - b.card.cost;
-  });
+  const hoveredCard: any | null = state.hoveredCard ?? null;
 
-  // 基本資源カードと王国カード群に分離
-  const basicPiles = supplyPiles.filter((pile) => pile.card.type === "resource");
-  const kingdomPiles = supplyPiles.filter((pile) => pile.card.type !== "resource");
-
-  const getCardFromId = (cardId: string): Card | null =>
-    state.supply[cardId]?.card ?? null;
-
-  const canPlaySelected =
-    isPlayerTurn && isActionPhase && selectedHandId !== null;
-
-  const canBuySelected =
-    isPlayerTurn && isBuyPhase && selectedSupplyId !== null;
-
-  const handleSelectHand = (cardId: string) => {
-    setSelectedHandId((prev) => (prev === cardId ? null : cardId));
+  const handleHandClick = (cardId: string) => {
+    if (selectedHandCardId === cardId) {
+      onSelectHandCard(null);
+    } else {
+      onSelectHandCard(cardId);
+    }
   };
 
-  const handleSelectSupply = (cardId: string) => {
-    setSelectedSupplyId((prev) => (prev === cardId ? null : cardId));
+  const handleHandDoubleClick = (cardId: string) => {
+    onPlayHandCard(cardId);
   };
 
-  const handlePlaySelected = () => {
-    if (!canPlaySelected || !selectedHandId) return;
-    onPlayActionCard(selectedHandId);
-    setSelectedHandId(null);
+  const handleSupplyClick = (pile: any) => {
+    if (!isPlayerTurn) return;
+    onBuyCard(pile.card.id);
   };
 
-  const handleBuySelected = () => {
-    if (!canBuySelected || !selectedSupplyId) return;
-    onBuyCard(selectedSupplyId);
-    setSelectedSupplyId(null);
-  };
-
-  const canProceed = !state.gameEnded;
-
-  const playerVP = computeVictoryPointsForPlayer(state, "player");
-  const cpuVP = computeVictoryPointsForPlayer(state, "cpu");
+  const phaseLabel = getPhaseLabel(currentPhase);
 
   return (
     <div className="hb-game-layout">
-      {/* 1. ヘッダー */}
+      {/* --- 上部ヘッダー（タイトル＋ターン情報） --- */}
       <header className="hb-game-header">
-        <div className="hb-game-header-top">
-          <div className="hb-game-title">History Build - 戦国デッキ v1.5</div>
-          <div className="hb-game-status">
-            <span className="hb-pill">
-              {state.gameEnded
-                ? "ゲーム終了"
-                : isPlayerTurn
-                ? "プレイヤーのターン"
-                : "CPUのターン"}
-            </span>
-            <span className="hb-pill">
-              フェーズ:{" "}
-              {state.phase === "ACTION"
-                ? "アクション"
-                : state.phase === "BUY"
-                ? "購入"
-                : "クリーンアップ"}
-            </span>
-          </div>
+        <div className="hb-game-title">
+          <span>History Build - 戦国デッキ v1.5</span>
         </div>
-
-        <div className="hb-game-resources">
-          <ResourceBadge label="アクション" value={actionsLeft} />
-          <ResourceBadge label="購入" value={buysLeft} />
-          <ResourceBadge label="米" value={player.riceThisTurn} />
-          <ResourceBadge label="知識" value={player.knowledge} />
+        <div className="hb-top-status">
+          <div className="hb-status-group">
+            <StatusBadge label="アクション" value={player.actions ?? 0} />
+            <StatusBadge label="購入" value={player.buys ?? 0} />
+            <StatusBadge label="米" value={player.rice ?? 0} />
+            <StatusBadge label="知識" value={player.knowledge ?? 0} />
+          </div>
+          <div className="hb-turn-indicator">
+            <div className="hb-turn-text">ターン {turn}</div>
+            <div className="hb-phase-pill">
+              手番 {isPlayerTurn ? "プレイヤー" : "CPU"} / フェーズ: {phaseLabel}
+            </div>
+          </div>
         </div>
       </header>
 
-      {/* 2. 中央 3 カラム */}
-      <main className="hb-game-main">
-        {/* 左：プレイヤー / CPU 情報 */}
-        <aside className="hb-column hb-player-panel">
-          <section className="hb-player-box">
-            <h2 className="hb-player-title">プレイヤー</h2>
-            <div className="hb-player-body">
-              <div className="hb-player-row">
-                <span className="hb-player-label">勝利点</span>
-                <span className="hb-player-value">{playerVP}</span>
-              </div>
-              <div className="hb-player-row">
-                <span className="hb-player-label">山札 / 手札</span>
-                <span className="hb-player-value">
-                  {player.deck.length} / {player.hand.length}
-                </span>
-              </div>
-              <div className="hb-player-row">
-                <span className="hb-player-label">捨て札</span>
-                <span className="hb-player-value">
-                  {player.discard.length}
-                </span>
-              </div>
-            </div>
-          </section>
-
-          <section className="hb-player-box hb-player-box-cpu">
-            <h2 className="hb-player-title">CPU</h2>
-            <div className="hb-player-body">
-              <div className="hb-player-row">
-                <span className="hb-player-label">勝利点</span>
-                <span className="hb-player-value">{cpuVP}</span>
-              </div>
-              <div className="hb-player-row">
-                <span className="hb-player-label">山札 / 手札</span>
-                <span className="hb-player-value">
-                  {cpu.deck.length} / {cpu.hand.length}
-                </span>
-              </div>
-              <div className="hb-player-row">
-                <span className="hb-player-label">捨て札</span>
-                <span className="hb-player-value">
-                  {cpu.discard.length}
-                </span>
-              </div>
-            </div>
-          </section>
+      {/* --- メイン 3 カラム --- */}
+      <main className="hb-main-area">
+        {/* 左：プレイヤー情報 / CPU 情報 */}
+        <aside className="hb-side-panel">
+          <PlayerHud title="プレイヤー" data={player} />
+          <PlayerHud title="CPU" data={cpu} compact />
         </aside>
 
-        {/* 中央：サプライボード */}
-        <section className="hb-column hb-center-area">
-          <section className="hb-supply-area">
-            <h2 className="hb-section-title">場のカード</h2>
-            <div className="hb-supply-board">
-              <div className="hb-supply-layout">
-                {/* 左：基本資源カードの縦列 */}
-                <div className="hb-supply-basic-column">
-                  {basicPiles.map((pile) => (
-                    <SupplyCardPile
-                      key={pile.card.id}
-                      card={pile.card}
-                      remaining={pile.remaining}
-                      canBuy={canBuyCard(player, pile.card)}
-                      disabled={
-                        !isPlayerTurn ||
-                        state.gameEnded ||
-                        pile.remaining <= 0 ||
-                        state.phase !== "BUY"
-                      }
-                      onBuy={() => onBuyCard(pile.card.id)}
-                      onShowDetail={() => onShowCardDetail(pile.card)}
-                      compact
-                      selected={selectedSupplyId === pile.card.id}
-                      onSelect={() => handleSelectSupply(pile.card.id)}
-                    />
-                  ))}
-                </div>
+        {/* 中央：サプライボード ＋ プレイエリア */}
+        <section className="hb-center-area">
+          <section className="hb-supply-section">
+            <div className="hb-section-title">場のカード（サプライ）</div>
 
-                {/* 右：人物・出来事・勝利点カード（5 列グリッド） */}
-                <div className="hb-supply-kingdom-grid">
-                  {kingdomPiles.map((pile) => (
-                    <SupplyCardPile
-                      key={pile.card.id}
-                      card={pile.card}
-                      remaining={pile.remaining}
-                      canBuy={canBuyCard(player, pile.card)}
-                      disabled={
-                        !isPlayerTurn ||
-                        state.gameEnded ||
-                        pile.remaining <= 0 ||
-                        state.phase !== "BUY"
-                      }
-                      onBuy={() => onBuyCard(pile.card.id)}
-                      onShowDetail={() => onShowCardDetail(pile.card)}
-                      compact
-                      selected={selectedSupplyId === pile.card.id}
-                      onSelect={() => handleSelectSupply(pile.card.id)}
-                    />
-                  ))}
-                </div>
+            <div className="hb-supply-board">
+              {/* 上段：基本カード（縦 1 列） */}
+              <div className="hb-supply-basic-column">
+                {basicPiles.map((pile: any) => (
+                  <SupplyCardPile
+                    key={pile.card.id}
+                    pile={pile}
+                    isDisabled={!isPlayerTurn}
+                    onClick={() => handleSupplyClick(pile)}
+                    onHover={onHoverCard}
+                  />
+                ))}
               </div>
+
+              {/* 右側：人物＋出来事カード 5x2 グリッド */}
+              <div className="hb-supply-kingdom-grid">
+                {kingdomPiles.map((pile: any) => (
+                  <SupplyCardPile
+                    key={pile.card.id}
+                    pile={pile}
+                    isDisabled={!isPlayerTurn}
+                    onClick={() => handleSupplyClick(pile)}
+                    onHover={onHoverCard}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* プレイエリア（場に出したカードなど） */}
+          <section className="hb-play-area">
+            <div className="hb-section-title">プレイ中のカード</div>
+            <div className="hb-play-cards-row">
+              {player.playArea?.length ? (
+                player.playArea.map((card: any) => (
+                  <div key={card.id} className="hb-play-card-wrapper">
+                    <CardView
+                      card={card}
+                      remaining={undefined}
+                      variant="play"
+                      onHover={onHoverCard}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="hb-play-empty">まだカードはプレイされていません。</div>
+              )}
             </div>
           </section>
         </section>
 
-        {/* 右：カード説明パネル */}
-        <aside className="hb-column hb-detail-panel">
-          <div className="hb-card-detail-panel">
+        {/* 右：カード詳細パネル */}
+        <aside className="hb-detail-panel">
+          <div className="hb-section-title">カードの説明</div>
+          <div className="hb-card-detail-scroll">
             {hoveredCard ? (
-              <>
-                <div className="hb-detail-name">{hoveredCard.name}</div>
-                <div className="hb-detail-type">
-                  {hoveredCard.type} / 知識 {hoveredCard.knowledgeRequired}
-                </div>
-                {hoveredCard.text && (
-                  <p className="hb-detail-text">{hoveredCard.text}</p>
-                )}
-              </>
+              <CardDetail card={hoveredCard} />
             ) : (
-              <p className="hb-detail-placeholder">
-                カードにマウスを重ねると説明が表示されます。
+              <p className="hb-card-detail-placeholder">
+                サプライや手札のカードにマウスをのせると、ここに説明が表示されます。
               </p>
             )}
           </div>
         </aside>
       </main>
 
-      {/* 3. 手札エリア */}
+      {/* --- 下：手札エリア --- */}
       <section className="hb-hand-area">
-        <div className="hb-hand-area-inner">
-          <div className="hb-hand-header">
-            <span className="hb-section-title">手札</span>
-            <span className="hb-hand-helper">
-              クリックで選択 / ダブルクリックで即使用
-            </span>
-          </div>
-
-          {player.hand.length === 0 ? (
-            <div className="hb-hand-empty">手札がありません。</div>
-          ) : (
-            <div className="hb-hand-scroll">
-              {player.hand.map((cardId) => {
-                const card = getCardFromId(cardId);
-                if (!card) return null;
-                const selected = selectedHandId === cardId;
-
-                return (
-                  <div
-                    key={cardId}
-                    className={`hb-hand-card-wrapper ${
-                      selected ? "hb-hand-card-selected" : ""
-                    }`}
-                    onMouseEnter={() => setHoveredCard(card)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    <HandCard
-                      card={card}
-                      disabled={!isPlayerTurn || !isActionPhase}
-                      selected={selected}
-                      onSelect={() => handleSelectHand(cardId)}
-                      onPlay={() => onPlayActionCard(card.id)}
-                      onShowDetail={() => onShowCardDetail(card)}
-                    />
-                  </div>
-                );
-              })}
+        <div className="hb-hand-header">
+          <span className="hb-section-title">手札</span>
+          <span className="hb-hand-hint">
+            クリックで選択 / ダブルクリックで即プレイ
+          </span>
+        </div>
+        <div className="hb-hand-row">
+          {player.hand?.map((card: any) => (
+            <div
+              key={card.instanceId ?? card.id}
+              className={`hb-hand-card-slot${
+                selectedHandCardId === (card.instanceId ?? card.id)
+                  ? " hb-hand-card-slot--selected"
+                  : ""
+              }`}
+              onClick={() =>
+                handleHandClick(card.instanceId ?? card.id)
+              }
+              onDoubleClick={() =>
+                handleHandDoubleClick(card.instanceId ?? card.id)
+              }
+              onMouseEnter={() => onHoverCard(card)}
+              onMouseLeave={() => onHoverCard(null)}
+            >
+              <CardView
+                card={card}
+                remaining={undefined}
+                variant="hand"
+              />
             </div>
-          )}
+          ))}
         </div>
       </section>
 
-      {/* 4. フッター：フェーズ操作ボタン */}
+      {/* --- フッター：ボタン＋ログ --- */}
       <footer className="hb-footer">
-        <div className="hb-footer-inner">
-          <div className="hb-footer-buttons">
-            <button
-              type="button"
-              className={`hb-footer-button ${
-                canPlaySelected
-                  ? "hb-footer-button-primary"
-                  : "hb-footer-button-muted"
-              }`}
-              onClick={handlePlaySelected}
-              disabled={!canPlaySelected}
-            >
-              選択カードを使う
-            </button>
-
-            <button
-              type="button"
-              className={`hb-footer-button ${
-                canBuySelected
-                  ? "hb-footer-button-primary"
-                  : "hb-footer-button-muted"
-              }`}
-              onClick={handleBuySelected}
-              disabled={!canBuySelected}
-            >
-              選択カードを購入
-            </button>
-
-            <button
-              type="button"
-              className={`hb-footer-button ${
-                isCleanupPhase
-                  ? "hb-footer-button-primary"
-                  : "hb-footer-button-muted"
-              }`}
-              onClick={onProceedPhase}
-              disabled={!canProceed}
-            >
-              フェーズを進める
-            </button>
+        <div className="hb-footer-controls">
+          <button
+            className="hb-btn hb-btn-secondary"
+            onClick={onEndPhase}
+          >
+            フェーズを進める
+          </button>
+          <button className="hb-btn hb-btn-primary" onClick={onEndTurn}>
+            ターンを終了
+          </button>
+        </div>
+        <div className="hb-footer-log">
+          <div className="hb-section-title">ログ</div>
+          <div className="hb-log-scroll">
+            {logs.length === 0 ? (
+              <p className="hb-log-empty">まだログはありません。</p>
+            ) : (
+              logs
+                .slice()
+                .reverse()
+                .map((line, idx) => (
+                  <div key={idx} className="hb-log-line">
+                    {line}
+                  </div>
+                ))
+            )}
           </div>
         </div>
       </footer>
@@ -342,19 +234,81 @@ const GameScreen: React.FC<GameScreenProps> = ({
   );
 };
 
-interface ResourceBadgeProps {
-  label: string;
-  value: number;
-}
+const StatusBadge: React.FC<{ label: string; value: number }> = ({
+  label,
+  value,
+}) => (
+  <div className="hb-status-badge">
+    <span className="hb-status-label">{label}</span>
+    <span className="hb-status-value">{value}</span>
+  </div>
+);
 
-const ResourceBadge: React.FC<ResourceBadgeProps> = ({ label, value }) => {
+const PlayerHud: React.FC<{
+  title: string;
+  data: any;
+  compact?: boolean;
+}> = ({ title, data, compact }) => {
   return (
-    <div className="hb-resource-badge">
-      <span className="hb-resource-label">{label}</span>
-      <span className="hb-resource-value">{value}</span>
+    <section
+      className={`hb-player-panel${
+        compact ? " hb-player-panel--compact" : ""
+      }`}
+    >
+      <div className="hb-panel-title">{title}</div>
+      <div className="hb-panel-row">
+        <span>山札 / 手札</span>
+        <span>
+          {data.deckCount ?? 0} / {data.hand?.length ?? 0}
+        </span>
+      </div>
+      <div className="hb-panel-row">
+        <span>捨て札</span>
+        <span>{data.discardCount ?? 0}</span>
+      </div>
+      <div className="hb-panel-row">
+        <span>勝利点</span>
+        <span>{data.vp ?? 0}</span>
+      </div>
+    </section>
+  );
+};
+
+const CardDetail: React.FC<{ card: any }> = ({ card }) => {
+  return (
+    <div className="hb-card-detail">
+      <div className="hb-card-detail-name">{card.name}</div>
+      <div className="hb-card-detail-meta">
+        <span>{card.cardType}</span>
+        <span> / コスト: 米 {card.cost?.rice ?? 0}</span>
+        {card.cost?.knowledge ? (
+          <span> / 知識 {card.cost.knowledge}</span>
+        ) : null}
+      </div>
+      {card.description && (
+        <p className="hb-card-detail-text">{card.description}</p>
+      )}
+      {card.effect && (
+        <p className="hb-card-detail-text">{card.effect}</p>
+      )}
+      {card.conditionText && (
+        <p className="hb-card-detail-text">{card.conditionText}</p>
+      )}
     </div>
   );
 };
 
-export default GameScreen;
-
+function getPhaseLabel(phase: GamePhase | string): string {
+  switch (phase) {
+    case "DRAW":
+      return "DRAW（ドロー）";
+    case "ACTION":
+      return "ACTION（アクション）";
+    case "BUY":
+      return "BUY（購入）";
+    case "CLEANUP":
+      return "CLEANUP（片付け）";
+    default:
+      return String(phase);
+  }
+}
