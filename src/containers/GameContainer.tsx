@@ -14,6 +14,7 @@ import { runCpuTurn } from "../logic/cpuLogic";
 import { computeVictoryPointsForPlayer } from "../game/socre";
 import type { GameOutcome, DeckConfig } from "../ui/uiTypes";
 import { CardDetailModal } from "../components/CardDetailModal";
+import { createCardMap } from "../game/cardDefinitions"; // ★ 追加
 
 interface GameContainerProps {
   onGameEnd?: (outcome: GameOutcome) => void;
@@ -34,6 +35,13 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
 
   const [selectedCardForDetail, setSelectedCardForDetail] = useState<Card | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  // ★ 1度だけカードマップを作る（id → Card）
+  const cardMapRef = React.useRef<Record<string, Card> | null>(null);
+  if (cardMapRef.current === null) {
+    cardMapRef.current = createCardMap();
+  }
+  const cardMap = cardMapRef.current;
 
   /**
    * プレイヤー操作後に、必要なら CPU のターンを自動実行する共通ヘルパー。
@@ -130,10 +138,39 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
     });
   };
 
+  // ★ UI 用の「拡張状態」：
+  // - player.hand / cpu.hand をカードID配列 → Card配列に解決
+  // - hoveredCard を state に埋め込んで GameScreen から参照できるようにする
+  const viewState: any = React.useMemo(() => {
+    const resolveHand = (ids: string[]): Card[] =>
+      ids.map((id) => cardMap[id] ?? ({
+        id,
+        name: id,
+        type: "resource",
+        cost: 0,
+        knowledgeRequired: 0,
+        effects: [],
+        text: ""
+      } as Card));
+
+    return {
+      ...state,
+      hoveredCard, // GameScreen 側の cardForDetail で使う
+      player: {
+        ...state.player,
+        hand: resolveHand(state.player.hand as unknown as string[])
+      },
+      cpu: {
+        ...state.cpu,
+        hand: resolveHand(state.cpu.hand as unknown as string[])
+      }
+    };
+  }, [state, hoveredCard, cardMap]);
+
   return (
     <>
       <GameScreen
-        state={state}
+        state={viewState}          // ★ ここだけ state → viewState に変更
         logs={[]}
         onPlayHandCard={handlePlayHandCard}
         onBuyCard={handleBuyCard}
@@ -141,9 +178,7 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
         onEndTurn={() => {}}
         selectedHandCardId={selectedHandCardId}
         onSelectHandCard={setSelectedHandCardId}
-        onHoverCard={setHoveredCard}
-        // ★ hoveredCard は state 拡張ではなく、GameScreen 側で
-        // cardForDetail を決めるために state.hoveredCard の代わりに参照される
+        onHoverCard={setHoveredCard}  // ★ Supply / Hand からの hover を受け取る
       />
       <CardDetailModal
         card={selectedCardForDetail}
