@@ -112,16 +112,12 @@
     border-radius: 16px;
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr); /* 左: basic, 右: kingdom */
+    gap: 24px;
     min-height: 0;
   }
 
-  .hb-supply-board .hb-section-title {
-    @apply mb-3;
-  }
-
-  /* 内側レイアウトは縦方向に積む（基本行＋王国グリッド） */
   .hb-supply-board-inner {
     display: flex;
     flex-direction: column;
@@ -131,22 +127,22 @@
     overflow-x: hidden;
   }
 
-  /* ★ 基本カード行：横並び + 折り返し */
-  .hb-supply-basic-row {
+  /* 左列：基本カードを縦 1 列で並べる */
+  .hb-basic-supply-column {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  /* 右側：王国カード 5×2 グリッド */
+  .hb-kingdom-supply-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
     gap: 20px;
     align-items: flex-start;
   }
 
-  /* ★ 王国カード：5列グリッド。1枚あたり幅 ≒180px になるようにする */
-  .hb-supply-kingdom-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(160px, 1fr));
-    gap: 20px;
-  }
-
-  /* サプライカードは自分の高さに合わせ、上詰め配置 */
   .hb-supply-card {
     @apply relative w-full focus:outline-none cursor-pointer;
     align-self: flex-start;
@@ -178,10 +174,16 @@
 
   /* ★ 2:3 の小さめカードフレーム */
   .hb-card-frame {
+    width: 170px;
     aspect-ratio: 2 / 3;
-    max-width: 180px;
-    max-height: 270px;
+    max-height: 255px;
     margin: 0 auto;
+  }
+
+  /* basic は一回り小さく */
+  .hb-supply-card-basic .hb-card-frame {
+    width: 150px;
+    max-height: 225px;
   }
 
   .hb-card {
@@ -291,8 +293,7 @@
     @apply text-[11px] text-slate-400;
   }
 
-  /* 手札：横一列で中央寄せ＋横スクロール */
-  .hb-hand-scroll {
+  .hb-hand-cards {
     @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
     justify-content: center;
   }

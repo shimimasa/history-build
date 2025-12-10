@@ -53,6 +53,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     return t === "person" || t === "event";
   });
 
+  // ★ 説明パネル用の「クリック選択中カード」
+  const [focusedCard, setFocusedCard] = React.useState<any | null>(null);
+
   const hoveredCard: any | null = state.hoveredCard ?? null;
 
   // 手札から「直近で選択されたカード」を説明パネル用に解決
@@ -63,15 +66,17 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         ) ?? null
       : null;
 
-  // 説明パネルに表示するカード：ホバー中 ＞ 選択中 ＞ なし
-  const cardForDetail = hoveredCard ?? selectedCardFromHand ?? null;
+  // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
+  const cardForDetail =
+    hoveredCard ?? focusedCard ?? selectedCardFromHand ?? null;
 
-  const handleHandClick = (cardId: string) => {
+  const handleHandClick = (cardId: string, card: any) => {
     if (selectedHandCardId === cardId) {
       onSelectHandCard(null);
     } else {
       onSelectHandCard(cardId);
     }
+    setFocusedCard(card); // 説明パネル用に選択カードも保持
   };
 
   const handleHandDoubleClick = (cardId: string) => {
@@ -79,6 +84,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   };
 
   const handleSupplyClick = (pile: any) => {
+    setFocusedCard(pile.card); // ★ 購入クリックでも説明パネルに残す
     if (!isPlayerTurn) return;
     onBuyCard(pile.card.id);
   };
@@ -132,11 +138,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
             <div className="hb-supply-board-inner">
               {/* 上段：基本カード行（6枚程度を2行までで自動折り返し） */}
-              <div className="hb-supply-basic-row">
+              <div className="hb-basic-supply-column">
                 {basicSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
                     key={pile.card.id}
                     pile={pile}
+                    variant="basic"
                     isDisabled={!isPlayerTurn}
                     onClick={() => handleSupplyClick(pile)}
                     onHover={onHoverCard}
@@ -145,11 +152,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               </div>
 
               {/* 下段：王国カード 5列グリッド（縦スクロール可） */}
-              <div className="hb-supply-kingdom-grid">
+              <div className="hb-kingdom-supply-grid">
                 {kingdomSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
                     key={pile.card.id}
                     pile={pile}
+                    variant="kingdom"
                     isDisabled={!isPlayerTurn}
                     onClick={() => handleSupplyClick(pile)}
                     onHover={onHoverCard}
@@ -204,27 +212,23 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         </div>
 
         {/* 下部いっぱいに横一列に並ぶ手札。多い場合は横スクロール */}
-        <div className="hb-hand-scroll">
-          {player.hand?.map((card: any) => (
-            <div
-              key={card.instanceId ?? card.id}
-              className={`hb-hand-card${
-                selectedHandCardId === (card.instanceId ?? card.id)
-                  ? " hb-hand-card--selected"
-                  : ""
-              }`}
-              onClick={() =>
-                handleHandClick(card.instanceId ?? card.id)
-              }
-              onDoubleClick={() =>
-                handleHandDoubleClick(card.instanceId ?? card.id)
-              }
-              onMouseEnter={() => onHoverCard(card)}
-              onMouseLeave={() => onHoverCard(null)}
-            >
-              <CardView card={card} variant="hand" />
-            </div>
-          ))}
+        <div className="hb-hand-cards">
+          {player.hand?.map((card: any) => {
+            const id = card.instanceId ?? card.id;
+            const selected = selectedHandCardId === id;
+            return (
+              <div
+                key={id}
+                className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}`}
+                onClick={() => handleHandClick(id, card)}
+                onDoubleClick={() => handleHandDoubleClick(id)}
+                onMouseEnter={() => onHoverCard(card)}
+                onMouseLeave={() => onHoverCard(null)}
+              >
+                <CardView card={card} variant="hand" />
+              </div>
+            );
+          })}
         </div>
 
         {/* アクションボタンは右下寄せで横並び。カードとは重ならないように別コンテナにする */}

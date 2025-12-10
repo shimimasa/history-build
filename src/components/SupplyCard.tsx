@@ -1,8 +1,11 @@
 import React from "react";
 import { CardView } from "./CardView";
 
+export type SupplyCardVariant = "basic" | "kingdom";
+
 export interface SupplyCardPileProps {
-  pile: any; // { card, remaining } を想定
+  pile: any; // { card, remaining }
+  variant?: SupplyCardVariant;
   isDisabled?: boolean;
   onClick?: () => void;
   onHover?: (card: any | null) => void;
@@ -10,6 +13,7 @@ export interface SupplyCardPileProps {
 
 export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   pile,
+  variant = "kingdom",
   isDisabled,
   onClick,
   onHover,
@@ -21,22 +25,13 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
     onClick?.();
   };
 
-  const handleMouseEnter = () => {
-    onHover?.(card);
-  };
-
-  const handleMouseLeave = () => {
-    onHover?.(null);
-  };
+  const handleMouseEnter = () => onHover?.(card);
+  const handleMouseLeave = () => onHover?.(null);
 
   return (
-    // サプライの 1 山札。
-    // - CardView にカード本体（画像＋名前＋コスト＋タイプ）を描画させる
-    // - 残り枚数バッジは外側ボタンにオーバーレイする
-    // - クリック時の挙動は既存の onClick ハンドラを維持
     <button
       type="button"
-      className={`hb-supply-card${
+      className={`hb-supply-card hb-supply-card-${variant}${
         isDisabled ? " hb-supply-card--disabled" : ""
       }`}
       onClick={handleClick}
@@ -47,7 +42,6 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
         <div className="hb-supply-remaining-badge">残り {remaining}</div>
       )}
 
-      {/* ★ カード本体は 2:3 フレームに収める */}
       <div className="hb-card-frame">
         <CardView card={card} variant="supply" />
       </div>

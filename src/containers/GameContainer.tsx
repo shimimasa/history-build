@@ -14,7 +14,7 @@ import { runCpuTurn } from "../logic/cpuLogic";
 import { computeVictoryPointsForPlayer } from "../game/socre";
 import type { GameOutcome, DeckConfig } from "../ui/uiTypes";
 import { CardDetailModal } from "../components/CardDetailModal";
-import { createCardMap } from "../game/cardDefinitions"; // ★ 追加
+import { createCardMap } from "../game/cardDefinitions";
 
 interface GameContainerProps {
   onGameEnd?: (outcome: GameOutcome) => void;
