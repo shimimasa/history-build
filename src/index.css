@@ -178,37 +178,39 @@
 
   /* ====== カード汎用スタイル ====== */
 
-  /* ★ 2:3 の小さめカードフレーム */
-  .hb-card-frame {
-    width: 170px;
-    aspect-ratio: 2 / 3;
-    max-height: 255px;
-    margin: 0 auto;
-  }
-
-  /* basic は一回り小さく */
-  .hb-supply-card-basic .hb-card-frame {
-    width: 150px;
-    max-height: 225px;
-  }
-
-  .hb-card {
-    background: radial-gradient(circle at top, #1f2937, #020617);
-    border-radius: 18px;
-    padding: 0.4rem 0.4rem 0.45rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .hb-card--supply {
-    @apply w-full;
-  }
-
-  .hb-card--hand {
-    @apply w-full max-w-[150px];
-  }
+    /* ★ サプライ用カードフレーム：王国カード（人物・出来事）はやや大きめ */
+    .hb-card-frame {
+      width: 150px;          /* 170px → 少し小さく */
+      aspect-ratio: 2 / 3;
+      max-height: 225px;     /* 255px → 少し低く */
+      margin: 0 auto;
+    }
+  
+    /* 基本カード（資源・勝利点）はさらに一回り小さく左カラム用に */
+    .hb-supply-card-basic .hb-card-frame {
+      width: 120px;          /* 150px → かなりコンパクトに */
+      max-height: 180px;
+    }
+  
+    .hb-card {
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      border-radius: 18px;
+      padding: 0.4rem 0.4rem 0.45rem;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  
+    .hb-card--supply {
+      @apply w-full;
+    }
+  
+    /* 手札はサプライより少し小さめにして横並びしやすく */
+    .hb-card--hand {
+      @apply w-full max-w-[130px];  /* 140〜150px から少し絞る */
+    }
+  
 
   .hb-card-image-wrapper {
     border-radius: 12px;
@@ -346,13 +348,6 @@
     @apply leading-tight;
   }
 
-  /* ★ サプライ用カードフレーム：幅固定 170px / 比率 2:3 */
-  .hb-card-frame {
-    width: 170px;
-    aspect-ratio: 2 / 3;
-    max-height: 255px;
-    margin: 0 auto;
-  }
 
   .hb-card {
     background: radial-gradient(circle at top, #1f2937, #020617);
