@@ -121,11 +121,13 @@
   /* 左：基本カード（資源・勝利点）縦並び */
 
   .hb-basic-supply-column {
-    @apply flex flex-col gap-3;
-    width: 170px;
-    flex-shrink: 0;
-    align-items: flex-start;
-  }
+      /* 基本カードは左側で 2 列グリッド表示 */
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: auto;
+      gap: 1.2rem 1rem;
+      align-content: flex-start;
+    }
 
   /* 右：王国カード（人物・出来事）グリッド */
 
