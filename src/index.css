@@ -56,7 +56,8 @@
   .hb-game-layout {
     @apply flex-1 px-6 pb-4 pt-2;
     display: grid;
-    grid-template-columns: 260px minmax(0, 1fr);
+    /* サイドバーを少し細くして、そのぶんサプライを広げる */
+    grid-template-columns: 240px minmax(0, 1fr);
     gap: 1.5rem;
     min-height: 0;
   }
@@ -111,17 +112,18 @@
   }
 
   /* ====== サプライボード ====== */
-
   .hb-supply-board {
-    background: #050811;
-    border-radius: 16px;
-    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
-    padding: 1rem 1.25rem;
-    display: grid;
-  grid-template-columns: 240px 1fr; /* 左：基本カード, 右：王国カード広め */
-  gap: 2rem;
-    min-height: 0;
-  }
+        background: #050811;
+        border-radius: 16px;
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
+        padding: 1rem 1.25rem;
+        display: grid;
+        /* 左：基本カード, 右：王国カード */
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 1.75rem;
+        min-height: 0;
+        width: 100%; /* ボードいっぱいまで広げる */
+      }
 
   /* 左：基本カード（資源・勝利点）縦並び */
 
@@ -135,13 +137,13 @@
     }
 
   /* 右：王国カード（人物・出来事）グリッド */
-
   .hb-kingdom-supply-grid,
   .hb-supply-kingdom-grid {
     /* 両方同じ意味にしておく（TS 側のクラス名ずれ対策） */
     display: grid;
-    grid-template-columns: repeat(6, minmax(150px, 1fr));
-    gap: 16px;
+    /* 6列だとはみ出しやすいので 5 列に変更し、1枚を少し小さく */
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
     align-content: flex-start;
     padding-right: 0.25rem;
   }
@@ -174,19 +176,20 @@
   }
 
   /* ====== カード汎用スタイル ====== */
-
   /* 共通フレーム（王国カードサイズ基準） */
   .hb-card-frame {
-    width: 100%;
-    max-width: 160px;
-    aspect-ratio: 2 / 3;
-    margin: 0 auto;
-  }
-
-  /* 基本カード（資源・勝利点）は一回り小さく */
-  .hb-supply-card-basic .hb-card-frame {
-    max-width: 130px;
-  }
+      width: 100%;
+      /* 160 → 140 にして一回り小さく */
+      max-width: 140px;
+      aspect-ratio: 2 / 3;
+      margin: 0 auto;
+    }
+  
+    /* 基本カード（資源・勝利点）はさらに少し小さく */
+    .hb-supply-card-basic .hb-card-frame {
+      max-width: 120px;
+    }
+  
 
   .hb-card {
     background: radial-gradient(circle at top, #1f2937, #020617);
@@ -202,10 +205,10 @@
     @apply w-full;
   }
 
-  /* 手札カードはサプライより少し小さく */
+  /* 手札カードはサプライより少し小さく（全体に合わせて微調整） */
   .hb-card--hand {
-    @apply w-full max-w-[135px];
-  }
+      @apply w-full max-w-[125px];
+    }
 
   .hb-card-image-wrapper {
     border-radius: 12px;
@@ -303,7 +306,7 @@
   }
 
   .hb-hand-card {
-    @apply w-[135px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+    @apply w-[125px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
   }
 
   .hb-hand-card:hover {
