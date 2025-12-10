@@ -54,16 +54,28 @@ export const CardView: React.FC<CardViewProps> = ({
   const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
 
   // 画像プロパティはいくつかパターンがある想定
-  const explicitImage =
+  const imageSrcExplicit =
     card.image ||
     card.imageUrl ||
     card.imageURL ||
     card.cardImage ||
-    card.baseCard?.image ||
-    card.cardDef?.image;
+    (card.baseCard &&
+      (card.baseCard.image || card.baseCard.imageUrl || card.baseCard.imageURL)) ||
+    (card.definition &&
+      (card.definition.image ||
+        card.definition.imageUrl ||
+        card.definition.imageURL)) ||
+    (card.base &&
+      (card.base.image || card.base.imageUrl || card.base.imageURL)) ||
+    (card.cardDef &&
+      (card.cardDef.image ||
+        card.cardDef.imageUrl ||
+        card.cardDef.imageURL)) ||
+    undefined;
 
-  // 明示的な image があればそれを優先し、なければ card.id ベースの共通ヘルパーを使う
-  const imageUrl = explicitImage || getCardImageUrl(card as any);
+  // 明示的な画像がなければ、Card.id ベースの共通ヘルパーを使う
+  const imageUrl =
+    imageSrcExplicit || getCardImageUrl(card as any);
 
   return (
     <div
@@ -72,7 +84,13 @@ export const CardView: React.FC<CardViewProps> = ({
       onMouseLeave={handleMouseLeave}
     >
       <div className="hb-card-image-wrapper">
-        <img src={imageUrl} alt={card.name} className="hb-card-image" />
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={card.name}
+            className="hb-card-image"
+          />
+        )}
       </div>
 
       <div className="hb-card-footer">

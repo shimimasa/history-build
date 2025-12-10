@@ -55,6 +55,17 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
   const hoveredCard: any | null = state.hoveredCard ?? null;
 
+  // 手札から「直近で選択されたカード」を説明パネル用に解決
+  const selectedCardFromHand =
+    selectedHandCardId != null
+      ? player.hand?.find(
+          (c: any) => (c.instanceId ?? c.id) === selectedHandCardId
+        ) ?? null
+      : null;
+
+  // 説明パネルに表示するカード：ホバー中 ＞ 選択中 ＞ なし
+  const cardForDetail = hoveredCard ?? selectedCardFromHand ?? null;
+
   const handleHandClick = (cardId: string) => {
     if (selectedHandCardId === cardId) {
       onSelectHandCard(null);
@@ -72,7 +83,11 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     onBuyCard(pile.card.id);
   };
 
-  const phaseLabel = getPhaseLabel(currentPhase);
+  // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
+  const rawPhase =
+    state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
+
+  const phaseLabel = getPhaseLabel(rawPhase);
 
   return (
     // 新レイアウト:
@@ -111,12 +126,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
         {/* 右側ボード：左にサプライ、右にカード詳細パネル */}
         <main className="hb-board">
-          {/* サプライボード（基本カード列＋王国カードグリッド） */}
+          {/* サプライボード（基本カード行＋王国カードグリッド） */}
           <section className="hb-supply-board">
             <h2 className="hb-section-title">場のカード（サプライ）</h2>
 
-            <div className="hb-supply-layout">
-              {/* 基本カード：上部 1 行に横並び */}
+            <div className="hb-supply-board-inner">
+              {/* 上段：基本カード行（6枚程度を2行までで自動折り返し） */}
               <div className="hb-supply-basic-row">
                 {basicSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
@@ -129,7 +144,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 ))}
               </div>
 
-              {/* 王国カード：右側に 5 列グリッド（縦スクロール可） */}
+              {/* 下段：王国カード 5列グリッド（縦スクロール可） */}
               <div className="hb-supply-kingdom-grid">
                 {kingdomSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
@@ -148,8 +163,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           <section className="hb-card-detail-panel">
             <div className="hb-section-title">カードの説明</div>
             <div className="hb-card-detail-scroll">
-              {hoveredCard ? (
-                <CardDetail card={hoveredCard} />
+              {cardForDetail ? (
+                <CardDetail card={cardForDetail} />
               ) : (
                 <p className="hb-card-detail-placeholder">
                   サプライや手札のカードにマウスをのせると、ここに説明が表示されます。
@@ -207,10 +222,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               onMouseEnter={() => onHoverCard(card)}
               onMouseLeave={() => onHoverCard(null)}
             >
-              <CardView
-                card={card}
-                variant="hand"
-              />
+              <CardView card={card} variant="hand" />
             </div>
           ))}
         </div>

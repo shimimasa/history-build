@@ -111,42 +111,42 @@
     background: #050811;
     border-radius: 16px;
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
-    padding: 1rem 1.25rem 1.5rem;
-    min-height: 0;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* ★ サプライエリア内だけ縦スクロール */
+    min-height: 0;
   }
 
   .hb-supply-board .hb-section-title {
     @apply mb-3;
   }
 
-  /* サプライ全体を「基本カード行 + 王国カードグリッド」に分割 */
-  .hb-supply-layout {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 1rem;
-    min-height: 0;
+  /* 内側レイアウトは縦方向に積む（基本行＋王国グリッド） */
+  .hb-supply-board-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 24px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
-  /* 基本カード：上部 1 行 */
+  /* 基本カード行：6枚程度を2行までで自動折り返し */
   .hb-supply-basic-row {
     display: flex;
-    flex-direction: row;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    gap: 24px;
     align-items: flex-start;
   }
 
+  /* 王国カード：5列グリッド */
   .hb-supply-kingdom-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.75rem;
-    /* 行数可変で縦スクロール */
-    max-height: 100%;
+    grid-template-columns: repeat(5, minmax(220px, 1fr));
+    gap: 24px;
   }
 
-  /* サプライカード：高さ固定をやめてカード自身の高さに任せる */
+  /* サプライカードは自分の高さに合わせ、上詰め配置 */
   .hb-supply-card {
     @apply relative w-full focus:outline-none cursor-pointer;
     align-self: flex-start;
@@ -176,7 +176,13 @@
 
   /* ====== カード汎用スタイル ====== */
 
-  /* カード本体：縦長矩形カード（画像＋名前＋コスト＋タイプ） */
+  /* カードフレーム：縦横比 2:3 で共通化 */
+  .hb-card-frame {
+    aspect-ratio: 2 / 3;
+    max-height: 360px;
+  }
+
+  /* カード本体：画像＋タイトル＋コスト＋タイプ */
   .hb-card {
     background: radial-gradient(circle at top, #1f2937, #020617);
     border-radius: 18px;
@@ -184,7 +190,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
     display: flex;
     flex-direction: column;
-    height: auto; /* ★ 100% をやめて自然な高さに */
+    height: 100%;
   }
 
   .hb-card--supply {
@@ -273,7 +279,7 @@
 
   .hb-hand-area {
     @apply border-t border-slate-800 bg-slate-950/95 px-6 pt-3 pb-4 flex flex-col gap-2;
-    min-height: 240px; /* ★ 手札エリアの高さをだいたい固定 */
+    min-height: 240px;
   }
 
   .hb-hand-header {
@@ -284,7 +290,7 @@
     @apply text-[11px] text-slate-400;
   }
 
-  /* 手札：横一列に並べ、中央寄せ＋横スクロール */
+  /* 手札：横一列で中央寄せ＋横スクロール */
   .hb-hand-scroll {
     @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
     justify-content: center;
