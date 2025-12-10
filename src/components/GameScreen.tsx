@@ -127,10 +127,41 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         {/* 左サイドバー：プレイヤー情報 / CPU 情報 */}
         <aside className="hb-sidebar">
           <PlayerHud title="プレイヤー" data={player} />
-          <PlayerHud title="CPU" data={cpu} compact />
+          <PlayerHud title="CPU" data={cpu} compact />          
+          {/* カード説明パネル＋ログをサイドバー下部に配置 */}
+          <section className="hb-card-detail-panel hb-card-detail-panel--sidebar">
+            <div className="hb-section-title">カードの説明</div>
+            <div className="hb-card-detail-scroll">
+              {cardForDetail ? (
+                <CardDetail card={cardForDetail} />
+              ) : (
+                <p className="hb-card-detail-placeholder">
+                  サプライや手札のカードにマウスをのせると、ここに説明が表示されます。
+                </p>
+              )}
+            </div>
+
+            <div className="hb-detail-log-panel">
+              <div className="hb-section-title">ログ</div>
+              <div className="hb-log-scroll">
+                {logs.length === 0 ? (
+                  <p className="hb-log-empty">まだログはありません。</p>
+                ) : (
+                  logs
+                    .slice()
+                    .reverse()
+                    .map((line, idx) => (
+                      <div key={idx} className="hb-log-line">
+                        {line}
+                      </div>
+                    ))
+                )}
+              </div>
+            </div>
+          </section>
         </aside>
 
-        {/* 右側ボード：左にサプライ、右にカード詳細パネル */}
+        {/* 右側ボード：サプライのみ（横幅を最大化） */}
         <main className="hb-board">
           {/* サプライボード（基本カード行＋王国カードグリッド） */}
           <section className="hb-supply-board">
@@ -163,39 +194,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                     onHover={onHoverCard}
                   />
                 ))}
-              </div>
-            </div>
-          </section>
-
-          {/* カード説明パネル（右カラム） */}
-          <section className="hb-card-detail-panel">
-            <div className="hb-section-title">カードの説明</div>
-            <div className="hb-card-detail-scroll">
-              {cardForDetail ? (
-                <CardDetail card={cardForDetail} />
-              ) : (
-                <p className="hb-card-detail-placeholder">
-                  サプライや手札のカードにマウスをのせると、ここに説明が表示されます。
-                </p>
-              )}
-            </div>
-
-            {/* ログはカード詳細パネル下部に配置 */}
-            <div className="hb-detail-log-panel">
-              <div className="hb-section-title">ログ</div>
-              <div className="hb-log-scroll">
-                {logs.length === 0 ? (
-                  <p className="hb-log-empty">まだログはありません。</p>
-                ) : (
-                  logs
-                    .slice()
-                    .reverse()
-                    .map((line, idx) => (
-                      <div key={idx} className="hb-log-line">
-                        {line}
-                      </div>
-                    ))
-                )}
               </div>
             </div>
           </section>

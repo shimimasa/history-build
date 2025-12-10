@@ -66,12 +66,17 @@
   }
 
   .hb-board {
-    display: grid;
-    grid-template-columns: minmax(0, 3fr) 320px;
-    gap: 1.5rem;
-    min-height: 0;
+    display: block; /* カード説明を sidebar に移すので1カラムでOK */
   }
 
+
+  /* サイドバー下部に置くため細めレイアウトへ変更 */
+.hb-card-detail-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  max-height: 260px; /* CPUパネルに並ぶ高さ */
+  overflow-y: auto;
+}
   /* 右カラム（カード詳細＋ログ） */
 
   .hb-card-detail-panel {
@@ -113,8 +118,8 @@
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
     padding: 1rem 1.25rem;
     display: grid;
-    grid-template-columns: 170px minmax(0, 1fr); /* 左: 基本カード / 右: 王国カード */
-    gap: 1.5rem;
+  grid-template-columns: 240px 1fr; /* 左：基本カード, 右：王国カード広め */
+  gap: 2rem;
     min-height: 0;
   }
 
@@ -135,7 +140,7 @@
   .hb-supply-kingdom-grid {
     /* 両方同じ意味にしておく（TS 側のクラス名ずれ対策） */
     display: grid;
-    grid-template-columns: repeat(5, minmax(130px, 1fr));
+    grid-template-columns: repeat(6, minmax(150px, 1fr));
     gap: 16px;
     align-content: flex-start;
     padding-right: 0.25rem;
