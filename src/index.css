@@ -113,40 +113,38 @@
 
   /* ====== サプライボード ====== */
   .hb-supply-board {
-        background: #050811;
-        border-radius: 16px;
-        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
-        padding: 1rem 1.25rem;
-        display: grid;
-        /* 左：基本カード, 右：王国カード */
-        grid-template-columns: 220px minmax(0, 1fr);
-        gap: 1.75rem;
-        min-height: 0;
-        width: 100%; /* ボードいっぱいまで広げる */
-      }
-
-  /* 左：基本カード（資源・勝利点）縦並び */
-
-  .hb-basic-supply-column {
-      /* 基本カードは左側で 2 列グリッド表示 */
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: auto;
-      gap: 1.2rem 1rem;
-      align-content: flex-start;
+      grid-template-columns: 150px 150px 1fr; /* 左：資源 / 左2：勝利点 / 右：人物・出来事 */
+      column-gap: 24px;
+      align-items: flex-start;
     }
-
-  /* 右：王国カード（人物・出来事）グリッド */
-  .hb-kingdom-supply-grid,
-  .hb-supply-kingdom-grid {
-    /* 両方同じ意味にしておく（TS 側のクラス名ずれ対策） */
-    display: grid;
-    /* 6列だとはみ出しやすいので 5 列に変更し、1枚を少し小さく */
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 12px;
-    align-content: flex-start;
-    padding-right: 0.25rem;
-  }
+    
+    /* ====== 左2列（資源 & 勝利点） ====== */
+    
+    .hb-basic-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    /* カードは人物・出来事より一回り小さく */
+    .hb-basic-column .hb-card-frame {
+      width: 150px;
+      max-width: 150px;
+    }
+    
+    /* ====== 右側（人物・出来事） ====== */
+    
+    .hb-kingdom-supply-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+    
+    .hb-kingdom-supply-grid .hb-card-frame {
+      width: 190px;
+      max-width: 190px;
+    }
 
   .hb-supply-card {
     @apply relative w-full focus:outline-none cursor-pointer;
@@ -187,7 +185,7 @@
   
     /* 基本カード（資源・勝利点）はさらに少し小さく */
     .hb-supply-card-basic .hb-card-frame {
-      max-width: 120px;
+      max-width: 100px;
     }
   
 
