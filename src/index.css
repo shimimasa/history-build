@@ -51,7 +51,8 @@
     @apply inline-flex items-center px-3 py-1 rounded-full bg-indigo-700/70 text-xs font-semibold;
   }
 
-  /* メインボード：左サイドバー + 右ボード全体（Dominion 風） */
+  /* ====== メインレイアウト：左サイドバー + 右ボード ====== */
+
   .hb-game-layout {
     @apply flex-1 px-6 pb-4 pt-2;
     display: grid;
@@ -60,12 +61,10 @@
     min-height: 0;
   }
 
-  /* 左サイドバー（プレイヤー情報 / CPU 情報） */
   .hb-sidebar {
     @apply flex flex-col gap-4;
   }
 
-  /* 右側ボード：左にサプライ、右にカード詳細パネル */
   .hb-board {
     display: grid;
     grid-template-columns: minmax(0, 3fr) 320px;
@@ -74,6 +73,7 @@
   }
 
   /* 右カラム（カード詳細＋ログ） */
+
   .hb-card-detail-panel {
     @apply flex flex-col gap-3;
     background: #050811;
@@ -111,43 +111,33 @@
     background: #050811;
     border-radius: 16px;
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
-    flex: 1;
+    padding: 1rem 1.25rem;
     display: grid;
-    grid-template-columns: 220px minmax(0, 1fr); /* 左: basic, 右: kingdom */
-    gap: 24px;
+    grid-template-columns: 170px minmax(0, 1fr); /* 左: 基本カード / 右: 王国カード */
+    gap: 1.5rem;
     min-height: 0;
   }
 
-  
-  /* サプライ内部レイアウト
-+     左：基本カード（資源・勝利点）
-+     右：王国カード（人物・出来事） */
-  .hb-supply-board-inner {
-    display: flex;
+  /* 左：基本カード（資源・勝利点）縦並び */
+
+  .hb-basic-supply-column {
+    @apply flex flex-col gap-3;
+    width: 170px;
+    flex-shrink: 0;
     align-items: flex-start;
-    gap: 24px;
-    height: 100%;
   }
 
+  /* 右：王国カード（人物・出来事）グリッド */
 
-    /* 左側：基本カード（資源・国力）縦並び */
-   .hb-basic-supply-column {
-       @apply flex flex-col gap-2 flex-shrink-0;
-       width: 140px;
-     }
-  
-     /* 右側：王国カード（人物・出来事）のグリッド */
-
-    .hb-kingdom-supply-grid {
-       @apply grid gap-2;
-       grid-template-columns: repeat(2, minmax(0, 1fr));
-     }
-
-
-      .hb-kingdom-supply-grid {
-         grid-template-columns: repeat(5, minmax(0, 1fr));
-       }
-     }
+  .hb-kingdom-supply-grid,
+  .hb-supply-kingdom-grid {
+    /* 両方同じ意味にしておく（TS 側のクラス名ずれ対策） */
+    display: grid;
+    grid-template-columns: repeat(5, minmax(130px, 1fr));
+    gap: 16px;
+    align-content: flex-start;
+    padding-right: 0.25rem;
+  }
 
   .hb-supply-card {
     @apply relative w-full focus:outline-none cursor-pointer;
@@ -160,7 +150,7 @@
 
   .hb-supply-remaining-badge {
     position: absolute;
-    top: 0.4rem;
+    top: 0.35rem;
     left: 0.5rem;
     font-size: 0.75rem;
     padding: 0.15rem 0.45rem;
@@ -178,39 +168,37 @@
 
   /* ====== カード汎用スタイル ====== */
 
-    /* ★ サプライ用カードフレーム：王国カード（人物・出来事）はやや大きめ */
-    .hb-card-frame {
-      width: 150px;          /* 170px → 少し小さく */
-      aspect-ratio: 2 / 3;
-      max-height: 225px;     /* 255px → 少し低く */
-      margin: 0 auto;
-    }
-  
-    /* 基本カード（資源・勝利点）はさらに一回り小さく左カラム用に */
-    .hb-supply-card-basic .hb-card-frame {
-      width: 120px;          /* 150px → かなりコンパクトに */
-      max-height: 180px;
-    }
-  
-    .hb-card {
-      background: radial-gradient(circle at top, #1f2937, #020617);
-      border-radius: 18px;
-      padding: 0.4rem 0.4rem 0.45rem;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-  
-    .hb-card--supply {
-      @apply w-full;
-    }
-  
-    /* 手札はサプライより少し小さめにして横並びしやすく */
-    .hb-card--hand {
-      @apply w-full max-w-[130px];  /* 140〜150px から少し絞る */
-    }
-  
+  /* 共通フレーム（王国カードサイズ基準） */
+  .hb-card-frame {
+    width: 100%;
+    max-width: 160px;
+    aspect-ratio: 2 / 3;
+    margin: 0 auto;
+  }
+
+  /* 基本カード（資源・勝利点）は一回り小さく */
+  .hb-supply-card-basic .hb-card-frame {
+    max-width: 130px;
+  }
+
+  .hb-card {
+    background: radial-gradient(circle at top, #1f2937, #020617);
+    border-radius: 18px;
+    padding: 0.4rem 0.4rem 0.45rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .hb-card--supply {
+    @apply w-full;
+  }
+
+  /* 手札カードはサプライより少し小さく */
+  .hb-card--hand {
+    @apply w-full max-w-[135px];
+  }
 
   .hb-card-image-wrapper {
     border-radius: 12px;
@@ -281,7 +269,6 @@
     @apply text-xs text-slate-200 leading-relaxed mt-1;
   }
 
-  /* カード詳細パネル内のログエリア */
   .hb-detail-log-panel {
     @apply mt-3 flex flex-col gap-1;
   }
@@ -301,13 +288,15 @@
     @apply text-[11px] text-slate-400;
   }
 
-  .hb-hand-cards {
+  .hb-hand-cards,
+  .hb-hand-scroll {
+    /* クラス名ぶれ対策で両方同じ指定 */
     @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
     justify-content: center;
   }
 
   .hb-hand-card {
-    @apply w-[150px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+    @apply w-[135px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
   }
 
   .hb-hand-card:hover {
@@ -336,6 +325,8 @@
     @apply bg-slate-700 hover:bg-slate-600 text-slate-50;
   }
 
+  /* ====== ログ ====== */
+
   .hb-log-scroll {
     @apply bg-slate-900/80 border border-slate-700 rounded-2xl px-3 py-2 text-xs text-slate-100 max-h-32 overflow-y-auto;
   }
@@ -347,41 +338,4 @@
   .hb-log-line {
     @apply leading-tight;
   }
-
-
-  .hb-card {
-    background: radial-gradient(circle at top, #1f2937, #020617);
-    border-radius: 18px;
-    padding: 0.4rem 0.4rem 0.45rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .hb-card--supply {
-    @apply w-full;
-  }
-
-  .hb-card--hand {
-    @apply w-full max-w-[140px];
-  }
-
-  /* 王国カード 5列グリッド（既存から微調整するならここを確認） */
-  .hb-supply-kingdom-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(150px, 1fr));
-    gap: 20px;
-  }
-
-  /* 手札：横一列で中央寄せ＋横スクロール */
-  .hb-hand-scroll {
-    @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
-    justify-content: center;
-  }
-
-  .hb-hand-card {
-    @apply w-[140px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
-  }
-
-  /* ... 既存の .hb-hand-card--selected などはそのまま ... */
+}
