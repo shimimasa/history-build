@@ -47,7 +47,7 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
         <div className="hb-supply-remaining-badge">残り {remaining}</div>
       )}
 
-      {/* カード本体は縦横比 2:3 のフレームに入れる */}
+      {/* ★ カード本体は 2:3 フレームに収める */}
       <div className="hb-card-frame">
         <CardView card={card} variant="supply" />
       </div>

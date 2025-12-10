@@ -54,13 +54,15 @@ export const CardView: React.FC<CardViewProps> = ({
   const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
 
   // 画像プロパティはいくつかパターンがある想定
-  const imageSrcExplicit =
+  const explicitImage =
     card.image ||
     card.imageUrl ||
     card.imageURL ||
     card.cardImage ||
     (card.baseCard &&
-      (card.baseCard.image || card.baseCard.imageUrl || card.baseCard.imageURL)) ||
+      (card.baseCard.image ||
+        card.baseCard.imageUrl ||
+        card.baseCard.imageURL)) ||
     (card.definition &&
       (card.definition.image ||
         card.definition.imageUrl ||
@@ -73,9 +75,20 @@ export const CardView: React.FC<CardViewProps> = ({
         card.cardDef.imageURL)) ||
     undefined;
 
-  // 明示的な画像がなければ、Card.id ベースの共通ヘルパーを使う
-  const imageUrl =
-    imageSrcExplicit || getCardImageUrl(card as any);
+  // ★ まず baseCard / definition / base / cardDef から URL を解決し、
+  //   それでも無ければ card 自身の id を使う
+  const baseLike =
+    card.baseCard || card.definition || card.base || card.cardDef || null;
+
+  let imageUrl: string | undefined = undefined;
+
+  if (explicitImage) {
+    imageUrl = explicitImage;
+  } else if (baseLike) {
+    imageUrl = getCardImageUrl(baseLike);
+  } else {
+    imageUrl = getCardImageUrl(card as any);
+  }
 
   return (
     <div
@@ -85,11 +98,7 @@ export const CardView: React.FC<CardViewProps> = ({
     >
       <div className="hb-card-image-wrapper">
         {imageUrl && (
-          <img
-            src={imageUrl}
-            alt={card.name}
-            className="hb-card-image"
-          />
+          <img src={imageUrl} alt={card.name} className="hb-card-image" />
         )}
       </div>
 

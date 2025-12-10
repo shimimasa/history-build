@@ -27,6 +27,11 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   const [state, setState] = useState<GameState>(() =>
     createGameStateFromDeck(deckConfig)
   );
+
+  // ★ UI 用の状態（ゲームロジックとは独立）
+  const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
+  const [selectedHandCardId, setSelectedHandCardId] = useState<string | null>(null);
+
   const [selectedCardForDetail, setSelectedCardForDetail] = useState<Card | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
@@ -134,9 +139,11 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
         onBuyCard={handleBuyCard}
         onEndPhase={handleProceedPhase}
         onEndTurn={() => {}}
-        selectedHandCardId={null}
-        onSelectHandCard={() => {}}
-        onHoverCard={() => {}}
+        selectedHandCardId={selectedHandCardId}
+        onSelectHandCard={setSelectedHandCardId}
+        onHoverCard={setHoveredCard}
+        // ★ hoveredCard は state 拡張ではなく、GameScreen 側で
+        // cardForDetail を決めるために state.hoveredCard の代わりに参照される
       />
       <CardDetailModal
         card={selectedCardForDetail}

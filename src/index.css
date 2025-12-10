@@ -131,19 +131,19 @@
     overflow-x: hidden;
   }
 
-  /* 基本カード行：6枚程度を2行までで自動折り返し */
+  /* ★ 基本カード行：横並び + 折り返し */
   .hb-supply-basic-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 20px;
     align-items: flex-start;
   }
 
-  /* 王国カード：5列グリッド */
+  /* ★ 王国カード：5列グリッド。1枚あたり幅 ≒180px になるようにする */
   .hb-supply-kingdom-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(220px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
+    gap: 20px;
   }
 
   /* サプライカードは自分の高さに合わせ、上詰め配置 */
@@ -176,18 +176,19 @@
 
   /* ====== カード汎用スタイル ====== */
 
-  /* カードフレーム：縦横比 2:3 で共通化 */
+  /* ★ 2:3 の小さめカードフレーム */
   .hb-card-frame {
     aspect-ratio: 2 / 3;
-    max-height: 360px;
+    max-width: 180px;
+    max-height: 270px;
+    margin: 0 auto;
   }
 
-  /* カード本体：画像＋タイトル＋コスト＋タイプ */
   .hb-card {
     background: radial-gradient(circle at top, #1f2937, #020617);
     border-radius: 18px;
-    padding: 0.5rem 0.5rem 0.55rem;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
+    padding: 0.4rem 0.4rem 0.45rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -198,14 +199,14 @@
   }
 
   .hb-card--hand {
-    @apply w-full max-w-[170px];
+    @apply w-full max-w-[150px];
   }
 
   .hb-card-image-wrapper {
     border-radius: 12px;
     overflow: hidden;
     aspect-ratio: 3 / 4;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
   }
 
   .hb-card-image {
@@ -217,7 +218,7 @@
   }
 
   .hb-card-name-row {
-    @apply flex items-center justify-between text-[0.9rem];
+    @apply flex items-center justify-between text-[0.85rem];
   }
 
   .hb-card-name {
@@ -225,8 +226,8 @@
   }
 
   .hb-cost-badge {
-    font-size: 0.75rem;
-    padding: 0.15rem 0.45rem;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
     border-radius: 999px;
     background: #fbbf24;
     color: #111827;
@@ -238,8 +239,8 @@
   }
 
   .hb-card-type-badge {
-    font-size: 0.75rem;
-    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.35rem;
     border-radius: 999px;
     background: rgba(248, 250, 252, 0.12);
   }
@@ -279,7 +280,7 @@
 
   .hb-hand-area {
     @apply border-t border-slate-800 bg-slate-950/95 px-6 pt-3 pb-4 flex flex-col gap-2;
-    min-height: 240px;
+    min-height: 220px;
   }
 
   .hb-hand-header {
@@ -297,7 +298,7 @@
   }
 
   .hb-hand-card {
-    @apply w-[170px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+    @apply w-[150px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
   }
 
   .hb-hand-card:hover {
