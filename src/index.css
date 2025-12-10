@@ -118,30 +118,36 @@
     min-height: 0;
   }
 
+  
+  /* サプライ内部レイアウト
++     左：基本カード（資源・勝利点）
++     右：王国カード（人物・出来事） */
   .hb-supply-board-inner {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
     gap: 24px;
-    padding: 16px 24px 24px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: 100%;
   }
 
-  /* 左列：基本カードを縦 1 列で並べる */
-  .hb-basic-supply-column {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
 
-  /* 右側：王国カード 5×2 グリッド */
-  .hb-kingdom-supply-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(160px, 1fr));
-    gap: 20px;
-    align-items: flex-start;
-  }
+    /* 左側：基本カード（資源・国力）縦並び */
+   .hb-basic-supply-column {
+       @apply flex flex-col gap-2 flex-shrink-0;
+       width: 140px;
+     }
+  
+     /* 右側：王国カード（人物・出来事）のグリッド */
+
+    .hb-kingdom-supply-grid {
+       @apply grid gap-2;
+       grid-template-columns: repeat(2, minmax(0, 1fr));
+     }
+
+
+      .hb-kingdom-supply-grid {
+         grid-template-columns: repeat(5, minmax(0, 1fr));
+       }
+     }
 
   .hb-supply-card {
     @apply relative w-full focus:outline-none cursor-pointer;
@@ -384,4 +390,3 @@
   }
 
   /* ... 既存の .hb-hand-card--selected などはそのまま ... */
-}
