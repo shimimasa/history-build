@@ -27,7 +27,7 @@
 /* hover / highlight / disabled 状態 */
 .hb-card-view:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+  box-shadow: 0 0 12px rgba(15, 23, 42, 0.6); /* 広がらない影に変更 */
 }
 
 .hb-card-view--highlight .hb-card-view-inner {
