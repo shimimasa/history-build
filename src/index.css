@@ -112,40 +112,57 @@
   }
 
   /* ====== サプライボード ====== */
-  .hb-supply-board {
-    display: grid;
-    /* 3列 → 2列に変更：左 180px（基本カード）、右 残り全部（人物・出来事） */
-    grid-template-columns: 180px minmax(0, 1fr);
-    column-gap: 24px;
-    align-items: flex-start;
-  }
-    
-    /* ====== 左2列（資源 & 勝利点） ====== */
-    
-    .hb-basic-column {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    /* カードは人物・出来事より一回り小さく */
-    .hb-basic-column .hb-card-frame {
-      width: 150px;
-      max-width: 150px;
-    }
-    
-    /* ====== 右側（人物・出来事） ====== */
-    
-    .hb-kingdom-supply-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 20px;
-    }
-    
-    .hb-kingdom-supply-grid .hb-card-frame {
-      width: 120px;
-      max-width: 120px;
-    }
+.hb-supply-board {
+  display: grid;
+  /* 左: 基本カード2列（資源 / 勝利点）、右: 人物・出来事 */
+  grid-template-columns: 260px minmax(0, 1fr);
+  column-gap: 24px;
+  align-items: stretch; /* 左右カラムの高さを揃える */
+}
+
+/* ====== 左側（資源1列×3行 + 勝利点1列×3行） ====== */
+
+.hb-basic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 資源・勝利点の2列 */
+  column-gap: 12px;
+  height: 100%;
+}
+
+.hb-basic-column {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr); /* 3行固定 */
+  row-gap: 12px;
+}
+
+.hb-basic-column .hb-supply-card {
+  align-self: stretch;
+}
+
+.hb-basic-column .hb-card-frame {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ====== 右側（人物・出来事カード 5列×2行） ====== */
+
+.hb-kingdom-supply-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5列固定 */
+  grid-auto-rows: 1fr; /* 行の高さを揃える（2行） */
+  gap: 20px;
+}
+
+.hb-kingdom-supply-grid .hb-supply-card {
+  align-self: stretch;
+}
+
+.hb-kingdom-supply-grid .hb-card-frame {
+  width: 100%;
+  max-width: 140px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
   .hb-supply-card {
     @apply relative w-full focus:outline-none cursor-pointer;

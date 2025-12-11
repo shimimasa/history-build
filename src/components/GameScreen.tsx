@@ -31,11 +31,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 }) => {
   const { player, cpu, currentPhase, turn, supply } = state;
 
-  const isPlayerTurn = state.currentPlayer === "player";
+  // ▼ 修正: v1 / v1.5 両対応で「プレイヤー手番」を解決
+  const isPlayerTurn =
+    (state.currentPlayer ?? state.activePlayer ?? "player") === "player";
+
+  // ▼ 修正: v1 / v1.5 両対応でターン数を解決
+  const displayTurn = turn ?? state.turnCount ?? 1;
 
   // v2 Card / SupplyPile 想定:
-  // supply: Record<string, { card: { type: 'resource' | 'person' | 'event' | 'victory', ... }, remaining }>
-  // 互換性のため card.cardType もフォールバックとして参照する
   const supplyPiles: any[] = Object.values(supply ?? {});
 
   const getCardType = (pile: any): string => {
@@ -51,6 +54,15 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   const kingdomSupplyPiles = supplyPiles.filter((p) => {
     const t = getCardType(p);
     return t === "person" || t === "event";
+  });
+
+  // ▼ 追加: 基本カードを「資源」と「勝利点」に分割
+  const resourceSupplyPiles = basicSupplyPiles.filter(
+    (p) => getCardType(p) === "resource"
+  );
+  const victorySupplyPiles = basicSupplyPiles.filter((p) => {
+    const t = getCardType(p);
+    return t === "victory" || t === "base";
   });
 
 
@@ -115,7 +127,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <StatusBadge label="知識" value={player.knowledge ?? 0} />
           </div>
           <div className="hb-turn-indicator">
-            <div className="hb-turn-text">ターン {turn}</div>
+            <div className="hb-turn-text">ターン {displayTurn}</div>
             <div className="hb-phase-pill">
               手番 {isPlayerTurn ? "プレイヤー" : "CPU"} / フェーズ: {phaseLabel}
             </div>
@@ -168,21 +180,38 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           <section>
             <h2 className="hb-section-title">場のカード（サプライ）</h2>
             <div className="hb-supply-board">
-              {/* 左：勝利点・資源カード（基本カード） */}
-              <div className="hb-basic-column">
-                {basicSupplyPiles.map((pile: any) => (
-                  <SupplyCardPile
-                    key={pile.card.id}
-                    pile={pile}
-                    variant="basic"          // ← 小さめ表示用
-                    isDisabled={!isPlayerTurn}
-                    onClick={() => handleSupplyClick(pile)}
-                    onHover={onHoverCard}
-                  />
-                ))}
+              {/* 左：基本カード（資源 / 勝利点） */}
+              <div className="hb-basic-grid">
+                {/* 資源カード 1列×3行 */}
+                <div className="hb-basic-column hb-basic-column--resource">
+                  {resourceSupplyPiles.map((pile: any) => (
+                    <SupplyCardPile
+                      key={pile.card.id}
+                      pile={pile}
+                      variant="basic"
+                      isDisabled={!isPlayerTurn}
+                      onClick={() => handleSupplyClick(pile)}
+                      onHover={onHoverCard}
+                    />
+                  ))}
+                </div>
+
+                {/* 勝利点カード 1列×3行 */}
+                <div className="hb-basic-column hb-basic-column--victory">
+                  {victorySupplyPiles.map((pile: any) => (
+                    <SupplyCardPile
+                      key={pile.card.id}
+                      pile={pile}
+                      variant="basic"
+                      isDisabled={!isPlayerTurn}
+                      onClick={() => handleSupplyClick(pile)}
+                      onHover={onHoverCard}
+                    />
+                  ))}
+                </div>
               </div>
 
-              {/* 右：人物・出来事カード（王国カード） */}
+              {/* 右：人物・出来事カード（王国カード） 5列×2行 */}
               <div className="hb-kingdom-supply-grid">
                 {kingdomSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
