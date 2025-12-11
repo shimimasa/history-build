@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
+html, body {
   height: 100%;
+  overflow: hidden;   /* ← 外側スクロール禁止（縦も横も） */
 }
 
 /* SPA でゲーム画面だけ使う前提ならこれも付けてOK（外側スクロールを基本封じる） */
@@ -17,12 +17,10 @@ body {
   /* ====== 全体レイアウト ====== */
 
   .hb-game-screen {
-        @apply bg-slate-950 text-slate-50 flex flex-col;
-        height: 100vh;      /* 画面高に固定 */
-        overflow: hidden;   /* 外側にはスクロールバーを出さない */
-         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-           sans-serif;
-      }
+      @apply bg-slate-950 text-slate-50 flex flex-col;
+      height: 100vh;     /* ← 画面高固定 */
+      overflow: hidden;  /* ← この中も外へスクロールさせない */
+    }
 
   .hb-game-header {
     @apply flex flex-col md:flex-row items-start md:items-center justify-between px-8 pt-4 pb-2 gap-4;
@@ -69,13 +67,13 @@ body {
   .hb-game-layout {
     @apply flex-1 px-6 pb-4 pt-2;
     display: grid;
-    /* サイドバーを少し細くして、そのぶんサプライを広げる */
     grid-template-columns: 240px minmax(0, 1fr);
     gap: 1.5rem;
-    min-height: 0;
-    overflow-y: auto;   /* ← この中だけ縦スクロール */
-    overflow-x: hidden; /* ← 横スクロールは出さない */
-  }
+    min-height: 0;      /* ← 重要：これがないと grid が縦を押し広げる */
+    height: 100%;        /* ← これで高さを固定 */
+    overflow-y: auto;    /* ← 真ん中だけ縦スクロール */
+    overflow-x: hidden;
+ }
 
   .hb-sidebar {
     @apply flex flex-col gap-3;
@@ -325,6 +323,7 @@ body {
   width: 100%;
   max-width: 1120px;   /* 好みで 960〜1200px くらい */
   margin: 0 auto;      /* 画面中央に寄せる */
+  flex-shrink: 0;  /* ← 下に押し広げて overflow を起こさせない */
 }
 
 .hb-hand-header {
