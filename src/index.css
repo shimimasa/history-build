@@ -5,6 +5,7 @@
 html, body {
   height: 100%;
   overflow: hidden;   /* ← 外側スクロール禁止（縦も横も） */
+  scrollbar-gutter: stable both-edges;
 }
 
 /* SPA でゲーム画面だけ使う前提ならこれも付けてOK（外側スクロールを基本封じる） */
