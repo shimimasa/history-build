@@ -119,7 +119,7 @@
   .hb-supply-board {
     display: grid;
     grid-template-columns: 230px minmax(0, 1fr); /* 横幅はそのまま */
-    column-gap: 16px;
+    column-gap: 12px;
     align-items: stretch;
   }
 
@@ -306,7 +306,7 @@
  .hb-hand-area {
   /* 余白を少し削る & min-height を小さくする */
   @apply border-t border-slate-800 bg-slate-950/95 px-3 pt-2 pb-2 flex flex-col gap-1;
-  min-height: 135px; /* 150px → 135px でもう一段コンパクトに */
+  min-height: 145px; /* 150px → 135px でもう一段コンパクトに */
 }
 
 .hb-hand-header {
@@ -322,7 +322,7 @@
   /* 横スクロールのみ・高さを抑える */
   @apply flex flex-row gap-2 overflow-x-auto pb-1 px-1; /* gap-3 → gap-2 */
   justify-content: center;
-  max-height: 110px; /* 120px → 110px */
+  max-height: 115px; /* 120px → 110px */
 }
 
 
