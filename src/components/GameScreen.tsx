@@ -174,52 +174,70 @@ const victorySupplyPiles = basicSupplyPiles.filter((p) => {
           </section>
         </aside>
 
+        {/* 右側ボード：サプライのみ（横幅を最大化） */}
         <main className="hb-board">
-        <section className="hb-supply-board">
-          <h2 className="hb-panel-title mb-2">サプライ</h2>
+          {/* サプライボード（基本カード行＋王国カードグリッド） */}
+          <section className="hb-supply-board">
+            <h2 className="hb-section-title">場のカード（サプライ）</h2>
 
-          {/* ▼★★ サプライを 3 カラム構成にする ★★ */}
-          <div className="hb-supply-layout">
-            {/* 資源列 */}
-            <div className="hb-basic-column">
-              {resourceSupplyPiles.map((pile) => (
-                <SupplyCardPile
-                  key={pile.card.id}
-                  pile={pile}
-                  variant="basic"
-                  onHover={(c) => onHoverCard(c)}
-                  onClick={() => onBuyCard(pile.card.id)}
-                />
-              ))}
-            </div>
 
-            {/* 勝利点列 */}
-            <div className="hb-basic-column">
-              {victorySupplyPiles.map((pile) => (
-                <SupplyCardPile
-                  key={pile.card.id}
-                  pile={pile}
-                  variant="basic"
-                  onHover={(c) => onHoverCard(c)}
-                  onClick={() => onBuyCard(pile.card.id)}
-                />
-              ))}
-            </div>
+            {/* 左1列目：資源カード列（人物・出来事より一回り小さい） */}
+  <div className="hb-basic-column">
+    {resourceSupplyPiles.map((pile: any) => (
+      <SupplyCardPile
+        key={pile.card.id}
+        pile={pile}
+        variant="basic"
+        isDisabled={!isPlayerTurn}
+        onClick={() => handleSupplyClick(pile)}
+        onHover={onHoverCard}
+      />
+    ))}
+  </div>
 
-            {/* 王国カード（人物 + 出来事） */}
-            <div className="hb-kingdom-supply-grid">
-              {kingdomSupplyPiles.map((pile) => (
-                <SupplyCardPile
-                  key={pile.card.id}
-                  pile={pile}
-                  onHover={(c) => onHoverCard(c)}
-                  onClick={() => onBuyCard(pile.card.id)}
-                  variant="kingdom"
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+  {/* 左2列目：勝利点カード列 */}
+  <div className="hb-basic-column">
+    {victorySupplyPiles.map((pile: any) => (
+      <SupplyCardPile
+        key={pile.card.id}
+        pile={pile}
+        variant="basic"
+        isDisabled={!isPlayerTurn}
+        onClick={() => handleSupplyClick(pile)}
+        onHover={onHoverCard}
+      />
+    ))}
+  </div>
+
+  {/* 右側：人物・出来事カード（王国カード） */}
+  <div className="hb-kingdom-supply-grid">
+    {kingdomSupplyPiles.map((pile: any) => (
+      <SupplyCardPile
+        key={pile.card.id}
+        pile={pile}
+        variant="kingdom"
+        isDisabled={!isPlayerTurn}
+        onClick={() => handleSupplyClick(pile)}
+        onHover={onHoverCard}
+      />
+    ))}
+  </div>
+            
+
+              {/* 下段：王国カード 5列グリッド（縦スクロール可） */}
+              <div className="hb-kingdom-supply-grid">
+                {kingdomSupplyPiles.map((pile: any) => (
+                  <SupplyCardPile
+                    key={pile.card.id}
+                    pile={pile}
+                    variant="kingdom"
+                    isDisabled={!isPlayerTurn}
+                    onClick={() => handleSupplyClick(pile)}
+                    onHover={onHoverCard}
+                  />
+                ))}
+              </div>
+          </section>
         </main>
       </div>
 
