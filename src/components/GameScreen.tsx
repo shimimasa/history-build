@@ -79,28 +79,38 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         ) ?? null
       : null;
 
-  // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
-  const cardForDetail =
-    hoveredCard ?? focusedCard ?? selectedCardFromHand ?? null;
+      // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
+      const cardForDetail =
+        hoveredCard ?? focusedCard ?? selectedCardFromHand ?? null;
+    
+      const handleHandClick = (cardId: string, card: any) => {
+        // 現在フェーズを再取得（viewState でも state.phase に入っている）
+        const rawPhase =
+          state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
+    
+        // ACTION フェーズ中かつプレイヤー手番なら、クリックだけで即プレイ
+        if (rawPhase === "ACTION" && isPlayerTurn) {
+          onPlayHandCard(cardId);
+        }
+    
+        // 選択状態は従来どおりトグル
+        if (selectedHandCardId === cardId) {
+          onSelectHandCard(null);
+        } else {
+          onSelectHandCard(cardId);
+        }
+        setFocusedCard(card); // 説明パネル用に選択カードも保持
+      };
 
-  const handleHandClick = (cardId: string, card: any) => {
-    if (selectedHandCardId === cardId) {
-      onSelectHandCard(null);
-    } else {
-      onSelectHandCard(cardId);
-    }
-    setFocusedCard(card); // 説明パネル用に選択カードも保持
-  };
-
-  const handleHandDoubleClick = (cardId: string) => {
-    onPlayHandCard(cardId);
-  };
-
-  const handleSupplyClick = (pile: any) => {
-    setFocusedCard(pile.card); // ★ 購入クリックでも説明パネルに残す
-    if (!isPlayerTurn) return;
-    onBuyCard(pile.card.id);
-  };
+      const handleHandDoubleClick = (cardId: string) => {
+        onPlayHandCard(cardId);
+      };
+    
+      const handleSupplyClick = (pile: any) => {
+        setFocusedCard(pile.card); // ★ 購入クリックでも説明パネルに残す
+        if (!isPlayerTurn) return;
+        onBuyCard(pile.card.id);
+      };
 
   // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
   const rawPhase =
@@ -307,28 +317,42 @@ const PlayerHud: React.FC<{
 };
 
 const CardDetail: React.FC<{ card: any }> = ({ card }) => {
-  return (
-    <div className="hb-card-detail">
-      <div className="hb-card-detail-name">{card.name}</div>
-      <div className="hb-card-detail-meta">
-        <span>{card.cardType}</span>
-        <span> / コスト: 米 {card.cost?.rice ?? 0}</span>
-        {card.cost?.knowledge ? (
-          <span> / 知識 {card.cost.knowledge}</span>
-        ) : null}
+  // 種別ラベル（v1: card.cardType, v2: card.type）
+  const cardType: string =
+    card.cardType ?? card.type ?? card.cardTypeLabel ?? "";
+
+  // コスト（v1: cost.rice, v2: cost: number）
+  const riceCost: number =
+    (typeof card.cost === "number" ? card.cost : card.cost?.rice) ?? 0;
+
+  // 知識コスト（v2: knowledgeRequired）
+  const knowledgeCost: number | undefined =
+    card.knowledgeRequired ??
+    (typeof card.cost === "object" ? card.cost?.knowledge : undefined);
+
+  // メインテキスト（v2: text。なければ従来フィールドをフォールバック）
+  const mainText: string | undefined =
+    card.text ??
+    card.description ??
+    card.effect ??
+    card.conditionText;
+
+    return (
+      <div className="hb-card-detail">
+        <div className="hb-card-detail-name">{card.name}</div>
+        <div className="hb-card-detail-meta">
+          {cardType && <span>{cardType}</span>}
+          <span> / コスト: 米 {riceCost}</span>
+          {typeof knowledgeCost === "number" && knowledgeCost > 0 && (
+            <span> / 知識 {knowledgeCost}</span>
+          )}
+        </div>
+        {mainText && (
+          <p className="hb-card-detail-text">{mainText}</p>
+        )}
       </div>
-      {card.description && (
-        <p className="hb-card-detail-text">{card.description}</p>
-      )}
-      {card.effect && (
-        <p className="hb-card-detail-text">{card.effect}</p>
-      )}
-      {card.conditionText && (
-        <p className="hb-card-detail-text">{card.conditionText}</p>
-      )}
-    </div>
-  );
-};
+    );
+  };
 
 function getPhaseLabel(phase: GamePhase | string): string {
   switch (phase) {

@@ -112,37 +112,37 @@
   }
 
   /* ====== サプライボード ====== */
-.hb-supply-board {
-  display: grid;
-  /* 左: 基本カード2列（資源 / 勝利点）、右: 人物・出来事 */
-  grid-template-columns: 260px minmax(0, 1fr);
-  column-gap: 24px;
-  align-items: stretch; /* 左右カラムの高さを揃える */
-}
+  .hb-supply-board {
+    display: grid;
+    /* 左: 基本カード2列（資源 / 勝利点）、右: 人物・出来事 */
+    grid-template-columns: 230px minmax(0, 1fr); /* 260px → 230px で全体を圧縮 */
+    column-gap: 16px;                            /* 24px → 16px で左右余白を縮小 */
+    align-items: stretch; /* 左右カラムの高さを揃える */
+  }
 
-/* ====== 左側（資源1列×3行 + 勝利点1列×3行） ====== */
+  /* ====== 左側（資源1列×3行 + 勝利点1列×3行） ====== */
 
-.hb-basic-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 資源・勝利点の2列 */
-  column-gap: 12px;
-  height: 100%;
-}
+  .hb-basic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 資源・勝利点の2列 */
+    column-gap: 8px;                       /* 12px → 8px で列間を狭く */
+    height: 100%;
+  }
 
-.hb-basic-column {
-  display: grid;
-  grid-template-rows: repeat(3, 1fr); /* 3行固定 */
-  row-gap: 12px;
-}
+  .hb-basic-column {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr); /* 3行固定 */
+    row-gap: 8px;                       /* 12px → 8px で行間を狭く */
+  }
 
-.hb-basic-column .hb-supply-card {
-  align-self: stretch;
-}
+  .hb-basic-column .hb-supply-card {
+    align-self: stretch;
+  }
 
-.hb-basic-column .hb-card-frame {
-  width: 100%;
-  max-width: 100%;
-}
+  .hb-basic-column .hb-card-frame {
+    width: 100%;
+    max-width: 100%;
+  }
 
 /* ====== 右側（人物・出来事カード 5列×2行） ====== */
 
@@ -150,7 +150,7 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5列固定 */
   grid-auto-rows: 1fr; /* 行の高さを揃える（2行） */
-  gap: 20px;
+  gap: 14px;            /* 20px → 14px でカード間隔を縮小 */
 }
 
 .hb-kingdom-supply-grid .hb-supply-card {
@@ -159,7 +159,7 @@
 
 .hb-kingdom-supply-grid .hb-card-frame {
   width: 100%;
-  max-width: 140px;
+  max-width: 120px;     /* 140px → 120px でカード自体を一回り小さく */
   margin-left: auto;
   margin-right: auto;
 }
@@ -194,23 +194,21 @@
   /* ====== カード汎用スタイル ====== */
   /* 共通フレーム（王国カードサイズ基準） */
   .hb-card-frame {
-      width: 100%;
-      /* 160 → 140 にして一回り小さく */
-      max-width: 140px;
-      aspect-ratio: 2 / 3;
-      margin: 0 auto;
-    }
-  
-    /* 基本カード（資源・勝利点）はさらに少し小さく */
-    .hb-supply-card-basic .hb-card-frame {
-      max-width: 100px;
-    }
-  
+    width: 100%;
+    max-width: 125px;     /* 140px → 125px */
+    aspect-ratio: 2 / 3;
+    margin: 0 auto;
+  }
 
+  /* 基本カード（資源・勝利点）はさらに少し小さく */
+  .hb-supply-card-basic .hb-card-frame {
+    max-width: 95px;      /* 100px → 95px */
+  }
+  
   .hb-card {
     background: radial-gradient(circle at top, #1f2937, #020617);
     border-radius: 18px;
-    padding: 0.4rem 0.4rem 0.45rem;
+    padding: 0.3rem 0.3rem 0.35rem;  /* 0.4rem 系 → 0.3rem で縦方向を圧縮 */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -223,15 +221,16 @@
 
   /* 手札カードはサプライより少し小さく（全体に合わせて微調整） */
   .hb-card--hand {
-      @apply w-full max-w-[125px];
-    }
+    @apply w-full max-w-[95px];  /* 110px → 95px */
+  }
 
   .hb-card-image-wrapper {
     border-radius: 12px;
     overflow: hidden;
     aspect-ratio: 3 / 4;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;       /* 0.3rem → 0.2rem */
   }
+  
 
   .hb-card-image {
     @apply w-full h-full object-cover block;
@@ -299,54 +298,50 @@
     @apply mt-3 flex flex-col gap-1;
   }
 
-  /* ====== 手札エリア ====== */
+ /* ====== 手札エリア ====== */
 
-  .hb-hand-area {
-    /* 余白を少し削る & min-height を小さくする */
-    @apply border-t border-slate-800 bg-slate-950/95 px-4 pt-2 pb-3 flex flex-col gap-1;
-    min-height: 150px; /* 220px → 150px */
-  }
+ .hb-hand-area {
+  /* 余白を少し削る & min-height を小さくする */
+  @apply border-t border-slate-800 bg-slate-950/95 px-3 pt-2 pb-2 flex flex-col gap-1;
+  min-height: 135px; /* 150px → 135px でもう一段コンパクトに */
+}
 
-  .hb-hand-header {
-    @apply flex items-baseline justify-between;
-  }
+.hb-hand-header {
+  @apply flex items-baseline justify-between;
+}
 
-  .hb-hand-hint {
-    @apply text-[11px] text-slate-400;
-  }
+.hb-hand-hint {
+  @apply text-[11px] text-slate-400;
+}
 
-  .hb-hand-cards,
-  .hb-hand-scroll {
-    /* 横スクロールのみ・高さを抑える */
-    @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
-    justify-content: center;
-    max-height: 120px;
-  }
+.hb-hand-cards,
+.hb-hand-scroll {
+  /* 横スクロールのみ・高さを抑える */
+  @apply flex flex-row gap-2 overflow-x-auto pb-1 px-1; /* gap-3 → gap-2 */
+  justify-content: center;
+  max-height: 110px; /* 120px → 110px */
+}
 
-  .hb-hand-card {
-    /* 手札カードを少し小さく */
-    @apply w-[110px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
-  }
 
-  /* 手札用 CardView も幅を合わせて小さく */
-  .hb-card--hand {
-    @apply w-full max-w-[110px];
-  }
+.hb-hand-card {
+  /* 手札カードをさらに小さく */
+  @apply w-[95px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+}
 
-  .hb-hand-card:hover {
-    @apply -translate-y-1;
-  }
+.hb-hand-card:hover {
+  @apply -translate-y-1;
+}
 
-  .hb-hand-card--selected {
-    @apply ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-900;
-  }
+.hb-hand-card--selected {
+  @apply ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-900;
+}
 
-  /* ====== 手札アクションボタン ====== */
+/* ====== 手札アクションボタン ====== */
 
-  .hb-hand-actions {
-    /* ボタン行の縦幅も圧縮 */
-    @apply flex flex-row justify-end gap-8 px-12 pt-1;
-  }
+.hb-hand-actions {
+  /* ボタン行の縦幅も圧縮 */
+  @apply flex flex-row justify-end gap-6 px-10 pt-1;
+}
 
   .hb-btn {
     @apply px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-150;
