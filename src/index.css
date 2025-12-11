@@ -4,8 +4,7 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;   /* ← 外側スクロール禁止（縦も横も） */
-  scrollbar-gutter: stable both-edges;
+  overflow: hidden;   /* 外側スクロール禁止（縦も横も） */
 }
 
 /* SPA でゲーム画面だけ使う前提ならこれも付けてOK（外側スクロールを基本封じる） */
@@ -70,12 +69,15 @@ body {
     display: grid;
     grid-template-columns: 240px minmax(0, 1fr);
     gap: 1.5rem;
-    min-height: 0;      /* ← 重要：これがないと grid が縦を押し広げる */
-    height: 100%;        /* ← これで高さを固定 */
-    overflow-y: auto;    /* ← 真ん中だけ縦スクロール */
+    min-height: 0;      
+    overflow-y: auto;    /* 真ん中だけ必要ならスクロール */
     overflow-x: hidden;
+    scrollbar-width: none;    /* Firefox 用：バー非表示 */
  }
-
+/* Chromium / WebKit 用：バー非表示 */
+.hb-game-layout::-webkit-scrollbar {
+    display: none;
+  }
   .hb-sidebar {
     @apply flex flex-col gap-3;
   }
