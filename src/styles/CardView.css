@@ -172,16 +172,6 @@
   color: #e5e7eb;
 }
 
-.hb-card-view-type {
-  padding: 1px 6px;
-  border-radius: 9999px;
-  font-size: 0.65rem;
-  background: rgba(15, 23, 42, 0.9);
-  color: #bfdbfe; /* blue-200 */
-  border: 1px solid #1e293b;
-  white-space: nowrap;
-}
-
 /* 2行目：知識などメタ情報 */
 .hb-card-view-meta {
   font-size: 0.72rem;
@@ -196,15 +186,14 @@
   font-size: 0.72rem; /* 本文もコンパクトに */
   line-height: 1.3;
   color: #e5e7eb;
-  border-top: 1px solid rgba(51, 65, 85, 0.8); /* 上に薄い仕切り線 */
+  border-top: 1px solid rgba(51, 65, 85, 0.8);
   display: -webkit-box;
-  -webkit-line-clamp: 4;         /* 最大4行まで表示 */
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
   padding-right: 2px;
 }
-
 /* 下部にほんのりフェードを入れて「…」の雰囲気を出す */
 .hb-card-view-text::after {
   content: "";
@@ -263,7 +252,7 @@
 
 /* サプライカードだけ、さらに一段小さく */
 .hb-supply-card-compact .hb-card-view {
-  width: 140px;
+  width: 110px;
 }
 
 .hb-supply-card-compact .hb-card-frame {
