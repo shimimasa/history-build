@@ -187,17 +187,26 @@
     @apply w-full;
   }
 
-  /* サプライ全体レイアウト：
-     左に「資源列」「勝利点列」、右に「人物＋出来事」グリッド */
-  .hb-supply-layout {
-    @apply flex gap-3 items-start;
-  }
+  /* サプライ全体を横並びに（左2列、右グリッド） */
+.hb-supply-layout {
+  display: grid;
+  grid-template-columns: 150px 150px 1fr; /* 左：資源 / 左2：勝利点 / 右：王国 */
+  gap: 16px;
+  align-items: flex-start;
+}
 
-  /* 左側2列：資源 / 勝利点（縦1列ずつ） */
-  .hb-supply-basic-column {
-    @apply flex flex-col gap-2 flex-shrink-0;
-    width: 140px; /* サプライ1列分の幅 */
-  }
+.hb-basic-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+ /* 資源・勝利点カードは compact 表示（小さく） */
+.hb-basic-column .hb-card-frame {
+  max-width: 135px;
+  transform: scale(0.92);
+  transform-origin: top center;
+}
 
   .hb-basic-supply-column--resource {
     /* 必要なら資源列専用の装飾をここに */
@@ -207,17 +216,11 @@
     /* 必要なら勝利点列専用の装飾をここに */
   }
 
-  /* 右側：人物・出来事カードのグリッド */
-  .hb-kingdom-supply-grid,
-  .hb-supply-kingdom-grid {
-    /* 両方同じ意味にしておく（TS 側のクラス名ずれ対策） */
-    display: grid;
-    /* 5列グリッド。資源＋勝利点が左に2列あるので、右側の残り幅でちょうど良い */
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 12px;
-    align-content: flex-start;
-    padding-right: 0.25rem;
-  }
+  /* 王国カードのグリッドは 4 列で固定 */
+/* 王国カードは通常サイズ */
+.hb-kingdom-supply-grid .hb-card-frame {
+  max-width: 180px;
+}
 
   /* ====== サプライカード共通 ====== */
 
