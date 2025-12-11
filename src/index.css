@@ -63,21 +63,25 @@
   }
 
   .hb-sidebar {
-    @apply flex flex-col gap-4;
+    @apply flex flex-col gap-3;
   }
 
-  .hb-board {
-    display: block; /* カード説明を sidebar に移すので1カラムでOK */
+  /* プレイヤー / CPU を横並びにする行 */
+  .hb-player-row {
+    @apply flex flex-row gap-3;
   }
 
+  .hb-player-row .hb-player-panel {
+    @apply flex-1;
+  }
 
   /* サイドバー下部に置くため細めレイアウトへ変更 */
-.hb-card-detail-panel {
-  margin-top: 1rem;
-  padding: 1rem;
-  max-height: 260px; /* CPUパネルに並ぶ高さ */
-  overflow-y: auto;
-}
+  .hb-card-detail-panel {
+    margin-top: 0.75rem;  /* 1rem → 少しだけ詰める */
+    padding: 1rem;
+    max-height: 260px;
+    overflow-y: auto;
+  }
   /* 右カラム（カード詳細＋ログ） */
 
   .hb-card-detail-panel {
@@ -114,25 +118,24 @@
   /* ====== サプライボード ====== */
   .hb-supply-board {
     display: grid;
-    /* 左: 基本カード2列（資源 / 勝利点）、右: 人物・出来事 */
-    grid-template-columns: 230px minmax(0, 1fr); /* 260px → 230px で全体を圧縮 */
-    column-gap: 16px;                            /* 24px → 16px で左右余白を縮小 */
-    align-items: stretch; /* 左右カラムの高さを揃える */
+    grid-template-columns: 230px minmax(0, 1fr); /* 横幅はそのまま */
+    column-gap: 16px;
+    align-items: stretch;
   }
 
   /* ====== 左側（資源1列×3行 + 勝利点1列×3行） ====== */
 
   .hb-basic-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 資源・勝利点の2列 */
-    column-gap: 8px;                       /* 12px → 8px で列間を狭く */
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 8px;
     height: 100%;
   }
 
   .hb-basic-column {
     display: grid;
-    grid-template-rows: repeat(3, 1fr); /* 3行固定 */
-    row-gap: 8px;                       /* 12px → 8px で行間を狭く */
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 6px; /* 8px → 6px にして縦の余白をさらに縮める */
   }
 
   .hb-basic-column .hb-supply-card {
@@ -148,9 +151,9 @@
 
 .hb-kingdom-supply-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5列固定 */
-  grid-auto-rows: 1fr; /* 行の高さを揃える（2行） */
-  gap: 14px;            /* 20px → 14px でカード間隔を縮小 */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 10px; /* 14px → 10px：横も縦も余白を少し詰める（カードサイズは変更なし） */
 }
 
 .hb-kingdom-supply-grid .hb-supply-card {

@@ -157,10 +157,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       <div className="hb-game-layout">
         {/* 左サイドバー：プレイヤー情報 / CPU 情報 */}
         <aside className="hb-sidebar">
-          <PlayerHud title="プレイヤー" data={player} />
-          <PlayerHud title="CPU" data={cpu} compact />
+          {/* プレイヤーと CPU を横並び表示 */}
+          <div className="hb-player-row">
+            <PlayerHud title="プレイヤー" data={player} />
+            <PlayerHud title="CPU" data={cpu} compact />
+          </div>
 
-          {/* カード説明パネルのみ（ログは削除） */}
+          {/* その下にカード説明ボックスを配置 */}
           <section className="hb-card-detail-panel hb-card-detail-panel--sidebar">
             <div className="hb-section-title">カードの説明</div>
             <div className="hb-card-detail-scroll">
@@ -174,7 +177,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             </div>
           </section>
         </aside>
-
         {/* 右側ボード：サプライのみ（横幅を最大化） */}
         <main className="hb-board">
           {/* サプライボード（左：基本カード / 右：人物・出来事） */}
@@ -304,10 +306,7 @@ const PlayerHud: React.FC<{
           {data.deckCount ?? 0} / {data.hand?.length ?? 0}
         </span>
       </div>
-      <div className="hb-panel-row">
-        <span>捨て札</span>
-        <span>{data.discardCount ?? 0}</span>
-      </div>
+      {/* 捨て札行は削除 */}
       <div className="hb-panel-row">
         <span>勝利点</span>
         <span>{data.vp ?? 0}</span>
