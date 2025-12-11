@@ -302,8 +302,9 @@
   /* ====== 手札エリア ====== */
 
   .hb-hand-area {
-    @apply border-t border-slate-800 bg-slate-950/95 px-6 pt-3 pb-4 flex flex-col gap-2;
-    min-height: 220px;
+    /* 余白を少し削る & min-height を小さくする */
+    @apply border-t border-slate-800 bg-slate-950/95 px-4 pt-2 pb-3 flex flex-col gap-1;
+    min-height: 150px; /* 220px → 150px */
   }
 
   .hb-hand-header {
@@ -316,13 +317,20 @@
 
   .hb-hand-cards,
   .hb-hand-scroll {
-    /* クラス名ぶれ対策で両方同じ指定 */
+    /* 横スクロールのみ・高さを抑える */
     @apply flex flex-row gap-3 overflow-x-auto pb-1 px-1;
     justify-content: center;
+    max-height: 120px;
   }
 
   .hb-hand-card {
-    @apply w-[125px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+    /* 手札カードを少し小さく */
+    @apply w-[110px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+  }
+
+  /* 手札用 CardView も幅を合わせて小さく */
+  .hb-card--hand {
+    @apply w-full max-w-[110px];
   }
 
   .hb-hand-card:hover {
@@ -336,7 +344,8 @@
   /* ====== 手札アクションボタン ====== */
 
   .hb-hand-actions {
-    @apply flex flex-row justify-end gap-12 px-24 pt-2;
+    /* ボタン行の縦幅も圧縮 */
+    @apply flex flex-row justify-end gap-8 px-12 pt-1;
   }
 
   .hb-btn {

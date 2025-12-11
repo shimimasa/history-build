@@ -108,6 +108,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
   const phaseLabel = getPhaseLabel(rawPhase);
 
+  // ▼ 追加: v1.5 GameState に合わせた表示用ステータス
+  const riceThisTurn = player.riceThisTurn ?? player.rice ?? 0;
+  const knowledge = player.knowledge ?? 0;
+
+  // フェーズに応じて「今行えるアクション / 購入」の残り数を簡易表示
+  const actionsLeft = rawPhase === "ACTION" ? 1 : 0;
+  const buysLeft = rawPhase === "BUY" ? 1 : 0;
+
   return (
     // 新レイアウト:
     // - 上部: ヘッダー（タイトル＋ターン情報）
@@ -121,10 +129,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         </div>
         <div className="hb-top-status">
           <div className="hb-status-group">
-            <StatusBadge label="アクション" value={player.actions ?? 0} />
-            <StatusBadge label="購入" value={player.buys ?? 0} />
-            <StatusBadge label="米" value={player.rice ?? 0} />
-            <StatusBadge label="知識" value={player.knowledge ?? 0} />
+            <StatusBadge label="アクション" value={actionsLeft} />
+            <StatusBadge label="購入" value={buysLeft} />
+            <StatusBadge label="米" value={riceThisTurn} />
+            <StatusBadge label="知識" value={knowledge} />
           </div>
           <div className="hb-turn-indicator">
             <div className="hb-turn-text">ターン {displayTurn}</div>
@@ -140,8 +148,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         {/* 左サイドバー：プレイヤー情報 / CPU 情報 */}
         <aside className="hb-sidebar">
           <PlayerHud title="プレイヤー" data={player} />
-          <PlayerHud title="CPU" data={cpu} compact />          
-          {/* カード説明パネル＋ログをサイドバー下部に配置 */}
+          <PlayerHud title="CPU" data={cpu} compact />
+
+          {/* カード説明パネルのみ（ログは削除） */}
           <section className="hb-card-detail-panel hb-card-detail-panel--sidebar">
             <div className="hb-section-title">カードの説明</div>
             <div className="hb-card-detail-scroll">
@@ -152,24 +161,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   サプライや手札のカードにマウスをのせると、ここに説明が表示されます。
                 </p>
               )}
-            </div>
-
-            <div className="hb-detail-log-panel">
-              <div className="hb-section-title">ログ</div>
-              <div className="hb-log-scroll">
-                {logs.length === 0 ? (
-                  <p className="hb-log-empty">まだログはありません。</p>
-                ) : (
-                  logs
-                    .slice()
-                    .reverse()
-                    .map((line, idx) => (
-                      <div key={idx} className="hb-log-line">
-                        {line}
-                      </div>
-                    ))
-                )}
-              </div>
             </div>
           </section>
         </aside>
