@@ -318,13 +318,12 @@ body {
  /* ====== 手札エリア ====== */
 
  .hb-hand-area {
-  /* 余白を少し削る & min-height を小さくする */
   @apply border-t border-slate-800 bg-slate-950/95 px-6 pt-3 pb-3 flex flex-col gap-1;
-  min-height: 170px; /* 150px → 135px でもう一段コンパクトに */
-  width: 100%;
-  max-width: 1120px;   /* 好みで 960〜1200px くらい */
-  margin: 0 auto;      /* 画面中央に寄せる */
-  flex-shrink: 0;  /* ← 下に押し広げて overflow を起こさせない */
+  min-height: 170px;
+  flex-shrink: 0;
+  width: 100%;      /* ← 全幅にする */
+  margin: 0;        /* ← これが重要！中央寄せをやめる */
+  max-width: none;  /* ← 上限幅も消す */
 }
 
 .hb-hand-header {
