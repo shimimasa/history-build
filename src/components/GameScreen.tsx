@@ -1,6 +1,7 @@
 import React from "react";
 import { CardView } from "./CardView";
 import { SupplyCardPile } from "./SupplyCard";
+import { CardDetailModal } from "./CardDetailModal"; // ★ 追加
 
 import "../index.css";
 
@@ -18,7 +19,7 @@ export interface GameScreenProps {
   onHoverCard: (card: any | null) => void;
 }
 
-export const GameScreen: React.FC<GameScreenProps> = ({
+　export const GameScreen: React.FC<GameScreenProps> = ({
   state,
   logs,
   onPlayHandCard,
@@ -66,10 +67,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   });
 
 
-  // ★ 説明パネル用の「クリック選択中カード」
-  const [focusedCard, setFocusedCard] = React.useState<any | null>(null);
-
-  const hoveredCard: any | null = state.hoveredCard ?? null;
+   // ★ 説明パネル用
+   const [focusedCard, setFocusedCard] = React.useState<any | null>(null);
+   // ★ 中央モーダル用
+   const [detailModalCard, setDetailModalCard] = React.useState<any | null>(null);
+   const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false);
+ 
+   const hoveredCard: any | null = state.hoveredCard ?? null;
 
   // 手札から「直近で選択されたカード」を説明パネル用に解決
   const selectedCardFromHand =
@@ -80,34 +84,42 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       : null;
 
       // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
-      const cardForDetail =
-        hoveredCard ?? focusedCard ?? selectedCardFromHand ?? null;
-    
-      const handleHandClick = (cardId: string, card: any) => {
-        // 現在フェーズを再取得（viewState でも state.phase に入っている）
-        const rawPhase =
-          state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
-    
-        // ACTION フェーズ中かつプレイヤー手番なら、クリックだけで即プレイ
-        if (rawPhase === "ACTION" && isPlayerTurn) {
-          onPlayHandCard(cardId);
-        }
-    
-        // 選択状態は従来どおりトグル
-        if (selectedHandCardId === cardId) {
-          onSelectHandCard(null);
-        } else {
-          onSelectHandCard(cardId);
-        }
-        setFocusedCard(card); // 説明パネル用に選択カードも保持
-      };
+  const cardForDetail =
+  hoveredCard ?? focusedCard ?? selectedCardFromHand ?? null;
 
-      const handleHandDoubleClick = (cardId: string) => {
-        onPlayHandCard(cardId);
-      };
-    
+const handleHandClick = (cardId: string, card: any) => {
+  // 既存ロジック（ACTION フェーズなら即プレイ）
+  const rawPhase =
+    state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
+
+  if (rawPhase === "ACTION" && isPlayerTurn) {
+    onPlayHandCard(cardId);
+  }
+
+  // 選択トグルは既存どおり
+  if (selectedHandCardId === cardId) {
+    onSelectHandCard(null);
+  } else {
+    onSelectHandCard(cardId);
+  }
+
+  // サイドバー説明用
+  setFocusedCard(card);
+
+  // ★ クリックしたカードを中央モーダルにも表示
+  setDetailModalCard(card);
+  setIsDetailModalOpen(true);
+};
+　const handleHandDoubleClick = (cardId: string) => {
+  onPlayHandCard(cardId);
+};
+
       const handleSupplyClick = (pile: any) => {
-        setFocusedCard(pile.card); // ★ 購入クリックでも説明パネルに残す
+        // ★ サイドバー＋モーダル両方に反映
+        setFocusedCard(pile.card);
+        setDetailModalCard(pile.card);
+        setIsDetailModalOpen(true);
+    
         if (!isPlayerTurn) return;
         onBuyCard(pile.card.id);
       };
@@ -133,6 +145,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     // - 下部: 手札エリア（横1列＋横スクロール）とアクションボタン
     <div className="hb-game-screen">
       {/* --- 上部ヘッダー（タイトル＋ターン情報） --- */}
+      
       <header className="hb-game-header">
         <div className="hb-game-title">
           <span>History Build - 戦国デッキ v1.5</span>
@@ -274,6 +287,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           </button>
         </div>
       </section>
+
+      {/* ★ カード詳細モーダル（中央表示） */}
+      <CardDetailModal
+        card={detailModalCard}
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+      />
     </div>
   );
 };

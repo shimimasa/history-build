@@ -44,14 +44,18 @@ export const CardView: React.FC<CardViewProps> = ({
   const handleMouseEnter = () => onHover?.(card);
   const handleMouseLeave = () => onHover?.(null);
 
-  // v2: card.cost は number
-  // v1 互換: card.cost.rice などがあればそちらを優先
   const riceCost =
     (typeof card.cost === "number" ? card.cost : card.cost?.rice) ?? 0;
 
   const rawType: string =
     card.type ?? card.cardType ?? card.cardTypeLabel ?? "";
   const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
+
+  // ★ 種別ごとのクラス名（background / badge 用）
+  const typeClass =
+    rawType !== "" ? `hb-card--type-${rawType}` : "";
+  const typeBadgeClass =
+    rawType !== "" ? `hb-card-type-badge--${rawType}` : "";
 
   // 画像プロパティはいくつかパターンがある想定
   const explicitImage =
@@ -92,7 +96,7 @@ export const CardView: React.FC<CardViewProps> = ({
 
   return (
     <div
-      className={`hb-card hb-card--${variant}`}
+      className={`hb-card hb-card--${variant} ${typeClass}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -110,7 +114,9 @@ export const CardView: React.FC<CardViewProps> = ({
 
         <div className="hb-card-type-row">
           {typeLabel && (
-            <span className="hb-card-type-badge">{typeLabel}</span>
+            <span className={`hb-card-type-badge ${typeBadgeClass}`}>
+              {typeLabel}
+            </span>
           )}
         </div>
       </div>

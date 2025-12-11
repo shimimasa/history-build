@@ -243,6 +243,19 @@ body {
     @apply w-full max-w-[100px];  /* 110px → 95px */
   }
 
+  /* ★ サプライカード：軽めのホバー */
+  .hb-card--supply:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.9);
+  }
+
+  /* ★ 手札カード：やや強めのホバーで「主役感」 */
+  .hb-card--hand:hover {
+    transform: translateY(-6px) scale(1.06);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.95);
+  }
+
+
   .hb-card-image-wrapper {
     border-radius: 12px;
     overflow: hidden;
@@ -285,6 +298,45 @@ body {
     padding: 0.1rem 0.35rem;
     border-radius: 999px;
     background: rgba(248, 250, 252, 0.12);
+  }
+
+
+  /* ★ 種別ごとカラーリング */
+
+  /* 資源（黄色ベース） */
+  .hb-card--type-resource {
+    background: radial-gradient(circle at top, #facc15, #0f172a);
+  }
+  .hb-card-type-badge--resource {
+    background: rgba(250, 204, 21, 0.20);
+    color: #facc15;
+  }
+
+  /* 勝利点（緑ベース） */
+  .hb-card--type-victory {
+    background: radial-gradient(circle at top, #16a34a, #022c22);
+  }
+  .hb-card-type-badge--victory {
+    background: rgba(22, 163, 74, 0.24);
+    color: #bbf7d0;
+  }
+
+  /* 人物（紫〜紺） */
+  .hb-card--type-person {
+    background: radial-gradient(circle at top, #6366f1, #020617);
+  }
+  .hb-card-type-badge--person {
+    background: rgba(129, 140, 248, 0.28);
+    color: #e0e7ff;
+  }
+
+  /* 出来事（青ベース） */
+  .hb-card--type-event {
+    background: radial-gradient(circle at top, #0ea5e9, #020617);
+  }
+  .hb-card-type-badge--event {
+    background: rgba(56, 189, 248, 0.28);
+    color: #e0f2fe;
   }
 
   /* ====== カード詳細 ====== */
