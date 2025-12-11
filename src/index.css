@@ -113,11 +113,12 @@
 
   /* ====== サプライボード ====== */
   .hb-supply-board {
-      display: grid;
-      grid-template-columns: 150px 150px 1fr; /* 左：資源 / 左2：勝利点 / 右：人物・出来事 */
-      column-gap: 24px;
-      align-items: flex-start;
-    }
+    display: grid;
+    /* 3列 → 2列に変更：左 180px（基本カード）、右 残り全部（人物・出来事） */
+    grid-template-columns: 180px minmax(0, 1fr);
+    column-gap: 24px;
+    align-items: flex-start;
+  }
     
     /* ====== 左2列（資源 & 勝利点） ====== */
     

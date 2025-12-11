@@ -43,27 +43,15 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   };
 
   // サプライを「基本カード（資源・勝利点）」と「王国カード（人物・出来事）」に分割
-const basicSupplyPiles = supplyPiles.filter((p) => {
-  const t = getCardType(p);
-  return t === "resource" || t === "victory" || t === "base";
-});
+  const basicSupplyPiles = supplyPiles.filter((p) => {
+    const t = getCardType(p);
+    return t === "resource" || t === "victory" || t === "base";
+  });
 
-const kingdomSupplyPiles = supplyPiles.filter((p) => {
-  const t = getCardType(p);
-  return t === "person" || t === "event";
-});
-
-// 基本カードを「資源」と「勝利点」の2列に分割
-const resourceSupplyPiles = basicSupplyPiles.filter((p) => {
-  const t = getCardType(p);
-  return t === "resource" || t === "base"; // base を資源側に寄せる想定
-});
-
-const victorySupplyPiles = basicSupplyPiles.filter((p) => {
-  const t = getCardType(p);
-  return t === "victory";
-});
-
+  const kingdomSupplyPiles = supplyPiles.filter((p) => {
+    const t = getCardType(p);
+    return t === "person" || t === "event";
+  });
 
 
   // ★ 説明パネル用の「クリック選択中カード」
@@ -176,55 +164,25 @@ const victorySupplyPiles = basicSupplyPiles.filter((p) => {
 
         {/* 右側ボード：サプライのみ（横幅を最大化） */}
         <main className="hb-board">
-          {/* サプライボード（基本カード行＋王国カードグリッド） */}
-          <section className="hb-supply-board">
+          {/* サプライボード（左：基本カード / 右：人物・出来事） */}
+          <section>
             <h2 className="hb-section-title">場のカード（サプライ）</h2>
+            <div className="hb-supply-board">
+              {/* 左：勝利点・資源カード（基本カード） */}
+              <div className="hb-basic-column">
+                {basicSupplyPiles.map((pile: any) => (
+                  <SupplyCardPile
+                    key={pile.card.id}
+                    pile={pile}
+                    variant="basic"          // ← 小さめ表示用
+                    isDisabled={!isPlayerTurn}
+                    onClick={() => handleSupplyClick(pile)}
+                    onHover={onHoverCard}
+                  />
+                ))}
+              </div>
 
-
-            {/* 左1列目：資源カード列（人物・出来事より一回り小さい） */}
-  <div className="hb-basic-column">
-    {resourceSupplyPiles.map((pile: any) => (
-      <SupplyCardPile
-        key={pile.card.id}
-        pile={pile}
-        variant="basic"
-        isDisabled={!isPlayerTurn}
-        onClick={() => handleSupplyClick(pile)}
-        onHover={onHoverCard}
-      />
-    ))}
-  </div>
-
-  {/* 左2列目：勝利点カード列 */}
-  <div className="hb-basic-column">
-    {victorySupplyPiles.map((pile: any) => (
-      <SupplyCardPile
-        key={pile.card.id}
-        pile={pile}
-        variant="basic"
-        isDisabled={!isPlayerTurn}
-        onClick={() => handleSupplyClick(pile)}
-        onHover={onHoverCard}
-      />
-    ))}
-  </div>
-
-  {/* 右側：人物・出来事カード（王国カード） */}
-  <div className="hb-kingdom-supply-grid">
-    {kingdomSupplyPiles.map((pile: any) => (
-      <SupplyCardPile
-        key={pile.card.id}
-        pile={pile}
-        variant="kingdom"
-        isDisabled={!isPlayerTurn}
-        onClick={() => handleSupplyClick(pile)}
-        onHover={onHoverCard}
-      />
-    ))}
-  </div>
-            
-
-              {/* 下段：王国カード 5列グリッド（縦スクロール可） */}
+              {/* 右：人物・出来事カード（王国カード） */}
               <div className="hb-kingdom-supply-grid">
                 {kingdomSupplyPiles.map((pile: any) => (
                   <SupplyCardPile
@@ -237,6 +195,7 @@ const victorySupplyPiles = basicSupplyPiles.filter((p) => {
                   />
                 ))}
               </div>
+            </div>
           </section>
         </main>
       </div>
