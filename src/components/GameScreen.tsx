@@ -134,6 +134,22 @@ const handleSupplyClick = (pile: any) => {
   const actionsLeft = rawPhase === "ACTION" ? 1 : 0;
   const buysLeft = rawPhase === "BUY" ? 1 : 0;
 
+  // ▼ 追加：モーダル用の「このカードを今買えるか」と理由
+  const isPlayerBuyPhase = isPlayerTurn && rawPhase === "BUY";
+
+  const canBuyThisCard =
+    !!detailModalCard &&
+    canBuyCard(player as PlayerState, detailModalCard as GameCard);
+
+  let buyDisabledReason: string | undefined;
+  if (!isPlayerTurn) {
+    buyDisabledReason = "プレイヤーの手番ではありません";
+  } else if (!isPlayerBuyPhase) {
+    buyDisabledReason = "購入は BUY フェーズのみ行えます";
+  } else if (detailModalCard && !canBuyThisCard) {
+    buyDisabledReason = "資源・知識不足";
+  }
+
   return (
     // 新レイアウト:
     // - 上部: ヘッダー（タイトル＋ターン情報）
@@ -307,12 +323,15 @@ const handleSupplyClick = (pile: any) => {
           setIsDetailModalOpen(false);
         }}
         primaryLabel="購入する"
-        primaryEnabled={!canBuyCard(player, detailModalCard)}
-        primaryDisabledReason={!canBuyCard(player, detailModalCard) ? "資源・知識不足" : undefined}
+        // ★ canBuyThisCard は detailModalCard が null のときは false になるようガード済み
+        primaryEnabled={isPlayerBuyPhase && canBuyThisCard}
+        primaryDisabledReason={
+          !(isPlayerBuyPhase && canBuyThisCard) ? buyDisabledReason : undefined
+        }
       />
-      </div>
-    );
-  };
+    </div>
+  );
+};
 
 
 const StatusBadge: React.FC<{ label: string; value: number }> = ({
