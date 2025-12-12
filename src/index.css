@@ -389,6 +389,22 @@ body {
   max-width: none;  /* ← 上限幅も消す */
 }
 
+/* 手札の右端フェード（「右に続く/余白は意図的」感を出す） */
+  .hb-hand-area::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 64px;          /* フェード幅（好みで 48〜80） */
+      height: 100%;
+      pointer-events: none; /* クリック/スクロールを邪魔しない */
+      background: linear-gradient(
+        to left,
+        rgba(2, 6, 23, 0.85),
+        rgba(2, 6, 23, 0.0)
+      );
+    }
+
 .hb-hand-header {
   @apply flex items-baseline justify-between;
 }
