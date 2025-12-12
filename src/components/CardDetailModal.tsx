@@ -53,7 +53,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
   isOpen,
   onClose,
   onBuy,
-  canBuy,
+  canBuy = false,
 }) => {
   const computed = useMemo(() => {
     if (!card) return null;
@@ -67,34 +67,11 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
   }, [card]);
 
   const handleBuyClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-        e.stopPropagation();
-        if (!card) return;
-        if (!onBuy) return;
-        if (!canBuy) return;
-        onBuy(card.id);
-      };
+    e.stopPropagation();
+    if (!card || !onBuy || !canBuy) return;
+    onBuy(card.id);
+  };
 
-      <div className="hb-card-modal-footer">
-          {onBuy && (
-            <button
-              type="button"
-              className={`hb-card-modal-footer-button hb-card-modal-footer-button--primary${
-                canBuy ? "" : " hb-card-modal-footer-button--disabled"
-              }`}
-              onClick={handleBuyClick}
-              disabled={!canBuy}
-            >
-              購入する
-            </button>
-          )}
-           <button
-             type="button"
-             className="hb-card-modal-footer-button"
-             onClick={onClose}
-           >
-             とじる
-           </button>
-         </div>
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -106,7 +83,6 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
 
   useEffect(() => {
     if (!isOpen) return;
-    // 背景スクロールを止める
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -117,62 +93,57 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
   if (!isOpen || !card || !computed) return null;
 
   return (
-    <div className="hb-modal-overlay" onClick={onClose} role="presentation">
-      <div
-        className="hb-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-label={`${card.name} 詳細`}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="hb-modal-overlay" onClick={onClose}>
+      <div className="hb-modal" onClick={(e) => e.stopPropagation()}>
         <div className="hb-modal-header">
           <div className="hb-modal-title">{card.name}</div>
-          <button
-            type="button"
-            className="hb-modal-close"
-            onClick={onClose}
-            aria-label="閉じる"
-          >
-            ×
-          </button>
+          <button className="hb-modal-close" onClick={onClose}>×</button>
         </div>
 
         <div className="hb-modal-body">
-          {/* 左：カード（大きすぎないように縦横を制限） */}
           <div className="hb-modal-card">
             <CardView card={card as any} variant="supply" />
           </div>
 
-          {/* 右：情報（ここだけスクロール） */}
           <div className="hb-modal-info">
             <div className="hb-modal-meta">
               {computed.typeLabel && (
                 <div className="hb-modal-meta-row">
-                  <span className="hb-modal-meta-key">種別</span>
-                  <span className="hb-modal-meta-val">{computed.typeLabel}</span>
+                  <span>種別</span>
+                  <span>{computed.typeLabel}</span>
                 </div>
               )}
               <div className="hb-modal-meta-row">
-                <span className="hb-modal-meta-key">米コスト</span>
-                <span className="hb-modal-meta-val">米 {computed.riceCost}</span>
+                <span>米</span>
+                <span>{computed.riceCost}</span>
               </div>
               <div className="hb-modal-meta-row">
-                <span className="hb-modal-meta-key">知識条件</span>
-                <span className="hb-modal-meta-val">
-                  {computed.knowledgeReq ?? "—"}
-                </span>
+                <span>知識</span>
+                <span>{computed.knowledgeReq ?? "—"}</span>
               </div>
             </div>
 
             <div className="hb-modal-section">
               <div className="hb-modal-section-title">効果</div>
-              <div className="hb-modal-section-body">{computed.effectText}</div>
+              <div className="hb-modal-section-body">
+                {computed.effectText}
+              </div>
             </div>
           </div>
         </div>
 
+        {/* ★ ここが重要：フッター */}
         <div className="hb-modal-footer">
-          <button type="button" className="hb-modal-footer-btn" onClick={onClose}>
+          {onBuy && (
+            <button
+              className="hb-btn hb-btn-primary"
+              disabled={!canBuy}
+              onClick={handleBuyClick}
+            >
+              購入する
+            </button>
+          )}
+          <button className="hb-btn hb-btn-secondary" onClick={onClose}>
             とじる
           </button>
         </div>
