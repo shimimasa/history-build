@@ -77,12 +77,21 @@ export interface GameScreenProps {
  
    const hoveredCard: any | null = state.hoveredCard ?? null;
 
+  // 手札カードの「表示用の一意キー」を解決（instanceId が無い場合は id__index）
+  // これを選択IDとして使うことで、同名カードが複数あっても「1枚だけ」選択できる。
+  const resolveHandKey = (c: any, index: number) =>
+    (c.instanceId ?? `${c.id}__${index}`);
+
   // 手札から「直近で選択されたカード」を説明パネル用に解決
   const selectedCardFromHand =
     selectedHandCardId != null
-      ? player.hand?.find(
-          (c: any) => (c.instanceId ?? c.id) === selectedHandCardId
-        ) ?? null
+      ? (() => {
+          const hand = player.hand ?? [];
+          for (let i = 0; i < hand.length; i++) {
+            if (resolveHandKey(hand[i], i) === selectedHandCardId) return hand[i];
+          }
+          return null;
+        })()
       : null;
 
       // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
@@ -244,17 +253,21 @@ export interface GameScreenProps {
 
         {/* 下部いっぱいに横一列に並ぶ手札。多い場合は横スクロール */}
         <div className="hb-hand-cards">
-          {player.hand?.map((card: any) => {
-            const id = card.instanceId ?? card.id;
-            const selected = selectedHandCardId === id;
+        {player.hand?.map((card: any, index: number) => {
+            // 選択・描画のための「手札1枚ごとの一意キー」
+            const handKey = resolveHandKey(card, index);
+            // 実際にプレイ処理に渡すID（既存ロジック互換）
+            const playId = (card.instanceId ?? card.id);
+
+            const selected = selectedHandCardId === handKey;
             return (
               <div
-                key={id}
+                key={handKey}
                 className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}`}
-                onClick={() => handleHandClick(id)}
+                onClick={() => handleHandClick(handKey)}
                 onDoubleClick={(e) => {
                      e.stopPropagation();
-                     handleHandDoubleClick(id);
+                     handleHandDoubleClick(playId);
                    }}
                 onContextMenu={(e) => {
                       e.preventDefault();
