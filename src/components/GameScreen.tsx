@@ -86,20 +86,18 @@ export interface GameScreenProps {
       : null;
 
       // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
-  const cardForDetail =
-  hoveredCard ?? focusedCard ?? selectedCardFromHand ?? null;
+      const cardForDetail =
+       hoveredCard ?? selectedCardFromHand ?? null;
 
-const handleHandClick = (cardId: string, card: any) => {
-  // 既存ロジック（ACTION フェーズなら即プレイ）
-  // クリック = 選択トグルのみ
-  if (selectedHandCardId === cardId) {
-      onSelectHandCard(null);
-      setFocusedCard(null);
-    } else {
-      onSelectHandCard(cardId);
-      setFocusedCard(card);
-    }
-};
+  const handleHandClick = (cardId: string) => {
+       if (selectedHandCardId === cardId) {
+         onSelectHandCard(null);
+       } else {
+         onSelectHandCard(cardId);
+       }
+     };
+
+
 　const handleHandDoubleClick = (cardId: string) => {
   onPlayHandCard(cardId);
 };
@@ -253,15 +251,19 @@ const handleHandClick = (cardId: string, card: any) => {
               <div
                 key={id}
                 className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}`}
-                onClick={() => handleHandClick(id, card)}
-                onDoubleClick={() => handleHandDoubleClick(id)}
+                onClick={() => handleHandClick(id)}
+                onDoubleClick={(e) => {
+                     e.stopPropagation();
+                     handleHandDoubleClick(id);
+                   }}
                 onContextMenu={(e) => {
                       e.preventDefault();
                       setDetailModalCard(card);
                       setIsDetailModalOpen(true);
                     }}
-                onMouseEnter={() => onHoverCard(card)}
-                onMouseLeave={() => onHoverCard(null)}
+                    onMouseEnter={() => onHoverCard(card)}
+                     onMouseLeave={() => onHoverCard(null)}
+
               >
                 <CardView card={card} variant="hand" />
               </div>
