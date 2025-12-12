@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import type { Card } from "../game/gameState";
 import { CardView } from "./CardView";
 
@@ -7,100 +7,137 @@ interface CardDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+function getCardTypeLabel(card: any): string {
+  const t = card?.type ?? card?.cardType ?? "";
+  if (!t) return "";
+  const map: Record<string, string> = {
+    resource: "資源",
+    person: "人物",
+    event: "出来事",
+    victory: "勝利点",
+  };
+  return map[t] ?? String(t);
+}
+
+function getRiceCost(card: any): number {
+  const c = card?.cost;
+  if (typeof c === "number") return c;
+  return Number(c?.rice ?? 0);
+}
+
+function getKnowledgeReq(card: any): number | null {
+  const k = card?.knowledgeRequired;
+  if (typeof k === "number") return k;
+  const c = card?.cost;
+  if (typeof c === "object" && typeof c?.knowledge === "number") return c.knowledge;
+  return null;
+}
+
+function getEffectText(card: any): string {
+  return (
+    card?.text ??
+    card?.effect ??
+    card?.description ??
+    card?.conditionText ??
+    "（説明テキストが未設定です）"
+  );
+}
+
 export const CardDetailModal: React.FC<CardDetailModalProps> = ({
   card,
   isOpen,
   onClose,
 }) => {
-  if (!isOpen || !card) return null;
+  const computed = useMemo(() => {
+    if (!card) return null;
+    const anyCard = card as any;
+    return {
+      typeLabel: getCardTypeLabel(anyCard),
+      riceCost: getRiceCost(anyCard),
+      knowledgeReq: getKnowledgeReq(anyCard),
+      effectText: getEffectText(anyCard),
+    };
+  }, [card]);
 
-  // ESC キーで閉じる
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, onClose]);
 
-  const handleOverlayClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-    onClose();
-  };
+  useEffect(() => {
+    if (!isOpen) return;
+    // 背景スクロールを止める
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isOpen]);
 
-  const handleContentClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-  };
-
-  // v1 / v1.5 両対応の安全な取り出し（cardの形が違っても落ちない）
-  const anyCard = card as any;
-  const cardType: string = anyCard.type ?? anyCard.cardType ?? "";
-
-  const riceCost: number =
-    (typeof anyCard.cost === "number"
-      ? anyCard.cost
-      : typeof anyCard.cost === "object"
-        ? anyCard.cost?.rice ?? anyCard.cost?.amount ?? 0
-        : 0) ?? 0;
-
-  const knowledgeCost: number | undefined =
-    typeof anyCard.knowledgeRequired === "number"
-      ? anyCard.knowledgeRequired
-      : typeof anyCard.cost === "object" && typeof anyCard.cost?.knowledge === "number"
-        ? anyCard.cost.knowledge
-        : undefined;
-
-  const mainText: string | undefined =
-    anyCard.text ?? anyCard.description ?? anyCard.effect ?? anyCard.conditionText;
+  if (!isOpen || !card || !computed) return null;
 
   return (
-    <div className="hb-card-modal-overlay" onClick={handleOverlayClick}>
-      <div className="hb-card-modal" onClick={handleContentClick}>
-        <div className="hb-card-modal-header">
-          <h2 className="hb-card-modal-title">{card.name}</h2>
-          <button type="button" className="hb-card-modal-close" onClick={onClose}>
+    <div className="hb-modal-overlay" onClick={onClose} role="presentation">
+      <div
+        className="hb-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${card.name} 詳細`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="hb-modal-header">
+          <div className="hb-modal-title">{card.name}</div>
+          <button
+            type="button"
+            className="hb-modal-close"
+            onClick={onClose}
+            aria-label="閉じる"
+          >
             ×
           </button>
         </div>
 
-        <div className="hb-card-modal-body">
-          <div className="hb-card-modal-grid">
-            {/* 左：カード */}
-            <div className="hb-card-modal-card-wrapper">
-              <CardView card={card as any} variant="supply" />
+        <div className="hb-modal-body">
+          {/* 左：カード（大きすぎないように縦横を制限） */}
+          <div className="hb-modal-card">
+            <CardView card={card as any} variant="supply" />
+          </div>
+
+          {/* 右：情報（ここだけスクロール） */}
+          <div className="hb-modal-info">
+            <div className="hb-modal-meta">
+              {computed.typeLabel && (
+                <div className="hb-modal-meta-row">
+                  <span className="hb-modal-meta-key">種別</span>
+                  <span className="hb-modal-meta-val">{computed.typeLabel}</span>
+                </div>
+              )}
+              <div className="hb-modal-meta-row">
+                <span className="hb-modal-meta-key">米コスト</span>
+                <span className="hb-modal-meta-val">米 {computed.riceCost}</span>
+              </div>
+              <div className="hb-modal-meta-row">
+                <span className="hb-modal-meta-key">知識条件</span>
+                <span className="hb-modal-meta-val">
+                  {computed.knowledgeReq ?? "—"}
+                </span>
+              </div>
             </div>
 
-            {/* 右：説明 */}
-            <div className="hb-card-modal-info">
-              <div className="hb-card-modal-meta">
-                {cardType && (
-                  <div className="hb-card-modal-meta-row">
-                    <span>種別：</span>
-                    <span>{cardType}</span>
-                  </div>
-                )}
-                <div className="hb-card-modal-meta-row">
-                  <span>米コスト：</span>
-                  <span>米 {riceCost}</span>
-                </div>
-               <div className="hb-card-modal-meta-row">
-                  <span>知識条件：</span>
-                  <span>{typeof knowledgeCost === "number" ? knowledgeCost : "—"}</span>
-                </div>
-              </div>
-
-              <div className="hb-card-modal-section">
-                <div className="hb-card-modal-section-title">効果</div>
-                <p className="hb-card-modal-text">
-                  {mainText ? mainText : "（説明テキストが未設定です）"}
-                </p>
-              </div>
+            <div className="hb-modal-section">
+              <div className="hb-modal-section-title">効果</div>
+              <div className="hb-modal-section-body">{computed.effectText}</div>
             </div>
           </div>
         </div>
 
-        <div className="hb-card-modal-footer">
-          <button type="button" className="hb-card-modal-footer-button" onClick={onClose}>
+        <div className="hb-modal-footer">
+          <button type="button" className="hb-modal-footer-btn" onClick={onClose}>
             とじる
           </button>
         </div>

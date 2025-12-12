@@ -519,144 +519,176 @@ body {
   .hb-btn-secondary {
     @apply bg-slate-700 hover:bg-slate-600 text-slate-50;
   }
-/* ====== CardDetailModal（hb-card-modal） ====== */
-.hb-card-modal-overlay {
+
+  -----------------------------
+     Card Detail Modal
+     ----------------------------- */
+  
+  .hb-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 70;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background: rgba(2, 6, 23, 0.78);
-    backdrop-filter: blur(2px);
+    z-index: 1000;
   }
   
-  .hb-card-modal {
-    width: min(92vw, 980px);
-    max-height: 90vh;
-    overflow: hidden;
-    border-radius: 18px;
-    background: rgba(15, 23, 42, 0.92);
+  .hb-modal {
+    width: min(1100px, 96vw);
+    height: min(720px, 90vh);
+    background: rgba(2, 6, 23, 0.92);
     border: 1px solid rgba(148, 163, 184, 0.18);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    overflow: hidden; /* ← はみ出し防止 */
+    display: flex;
+    flex-direction: column;
   }
   
-  .hb-card-modal-header {
+  .hb-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 16px;
+    padding: 16px 18px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.16);
   }
   
-  .hb-card-modal-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: rgba(241, 245, 249, 0.95);
+  .hb-modal-title {
+    color: rgba(226, 232, 240, 0.95);
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.02em;
   }
   
-  .hb-card-modal-close {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    background: rgba(2, 6, 23, 0.35);
-    color: rgba(241, 245, 249, 0.95);
+  .hb-modal-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(15, 23, 42, 0.45);
+    color: rgba(226, 232, 240, 0.95);
+    font-size: 22px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .hb-card-modal-body {
-    padding: 14px 16px 16px;
-    overflow: auto;
-    max-height: calc(90vh - 120px);
+  .hb-modal-close:hover {
+    background: rgba(30, 41, 59, 0.75);
   }
   
-  .hb-card-modal-grid {
+  .hb-modal-body {
+    flex: 1;
     display: grid;
-    grid-template-columns: 340px 1fr;
+    grid-template-columns: 420px 1fr;
     gap: 16px;
-    align-items: start;
+    padding: 16px 18px;
+    min-height: 0; /* ← 子要素のoverflowを効かせる */
   }
   
-  @media (max-width: 820px) {
-    .hb-card-modal-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  .hb-card-modal-card-wrapper {
-    width: 100%;
-    max-width: 340px;
-  }
-  
-  /* CardView（hb-card-frame）が幅いっぱいになり過ぎるのを抑える */
-  .hb-card-modal-card-wrapper .hb-card-frame {
-    max-width: 340px;
-  }
-  
-  .hb-card-modal-meta {
-    display: grid;
-    gap: 6px;
-    padding: 10px 12px;
-    border-radius: 14px;
-    background: rgba(2, 6, 23, 0.28);
-    border: 1px solid rgba(148, 163, 184, 0.14);
-  }
-  
-  .hb-card-modal-meta-row {
+  .hb-modal-card {
     display: flex;
-    gap: 8px;
-    font-size: 12px;
-    color: rgba(226, 232, 240, 0.9);
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 0;
   }
   
-  .hb-card-modal-section {
-    margin-top: 12px;
-    padding: 10px 12px;
-    border-radius: 14px;
-    background: rgba(2, 6, 23, 0.22);
-    border: 1px solid rgba(148, 163, 184, 0.12);
+  /* CardView が大きくなりすぎないように制限 */
+  .hb-modal-card .hb-card {
+    width: 100%;
+    max-width: 380px;
   }
   
-  .hb-card-modal-section-title {
-    font-size: 11px;
+  .hb-modal-info {
+    min-height: 0;
+    overflow: auto; /* ← 右側だけスクロール */
+    padding-right: 6px;
+  }
+  
+  .hb-modal-meta {
+    background: rgba(15, 23, 42, 0.38);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 18px;
+    padding: 14px;
+  }
+  
+  .hb-modal-meta-row {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(148, 163, 184, 0.12);
+  }
+  
+  .hb-modal-meta-row:last-child {
+    border-bottom: none;
+  }
+  
+  .hb-modal-meta-key {
+    width: 90px;
+    color: rgba(148, 163, 184, 0.95);
     font-weight: 700;
-    color: rgba(226, 232, 240, 0.9);
-    margin-bottom: 6px;
-  }
-  
-  .hb-card-modal-text {
     font-size: 13px;
-    line-height: 1.55;
-    color: rgba(241, 245, 249, 0.92);
-    white-space: pre-wrap;
+    letter-spacing: 0.02em;
   }
   
-  .hb-card-modal-footer {
-    padding: 12px 16px;
+  .hb-modal-meta-val {
+    color: rgba(226, 232, 240, 0.95);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  
+  .hb-modal-section {
+    margin-top: 14px;
+    background: rgba(15, 23, 42, 0.38);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 18px;
+    padding: 14px;
+  }
+  
+  .hb-modal-section-title {
+    color: rgba(226, 232, 240, 0.95);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  
+  .hb-modal-section-body {
+    color: rgba(226, 232, 240, 0.9);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    font-size: 14px;
+  }
+  
+  .hb-modal-footer {
+    padding: 14px 18px;
     border-top: 1px solid rgba(148, 163, 184, 0.16);
     display: flex;
     justify-content: flex-end;
   }
   
-  .hb-card-modal-footer-button {
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    background: rgba(2, 6, 23, 0.35);
-    color: rgba(241, 245, 249, 0.95);
+  .hb-modal-footer-btn {
+    padding: 10px 18px;
+    border-radius: 9999px;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    color: rgba(226, 232, 240, 0.95);
+    font-weight: 800;
   }
-  /* ====== ログ ====== */
-
-  .hb-log-scroll {
-    @apply bg-slate-900/80 border border-slate-700 rounded-2xl px-3 py-2 text-xs text-slate-100 max-h-32 overflow-y-auto;
+  
+  .hb-modal-footer-btn:hover {
+    background: rgba(30, 41, 59, 0.85);
   }
-
-  .hb-log-empty {
-    @apply text-slate-400;
-  }
-
-  .hb-log-line {
-    @apply leading-tight;
+  
+  @media (max-width: 900px) {
+    .hb-modal-body {
+      grid-template-columns: 1fr;
+    }
+    .hb-modal-card .hb-card {
+      max-width: 520px;
+    }
   }
 }
