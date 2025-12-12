@@ -4,6 +4,8 @@ import React from "react";
 import { CardView } from "./CardView";
 import { SupplyCardPile } from "./SupplyCard";
 import { CardDetailModal } from "./CardDetailModal"; // ★ 追加
+import { canBuyCard } from "../logic/cardEffects"; // ★ 追加
+import type { Card as GameCard, PlayerState } from "../game/gameState"; // ★ 追加
 
 import "../index.css";
 
@@ -300,11 +302,13 @@ const handleSupplyClick = (pile: any) => {
         card={detailModalCard}
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
-        onBuy={(cardId) => {
+        onPrimaryAction={(cardId) => {
           onBuyCard(cardId);
           setIsDetailModalOpen(false);
         }}
-        canBuy={isPlayerTurn && rawPhase === "BUY"}
+        primaryLabel="購入する"
+        primaryEnabled={!canBuyCard(player, detailModalCard)}
+        primaryDisabledReason={!canBuyCard(player, detailModalCard) ? "資源・知識不足" : undefined}
       />
       </div>
     );

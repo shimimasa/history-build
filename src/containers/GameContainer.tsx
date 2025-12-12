@@ -15,6 +15,7 @@ import { computeVictoryPointsForPlayer } from "../game/socre";
 import type { GameOutcome, DeckConfig } from "../ui/uiTypes";
 import { CardDetailModal } from "../components/CardDetailModal";
 import { createCardMap } from "../game/cardDefinitions";
+import { canBuyCard } from "../logic/cardEffects";
 
 interface GameContainerProps {
   onGameEnd?: (outcome: GameOutcome) => void;
@@ -109,11 +110,26 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   // プレイヤー側：ACTION フェーズ中に人物 / 出来事カードを1枚プレイ
   const handlePlayHandCard = (cardId: string) => {
     setState((prev) => {
-      if (
-        prev.gameEnded ||
-        prev.activePlayer !== "player" ||
-        prev.phase !== "ACTION"
-      ) {
+      if (prev.gameEnded) {
+        console.log("[play] blocked: game already ended");
+        return prev;
+      }
+      if (prev.activePlayer !== "player") {
+        console.log("[play] blocked: not player turn");
+        return prev;
+      }
+      if (prev.phase !== "ACTION") {
+        console.log("[play] blocked: phase is not ACTION:", prev.phase);
+        return prev;
+      }
+      if (!prev.player.hand.includes(cardId)) {
+        console.log("[play] blocked: card not in hand:", cardId);
+        return prev;
+      }
+      const pile = prev.supply[cardId];
+      const card = pile?.card;
+      if (!card || (card.type !== "person" && card.type !== "event")) {
+        console.log("[play] blocked: not an action card:", cardId, card?.type);
         return prev;
       }
 
@@ -125,11 +141,33 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   // プレイヤー側：BUY フェーズ中にカードを1枚購入
   const handleBuyCard = (cardId: string) => {
     setState((prev) => {
-      if (
-        prev.gameEnded ||
-        prev.activePlayer !== "player" ||
-        prev.phase !== "BUY"
-      ) {
+      if (prev.gameEnded) {
+        console.log("[buy] blocked: game already ended");
+        return prev;
+      }
+      if (prev.activePlayer !== "player") {
+        console.log("[buy] blocked: not player turn");
+        return prev;
+      }
+      if (prev.phase !== "BUY") {
+        console.log("[buy] blocked: phase is not BUY:", prev.phase);
+        return prev;
+      }
+
+      const pile = prev.supply[cardId];
+      if (!pile || pile.remaining <= 0) {
+        console.log("[buy] blocked: no supply or empty pile:", cardId);
+        return prev;
+      }
+
+      // v2 仕様に基づき、米・知識条件をチェック（失敗時は state を変えない）
+      if (!canBuyCard(prev.player, pile.card)) {
+        console.log("[buy] blocked: rice/knowledge不足", {
+          riceThisTurn: prev.player.riceThisTurn,
+          knowledge: prev.player.knowledge,
+          cost: pile.card.cost,
+          knowledgeRequired: pile.card.knowledgeRequired,
+        });
         return prev;
       }
 
