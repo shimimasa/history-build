@@ -290,28 +290,15 @@ const handleHandClick = (cardId: string, card: any) => {
         </div>
       </section>
 
-    {/* ★ カード詳細モーダル（中央表示）
-          重要: 通常フローに載せない（= 画面を押し下げない）ため overlay で隔離する */}
-      {isDetailModalOpen && (
-        <div
-          className="hb-card-detail-modal-overlay"
-          onMouseDown={() => setIsDetailModalOpen(false)}
-        >
-          <div
-            className="hb-card-detail-modal"
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <CardDetailModal
-              card={detailModalCard}
-              isOpen={isDetailModalOpen}
-              onClose={() => setIsDetailModalOpen(false)}
-            />
-          </div>
-        </div>
-      )}
-     </div>
-   );
- };
+    {/* ★ モーダルは CardDetailModal 側の overlay で完結させる */}
+      <CardDetailModal
+        card={detailModalCard}
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+      />
+      </div>
+    );
+  };
 
 
 const StatusBadge: React.FC<{ label: string; value: number }> = ({

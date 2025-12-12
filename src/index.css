@@ -519,7 +519,133 @@ body {
   .hb-btn-secondary {
     @apply bg-slate-700 hover:bg-slate-600 text-slate-50;
   }
-
+/* ====== CardDetailModal（hb-card-modal） ====== */
+.hb-card-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(2px);
+  }
+  
+  .hb-card-modal {
+    width: min(92vw, 980px);
+    max-height: 90vh;
+    overflow: hidden;
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  }
+  
+  .hb-card-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  }
+  
+  .hb-card-modal-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(241, 245, 249, 0.95);
+  }
+  
+  .hb-card-modal-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(2, 6, 23, 0.35);
+    color: rgba(241, 245, 249, 0.95);
+  }
+  
+  .hb-card-modal-body {
+    padding: 14px 16px 16px;
+    overflow: auto;
+    max-height: calc(90vh - 120px);
+  }
+  
+  .hb-card-modal-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  
+  @media (max-width: 820px) {
+    .hb-card-modal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .hb-card-modal-card-wrapper {
+    width: 100%;
+    max-width: 340px;
+  }
+  
+  /* CardView（hb-card-frame）が幅いっぱいになり過ぎるのを抑える */
+  .hb-card-modal-card-wrapper .hb-card-frame {
+    max-width: 340px;
+  }
+  
+  .hb-card-modal-meta {
+    display: grid;
+    gap: 6px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.28);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+  }
+  
+  .hb-card-modal-meta-row {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(226, 232, 240, 0.9);
+  }
+  
+  .hb-card-modal-section {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.22);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+  }
+  
+  .hb-card-modal-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(226, 232, 240, 0.9);
+    margin-bottom: 6px;
+  }
+  
+  .hb-card-modal-text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(241, 245, 249, 0.92);
+    white-space: pre-wrap;
+  }
+  
+  .hb-card-modal-footer {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .hb-card-modal-footer-button {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(2, 6, 23, 0.35);
+    color: rgba(241, 245, 249, 0.95);
+  }
   /* ====== ログ ====== */
 
   .hb-log-scroll {
