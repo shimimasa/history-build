@@ -91,26 +91,14 @@ export interface GameScreenProps {
 
 const handleHandClick = (cardId: string, card: any) => {
   // 既存ロジック（ACTION フェーズなら即プレイ）
-  const rawPhase =
-    state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
-
-  if (rawPhase === "ACTION" && isPlayerTurn) {
-    onPlayHandCard(cardId);
-  }
-
-  // 選択トグルは既存どおり
+  // クリック = 選択トグルのみ
   if (selectedHandCardId === cardId) {
-    onSelectHandCard(null);
-  } else {
-    onSelectHandCard(cardId);
-  }
-
-  // サイドバー説明用
-  setFocusedCard(card);
-
-  // ★ クリックしたカードを中央モーダルにも表示
-  setDetailModalCard(card);
-  setIsDetailModalOpen(true);
+      onSelectHandCard(null);
+      setFocusedCard(null);
+    } else {
+      onSelectHandCard(cardId);
+      setFocusedCard(card);
+    }
 };
 　const handleHandDoubleClick = (cardId: string) => {
   onPlayHandCard(cardId);
@@ -267,6 +255,11 @@ const handleHandClick = (cardId: string, card: any) => {
                 className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}`}
                 onClick={() => handleHandClick(id, card)}
                 onDoubleClick={() => handleHandDoubleClick(id)}
+                onContextMenu={(e) => {
+                      e.preventDefault();
+                      setDetailModalCard(card);
+                      setIsDetailModalOpen(true);
+                    }}
                 onMouseEnter={() => onHoverCard(card)}
                 onMouseLeave={() => onHoverCard(null)}
               >
