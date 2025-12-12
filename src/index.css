@@ -14,7 +14,7 @@ body {
 }
 
 /* ====== UIトークン（カード幅などを一元管理） ====== */
-root {
+:root {
     --hb-card-w-supply: 110px;         /* サプライ（共通） */
     --hb-card-w-supply-kingdom: 120px; /* 王国カード（人物・出来事） */
     --hb-card-w-supply-basic: 95px;    /* 基本カード（資源・勝利点） */
@@ -222,14 +222,14 @@ root {
   /* 共通フレーム（王国カードサイズ基準） */
   .hb-card-frame {
     width: 100%;
-    max-width: var(--hb-card-w-supply);
+    max-width: var(--hb-card-w-supply, 110px);
     aspect-ratio: 3 / 3;
     margin: 0 auto;
   }
 
   /* 基本カード（資源・勝利点）はさらに少し小さく */
   .hb-supply-card-basic .hb-card-frame {
-    max-width: var(--hb-card-w-supply-basic);
+    max-width: var(--hb-card-w-supply-basic, 95px);
   }
   
   .hb-card {
@@ -249,7 +249,7 @@ root {
   /* 手札カードはサプライより少し小さく（全体に合わせて微調整） */
   .hb-card--hand {
     @apply w-full;
-    max-width: var(--hb-card-w-hand);
+    max-width: var(--hb-card-w-hand, 100px);
   }
 
   /* ★ サプライカード：軽めのホバー */
@@ -409,7 +409,8 @@ root {
 .hb-hand-card {
   /* 手札カード幅は変数で一元管理 */
   @apply flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
-  width: var(--hb-card-w-hand);
+  width: var(--hb-card-w-hand, 100px);
+  max-width: var(--hb-card-w-hand, 100px);
 }
 
 
