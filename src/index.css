@@ -13,6 +13,14 @@ body {
   overflow: hidden;
 }
 
+/* ====== UIトークン（カード幅などを一元管理） ====== */
+root {
+    --hb-card-w-supply: 110px;         /* サプライ（共通） */
+    --hb-card-w-supply-kingdom: 120px; /* 王国カード（人物・出来事） */
+    --hb-card-w-supply-basic: 95px;    /* 基本カード（資源・勝利点） */
+    --hb-card-w-hand: 100px;           /* 手札 */
+  }
+
 @layer components {
   /* ====== 全体レイアウト ====== */
 
@@ -91,15 +99,7 @@ body {
     @apply flex-1;
   }
 
-  /* サイドバー下部に置くため細めレイアウトへ変更 */
-  .hb-card-detail-panel {
-    margin-top: 0.75rem;  /* 1rem → 少しだけ詰める */
-    padding: 1rem;
-    max-height: 260px;
-    overflow-y: auto;
-  }
-  /* 右カラム（カード詳細＋ログ） */
-
+  /* ====== カード詳細（パネル） ====== */
   .hb-card-detail-panel {
     @apply flex flex-col gap-3;
     background: #050811;
@@ -107,6 +107,14 @@ body {
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
     padding: 1rem 1.25rem;
     min-height: 0;
+    margin-top: 0.75rem;  /* 1rem → 少しだけ詰める */
+  }
+
+  /* サイドバー配置のときだけ高さ制限＋スクロールを有効化 */
+  .hb-card-detail-panel--sidebar {
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 1rem; /* サイドバー側は少しだけ詰める */
   }
 
   .hb-section-title {
@@ -178,7 +186,7 @@ body {
 
 .hb-kingdom-supply-grid .hb-card-frame {
   width: 100%;
-  max-width: 120px;     /* 140px → 120px でカード自体を一回り小さく */
+  max-width: var(--hb-card-w-supply-kingdom);
   margin-left: auto;
   margin-right: auto;
 }
@@ -214,14 +222,14 @@ body {
   /* 共通フレーム（王国カードサイズ基準） */
   .hb-card-frame {
     width: 100%;
-    max-width: 110px;     /* 140px → 125px */
+    max-width: var(--hb-card-w-supply);
     aspect-ratio: 3 / 3;
     margin: 0 auto;
   }
 
   /* 基本カード（資源・勝利点）はさらに少し小さく */
   .hb-supply-card-basic .hb-card-frame {
-    max-width: 95px;      /* 100px → 95px */
+    max-width: var(--hb-card-w-supply-basic);
   }
   
   .hb-card {
@@ -240,7 +248,8 @@ body {
 
   /* 手札カードはサプライより少し小さく（全体に合わせて微調整） */
   .hb-card--hand {
-    @apply w-full max-w-[100px];  /* 110px → 95px */
+    @apply w-full;
+    max-width: var(--hb-card-w-hand);
   }
 
   /* ★ サプライカード：軽めのホバー */
@@ -392,15 +401,17 @@ body {
 .hb-hand-scroll {
   /* 横スクロールのみ・高さを抑える */
   @apply flex flex-row gap-2 overflow-x-auto pb-1 px-1; /* gap-3 → gap-2 */
-  justify-content: center;
-  max-height: 130px; /* 120px → 110px */
+  justify-content: flex-start; /* Dominion寄り：左から並べる */
+  max-height: 130px; /* 例：カードが増えたときの高さ暴れ防止 */
 }
 
 
 .hb-hand-card {
-  /* 手札カードをさらに小さく */
-  @apply w-[100px] flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+  /* 手札カード幅は変数で一元管理 */
+  @apply flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
+  width: var(--hb-card-w-hand);
 }
+
 
 .hb-hand-card:hover {
   @apply -translate-y-1;
