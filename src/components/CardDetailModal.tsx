@@ -6,6 +6,10 @@ interface CardDetailModalProps {
   card: Card | null;
   isOpen: boolean;
   onClose: () => void;
+    /** 購入ボタンを表示したいときに渡す */
+  onBuy?: (cardId: string) => void;
+  /** 購入可能なら true（フェーズ・資源・知識条件などは呼び出し側で判定） */
+  canBuy?: boolean;
 }
 
 function getCardTypeLabel(card: any): string {
@@ -48,6 +52,8 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
   card,
   isOpen,
   onClose,
+  onBuy,
+  canBuy,
 }) => {
   const computed = useMemo(() => {
     if (!card) return null;
@@ -60,6 +66,35 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
     };
   }, [card]);
 
+  const handleBuyClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+        e.stopPropagation();
+        if (!card) return;
+        if (!onBuy) return;
+        if (!canBuy) return;
+        onBuy(card.id);
+      };
+
+      <div className="hb-card-modal-footer">
+          {onBuy && (
+            <button
+              type="button"
+              className={`hb-card-modal-footer-button hb-card-modal-footer-button--primary${
+                canBuy ? "" : " hb-card-modal-footer-button--disabled"
+              }`}
+              onClick={handleBuyClick}
+              disabled={!canBuy}
+            >
+              購入する
+            </button>
+          )}
+           <button
+             type="button"
+             className="hb-card-modal-footer-button"
+             onClick={onClose}
+           >
+             とじる
+           </button>
+         </div>
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {

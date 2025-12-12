@@ -111,15 +111,12 @@ export interface GameScreenProps {
   onPlayHandCard(cardId);
 };
 
-      const handleSupplyClick = (pile: any) => {
-        // ★ サイドバー＋モーダル両方に反映
-        setFocusedCard(pile.card);
-        setDetailModalCard(pile.card);
-        setIsDetailModalOpen(true);
-    
-        if (!isPlayerTurn) return;
-        onBuyCard(pile.card.id);
-      };
+const handleSupplyClick = (pile: any) => {
+          // クリックは「詳細を見る」に統一（購入はモーダルのボタンから行う）
+          setFocusedCard(pile.card);
+          setDetailModalCard(pile.card);
+          setIsDetailModalOpen(true);
+        };
 
   // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
   const rawPhase =
@@ -303,6 +300,11 @@ export interface GameScreenProps {
         card={detailModalCard}
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
+        onBuy={(cardId) => {
+          onBuyCard(cardId);
+          setIsDetailModalOpen(false);
+        }}
+        canBuy={isPlayerTurn && rawPhase === "BUY"}
       />
       </div>
     );
