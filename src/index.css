@@ -378,6 +378,56 @@ body {
     @apply mt-3 flex flex-col gap-1;
   }
 
+  /* ====== モーダル（カード詳細） ======
++     - CardDetailModal が <dialog> / div どちらでもレイアウトを壊さないようにする
++     - “はみ出し” は「通常フローに載って巨大画像が下へ伸びる」ことが原因なので、fixed overlay で隔離する
++  */
+
+  /* <dialog> 実装向け */
+  dialog.hb-card-detail-modal[open] {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    border: none;
+    padding: 0;
+    background: transparent;
+    max-width: min(92vw, 520px);
+    max-height: 90vh;
+    overflow: visible;
+    z-index: 60;
+  }
+
+  dialog.hb-card-detail-modal::backdrop {
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(2px);
+  }
+
+  /* div 実装向け（overlay + content） */
+  .hb-card-detail-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(2px);
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .hb-card-detail-modal {
+    width: min(92vw, 520px);
+    max-height: 90vh;
+    overflow: hidden;
+  }
+
+  /* 詳細パネル自体は中でスクロールさせる */
+  .hb-card-detail-modal .hb-card-detail-panel,
+  dialog.hb-card-detail-modal .hb-card-detail-panel {
+    max-height: 90vh;
+    overflow: auto;
+  }
+
  /* ====== 手札エリア ====== */
 
  .hb-hand-area {
