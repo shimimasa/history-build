@@ -71,73 +71,48 @@ body {
   }
 
   /* ====== メインレイアウト：左サイドバー + 右ボード ====== */
-
-  /* hb-game-layout を「1画面の縦レイアウトコンテナ」にする */
-.hb-game-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  height: calc(100vh - 80px); /* ヘッダー分があるなら調整。なければ 100vh でOK */
-  overflow: hidden;
-}
-/* Chromium / WebKit 用：バー非表示 */
-.hb-game-layout::-webkit-scrollbar {
-    display: none;
-  }
-  .hb-sidebar {
-    @apply flex flex-col gap-3;
-  }
-
-/* hb-main は縦積み（上：盤面、下：手札、下：操作） */
-.hb-main {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* 上段だけを2カラムにする（左パネル / 右サプライ） */
-.hb-top-area {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 360px minmax(0, 1fr);
-  gap: 16px;
-  overflow: hidden;
-}
-
-/* 左カラムは縦積み。カード説明は内部スクロールにして下へはみ出さない */
-.hb-left-column {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow: hidden;
-}
-
-.hb-card-detail-panel {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  max-height: none; /* ここが 260px 固定だと逆に崩れることがある */
-}
-
-/* 右カラム（サプライ）も内部スクロール */
-.hb-board-column {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.hb-supply-area {
-  min-height: 0;
-  overflow: auto;
-}
-
-/* 手札は下段固定の“通常フロー要素”として扱う（重なり防止） */
-.hb-hand-section {
-  flex: 0 0 auto;
-}
+ /* hb-game-layout：左サイドバー + 右メイン（←ここを縦積みにするとUIが崩れる） */
+    .hb-game-layout {
+       display: grid;
+       grid-template-columns: 360px minmax(0, 1fr);
+       gap: 16px;
+       flex: 1;
+       min-height: 0;
+       overflow: hidden;
+       padding: 0 24px 12px; /* 画面端に張り付きすぎないように */
+     }
+   
+     @media (max-width: 900px) {
+       .hb-game-layout {
+         grid-template-columns: 1fr; /* モバイルは縦積み */
+       }
+     }
+   
+     .hb-sidebar {
+       @apply flex flex-col gap-3;
+       min-height: 0;
+       overflow: hidden;
+     }
+   
+     /* 右側メイン：上（サプライ）+ 下（手札） */
+     .hb-main {
+       min-height: 0;
+       display: flex;
+       flex-direction: column;
+       gap: 16px;
+       overflow: hidden;
+     }
+   
+     /* サプライ領域は内部スクロール（手札に押し出されない） */
+     .hb-supply-area {
+       min-height: 0;
+       overflow: auto;
+     }
+   
+     /* 手札は常に下段（重なり防止） */
+     .hb-hand-section {
+       flex: 0 0 auto;
+     }
 
   /* プレイヤー / CPU を横並びにする行 */
   .hb-player-row {
@@ -486,6 +461,7 @@ body {
   width: 100%;      /* ← 全幅にする */
   margin: 0;        /* ← これが重要！中央寄せをやめる */
   max-width: none;  /* ← 上限幅も消す */
+  position: relative; /* ← ::after を安全にする（重なり事故の予防） */
 }
 
 /* 手札の右端フェード（「右に続く/余白は意図的」感を出す） */
@@ -889,40 +865,6 @@ body {
   text-overflow: ellipsis;
 }
 
-/* supply表示は「縦長カード」ではなく、盤面サプライに合うコンパクト表示にする
-+     - 盤面の SupplyCard は hb-card-frame で包んでいるが、
-+       HUD などで CardView 単体を描画しても同じサイズ感になるように hb-card--supply 側にも制約を付与する */
-  .hb-card--supply {
-      width: 100%;
-      max-width: 120px;
-      margin: 0 auto;
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-    }
-  
-    /* サプライは横長のイラスト領域（ドミニオンオンラインの「サプライ箱」寄り） */
-    .hb-card--supply .hb-card-image-wrapper {
-      aspect-ratio: 16 / 9;
-    }
-    .hb-card--supply .hb-card-body {
-      padding: 10px 12px;
-    }
-    .hb-card--supply .hb-card-title {
-      font-size: 13px;
-    }
-    .hb-card--supply .hb-card-description {
-      display: none; /* サプライ/サムネは説明文を非表示（詳細はモーダルへ） */
-    }
-  
-    /* 基本カード（資源・勝利点）はさらに少し小さく */
-    .hb-supply-card-basic .hb-card--supply {
-      max-width: 95px; /* hb-card-frame と同じ縮小を CardView 単体にも適用 */
-    }
-  
-    /* グリッド内のサプライ（王国/基本）も CardView 単体に適用 */
-    .hb-basic-supply-grid .hb-card--supply {
-      max-width: 100px;
-    }
-    .hb-kingdom-supply-grid .hb-card--supply {
-      max-width: 120px;
-  }
+/* NOTE:
++    .hb-card--supply を“横長カード化”すると、サプライ/手札/モーダルなど全表示が巻き込まれて崩れやすい。
++    「HUDの今回獲得/使用だけ小さく」は hb-panel-recent-thumb 側で完結させる。 */
