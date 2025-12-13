@@ -836,10 +836,12 @@ body {
 .hb-panel-recent-cards {
   display: flex;
   gap: 0.35rem;
+  flex-wrap: wrap;          /* 縦に伸びて箱を崩さない */
+  align-items: flex-start;
 }
 
 .hb-panel-recent-card {
-  width: 60px;              /* 38px → 60px に拡大 */
+  width: 96px;              /* 38px → 96px に拡大 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -847,12 +849,39 @@ body {
 }
 
 .hb-panel-recent-thumb {
-  width: 100%;
+  width: 96px;
 }
 
 .hb-panel-recent-thumb .hb-card-frame {
-  max-width: 60px;          /* カード自体も拡大 */
+  width: 96px;
+    max-width: 96px;
+    aspect-ratio: 1 / 1;       /* HUD内だけ「縦長化」させない */
 }
+
+/* HUD内の CardView を “サプライボックス同等の比率” にする（ここが本命） */
+.hb-panel-recent-thumb .hb-card-image-wrapper {
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+  
+  .hb-panel-recent-thumb .hb-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* HUDでは縦方向に伸びる情報を消して、箱の比率を守る */
+  .hb-panel-recent-thumb .hb-card-footer,
+  .hb-panel-recent-thumb .hb-card-meta,
+  .hb-panel-recent-thumb .hb-card-tags {
+    display: none !important;
+  }
+  
+  /* 名前も高さ要因ならHUDでは非表示（必要ならコメントアウトして復活可） */
+  .hb-panel-recent-name {
+    display: none;
+  }
 
 .hb-panel-recent-name {
   font-size: 0.78rem;       /* 0.75〜0.8rem 程度 */
