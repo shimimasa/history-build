@@ -91,7 +91,8 @@ body {
      .hb-sidebar {
        @apply flex flex-col gap-3;
        min-height: 0;
-       overflow: hidden;
+       overflow-y: auto;      /* ★ サイドバー内だけ縦スクロールを許可 */
+       padding-right: 4px;    /* （任意）スクロールバーぶんの余白 */
      }
    
      /* 右側メイン：上（サプライ）+ 下（手札） */
