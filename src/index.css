@@ -72,16 +72,14 @@ body {
 
   /* ====== メインレイアウト：左サイドバー + 右ボード ====== */
 
-  .hb-game-layout {
-    @apply flex-1 px-6 pb-4 pt-2;
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
-    gap: 1.5rem;
-    min-height: 0;      
-    overflow-y: auto;    /* 真ん中だけ必要ならスクロール */
-    overflow-x: hidden;
-    scrollbar-width: none;    /* Firefox 用：バー非表示 */
- }
+  /* hb-game-layout を「1画面の縦レイアウトコンテナ」にする */
+.hb-game-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: calc(100vh - 80px); /* ヘッダー分があるなら調整。なければ 100vh でOK */
+  overflow: hidden;
+}
 /* Chromium / WebKit 用：バー非表示 */
 .hb-game-layout::-webkit-scrollbar {
     display: none;
@@ -89,6 +87,57 @@ body {
   .hb-sidebar {
     @apply flex flex-col gap-3;
   }
+
+/* hb-main は縦積み（上：盤面、下：手札、下：操作） */
+.hb-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 上段だけを2カラムにする（左パネル / 右サプライ） */
+.hb-top-area {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* 左カラムは縦積み。カード説明は内部スクロールにして下へはみ出さない */
+.hb-left-column {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.hb-card-detail-panel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  max-height: none; /* ここが 260px 固定だと逆に崩れることがある */
+}
+
+/* 右カラム（サプライ）も内部スクロール */
+.hb-board-column {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hb-supply-area {
+  min-height: 0;
+  overflow: auto;
+}
+
+/* 手札は下段固定の“通常フロー要素”として扱う（重なり防止） */
+.hb-hand-section {
+  flex: 0 0 auto;
+}
 
   /* プレイヤー / CPU を横並びにする行 */
   .hb-player-row {
