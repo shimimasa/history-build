@@ -839,3 +839,41 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* supply表示は「縦長カード」ではなく、盤面サプライに合うコンパクト表示にする
++     - 盤面の SupplyCard は hb-card-frame で包んでいるが、
++       HUD などで CardView 単体を描画しても同じサイズ感になるように hb-card--supply 側にも制約を付与する */
+  .hb-card--supply {
+      width: 100%;
+      max-width: 120px;
+      margin: 0 auto;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+  
+    /* サプライは横長のイラスト領域（ドミニオンオンラインの「サプライ箱」寄り） */
+    .hb-card--supply .hb-card-image-wrapper {
+      aspect-ratio: 16 / 9;
+    }
+    .hb-card--supply .hb-card-body {
+      padding: 10px 12px;
+    }
+    .hb-card--supply .hb-card-title {
+      font-size: 13px;
+    }
+    .hb-card--supply .hb-card-description {
+      display: none; /* サプライ/サムネは説明文を非表示（詳細はモーダルへ） */
+    }
+  
+    /* 基本カード（資源・勝利点）はさらに少し小さく */
+    .hb-supply-card-basic .hb-card--supply {
+      max-width: 95px; /* hb-card-frame と同じ縮小を CardView 単体にも適用 */
+    }
+  
+    /* グリッド内のサプライ（王国/基本）も CardView 単体に適用 */
+    .hb-basic-supply-grid .hb-card--supply {
+      max-width: 100px;
+    }
+    .hb-kingdom-supply-grid .hb-card--supply {
+      max-width: 120px;
+  }
