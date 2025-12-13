@@ -907,3 +907,59 @@ body {
 .hb-panel-recent-name {
   display: none !important;
 }
+
+/* ====== カード下部フッターの種別カラーリング ====== */
+
+/* 資源（黄色系） */
+.hb-card--resource .hb-card-footer,
+.hb-card--type-resource .hb-card-footer {
+  background: linear-gradient(
+    to right,
+    rgba(230, 184, 0, 0.22),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: 12px;
+}
+
+/* 勝利点（緑系） */
+.hb-card--victory .hb-card-footer,
+.hb-card--type-victory .hb-card-footer {
+  background: linear-gradient(
+    to right,
+    rgba(63, 169, 107, 0.24),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: 12px;
+}
+
+/* 人物（白銀〜紫系） */
+.hb-card--person .hb-card-footer,
+.hb-card--type-person .hb-card-footer {
+  background: linear-gradient(
+    to right,
+    rgba(185, 192, 204, 0.28),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: 12px;
+}
+
+/* 出来事（青系） */
+.hb-card--event .hb-card-footer,
+.hb-card--type-event .hb-card-footer {
+  background: linear-gradient(
+    to right,
+    rgba(74, 163, 223, 0.28),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: 12px;
+}
+
+/* 不明種別用（フォールバック） */
+.hb-card--unknown .hb-card-footer {
+  background: linear-gradient(
+    to right,
+    rgba(148, 163, 184, 0.26),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: 12px;
+}
