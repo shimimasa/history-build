@@ -17,6 +17,14 @@ import { CardDetailModal } from "../components/CardDetailModal";
 import { createCardMap } from "../game/cardDefinitions";
 import { canBuyCard } from "../logic/cardEffects";
 
+type UiEventKind = "BUY" | "PLAY";
+
+type UiEvent = {
+  kind: UiEventKind;
+  cardId: string;
+  timestamp: number;
+};
+
 interface GameContainerProps {
   onGameEnd?: (outcome: GameOutcome) => void;
   deckConfig?: DeckConfig;
@@ -36,6 +44,12 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
 
   const [selectedCardForDetail, setSelectedCardForDetail] = useState<Card | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  // ★ UI 用：直近イベント & ミニ履歴 & ログ
+  const [uiLastEvent, setUiLastEvent] = useState<UiEvent | null>(null);
+  const [uiRecentBuys, setUiRecentBuys] = useState<UiEvent[]>([]);
+  const [uiRecentPlays, setUiRecentPlays] = useState<UiEvent[]>([]);
+  const [logs, setLogs] = useState<string[]>([]);
 
   // ★ 1度だけカードマップを作る（id → Card）
   const cardMapRef = React.useRef<Record<string, Card> | null>(null);
@@ -134,6 +148,19 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
       }
 
       const afterAction = actionPhase(prev, cardId);
+
+      // ★ UI イベント & ログ更新（成功時のみ）
+      const timestamp = Date.now();
+      const uiEvt: UiEvent = { kind: "PLAY", cardId, timestamp };
+      const cardName = card.name ?? cardId;
+
+      setUiLastEvent(uiEvt);
+      setUiRecentPlays((prevList) => [uiEvt, ...prevList].slice(0, 3));
+      setLogs((prevLogs) => [
+        `[PLAY] 「${cardName}」を使用`,
+        ...prevLogs,
+      ].slice(0, 100));
+
       return applyWithCpuTurn(afterAction);
     });
   };
@@ -172,6 +199,19 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
       }
 
       const afterBuy = buyPhase(prev, cardId);
+
+      // ★ UI イベント & ログ更新（成功時のみ）
+      const timestamp = Date.now();
+      const uiEvt: UiEvent = { kind: "BUY", cardId, timestamp };
+      const cardName = pile.card?.name ?? cardId;
+
+      setUiLastEvent(uiEvt);
+      setUiRecentBuys((prevList) => [uiEvt, ...prevList].slice(0, 3));
+      setLogs((prevLogs) => [
+        `[BUY] 「${cardName}」を購入`,
+        ...prevLogs,
+      ].slice(0, 100));
+
       return applyWithCpuTurn(afterBuy);
     });
   };
@@ -194,6 +234,10 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
     return {
       ...state,
       hoveredCard, // GameScreen 側の cardForDetail で使う
+      // ★ UI 情報を埋め込む
+      uiLastEvent,
+      uiRecentBuys,
+      uiRecentPlays,
       player: {
         ...state.player,
         hand: resolveHand(state.player.hand as unknown as string[])
@@ -203,13 +247,13 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
         hand: resolveHand(state.cpu.hand as unknown as string[])
       }
     };
-  }, [state, hoveredCard, cardMap]);
+  }, [state, hoveredCard, cardMap, uiLastEvent, uiRecentBuys, uiRecentPlays]);
 
   return (
     <>
       <GameScreen
         state={viewState}          // ★ ここだけ state → viewState に変更
-        logs={[]}
+        logs={logs}                 // ★ [] → logs に変更
         onPlayHandCard={handlePlayHandCard}
         onBuyCard={handleBuyCard}
         onEndPhase={handleProceedPhase}

@@ -70,6 +70,25 @@ export interface GameScreenProps {
     return t === "victory" || t === "base";
   });
 
+  // ★ HUD 用：最近の BUY / PLAY をカードオブジェクトに解決（最大3件）
+  const recentBuyCards = React.useMemo(
+    () =>
+      (state.uiRecentBuys as any[])
+        .map((e) => supply?.[e.cardId]?.card)
+        .filter(Boolean)
+        .slice(0, 3),
+    [state.uiRecentBuys, supply]
+  );
+
+  const recentPlayCards = React.useMemo(
+    () =>
+      (state.uiRecentPlays as any[])
+        .map((e) => supply?.[e.cardId]?.card)
+        .filter(Boolean)
+        .slice(0, 3),
+    [state.uiRecentPlays, supply]
+  );
+
 
    // ★ 説明パネル用
    const [focusedCard, setFocusedCard] = React.useState<any | null>(null);
@@ -175,6 +194,31 @@ const handleSupplyClick = (pile: any) => {
     buyDisabledReason = "資源・知識不足";
   }
 
+  // ★ GameContainer から渡ってくる UI 情報
+  const lastEvent = state.uiLastEvent ?? state.ui?.lastEvent ?? null;
+  const recentBuys = state.uiRecentBuys ?? state.ui?.recentBuys ?? [];
+  const recentPlays = state.uiRecentPlays ?? state.ui?.recentPlays ?? [];
+
+  // ★ 600ms の一時的なハイライト用 state
+  const [buyFlashCardId, setBuyFlashCardId] = React.useState<string | null>(null);
+  const [playFlashCardId, setPlayFlashCardId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!lastEvent) return;
+
+    if (lastEvent.kind === "BUY") {
+      setBuyFlashCardId(lastEvent.cardId);
+      const timer = setTimeout(() => setBuyFlashCardId(null), 600);
+      return () => clearTimeout(timer);
+    }
+
+    if (lastEvent.kind === "PLAY") {
+      setPlayFlashCardId(lastEvent.cardId);
+      const timer = setTimeout(() => setPlayFlashCardId(null), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [lastEvent?.kind, lastEvent?.cardId, lastEvent?.timestamp]);
+
   return (
     // 新レイアウト:
     // - 上部: ヘッダー（タイトル＋ターン情報）
@@ -209,7 +253,12 @@ const handleSupplyClick = (pile: any) => {
         <aside className="hb-sidebar">
           {/* プレイヤーと CPU を横並び表示 */}
           <div className="hb-player-row">
-            <PlayerHud title="プレイヤー" data={player} />
+            <PlayerHud
+              title="プレイヤー"
+              data={player}
+              recentBuys={recentBuyCards}
+              recentPlays={recentPlayCards}
+            />
             <PlayerHud title="CPU" data={cpu} compact />
           </div>
 
@@ -244,6 +293,7 @@ const handleSupplyClick = (pile: any) => {
     variant="basic"
     // プレイヤー手番かつ BUY フェーズ以外は「見た目だけ」無効化
     isDisabled={!isPlayerBuyPhase}
+    isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
   />
@@ -259,6 +309,7 @@ const handleSupplyClick = (pile: any) => {
     pile={pile}
     variant="basic"
     isDisabled={!isPlayerBuyPhase}
+    isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
   />
@@ -274,6 +325,7 @@ const handleSupplyClick = (pile: any) => {
     pile={pile}
     variant="kingdom"
     isDisabled={!isPlayerBuyPhase}
+    isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
   />
@@ -302,10 +354,14 @@ const handleSupplyClick = (pile: any) => {
             const playId = (card.instanceId ?? card.id);
 
             const selected = selectedHandCardId === handKey;
+            const isPlayFlash = playFlashCardId === card.id; // ★ PLAY ハイライト判定
+
             return (
               <div
                 key={handKey}
-                className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}`}
+                className={`hb-hand-card${
+                  selected ? " hb-hand-card--selected" : ""
+                }${isPlayFlash ? " hb-flash-play" : ""}`}
                 onClick={() => handleHandClick(handKey)}
                 onDoubleClick={(e) => {
                      e.stopPropagation();
@@ -318,6 +374,8 @@ const handleSupplyClick = (pile: any) => {
                     }}
                     onMouseEnter={() => onHoverCard(card)}
                      onMouseLeave={() => onHoverCard(null)}
+                     // ★ 600ms の一時的なハイライト用
+                     // className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}${playFlashCardId === playId ? " hb-flash-play" : ""}`}
 
               >
                 <CardView card={card} variant="hand" />
@@ -375,7 +433,9 @@ const PlayerHud: React.FC<{
   title: string;
   data: any;
   compact?: boolean;
-}> = ({ title, data, compact }) => {
+  recentBuys?: any[];
+  recentPlays?: any[];
+}> = ({ title, data, compact, recentBuys = [], recentPlays = [] }) => {
   return (
     <section
       className={`hb-player-panel${
@@ -394,6 +454,32 @@ const PlayerHud: React.FC<{
         <span>勝利点</span>
         <span>{data.vp ?? 0}</span>
       </div>
+
+      {/* ★ 最近の獲得 / 使用（プレイヤーのみ表示） */}
+      {!compact && (recentBuys.length > 0 || recentPlays.length > 0) && (
+        <div className="hb-panel-recent">
+          <div className="hb-panel-recent-row">
+            <span className="hb-panel-recent-label">今回獲得</span>
+            <div className="hb-panel-recent-cards">
+              {recentBuys.slice(0, 3).map((c, i) => (
+                <div key={`${c.id}-buy-${i}`} className="hb-panel-recent-card">
+                  <CardView card={c} variant="supply" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="hb-panel-recent-row">
+            <span className="hb-panel-recent-label">今回使用</span>
+            <div className="hb-panel-recent-cards">
+              {recentPlays.slice(0, 3).map((c, i) => (
+                <div key={`${c.id}-play-${i}`} className="hb-panel-recent-card">
+                  <CardView card={c} variant="supply" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
