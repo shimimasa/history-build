@@ -341,33 +341,50 @@ body {
 
   /* ★ 種別ごとカラーリング */
 
+  /* ====== 種別ごとの枠色（ドミニオン風） ====== */
+
   /* 資源（黄色） */
   .hb-card--resource,
   .hb-card--type-resource {
     border-color: #e6b800;
+    box-shadow:
+      0 0 0 2px rgba(230, 184, 0, 0.75),   /* ★ 外周の色付きアウトライン */
+      0 8px 16px rgba(0, 0, 0, 0.55);      /* 既存のドロップシャドウ相当 */
   }
 
   /* 勝利点（緑） */
   .hb-card--victory,
   .hb-card--type-victory {
     border-color: #3fa96b;
+    box-shadow:
+      0 0 0 2px rgba(63, 169, 107, 0.75),
+      0 8px 16px rgba(0, 0, 0, 0.55);
   }
 
   /* 人物（白銀グレー） */
   .hb-card--person,
   .hb-card--type-person {
     border-color: #b9c0cc;
+    box-shadow:
+      0 0 0 2px rgba(185, 192, 204, 0.8),
+      0 8px 16px rgba(0, 0, 0, 0.55);
   }
 
   /* 出来事（青） */
   .hb-card--event,
   .hb-card--type-event {
     border-color: #4aa3df;
+    box-shadow:
+      0 0 0 2px rgba(74, 163, 223, 0.8),
+      0 8px 16px rgba(0, 0, 0, 0.55);
   }
 
   /* 不明種別用（フォールバック） */
   .hb-card--unknown {
     border-color: rgba(148, 163, 184, 0.6);
+    box-shadow:
+      0 0 0 2px rgba(148, 163, 184, 0.6),
+      0 8px 16px rgba(0, 0, 0, 0.55);
   }
 
   /* hover 時はほんの少しだけ光らせる（強すぎ禁止） */
