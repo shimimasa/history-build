@@ -36,9 +36,12 @@ export interface GameScreenProps {
 }) => {
   const { player, cpu, currentPhase, turn, supply } = state;
 
-  // ▼ 修正: v1 / v1.5 両対応で「プレイヤー手番」を解決
-  const isPlayerTurn =
-    (state.currentPlayer ?? state.activePlayer ?? "player") === "player";
+  　
+  // ▼ 修正: v1 / v1.5 両対応で「アクティブプレイヤー」を解決
+  const activeSide =
+    (state.currentPlayer ?? state.activePlayer ?? "player") as "player" | "cpu";
+  
+  const isPlayerTurn = activeSide === "player";
 
   // ▼ 修正: v1 / v1.5 両対応でターン数を解決
   const displayTurn = turn ?? state.turnCount ?? 1;
@@ -195,13 +198,16 @@ const handleSupplyClick = (pile: any) => {
   }
 
   // ★ GameContainer から渡ってくる UI 情報
-  const lastEvent = state.uiLastEvent ?? state.ui?.lastEvent ?? null;
-  const recentBuys = state.uiRecentBuys ?? state.ui?.recentBuys ?? [];
-  const recentPlays = state.uiRecentPlays ?? state.ui?.recentPlays ?? [];
+　const lastEvent = state.uiLastEvent ?? state.ui?.lastEvent ?? null;
+　const recentBuys = state.uiRecentBuys ?? state.ui?.recentBuys ?? [];
+　const recentPlays = state.uiRecentPlays ?? state.ui?.recentPlays ?? [];
 
-  // ★ 600ms の一時的なハイライト用 state
-  const [buyFlashCardId, setBuyFlashCardId] = React.useState<string | null>(null);
-  const [playFlashCardId, setPlayFlashCardId] = React.useState<string | null>(null);
+　// ★ 600ms の一時的なハイライト用 state
+　const [buyFlashCardId, setBuyFlashCardId] = React.useState<string | null>(null);
+　const [playFlashCardId, setPlayFlashCardId] = React.useState<string | null>(null);
+
+　// ★ 1.2 秒表示のトーストメッセージ
+　const [toastMessage, setToastMessage] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!lastEvent) return;
@@ -218,6 +224,23 @@ const handleSupplyClick = (pile: any) => {
       return () => clearTimeout(timer);
     }
   }, [lastEvent?.kind, lastEvent?.cardId, lastEvent?.timestamp]);
+
+　// ★ トースト表示（1.2 秒）
+React.useEffect(() => {
+  if (!lastEvent) return;
+
+  const pile = supply?.[lastEvent.cardId];
+  const cardName = pile?.card?.name ?? lastEvent.cardId;
+  const label =
+    lastEvent.kind === "BUY"
+      ? `購入：${cardName}`
+      : `使用：${cardName}`;
+
+  setToastMessage(label);
+
+  const timer = setTimeout(() => setToastMessage(null), 1200);
+  return () => clearTimeout(timer);
+}, [lastEvent?.kind, lastEvent?.cardId, lastEvent?.timestamp, supply]);
 
   return (
     // 新レイアウト:
@@ -243,6 +266,11 @@ const handleSupplyClick = (pile: any) => {
             <div className="hb-phase-pill">
               手番 {isPlayerTurn ? "プレイヤー" : "CPU"} / フェーズ: {phaseLabel}
             </div>
+            {toastMessage && (
+        <div className="hb-toast">
+          {toastMessage}
+        </div>
+        )}
           </div>
         </div>
       </header>
@@ -253,13 +281,13 @@ const handleSupplyClick = (pile: any) => {
         <aside className="hb-sidebar">
           {/* プレイヤーと CPU を横並び表示 */}
           <div className="hb-player-row">
-            <PlayerHud
-              title="プレイヤー"
-              data={player}
-              recentBuys={recentBuyCards}
-              recentPlays={recentPlayCards}
-            />
-            <PlayerHud title="CPU" data={cpu} compact />
+          <PlayerHud
+      title={activeSide === "player" ? "プレイヤー" : "CPU"}
+      data={activeSide === "player" ? player : cpu}
+      // 「今回獲得 / 使用」はプレイヤーターンのときのみ表示
+      recentBuys={activeSide === "player" ? recentBuyCards : []}
+      recentPlays={activeSide === "player" ? recentPlayCards : []}
+    />
           </div>
 
           {/* その下にカード説明ボックスを配置 */}
@@ -436,6 +464,11 @@ const PlayerHud: React.FC<{
   recentBuys?: any[];
   recentPlays?: any[];
 }> = ({ title, data, compact, recentBuys = [], recentPlays = [] }) => {
+  const trimName = (raw: string | undefined, max: number = 8) => {
+    const name = raw ?? "";
+    return name.length > max ? `${name.slice(0, max)}…` : name;
+  };
+
   return (
     <section
       className={`hb-player-panel${
@@ -455,15 +488,20 @@ const PlayerHud: React.FC<{
         <span>{data.vp ?? 0}</span>
       </div>
 
-      {/* ★ 最近の獲得 / 使用（プレイヤーのみ表示） */}
+      {/* ★ 最近の獲得 / 使用（compact でないときだけ） */}
       {!compact && (recentBuys.length > 0 || recentPlays.length > 0) && (
         <div className="hb-panel-recent">
           <div className="hb-panel-recent-row">
             <span className="hb-panel-recent-label">今回獲得</span>
             <div className="hb-panel-recent-cards">
-              {recentBuys.slice(0, 3).map((c, i) => (
+              {recentBuys.slice(0, 3).map((c: any, i: number) => (
                 <div key={`${c.id}-buy-${i}`} className="hb-panel-recent-card">
-                  <CardView card={c} variant="supply" />
+                  <div className="hb-panel-recent-thumb">
+                    <CardView card={c} variant="supply" />
+                  </div>
+                  <div className="hb-panel-recent-name">
+                    {trimName(c.name ?? c.id, 8)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -471,9 +509,14 @@ const PlayerHud: React.FC<{
           <div className="hb-panel-recent-row">
             <span className="hb-panel-recent-label">今回使用</span>
             <div className="hb-panel-recent-cards">
-              {recentPlays.slice(0, 3).map((c, i) => (
+              {recentPlays.slice(0, 3).map((c: any, i: number) => (
                 <div key={`${c.id}-play-${i}`} className="hb-panel-recent-card">
-                  <CardView card={c} variant="supply" />
+                  <div className="hb-panel-recent-thumb">
+                    <CardView card={c} variant="supply" />
+                  </div>
+                  <div className="hb-panel-recent-name">
+                    {trimName(c.name ?? c.id, 8)}
+                  </div>
                 </div>
               ))}
             </div>

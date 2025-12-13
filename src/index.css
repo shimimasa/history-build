@@ -692,6 +692,45 @@ body {
     color: rgba(226, 232, 240, 0.95);
     font-weight: 800;
   }
+
+  /* ====== PLAY/BUY トースト（右上） ====== */
+
+@keyframes hb-toast-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hb-toast-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.hb-toast {
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(251, 191, 36, 0.75);
+  color: #fefce8;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  animation: hb-toast-in 0.18s ease-out, hb-toast-out 0.25s ease-in 0.95s;
+}
   
   @media (max-width: 900px) {
     .hb-modal-body {
@@ -748,35 +787,55 @@ body {
   .hb-flash-play {
     animation: hb-flash-play 0.6s ease-out;
   }
+/* ====== HUD: 今回獲得 / 今回使用 ====== */
 
-  .hb-panel-recent {
-    margin-top: 0.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
+.hb-panel-recent {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
 
-  .hb-panel-recent-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.25rem;
-  }
+.hb-panel-recent-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
 
-  .hb-panel-recent-label {
-    font-size: 0.65rem;
-    color: #e5e7eb;
-    min-width: 3.2rem;
-  }
+.hb-panel-recent-label {
+  font-size: 0.78rem; /* 文字を少し大きく */
+  color: #e5e7eb;
+  min-width: 3.6rem;
+}
 
-  .hb-panel-recent-cards {
-    display: flex;
-    gap: 0.25rem;
-  }
+.hb-panel-recent-cards {
+  display: flex;
+  gap: 0.35rem;
+}
 
-  .hb-panel-recent-card {
-    width: 38px;
-  }
+.hb-panel-recent-card {
+  width: 60px;              /* 38px → 60px に拡大 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
 
-  .hb-panel-recent-card .hb-card-frame {
-    max-width: 38px;
-  }
+.hb-panel-recent-thumb {
+  width: 100%;
+}
+
+.hb-panel-recent-thumb .hb-card-frame {
+  max-width: 60px;          /* カード自体も拡大 */
+}
+
+.hb-panel-recent-name {
+  font-size: 0.78rem;       /* 0.75〜0.8rem 程度 */
+  line-height: 1.1;
+  max-width: 100%;
+  text-align: center;
+  color: #e5e7eb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

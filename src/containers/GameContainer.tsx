@@ -110,16 +110,23 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   };
 
   // プレイヤー側：フェーズを1つ進める（DRAW → RESOURCE → ACTION → BUY → CLEANUP → 次ターン…）
-  const handleProceedPhase = () => {
-    setState((prev) => {
-      if (prev.gameEnded || prev.activePlayer !== "player") {
-        return prev;
-      }
+const handleProceedPhase = () => {
+  setState((prev) => {
+    if (prev.gameEnded || prev.activePlayer !== "player") {
+      return prev;
+    }
 
-      const afterPlayer = proceedPhase(prev);
-      return applyWithCpuTurn(afterPlayer);
-    });
-  };
+    const afterPlayer = proceedPhase(prev);
+
+    // ★ CLEANUP → 次ターン(DRAW) になったタイミングで、そのターンの履歴をクリア
+    if (prev.phase === "CLEANUP" && afterPlayer.phase === "DRAW") {
+      setUiRecentBuys([]);
+      setUiRecentPlays([]);
+    }
+
+    return applyWithCpuTurn(afterPlayer);
+  });
+};
 
   // プレイヤー側：ACTION フェーズ中に人物 / 出来事カードを1枚プレイ
   const handlePlayHandCard = (cardId: string) => {
