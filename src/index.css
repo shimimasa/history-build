@@ -260,12 +260,14 @@ body {
   
   .hb-card {
     background: radial-gradient(circle at top, #1f2937, #020617);
-    border-radius: 18px;
-    padding: 0.1rem 0.1rem 0.15rem;  /* 0.4rem 系 → 0.3rem で縦方向を圧縮 */
+    border-radius: 16px;              /* 18px → 16px に軽く調整 */
+    padding: 0.1rem 0.1rem 0.15rem;  /* 既存のまま */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     height: 100%;
+    border: 2px solid transparent;    /* ★ 種別ごとの枠色用 */
+    box-sizing: border-box;           /* 枠を付けても高さが跳ねないように */
   }
 
   .hb-card--supply {
@@ -328,6 +330,7 @@ body {
     @apply flex justify-start;
   }
 
+  .hb-card-type,
   .hb-card-type-badge {
     font-size: 0.7rem;
     padding: 0.1rem 0.35rem;
@@ -338,40 +341,43 @@ body {
 
   /* ★ 種別ごとカラーリング */
 
-  /* 資源（黄色ベース） */
+  /* 資源（黄色） */
+  .hb-card--resource,
   .hb-card--type-resource {
-    background: radial-gradient(circle at top, #facc15, #0f172a);
-  }
-  .hb-card-type-badge--resource {
-    background: rgba(250, 204, 21, 0.20);
-    color: #facc15;
+    border-color: #e6b800;
   }
 
-  /* 勝利点（緑ベース） */
+  /* 勝利点（緑） */
+  .hb-card--victory,
   .hb-card--type-victory {
-    background: radial-gradient(circle at top, #16a34a, #022c22);
-  }
-  .hb-card-type-badge--victory {
-    background: rgba(22, 163, 74, 0.24);
-    color: #bbf7d0;
+    border-color: #3fa96b;
   }
 
-  /* 人物（紫〜紺） */
+  /* 人物（白銀グレー） */
+  .hb-card--person,
   .hb-card--type-person {
-    background: radial-gradient(circle at top, #6366f1, #020617);
-  }
-  .hb-card-type-badge--person {
-    background: rgba(129, 140, 248, 0.28);
-    color: #e0e7ff;
+    border-color: #b9c0cc;
   }
 
-  /* 出来事（青ベース） */
+  /* 出来事（青） */
+  .hb-card--event,
   .hb-card--type-event {
-    background: radial-gradient(circle at top, #0ea5e9, #020617);
+    border-color: #4aa3df;
   }
-  .hb-card-type-badge--event {
-    background: rgba(56, 189, 248, 0.28);
-    color: #e0f2fe;
+
+  /* 不明種別用（フォールバック） */
+  .hb-card--unknown {
+    border-color: rgba(148, 163, 184, 0.6);
+  }
+
+  /* hover 時はほんの少しだけ光らせる（強すぎ禁止） */
+  .hb-card--resource:hover,
+  .hb-card--victory:hover,
+  .hb-card--person:hover,
+  .hb-card--event:hover {
+    box-shadow:
+      0 0 0 1px rgba(15, 23, 42, 0.9),
+      0 0 14px rgba(250, 250, 250, 0.08);
   }
 
   /* ====== カード詳細 ====== */

@@ -51,10 +51,22 @@ export const CardView: React.FC<CardViewProps> = ({
     card.type ?? card.cardType ?? card.cardTypeLabel ?? "";
   const typeLabel = typeLabelMap[rawType] ?? rawType ?? "";
 
-  // ★ 種別ごとのクラス名（background / badge 用）
-  const typeClass =
+  // ★ 種別ごとのクラス名（枠色 / タグ色 用）
+  const normalizedType: string = rawType || "unknown";
+
+  // 新: ドミニオン風の「種別枠」クラス
+  const cardTypeClass = `hb-card--${normalizedType}`; // resource / victory / person / event / unknown
+
+  // 互換用: 既存CSSで使っている hb-card--type-xxx も残しておく
+  const legacyTypeClass =
     rawType !== "" ? `hb-card--type-${rawType}` : "";
+
+  // 新: タグ用クラス（hb-card-type--xxx）
   const typeBadgeClass =
+    rawType !== "" ? `hb-card-type--${rawType}` : "hb-card-type--unknown";
+
+  // 互換用: 既存の hb-card-type-badge--xxx も一緒に付与
+  const legacyTypeBadgeClass =
     rawType !== "" ? `hb-card-type-badge--${rawType}` : "";
 
   // 画像プロパティはいくつかパターンがある想定
@@ -96,7 +108,7 @@ export const CardView: React.FC<CardViewProps> = ({
 
   return (
     <div
-      className={`hb-card hb-card--${variant} ${typeClass}`}
+      className={`hb-card hb-card--${variant} ${cardTypeClass} ${legacyTypeClass}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -114,7 +126,9 @@ export const CardView: React.FC<CardViewProps> = ({
 
         <div className="hb-card-type-row">
           {typeLabel && (
-            <span className={`hb-card-type-badge ${typeBadgeClass}`}>
+            <span
+              className={`hb-card-type ${typeBadgeClass} ${legacyTypeBadgeClass}`}
+            >
               {typeLabel}
             </span>
           )}
