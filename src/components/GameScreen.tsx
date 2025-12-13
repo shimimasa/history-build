@@ -101,26 +101,42 @@ export interface GameScreenProps {
  
    const hoveredCard: any | null = state.hoveredCard ?? null;
 
-  // 手札カードの「表示用の一意キー」を解決（instanceId が無い場合は id__index）
-  // これを選択IDとして使うことで、同名カードが複数あっても「1枚だけ」選択できる。
-  const resolveHandKey = (c: any, index: number) =>
-    (c.instanceId ?? `${c.id}__${index}`);
+   // 手札カードの「表示用の一意キー」を解決（instanceId が無い場合は id__index）
+   // これを選択IDとして使うことで、同名カードが複数あっても「1枚だけ」選択できる。
+   const resolveHandKey = (c: any, index: number) =>
+     (c.instanceId ?? `${c.id}__${index}`);
+ 
+   // 手札から「直近で選択されたカード」を説明パネル用に解決
+   const selectedCardFromHand =
+     selectedHandCardId != null
+       ? (() => {
+           const hand = player.hand ?? [];
+           for (let i = 0; i < hand.length; i++) {
+             if (resolveHandKey(hand[i], i) === selectedHandCardId) return hand[i];
+           }
+           return null;
+         })()
+       : null;
 
-  // 手札から「直近で選択されたカード」を説明パネル用に解決
-  const selectedCardFromHand =
-    selectedHandCardId != null
-      ? (() => {
-          const hand = player.hand ?? [];
-          for (let i = 0; i < hand.length; i++) {
-            if (resolveHandKey(hand[i], i) === selectedHandCardId) return hand[i];
-          }
-          return null;
-        })()
-      : null;
+         // ★ 優先度:
+  //    1. ホバー中のカード
+  //    2. 手札でクリック選択中のカード
+  //    3. lastEvent（直近の BUY / PLAY）のカード
+  //    4. なし
+  const cardForDetail = React.useMemo(() => {
+    // 1 & 2: 直接の対象があれば、それを優先
+    const direct = hoveredCard ?? selectedCardFromHand;
+    if (direct) return direct;
 
-      // ★ 優先度: ホバー中 > クリック選択 > 手札選択 > なし
-      const cardForDetail =
-       hoveredCard ?? selectedCardFromHand ?? null;
+    // 3: 無ければ lastEvent のカードをフォールバックに使う
+    const uiLast = state.uiLastEvent ?? state.ui?.lastEvent ?? null;
+    if (!uiLast) return null;
+
+    const pile = supply?.[uiLast.cardId];
+    return pile?.card ?? null;
+  }, [hoveredCard, selectedCardFromHand, state.uiLastEvent, state.ui?.lastEvent, supply]);
+
+// ... existing code ...
 
   const handleHandClick = (cardId: string) => {
        if (selectedHandCardId === cardId) {
