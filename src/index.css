@@ -124,21 +124,22 @@ body {
   }
 
   /* ====== カード詳細（パネル） ====== */
+ /* サイドバー下部：カード説明パネル */
   .hb-card-detail-panel {
-    @apply flex flex-col gap-3;
-    background: #050811;
-    border-radius: 16px;
-    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3);
-    padding: 1rem 1.25rem;
-    min-height: 0;
-    margin-top: 0.75rem;  /* 1rem → 少しだけ詰める */
-  }
-
-  /* サイドバー配置のときだけ高さ制限＋スクロールを有効化 */
-  .hb-card-detail-panel--sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #050811;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 18px 40px rgba(0,0,0,0.35);
+  padding: 0.9rem;
     max-height: 260px;
-    overflow-y: auto;
-    padding: 1rem; /* サイドバー側は少しだけ詰める */
+    overflow: hidden; /* スクロールは中身側だけに寄せる */
+}
+
+  /* “説明対象が無い”ときは、説明パネル自体を消す（居座り防止） */
+  .hb-card-detail-panel--sidebar.is-empty {
+    display: none !important;
   }
 
   .hb-section-title {

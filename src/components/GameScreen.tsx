@@ -292,11 +292,9 @@ React.useEffect(() => {
 
           {/* その下にカード説明ボックスを配置 */}
           <section
-            className={[
-              "hb-card-detail-panel",
-              "hb-card-detail-panel--sidebar",
-              cardForDetail ? "is-active" : "is-empty",
-            ].join(" ")}
+            className={`hb-card-detail-panel hb-card-detail-panel--sidebar ${
+              cardForDetail ? "is-active" : "is-empty"
+            }`}
           >
             <div className="hb-section-title">カードの説明</div>
             <div className="hb-card-detail-scroll">
@@ -308,14 +306,13 @@ React.useEffect(() => {
                 </p>
               )}
             </div>
-          </section>
-        </aside>
+          </section></aside>
         {/* 右側ボード：サプライのみ（横幅を最大化） */}
         <main className="hb-board">
           {/* サプライボード（左：基本カード / 右：人物・出来事） */}
           <section>
             <h2 className="hb-section-title">場のカード（サプライ）</h2>
-            <div className="hb-supply-board">
+            <div className="hb-supply-board" onMouseLeave={() => onHoverCard?.(null)}>
               {/* 左：基本カード（資源 / 勝利点） */}
               <div className="hb-basic-grid">
                 {/* 資源カード 1列×3行 */}
