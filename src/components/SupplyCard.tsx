@@ -20,8 +20,12 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
 }) => {
   const { card, remaining } = pile;
 
+  const isOutOfStock =
+    typeof remaining === "number" && remaining <= 0;
+
   const handleClick = () => {
-    if (isDisabled) return;
+    // 在庫 0 のときだけクリック無効
+    if (isOutOfStock) return;
     onClick?.();
   };
 
@@ -31,8 +35,10 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   return (
     <button
       type="button"
+      // 在庫 0 のときだけ物理的に disabled
+      disabled={isOutOfStock}
       className={`hb-supply-card hb-supply-card-${variant}${
-        isDisabled ? " hb-supply-card--disabled" : ""
+        isDisabled || isOutOfStock ? " hb-supply-card--disabled" : ""
       }`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}

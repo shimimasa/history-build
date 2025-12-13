@@ -113,16 +113,41 @@ export interface GameScreenProps {
   onPlayHandCard(cardId);
 };
 
-const handleSupplyClick = (pile: any) => {
-          // クリックは「詳細を見る」に統一（購入はモーダルのボタンから行う）
-          setFocusedCard(pile.card);
-          setDetailModalCard(pile.card);
-          setIsDetailModalOpen(true);
-        };
+
 
   // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
   const rawPhase =
     state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
+
+  // BUYフェーズ + プレイヤー手番なら「クリックで即購入」
+// それ以外（他フェーズ or CPU 手番 or 在庫0）は詳細モーダルを開くだけ
+const handleSupplyClick = (pile: any) => {
+  const cardId = pile?.card?.id;
+  if (!cardId) return;
+
+  const remaining = pile?.remaining;
+  const isOutOfStock =
+    typeof remaining === "number" && remaining <= 0;
+
+  // 在庫切れは購入不可（詳細だけ見せる）
+  if (isOutOfStock) {
+    setFocusedCard(pile.card);
+    setDetailModalCard(pile.card);
+    setIsDetailModalOpen(true);
+    return;
+  }
+
+  // BUYフェーズ + プレイヤー手番なら「クリックで購入」
+  if (isPlayerTurn && rawPhase === "BUY") {
+    onBuyCard(cardId); // ← GameContainer の handleBuyCard(cardId) まで飛ぶ
+    return;
+  }
+
+  // それ以外は詳細表示
+  setFocusedCard(pile.card);
+  setDetailModalCard(pile.card);
+  setIsDetailModalOpen(true);
+};
 
   const phaseLabel = getPhaseLabel(rawPhase);
 
@@ -212,45 +237,47 @@ const handleSupplyClick = (pile: any) => {
               <div className="hb-basic-grid">
                 {/* 資源カード 1列×3行 */}
                 <div className="hb-basic-column hb-basic-column--resource">
-                  {resourceSupplyPiles.map((pile: any) => (
-                    <SupplyCardPile
-                      key={pile.card.id}
-                      pile={pile}
-                      variant="basic"
-                      isDisabled={!isPlayerTurn}
-                      onClick={() => handleSupplyClick(pile)}
-                      onHover={onHoverCard}
-                    />
-                  ))}
+                {resourceSupplyPiles.map((pile: any) => (
+  <SupplyCardPile
+    key={pile.card.id}
+    pile={pile}
+    variant="basic"
+    // プレイヤー手番かつ BUY フェーズ以外は「見た目だけ」無効化
+    isDisabled={!isPlayerBuyPhase}
+    onClick={() => handleSupplyClick(pile)}
+    onHover={onHoverCard}
+  />
+))}
+
                 </div>
 
                 {/* 勝利点カード 1列×3行 */}
                 <div className="hb-basic-column hb-basic-column--victory">
-                  {victorySupplyPiles.map((pile: any) => (
-                    <SupplyCardPile
-                      key={pile.card.id}
-                      pile={pile}
-                      variant="basic"
-                      isDisabled={!isPlayerTurn}
-                      onClick={() => handleSupplyClick(pile)}
-                      onHover={onHoverCard}
-                    />
-                  ))}
+                {victorySupplyPiles.map((pile: any) => (
+  <SupplyCardPile
+    key={pile.card.id}
+    pile={pile}
+    variant="basic"
+    isDisabled={!isPlayerBuyPhase}
+    onClick={() => handleSupplyClick(pile)}
+    onHover={onHoverCard}
+  />
+))}
                 </div>
               </div>
 
               {/* 右：人物・出来事カード（王国カード） 5列×2行 */}
               <div className="hb-kingdom-supply-grid">
-                {kingdomSupplyPiles.map((pile: any) => (
-                  <SupplyCardPile
-                    key={pile.card.id}
-                    pile={pile}
-                    variant="kingdom"
-                    isDisabled={!isPlayerTurn}
-                    onClick={() => handleSupplyClick(pile)}
-                    onHover={onHoverCard}
-                  />
-                ))}
+              {kingdomSupplyPiles.map((pile: any) => (
+  <SupplyCardPile
+    key={pile.card.id}
+    pile={pile}
+    variant="kingdom"
+    isDisabled={!isPlayerBuyPhase}
+    onClick={() => handleSupplyClick(pile)}
+    onHover={onHoverCard}
+  />
+))}
               </div>
             </div>
           </section>
