@@ -291,7 +291,13 @@ React.useEffect(() => {
           </div>
 
           {/* その下にカード説明ボックスを配置 */}
-          <section className="hb-card-detail-panel hb-card-detail-panel--sidebar">
+          <section
+            className={[
+              "hb-card-detail-panel",
+              "hb-card-detail-panel--sidebar",
+              cardForDetail ? "is-active" : "is-empty",
+            ].join(" ")}
+          >
             <div className="hb-section-title">カードの説明</div>
             <div className="hb-card-detail-scroll">
               {cardForDetail ? (

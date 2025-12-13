@@ -453,7 +453,14 @@ body {
   }
 
  /* ====== 手札エリア ====== */
-
+/* Card detail panel: hide when empty to avoid layout imbalance on narrow screens */
+.hb-card-detail-panel--sidebar.is-empty {
+    display: none;
+  }
+  
+  .hb-card-detail-panel--sidebar.is-active {
+    display: flex;
+  }
  .hb-hand-area {
   @apply border-t border-slate-800 bg-slate-950/95 px-6 pt-3 pb-3 flex flex-col gap-1;
   min-height: 170px;
