@@ -821,88 +821,65 @@ body {
   .hb-flash-play {
     animation: hb-flash-play 0.6s ease-out;
   }
-/* ====== HUD: 今回獲得 / 今回使用 ====== */
+/* ====== HUD: 今回獲得 / 今回使用（横1列で高さを抑える） ====== */
 
 .hb-panel-recent {
   margin-top: 0.35rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;          /* 行間を詰める */
 }
 
 .hb-panel-recent-row {
   display: flex;
-  align-items: flex-start;
-  gap: 0.4rem;
+  align-items: center;   /* ラベルとアイコンを横一列に */
+  gap: 0.45rem;
 }
 
 .hb-panel-recent-label {
-  font-size: 0.78rem; /* 文字を少し大きく */
+  font-size: 0.78rem;
   color: #e5e7eb;
-  min-width: 3.6rem;
+  min-width: 3.8rem;     /* 「今回獲得」「今回使用」が1行に収まる程度 */
 }
 
+/* カードたちは横一列に並べる（最大3件） */
 .hb-panel-recent-cards {
   display: flex;
-  gap: 0.35rem;
-  flex-wrap: wrap;          /* 縦に伸びて箱を崩さない */
-  align-items: flex-start;
+  flex-direction: row;
+  gap: 0.3rem;
 }
 
+/* 1枚あたりは小さい正方形アイコンにする */
 .hb-panel-recent-card {
-  width: 96px;              /* 38px → 96px に拡大 */
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.1rem;
+  justify-content: center;
 }
 
+/* CardView 側は HUD 専用で 40x40 の正方形に切り出す */
 .hb-panel-recent-thumb {
-  width: 96px;
+  width: 40px;
+  height: 40px;
 }
 
 .hb-panel-recent-thumb .hb-card-frame {
-  width: 96px;
-    max-width: 96px;
-    aspect-ratio: 1 / 1;       /* HUD内だけ「縦長化」させない */
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+  aspect-ratio: 1 / 1;
 }
 
-/* HUD内の CardView を “サプライボックス同等の比率” にする（ここが本命） */
-.hb-panel-recent-thumb .hb-card-image-wrapper {
-    aspect-ratio: 1 / 1;
-    height: auto;
-  }
-  
-  .hb-panel-recent-thumb .hb-card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  
-  /* HUDでは縦方向に伸びる情報を消して、箱の比率を守る */
-  .hb-panel-recent-thumb .hb-card-footer,
-  .hb-panel-recent-thumb .hb-card-meta,
-  .hb-panel-recent-thumb .hb-card-tags {
-    display: none !important;
-  }
-  
-  /* 名前も高さ要因ならHUDでは非表示（必要ならコメントアウトして復活可） */
-  .hb-panel-recent-name {
-    display: none;
-  }
+/* HUD 内の CardView では余計なフッター類を消す（絵だけにする） */
+.hb-panel-recent-thumb .hb-card-footer,
+.hb-panel-recent-thumb .hb-card-meta,
+.hb-panel-recent-thumb .hb-card-tags {
+  display: none !important;
+}
 
+/* カード名のテキストは HUD では非表示（トーストとログで補完） */
 .hb-panel-recent-name {
-  font-size: 0.78rem;       /* 0.75〜0.8rem 程度 */
-  line-height: 1.1;
-  max-width: 100%;
-  text-align: center;
-  color: #e5e7eb;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: none !important;
 }
-
-/* NOTE:
-+    .hb-card--supply を“横長カード化”すると、サプライ/手札/モーダルなど全表示が巻き込まれて崩れやすい。
-+    「HUDの今回獲得/使用だけ小さく」は hb-panel-recent-thumb 側で完結させる。 */
