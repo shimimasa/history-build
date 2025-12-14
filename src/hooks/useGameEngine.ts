@@ -53,9 +53,30 @@ export function useGameEngine(options: UseGameEngineOptions = {}) {
   }, [send]);
 
   const endTurn = useCallback(() => {
-    send({ type: "END_TURN", playerId });
-    // TODO: CPU ターンを新コアで自動実行する場合はここで CPU 側にもコマンドを送る
-  }, [send]);
+        setState((prev) => {
+          // まずプレイヤーの END_TURN を適用
+          let s: GameState = dispatch(prev, { type: "END_TURN", playerId });
+    
+          // すでにゲーム終了ならそこで止める
+          if (s.gameEnded) return s;
+    
+          // CPU の手番でなければ（例えば将来 2人プレイなど）そのまま返す
+          if (s.activePlayer !== "cpu") return s;
+    
+          // --- ここから簡易 CPU ターン（何もプレイせず、資源→購入→終了だけ） ---
+    
+          // 1. 資源を自動プレイ（ACTION フェーズ想定）
+          s = dispatch(s, { type: "AUTO_PLAY_RESOURCES", playerId: "cpu" });
+    
+          // 2. ACTION → BUY へ
+          s = dispatch(s, { type: "END_PHASE", playerId: "cpu" });
+    
+          // 3. 何も買わずにターン終了（CLEANUP & 手番交代）
+          s = dispatch(s, { type: "END_TURN", playerId: "cpu" });
+    
+          return s;
+        });
+      }, []);
 
   // UI 用 viewState（GameContainer と同様に hand を Card[] に解決）
   const viewState: any = useMemo(() => {
