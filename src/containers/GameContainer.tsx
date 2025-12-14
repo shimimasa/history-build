@@ -6,7 +6,7 @@
 // - deckConfig は createGameStateFromDeck に渡され、初期デッキ構成に反映される。
 
 // 新:
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo} from "react";
 import { GameScreen } from "../components/GameScreen";
 import { computeVictoryPointsForPlayer } from "../game/socre";
 import type { Card } from "../game/gameState";
@@ -51,6 +51,17 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   const [uiRecentBuys, setUiRecentBuys] = useState<UiEvent[]>([]);
   const [uiRecentPlays, setUiRecentPlays] = useState<UiEvent[]>([]);
 
+  // ★ GameScreen に渡す state に UI 情報を埋め込む
+  const screenState = useMemo(
+    () => ({
+      ...viewState,
+      hoveredCard,
+      uiLastEvent,
+      uiRecentBuys,
+      uiRecentPlays
+    }),
+    [viewState, hoveredCard, uiLastEvent, uiRecentBuys, uiRecentPlays]
+  );
 
   // 直前の gameEnded の値を保持し、「false → true」遷移を検知する
   const prevGameEndedRef = useRef<boolean>(state.gameEnded);
@@ -112,7 +123,7 @@ const handleEndTurn = () => {
   return (
     <>
       <GameScreen
-        state={viewState}          // ★ ここだけ state → viewState に変更
+        state={screenState}          // ★ ここだけ screenState に変更
         logs={state.eventLog}       // ★ [] → eventLog に変更
         onPlayHandCard={handlePlayHandCard}
         onBuyCard={handleBuyCard}
