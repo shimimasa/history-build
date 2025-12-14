@@ -10,7 +10,7 @@
 
 /* カード全体のボタン枠 */
 .hb-card-view {
-  width: 150px;            /* 全体をさらにコンパクトに */
+  width: 100px;            /* 全体をさらにコンパクトに */
   max-width: 100%;
   cursor: pointer;
   border: none;
@@ -54,19 +54,34 @@
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
-/* カード本体のフレーム */
-.hb-card-frame {
+/* カード本体のフレーム
++ * NOTE: index.css 側にも .hb-card-frame が存在するため、衝突回避のためにスコープを付ける
++ *hb-card-frame {
   position: relative;
   display: flex;
   flex-direction: column;
   max-width: 130px;
   border-radius: 14px;
   padding: 6px 6px 8px;             /* 縦方向の余白を削る */
-  background: linear-gradient(145deg, #111827, #020617);
-  border: 1px solid rgba(148, 163, 184, 0.35); /* 唯一の「カード枠」 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
-  overflow: hidden;
-}
+  /*background: linear-gradient(145deg, #111827, #020617);*/
+  /*border: 1px solid rgba(148, 163, 184, 0.35); /* 唯一の「カード枠」 */
+  /*box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);*/
+  /*overflow: hidden;*/
+
+  .hb-card-view .hb-card-frame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+   width: 100%;
+   aspect-ratio: 2 / 3;          /* ★ カード比率を2:3に固定 */
+    border-radius: 14px;
+    padding: 6px 6px 8px;             /* 縦方向の余白を削る */
+    background: linear-gradient(145deg, #111827, #020617);
+    border: 1px solid rgba(148, 163, 184, 0.35); /* 唯一の「カード枠」 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+  }
 
 /* =========================================================
  * イラストエリア（上部）
@@ -83,8 +98,7 @@
 .hb-card-view-image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;     /* 縦を低めにした比率（以前より横長） */
-  height: auto;
+  height: 100%;
   border-radius: 10px;
   overflow: hidden;        /* 画像が枠からはみ出さないように */
   background: #020617;     /* 画像がない場合のベースカラー */
@@ -96,7 +110,13 @@
   height: 100%;
   display: block;
   object-fit: cover;       /* 全体を埋める（上下が少し切れてもOK） */
-  object-position: center top; /* 顔や城の上部が見えやすいよう上寄せ */
+  object-position: center;
+}
+
+/* 人物カードだけは上寄せで顔を優先（クラスが付く場合に効く） */
+.hb-card--person .hb-card-view-image,
+.hb-card-view--type-person .hb-card-view-image {
+  object-position: center top;
 }
 
 /* プレースホルダ（画像なしカード用） */
@@ -255,16 +275,14 @@
   width: 110px;
 }
 
-.hb-supply-card-compact .hb-card-frame {
+.hb-supply-card-compact .hb-card-view .hb-card-frame {
   padding: 4px 4px 6px;
   border-radius: 10px;
 }
 
 .hb-supply-card-compact .hb-card-view-image-wrapper {
-  aspect-ratio: auto;
-  height: 80px;           /* かなり低めの帯にする */
-  max-height: 80px;
-}
+    height: 100%;
+   }
 
 .hb-supply-card-compact .hb-card-view-name {
   font-size: 0.78rem;
