@@ -75,7 +75,7 @@ export interface GameScreenProps {
   // ★ HUD 用：最近の BUY / PLAY をカードオブジェクトに解決（最大3件）
   const recentBuyCards = React.useMemo(
     () =>
-      (state.uiRecentBuys as any[])
+      ((state.uiRecentBuys ?? []) as any[])
         .map((e) => supply?.[e.cardId]?.card)
         .filter(Boolean)
         .slice(0, 3),
@@ -84,7 +84,7 @@ export interface GameScreenProps {
 
   const recentPlayCards = React.useMemo(
     () =>
-      (state.uiRecentPlays as any[])
+      ((state.uiRecentPlays ?? []) as any[])
         .map((e) => supply?.[e.cardId]?.card)
         .filter(Boolean)
         .slice(0, 3),
