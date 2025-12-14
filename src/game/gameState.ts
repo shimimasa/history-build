@@ -4,8 +4,8 @@
 // ------------------------------------------------------
 // カード関連の型
 // ------------------------------------------------------
+import type { Phase, TurnCounters } from "./core/types";
 
-export type CardType = "resource" | "person" | "event" | "victory";
 
 /**
  * Effect DSL（history-spec v2）
@@ -28,7 +28,7 @@ export interface Effect {
 export interface Card {
   id: string;
   name: string;
-  type: CardType;
+  type: "resource" | "victory" | "person" | "event";
   cost: number;
   knowledgeRequired: number;
   effects: Effect[];
@@ -63,6 +63,9 @@ export interface PlayerState {
   riceThisTurn: number; // このターンに使える米（CLEANUP で 0 にリセット）
   knowledge: number;    // 累積知識（ゲームを通じて保持）
   turnsTaken: number;   // 行動したターン数
+
+  // ★ 追加：フェーズをまたいで保持されるターンカウンタ
+  turn: TurnCounters;
 }
 
 /**
@@ -82,12 +85,15 @@ export interface GameState {
 
   supply: Record<string, SupplyPile>;
 
-  phase: TurnPhase;
+  phase: Phase;
   activePlayer: ActivePlayer;
   turnCount: number;
 
   gameEnded: boolean;
   winner: ActivePlayer | "draw" | null;
+
+  // ★ 追加：イベントログ
+  eventLog: string[];
 }
 
 // ------------------------------------------------------
@@ -111,7 +117,13 @@ export function createInitialPlayerState(initialDeck: string[]): PlayerState {
     played: [],
     riceThisTurn: 0,
     knowledge: 0,
-    turnsTaken: 0
+    turnsTaken: 0,
+    turn: {
+      actions: 1,
+      buys: 1,
+      rice: 0,
+      knowledge: 0
+    }
   };
 }
 
@@ -145,11 +157,12 @@ export function createInitialGameState(cards: Card[]): GameState {
     player,
     cpu,
     supply,
-    phase: "DRAW",
+    phase: "ACTION",
     activePlayer: "player",
     turnCount: 1,
     gameEnded: false,
-    winner: null
+    winner: null,
+    eventLog: []
   };
 }
 

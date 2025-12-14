@@ -4,9 +4,8 @@ import React from "react";
 import { CardView } from "./CardView";
 import { SupplyCardPile } from "./SupplyCard";
 import { CardDetailModal } from "./CardDetailModal"; // ★ 追加
-import { canBuyCard } from "../logic/cardEffects"; // ★ 追加
-import type { Card as GameCard, PlayerState } from "../game/gameState"; // ★ 追加
-
+import { canBuy } from "../game/core/canBuy";
+import type { GameState } from "../game/gameState";
 import "../index.css";
 
 export type GamePhase = "DRAW" | "ACTION" | "BUY" | "CLEANUP";
@@ -197,12 +196,20 @@ const handleSupplyClick = (pile: any) => {
   const actionsLeft = rawPhase === "ACTION" ? 1 : 0;
   const buysLeft = rawPhase === "BUY" ? 1 : 0;
 
-  // ▼ 追加：モーダル用の「このカードを今買えるか」と理由
   const isPlayerBuyPhase = isPlayerTurn && rawPhase === "BUY";
 
+  // 購入可能判定（ボタン見た目用）
+  const canBuyFromState = (pile: any): boolean => {
+    if (!isPlayerBuyPhase) return false;
+    const id = pile?.card?.id;
+    if (!id) return false;
+    const result = canBuy(state as GameState, "player", id);
+    return result.ok;
+  };
+  
   const canBuyThisCard =
     !!detailModalCard &&
-    canBuyCard(player as PlayerState, detailModalCard as GameCard);
+    canBuy(state as GameState, "player", detailModalCard.id).ok;
 
   let buyDisabledReason: string | undefined;
   if (!isPlayerTurn) {
@@ -339,7 +346,7 @@ React.useEffect(() => {
     pile={pile}
     variant="basic"
     // プレイヤー手番かつ BUY フェーズ以外は「見た目だけ」無効化
-    isDisabled={!isPlayerBuyPhase}
+    isDisabled={!canBuyFromState(pile)}
     isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
