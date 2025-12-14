@@ -111,7 +111,22 @@ const handleBuyCard = (cardId: string) => {
 
 const handleProceedPhase = () => {
   if (state.gameEnded || state.activePlayer !== "player") return;
-  endPhase();
+
+  if (state.phase === "ACTION") {
+    // 1. 資源カードを一括使用して米を加算
+    autoPlayResources();
+    // 2. BUY フェーズへ遷移
+    endPhase();
+    return;
+  }
+
+  if (state.phase === "BUY") {
+    // 何も買わずにターン終了
+    endTurn();
+    return;
+  }
+
+  // その他のフェーズでは何もしない（CLEANUP などは END_TURN の中だけで使う）
 };
 
 // END_TURN は GameScreen から呼ばれる

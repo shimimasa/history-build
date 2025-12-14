@@ -188,13 +188,15 @@ const handleSupplyClick = (pile: any) => {
 
   const phaseLabel = getPhaseLabel(rawPhase);
 
-  // ▼ 追加: v1.5 GameState に合わせた表示用ステータス
-  const riceThisTurn = player.riceThisTurn ?? player.rice ?? 0;
-  const knowledge = player.knowledge ?? 0;
-
-  // フェーズに応じて「今行えるアクション / 購入」の残り数を簡易表示
-  const actionsLeft = rawPhase === "ACTION" ? 1 : 0;
-  const buysLeft = rawPhase === "BUY" ? 1 : 0;
+  　 const riceThisTurn =
+     player.turn?.rice ?? player.riceThisTurn ?? 0;
+   const knowledge =
+     player.turn?.knowledge ?? player.knowledge ?? 0;
+  
+   const actionsLeft =
+     player.turn?.actions ?? (rawPhase === "ACTION" ? 1 : 0);
+   const buysLeft =
+     player.turn?.buys ?? (rawPhase === "BUY" ? 1 : 0);
 
   const isPlayerBuyPhase = isPlayerTurn && rawPhase === "BUY";
 
