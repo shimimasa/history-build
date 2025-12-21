@@ -1,0 +1,366 @@
+{
+    "cards": [
+      {
+        "id": "SG_P01",
+        "name": "織田信長",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "discount": 2 },
+          { "draw": 1 },
+          { "selfDiscard": 1 }
+        ],
+        "notes": "革新と覇権"
+      },
+      {
+        "id": "SG_P02",
+        "name": "豊臣秀吉",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "discount": 1 },
+          { "conditional": { "if": "playedEventThisTurn", "then": [ { "draw": 1 } ] } }
+        ],
+        "notes": "下剋上の体現"
+      },
+      {
+        "id": "SG_P03",
+        "name": "徳川家康",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "conditional": { "if": "boughtVictoryThisTurn", "then": [ { "gainVP": 1 } ] } },
+          { "conditional": { "if": "playedPersonThisTurn", "then": [ { "draw": 1 } ] } }
+        ],
+        "notes": "天下統一の完成者"
+      },
+      {
+        "id": "SG_P04",
+        "name": "武田信玄",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "conditional": { "if": "attackResolved", "then": [ { "draw": 1 } ] } }
+        ],
+        "notes": "甲斐の虎"
+      },
+      {
+        "id": "SG_P05",
+        "name": "上杉謙信",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "draw": 1 }
+        ],
+        "notes": "越後の龍"
+      },
+      {
+        "id": "SG_P06",
+        "name": "毛利元就",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "conditional": { "if": "playedResourceThisTurn", "then": [ { "discount": 1 }, { "draw": 1 } ] } }
+        ],
+        "notes": "中国地方の覇者"
+      },
+      {
+        "id": "SG_P07",
+        "name": "北条早雲",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "conditional": { "if": "handSize<=4", "then": [ { "draw": 2 } ] } }
+        ],
+        "notes": "戦国大名の先駆け"
+      },
+      {
+        "id": "SG_P08",
+        "name": "今川義元",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 4 },
+          { "selfDiscard": 2 }
+        ],
+        "notes": "名門大名"
+      },
+      {
+        "id": "SG_P09",
+        "name": "明智光秀",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 2 },
+          { "selfDiscard": 1 }
+        ],
+        "notes": "謀反"
+      },
+      {
+        "id": "SG_P10",
+        "name": "石田三成",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "conditional": { "if": "playedAnotherPersonThisTurn", "then": [ { "discount": 1 }, { "draw": 1 } ] } }
+        ],
+        "notes": "豊臣政権"
+      },
+      {
+        "id": "SG_P11",
+        "name": "伊達政宗",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "discount": 1 }
+        ],
+        "notes": "独眼竜"
+      },
+      {
+        "id": "SG_P12",
+        "name": "島津義弘",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 2 }
+        ],
+        "notes": "九州の雄"
+      },
+      {
+        "id": "SG_P13",
+        "name": "長宗我部元親",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 1 },
+          { "conditional": { "if": "gainedRiceThisTurn", "then": [ { "draw": 1 } ] } }
+        ],
+        "notes": "四国統一"
+      },
+      {
+        "id": "SG_P14",
+        "name": "斎藤道三",
+        "era": "sengoku",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "discount": 3 },
+          { "trashFromHand": 1 }
+        ],
+        "notes": "下剋上"
+      },
+  
+      {
+        "id": "SG_E01",
+        "name": "下剋上",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 4 },
+          { "discount": 2 },
+          { "trashFromHand": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E02",
+        "name": "応仁の乱",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 2 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E03",
+        "name": "桶狭間の戦い",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "attackDiscard": 2 },
+          { "conditional": { "if": "attackDiscarded>=2", "then": [ { "gainVP": 1 } ] } },
+          { "selfDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E04",
+        "name": "長篠の戦い",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "discount": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E05",
+        "name": "本能寺の変",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "gainVP": 2 },
+          { "selfDiscard": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E06",
+        "name": "刀狩",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "trashFromHand": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E07",
+        "name": "楽市楽座",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 3 },
+          { "discount": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E08",
+        "name": "惣無事令",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "draw": 2 },
+          { "selfDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E09",
+        "name": "関ヶ原の戦い",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 5,
+        "effects": [
+          { "attackDiscard": 2 },
+          { "gainVP": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_E10",
+        "name": "天下統一",
+        "era": "sengoku",
+        "category": "event",
+        "cost": 6,
+        "effects": [
+          { "gainVP": 4 },
+          { "discount": 2 },
+          { "selfDiscard": 2 }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "SG_V01",
+        "name": "城下町",
+        "era": "sengoku",
+        "category": "victory",
+        "cost": 3,
+        "effects": [
+          { "gainVP": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_V02",
+        "name": "領国経営",
+        "era": "sengoku",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ] } }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_V03",
+        "name": "一国支配",
+        "era": "sengoku",
+        "category": "victory",
+        "cost": 5,
+        "effects": [
+          { "gainVP": 3 },
+          { "conditional": { "if": "playedEventThisTurn", "then": [ { "gainVP": 1 } ] } }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_V04",
+        "name": "全国支配",
+        "era": "sengoku",
+        "category": "victory",
+        "cost": 6,
+        "effects": [
+          { "gainVP": 6 }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "SG_R01",
+        "name": "鉄砲伝来",
+        "era": "sengoku",
+        "category": "resource",
+        "cost": 2,
+        "effects": [
+          { "discount": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "SG_R02",
+        "name": "城郭建築（石垣・天守）",
+        "era": "sengoku",
+        "category": "resource",
+        "cost": 2,
+        "effects": [
+          { "gainRice": 2 },
+          { "trashFromHand": 1 }
+        ],
+        "notes": ""
+      }
+    ]
+  }
+  
+  

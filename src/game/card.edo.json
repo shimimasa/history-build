@@ -1,0 +1,234 @@
+[
+    {
+      "id": "ED_CHR_HIDETADA",
+      "name": "徳川秀忠",
+      "type": "person",
+      "cost": 3,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【江戸】体制を固め、統治を安定させる。",
+      "image": "/assets/cards/ED_CHR_HIDETADA.webp"
+    },
+    {
+      "id": "ED_CHR_TSUNAYOSHI",
+      "name": "徳川綱吉",
+      "type": "person",
+      "cost": 4,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【江戸】政策と文化で時代を彩る。",
+      "image": "/assets/cards/ED_CHR_TSUNAYOSHI.webp"
+    },
+    {
+      "id": "ED_CHR_ARAI",
+      "name": "新井白石",
+      "type": "person",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【江戸】政策を設計し、秩序を整える。",
+      "image": "/assets/cards/ED_CHR_ARAI.webp"
+    },
+    {
+      "id": "ED_CHR_YOSHIMUNE",
+      "name": "徳川吉宗",
+      "type": "person",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【江戸】改革で財政と統治を立て直す。",
+      "image": "/assets/cards/ED_CHR_YOSHIMUNE.webp"
+    },
+    {
+      "id": "ED_CHR_SADANOBU",
+      "name": "松平定信",
+      "type": "person",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【江戸】引き締めと秩序回復を図る。",
+      "image": "/assets/cards/ED_CHR_SADANOBU.webp"
+    },
+    {
+      "id": "ED_CHR_TADAKUNI",
+      "name": "水野忠邦",
+      "type": "person",
+      "cost": 6,
+      "knowledgeRequired": 3,
+      "effects": [],
+      "text": "【江戸】終盤の改革に挑む。",
+      "image": "/assets/cards/ED_CHR_TADAKUNI.webp"
+    },
+  
+    {
+      "id": "ED_EV_BUKE",
+      "name": "武家諸法度",
+      "type": "event",
+      "cost": 3,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【江戸】大名統制の基本ルール。",
+      "image": "/assets/cards/ED_EV_BUKE.webp"
+    },
+    {
+      "id": "ED_EV_SANKIN",
+      "name": "参勤交代",
+      "type": "event",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【江戸】大名を統制し、中央を強化する。",
+      "image": "/assets/cards/ED_EV_SANKIN.webp"
+    },
+    {
+      "id": "ED_EV_SAKOKU",
+      "name": "鎖国",
+      "type": "event",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【江戸】対外関係を制限し秩序を保つ。",
+      "image": "/assets/cards/ED_EV_SAKOKU.webp"
+    },
+    {
+      "id": "ED_EV_KYOHO",
+      "name": "享保の改革",
+      "type": "event",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【江戸】財政と統治の立て直し。",
+      "image": "/assets/cards/ED_EV_KYOHO.webp"
+    },
+    {
+      "id": "ED_EV_KANSEI",
+      "name": "寛政の改革",
+      "type": "event",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【江戸】規律を強化し、社会を引き締める。",
+      "image": "/assets/cards/ED_EV_KANSEI.webp"
+    },
+    {
+      "id": "ED_EV_TENPO",
+      "name": "天保の改革",
+      "type": "event",
+      "cost": 6,
+      "knowledgeRequired": 3,
+      "effects": [],
+      "text": "【江戸】終盤の危機に対応する改革。",
+      "image": "/assets/cards/ED_EV_TENPO.webp"
+    },
+  
+    {
+      "id": "ED_SYM_TENKA_TAIHEI",
+      "name": "天下泰平",
+      "type": "event",
+      "cost": 6,
+      "knowledgeRequired": 4,
+      "effects": [],
+      "text": "【江戸・象徴】長い平和と秩序の完成。",
+      "image": "/assets/cards/ED_SYM_TENKA_TAIHEI.webp"
+    },
+    {
+      "id": "ED_SYM_BAKUHAN",
+      "name": "幕藩体制",
+      "type": "event",
+      "cost": 7,
+      "knowledgeRequired": 4,
+      "effects": [],
+      "text": "【江戸・象徴】幕府と藩が支配を分担する。",
+      "image": "/assets/cards/ED_SYM_BAKUHAN.webp"
+    },
+    {
+      "id": "ED_SYM_KAIKOKU_MAEYA",
+      "name": "開国前夜",
+      "type": "event",
+      "cost": 7,
+      "knowledgeRequired": 5,
+      "effects": [],
+      "text": "【江戸・象徴】外圧が高まり、転換点が近づく。",
+      "image": "/assets/cards/ED_SYM_KAIKOKU_MAEYA.webp"
+    }
+  ]
+  
+  [
+    🏯 江戸時代デッキ（泰平と経済・文化）カード候補〈全30枚〉
+🟩 Person（人物）12枚
+
+江戸は「将軍・改革者・文化人」の三本柱
+
+徳川家康
+
+徳川秀忠
+
+徳川家光
+
+徳川綱吉
+
+徳川吉宗
+
+田沼意次
+
+松平定信
+
+大岡忠相
+
+平賀源内
+
+伊能忠敬
+
+葛飾北斎
+
+歌川広重
+
+🟦 Event（制度・政策・改革）10枚
+
+江戸デッキの中核。「支配を維持する仕組み」
+
+江戸幕府の成立
+
+参勤交代
+
+武家諸法度
+
+鎖国
+
+朱印船貿易
+
+享保の改革
+
+田沼政治
+
+寛政の改革
+
+天保の改革
+
+株仲間
+
+🟨 Victory / Structure（都市・支配・平和）6枚
+
+「長期安定」を勝利点に変換する枠
+
+江戸の町
+
+城下町の発展
+
+五街道
+
+天下泰平
+
+宿場町
+
+石高制
+
+🟫 Culture / Society（町人文化・生活）2枚
+
+江戸らしさの象徴（後で強い効果を載せやすい）
+
+寺子屋
+
+浮世絵文化
+
+  ]

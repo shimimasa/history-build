@@ -246,6 +246,7 @@ body {
 
   /* ====== カード汎用スタイル ====== */
   /* 共通フレーム（王国カードサイズ基準） */
+  
   .hb-card-frame {
     width: 100%;
     max-width: var(--hb-card-w-supply, 110px);

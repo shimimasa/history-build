@@ -1,0 +1,440 @@
+{
+  "cards": [
+    {
+      "id": "MJ_P01",
+      "name": "明治天皇",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "gainKnowledge": 2 },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=2",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P02",
+      "name": "西郷隆盛",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "gainKnowledge": 2 },
+        { "selfDiscard": 1 },
+        {
+          "conditional": {
+            "if": "selfDiscardedThisTurn>=1",
+            "then": [{ "gainKnowledge": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P03",
+      "name": "大久保利通",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "gainKnowledge": 2 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P04",
+      "name": "木戸孝允",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P05",
+      "name": "岩倉具視",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [{ "draw": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P06",
+      "name": "伊藤博文",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "gainKnowledge": 2 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P07",
+      "name": "山県有朋",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [{ "draw": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P08",
+      "name": "福沢諭吉",
+      "era": "meiji",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "draw": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P09",
+      "name": "板垣退助",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P10",
+      "name": "大隈重信",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [{ "draw": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P11",
+      "name": "渋沢栄一",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_P12",
+      "name": "津田梅子",
+      "era": "meiji",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "draw": 1 }
+      ],
+      "notes": ""
+    },
+
+    {
+      "id": "MJ_E01",
+      "name": "明治維新",
+      "era": "meiji",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        { "trashFromHand": 2 },
+        { "gainKnowledge": 2 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E02",
+      "name": "王政復古",
+      "era": "meiji",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "trashFromHand": 1 },
+        { "gainKnowledge": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E03",
+      "name": "廃藩置県",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "trashFromHand": 2 },
+        { "gainKnowledge": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E04",
+      "name": "四民平等",
+      "era": "meiji",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E05",
+      "name": "富国強兵",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E06",
+      "name": "殖産興業",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E07",
+      "name": "学制発布",
+      "era": "meiji",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 2 },
+        { "draw": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E08",
+      "name": "徴兵令",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [{ "draw": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E09",
+      "name": "大日本帝国憲法",
+      "era": "meiji",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        { "gainKnowledge": 2 },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=2",
+            "then": [{ "gainVP": 2 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_E10",
+      "name": "日清戦争",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "gainVP": 2 }
+      ],
+      "notes": ""
+    },
+
+    {
+      "id": "MJ_V01",
+      "name": "中央集権国家",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        { "gainVP": 3 },
+        {
+          "conditional": {
+            "if": "totalKnowledge>=5",
+            "then": [{ "gainVP": 2 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_V02",
+      "name": "近代官僚制",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_V03",
+      "name": "議会政治の始まり",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [{ "draw": 1 }, { "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_V04",
+      "name": "鉄道網の整備",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "reducedCostThisTurn>=1",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_V05",
+      "name": "近代工場",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "reducedCostThisTurn>=1",
+            "then": [{ "gainVP": 1 }]
+          }
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_V06",
+      "name": "近代国家の完成",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 6,
+      "effects": [
+        { "gainVP": 6 }
+      ],
+      "notes": ""
+    },
+
+    {
+      "id": "MJ_C01",
+      "name": "文明開化",
+      "era": "meiji",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "MJ_C02",
+      "name": "西洋技術の導入",
+      "era": "meiji",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "notes": ""
+    }
+  ]
+}
+
+  

@@ -1,0 +1,234 @@
+[
+    {
+      "id": "MD_CHR_YORITOMO",
+      "name": "源頼朝",
+      "type": "person",
+      "cost": 3,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【中世】武家政権の起点。",
+      "image": "/assets/cards/MD_CHR_YORITOMO.webp"
+    },
+    {
+      "id": "MD_CHR_MASAKO",
+      "name": "北条政子",
+      "type": "person",
+      "cost": 4,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【中世】政局をまとめ、権力を支える。",
+      "image": "/assets/cards/MD_CHR_MASAKO.webp"
+    },
+    {
+      "id": "MD_CHR_TAKAUJI",
+      "name": "足利尊氏",
+      "type": "person",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【中世】新たな武家政権を築く。",
+      "image": "/assets/cards/MD_CHR_TAKAUJI.webp"
+    },
+    {
+      "id": "MD_CHR_YOSHIMITSU",
+      "name": "足利義満",
+      "type": "person",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【中世】権威と経済を握り統治を強める。",
+      "image": "/assets/cards/MD_CHR_YOSHIMITSU.webp"
+    },
+    {
+      "id": "MD_CHR_NORIMASA",
+      "name": "上杉憲実",
+      "type": "person",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【中世】秩序の維持と調停に動く。",
+      "image": "/assets/cards/MD_CHR_NORIMASA.webp"
+    },
+    {
+      "id": "MD_CHR_GODAIGO",
+      "name": "後醍醐天皇",
+      "type": "person",
+      "cost": 6,
+      "knowledgeRequired": 3,
+      "effects": [],
+      "text": "【中世】王権回復を志向する象徴。",
+      "image": "/assets/cards/MD_CHR_GODAIGO.webp"
+    },
+  
+    {
+      "id": "MD_EV_KAMAKURA",
+      "name": "鎌倉幕府成立",
+      "type": "event",
+      "cost": 3,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【中世】武家政権が始まる。",
+      "image": "/assets/cards/MD_EV_KAMAKURA.webp"
+    },
+    {
+      "id": "MD_EV_SHUGO_JITO",
+      "name": "守護・地頭",
+      "type": "event",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【中世】土地と軍事を押さえる仕組み。",
+      "image": "/assets/cards/MD_EV_SHUGO_JITO.webp"
+    },
+    {
+      "id": "MD_EV_KENMU",
+      "name": "建武の新政",
+      "type": "event",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【中世】王政復古を試みる。",
+      "image": "/assets/cards/MD_EV_KENMU.webp"
+    },
+    {
+      "id": "MD_EV_NANBOKUCHO",
+      "name": "南北朝の動乱",
+      "type": "event",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【中世】統一が揺らぐ長期対立。",
+      "image": "/assets/cards/MD_EV_NANBOKUCHO.webp"
+    },
+    {
+      "id": "MD_EV_MUROMACHI",
+      "name": "室町幕府成立",
+      "type": "event",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【中世】新しい支配体制の確立。",
+      "image": "/assets/cards/MD_EV_MUROMACHI.webp"
+    },
+    {
+      "id": "MD_EV_KANGO",
+      "name": "勘合貿易",
+      "type": "event",
+      "cost": 6,
+      "knowledgeRequired": 3,
+      "effects": [],
+      "text": "【中世】交易で富と権威を得る。",
+      "image": "/assets/cards/MD_EV_KANGO.webp"
+    },
+  
+    {
+      "id": "MD_SYM_BUSHI_RULE",
+      "name": "武家政権",
+      "type": "event",
+      "cost": 6,
+      "knowledgeRequired": 4,
+      "effects": [],
+      "text": "【中世・象徴】武士が政治を担う時代。",
+      "image": "/assets/cards/MD_SYM_BUSHI_RULE.webp"
+    },
+    {
+      "id": "MD_SYM_GEKOJYO",
+      "name": "下剋上",
+      "type": "event",
+      "cost": 7,
+      "knowledgeRequired": 4,
+      "effects": [],
+      "text": "【中世・象徴】実力が秩序を塗り替える。",
+      "image": "/assets/cards/MD_SYM_GEKOJYO.webp"
+    },
+    {
+      "id": "MD_SYM_ONIN",
+      "name": "応仁の乱",
+      "type": "event",
+      "cost": 7,
+      "knowledgeRequired": 5,
+      "effects": [],
+      "text": "【中世・象徴】全国の戦乱へつながる大乱。",
+      "image": "/assets/cards/MD_SYM_ONIN.webp"
+    }
+  ]
+
+  [
+    ⚔️ 中世デッキ（武士と秩序の形成）カード案〈全30枚〉
+🟩 Person（人物）12枚
+
+※「武士政権の成立」「朝廷との対立」「法と統治」を軸に選定
+
+源頼朝
+
+源義経
+
+北条政子
+
+北条時政
+
+北条泰時
+
+後鳥羽上皇
+
+足利尊氏
+
+足利義満
+
+楠木正成
+
+新田義貞
+
+日蓮
+
+栄西
+
+🟦 Event（制度・戦乱・政治）10枚
+
+中世デッキの中核。「武士による支配」を可視化する題材
+
+鎌倉幕府の成立
+
+守護・地頭の設置
+
+御恩と奉公
+
+承久の乱
+
+御成敗式目
+
+元寇（文永の役）
+
+元寇（弘安の役）
+
+建武の新政
+
+南北朝の動乱
+
+室町幕府の成立
+
+🟨 Victory / Structure（政権・都市・支配体制）6枚
+
+「誰が日本を支配しているのか」を勝利点に変換しやすい枠
+
+鎌倉（武家政権）
+
+武家社会の成立
+
+室町幕府
+
+将軍と幕府政治
+
+公武二重政権
+
+武士の支配体制
+
+🟫 Culture / Religion（宗教・思想・文化）2枚
+
+中世らしい“精神世界・価値観”を担う補助カード
+
+鎌倉仏教
+
+武士道の萌芽
+  ]
+  

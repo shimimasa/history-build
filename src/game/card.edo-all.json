@@ -1,0 +1,455 @@
+{
+    "cards": [
+      {
+        "id": "ED_P01",
+        "name": "徳川家康",
+        "era": "edo",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "trashFromHand": 1 },
+          {
+            "conditional": {
+              "if": "trashedThisTurn>=1",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P02",
+        "name": "徳川秀忠",
+        "era": "edo",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainRice": 2 },
+          {
+            "conditional": {
+              "if": "boughtVictoryThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P03",
+        "name": "徳川家光",
+        "era": "edo",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "trashFromHand": 1 },
+          { "gainRice": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P04",
+        "name": "徳川綱吉",
+        "era": "edo",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P05",
+        "name": "徳川吉宗",
+        "era": "edo",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "trashFromHand": 1 },
+          { "gainRice": 3 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P06",
+        "name": "田沼意次",
+        "era": "edo",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainRice": 4 },
+          { "selfDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P07",
+        "name": "松平定信",
+        "era": "edo",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "trashFromHand": 1 },
+          { "gainKnowledge": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P08",
+        "name": "大岡忠相",
+        "era": "edo",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "trashFromHand": 1 },
+          {
+            "conditional": {
+              "if": "trashedThisTurn>=1",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P09",
+        "name": "平賀源内",
+        "era": "edo",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P10",
+        "name": "伊能忠敬",
+        "era": "edo",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P11",
+        "name": "葛飾北斎",
+        "era": "edo",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "draw": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_P12",
+        "name": "歌川広重",
+        "era": "edo",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "draw": 1 },
+          {
+            "conditional": {
+              "if": "boughtVictoryThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "ED_E01",
+        "name": "江戸幕府の成立",
+        "era": "edo",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "trashFromHand": 1 },
+          {
+            "conditional": {
+              "if": "trashedThisTurn>=1",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E02",
+        "name": "参勤交代",
+        "era": "edo",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainRice": 2 }]
+            }
+          },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E03",
+        "name": "武家諸法度",
+        "era": "edo",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "trashFromHand": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E04",
+        "name": "鎖国",
+        "era": "edo",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "trashFromHand": 1 },
+          { "gainRice": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E05",
+        "name": "朱印船貿易",
+        "era": "edo",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 3 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E06",
+        "name": "享保の改革",
+        "era": "edo",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "trashFromHand": 1 },
+          { "gainRice": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E07",
+        "name": "田沼政治",
+        "era": "edo",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "gainRice": 4 },
+          { "selfDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E08",
+        "name": "寛政の改革",
+        "era": "edo",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "trashFromHand": 1 },
+          { "gainKnowledge": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E09",
+        "name": "天保の改革",
+        "era": "edo",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "trashFromHand": 1 },
+          {
+            "conditional": {
+              "if": "trashedThisTurn>=1",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_E10",
+        "name": "株仲間",
+        "era": "edo",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 2 },
+          {
+            "conditional": {
+              "if": "gainedRiceThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "ED_V01",
+        "name": "江戸の町",
+        "era": "edo",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          { "gainVP": 2 },
+          {
+            "conditional": {
+              "if": "gainedRiceThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_V02",
+        "name": "城下町の発展",
+        "era": "edo",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_V03",
+        "name": "五街道",
+        "era": "edo",
+        "category": "victory",
+        "cost": 3,
+        "effects": [
+          {
+            "conditional": {
+              "if": "boughtVictoryThisTurn",
+              "then": [{ "draw": 1 }, { "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_V04",
+        "name": "天下泰平",
+        "era": "edo",
+        "category": "victory",
+        "cost": 6,
+        "effects": [
+          { "gainVP": 5 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_V05",
+        "name": "宿場町",
+        "era": "edo",
+        "category": "victory",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 1 },
+          {
+            "conditional": {
+              "if": "gainedRiceThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_V06",
+        "name": "石高制",
+        "era": "edo",
+        "category": "victory",
+        "cost": 5,
+        "effects": [
+          { "gainVP": 3 },
+          {
+            "conditional": {
+              "if": "totalRiceThisTurn>=5",
+              "then": [{ "gainVP": 2 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "ED_C01",
+        "name": "寺子屋",
+        "era": "edo",
+        "category": "culture",
+        "cost": 2,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "ED_C02",
+        "name": "浮世絵文化",
+        "era": "edo",
+        "category": "culture",
+        "cost": 2,
+        "effects": [
+          { "draw": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      }
+    ]
+  }
+  
+  

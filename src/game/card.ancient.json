@@ -1,0 +1,466 @@
+{
+    "cards": [
+      {
+        "id": "AN_P01",
+        "name": "聖徳太子",
+        "era": "ancient",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P02",
+        "name": "推古天皇",
+        "era": "ancient",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P03",
+        "name": "中大兄皇子（天智天皇）",
+        "era": "ancient",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P04",
+        "name": "中臣鎌足（藤原鎌足）",
+        "era": "ancient",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P05",
+        "name": "天武天皇",
+        "era": "ancient",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "gainKnowledge": 2 },
+          {
+            "conditional": {
+              "if": "totalKnowledge>=4",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P06",
+        "name": "持統天皇",
+        "era": "ancient",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedVictoryThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P07",
+        "name": "行基",
+        "era": "ancient",
+        "category": "person",
+        "cost": 2,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P08",
+        "name": "鑑真",
+        "era": "ancient",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P09",
+        "name": "額田王",
+        "era": "ancient",
+        "category": "person",
+        "cost": 2,
+        "effects": [
+          { "draw": 1 },
+          { "gainKnowledge": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P10",
+        "name": "柿本人麻呂",
+        "era": "ancient",
+        "category": "person",
+        "cost": 2,
+        "effects": [
+          { "draw": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "gainKnowledge": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P11",
+        "name": "藤原不比等",
+        "era": "ancient",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_P12",
+        "name": "阿倍仲麻呂",
+        "era": "ancient",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "AN_E01",
+        "name": "十七条憲法",
+        "era": "ancient",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "totalKnowledge>=3",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E02",
+        "name": "大化の改新",
+        "era": "ancient",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E03",
+        "name": "公地公民制",
+        "era": "ancient",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E04",
+        "name": "班田収授法",
+        "era": "ancient",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "gainRice": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E05",
+        "name": "律令制度",
+        "era": "ancient",
+        "category": "event",
+        "cost": 5,
+        "effects": [
+          { "gainKnowledge": 2 },
+          {
+            "conditional": {
+              "if": "totalKnowledge>=5",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E06",
+        "name": "大宝律令",
+        "era": "ancient",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E07",
+        "name": "遣隋使",
+        "era": "ancient",
+        "category": "event",
+        "cost": 2,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E08",
+        "name": "遣唐使",
+        "era": "ancient",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E09",
+        "name": "壬申の乱",
+        "era": "ancient",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 2 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_E10",
+        "name": "墾田永年私財法",
+        "era": "ancient",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "gainRice": 1 }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "AN_V01",
+        "name": "飛鳥京",
+        "era": "ancient",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "totalKnowledge>=2",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_V02",
+        "name": "藤原京",
+        "era": "ancient",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "totalKnowledge>=3",
+              "then": [{ "gainVP": 2 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_V03",
+        "name": "平城京",
+        "era": "ancient",
+        "category": "victory",
+        "cost": 5,
+        "effects": [
+          {
+            "conditional": {
+              "if": "totalKnowledge>=4",
+              "then": [{ "gainVP": 3 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_V04",
+        "name": "東大寺",
+        "era": "ancient",
+        "category": "victory",
+        "cost": 3,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_V05",
+        "name": "国分寺建立",
+        "era": "ancient",
+        "category": "victory",
+        "cost": 3,
+        "effects": [
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_V06",
+        "name": "律令国家の完成",
+        "era": "ancient",
+        "category": "victory",
+        "cost": 6,
+        "effects": [
+          { "gainVP": 5 }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "AN_R01",
+        "name": "仏教伝来",
+        "era": "ancient",
+        "category": "resource",
+        "cost": 2,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "AN_R02",
+        "name": "万葉集",
+        "era": "ancient",
+        "category": "resource",
+        "cost": 2,
+        "effects": [
+          { "draw": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "gainKnowledge": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      }
+    ]
+  }
+  

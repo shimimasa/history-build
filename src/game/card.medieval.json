@@ -1,0 +1,480 @@
+{
+    "cards": [
+      {
+        "id": "MD_P01",
+        "name": "源頼朝",
+        "era": "medieval",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }, { "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P02",
+        "name": "源義経",
+        "era": "medieval",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "draw": 1 },
+          { "attackDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P03",
+        "name": "北条政子",
+        "era": "medieval",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          },
+          { "gainKnowledge": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P04",
+        "name": "北条時政",
+        "era": "medieval",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainRice": 2 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P05",
+        "name": "北条泰時",
+        "era": "medieval",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P06",
+        "name": "後鳥羽上皇",
+        "era": "medieval",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "attackDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P07",
+        "name": "足利尊氏",
+        "era": "medieval",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }, { "attackDiscard": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P08",
+        "name": "足利義満",
+        "era": "medieval",
+        "category": "person",
+        "cost": 5,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedVictoryThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P09",
+        "name": "楠木正成",
+        "era": "medieval",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          { "draw": 1 },
+          { "attackDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P10",
+        "name": "新田義貞",
+        "era": "medieval",
+        "category": "person",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          },
+          { "attackDiscard": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P11",
+        "name": "日蓮",
+        "era": "medieval",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_P12",
+        "name": "栄西",
+        "era": "medieval",
+        "category": "person",
+        "cost": 3,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "MD_E01",
+        "name": "鎌倉幕府の成立",
+        "era": "medieval",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainVP": 1 }, { "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E02",
+        "name": "守護・地頭の設置",
+        "era": "medieval",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          { "gainRice": 2 },
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E03",
+        "name": "御恩と奉公",
+        "era": "medieval",
+        "category": "event",
+        "cost": 3,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E04",
+        "name": "承久の乱",
+        "era": "medieval",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E05",
+        "name": "御成敗式目",
+        "era": "medieval",
+        "category": "event",
+        "cost": 5,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E06",
+        "name": "元寇（文永の役）",
+        "era": "medieval",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E07",
+        "name": "元寇（弘安の役）",
+        "era": "medieval",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "attackDiscard": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E08",
+        "name": "建武の新政",
+        "era": "medieval",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          { "gainKnowledge": 1 },
+          { "draw": 1 }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E09",
+        "name": "南北朝の動乱",
+        "era": "medieval",
+        "category": "event",
+        "cost": 5,
+        "effects": [
+          { "attackDiscard": 1 },
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_E10",
+        "name": "室町幕府の成立",
+        "era": "medieval",
+        "category": "event",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "gainVP": 1 }, { "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "MD_V01",
+        "name": "鎌倉（武家政権）",
+        "era": "medieval",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          { "gainVP": 1 },
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_V02",
+        "name": "武家社会の成立",
+        "era": "medieval",
+        "category": "victory",
+        "cost": 5,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn>=2",
+              "then": [{ "gainVP": 2 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_V03",
+        "name": "室町幕府",
+        "era": "medieval",
+        "category": "victory",
+        "cost": 5,
+        "effects": [
+          { "gainVP": 1 },
+          {
+            "conditional": {
+              "if": "playedEventThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_V04",
+        "name": "将軍と幕府政治",
+        "era": "medieval",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "draw": 1 }, { "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_V05",
+        "name": "公武二重政権",
+        "era": "medieval",
+        "category": "victory",
+        "cost": 4,
+        "effects": [
+          {
+            "conditional": {
+              "if": "gainedKnowledgeThisTurn>=1",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_V06",
+        "name": "武士の支配体制",
+        "era": "medieval",
+        "category": "victory",
+        "cost": 6,
+        "effects": [
+          { "gainVP": 3 }
+        ],
+        "notes": ""
+      },
+  
+      {
+        "id": "MD_C01",
+        "name": "鎌倉仏教",
+        "era": "medieval",
+        "category": "culture",
+        "cost": 2,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedCultureThisTurn",
+              "then": [{ "draw": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MD_C02",
+        "name": "武士道の萌芽",
+        "era": "medieval",
+        "category": "culture",
+        "cost": 2,
+        "effects": [
+          { "gainKnowledge": 1 },
+          {
+            "conditional": {
+              "if": "playedPersonThisTurn",
+              "then": [{ "gainVP": 1 }]
+            }
+          }
+        ],
+        "notes": ""
+      }
+    ]
+  }
+  
+  

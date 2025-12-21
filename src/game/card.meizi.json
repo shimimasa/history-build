@@ -1,0 +1,260 @@
+[
+    {
+      "id": "MJ_CHR_SAIGO",
+      "name": "西郷隆盛",
+      "type": "person",
+      "cost": 3,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【明治】新時代への転換を担う。",
+      "image": "/assets/cards/MJ_CHR_SAIGO.webp"
+    },
+    {
+      "id": "MJ_CHR_OKUBO",
+      "name": "大久保利通",
+      "type": "person",
+      "cost": 4,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【明治】近代化を強力に推進する。",
+      "image": "/assets/cards/MJ_CHR_OKUBO.webp"
+    },
+    {
+      "id": "MJ_CHR_KIDO",
+      "name": "木戸孝允",
+      "type": "person",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【明治】制度改革を設計する。",
+      "image": "/assets/cards/MJ_CHR_KIDO.webp"
+    },
+    {
+      "id": "MJ_CHR_ITOH",
+      "name": "伊藤博文",
+      "type": "person",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【明治】憲法と政府制度を整える。",
+      "image": "/assets/cards/MJ_CHR_ITOH.webp"
+    },
+    {
+      "id": "MJ_CHR_FUKUZAWA",
+      "name": "福沢諭吉",
+      "type": "person",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【明治】学問と思想で社会を動かす。",
+      "image": "/assets/cards/MJ_CHR_FUKUZAWA.webp"
+    },
+    {
+      "id": "MJ_CHR_MEIJI",
+      "name": "明治天皇",
+      "type": "person",
+      "cost": 6,
+      "knowledgeRequired": 3,
+      "effects": [],
+      "text": "【明治】近代国家の象徴として統合を促す。",
+      "image": "/assets/cards/MJ_CHR_MEIJI.webp"
+    },
+  
+    {
+      "id": "MJ_EV_ISHIN",
+      "name": "明治維新",
+      "type": "event",
+      "cost": 3,
+      "knowledgeRequired": 0,
+      "effects": [],
+      "text": "【明治】政治体制が一変する。",
+      "image": "/assets/cards/MJ_EV_ISHIN.webp"
+    },
+    {
+      "id": "MJ_EV_HAIHAN",
+      "name": "廃藩置県",
+      "type": "event",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【明治】中央集権を確立する。",
+      "image": "/assets/cards/MJ_EV_HAIHAN.webp"
+    },
+    {
+      "id": "MJ_EV_CHISO",
+      "name": "地租改正",
+      "type": "event",
+      "cost": 4,
+      "knowledgeRequired": 1,
+      "effects": [],
+      "text": "【明治】税制を整え、財源を安定させる。",
+      "image": "/assets/cards/MJ_EV_CHISO.webp"
+    },
+    {
+      "id": "MJ_EV_FUKOKU",
+      "name": "富国強兵",
+      "type": "event",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【明治】産業と軍備を強化する。",
+      "image": "/assets/cards/MJ_EV_FUKOKU.webp"
+    },
+    {
+      "id": "MJ_EV_GAKUSEI",
+      "name": "学制発布",
+      "type": "event",
+      "cost": 5,
+      "knowledgeRequired": 2,
+      "effects": [],
+      "text": "【明治】教育制度の整備。",
+      "image": "/assets/cards/MJ_EV_GAKUSEI.webp"
+    },
+    {
+      "id": "MJ_EV_KENPO",
+      "name": "大日本帝国憲法",
+      "type": "event",
+      "cost": 6,
+      "knowledgeRequired": 3,
+      "effects": [],
+      "text": "【明治】近代国家の枠組みを固める。",
+      "image": "/assets/cards/MJ_EV_KENPO.webp"
+    },
+  
+    {
+      "id": "MJ_SYM_MODERN_STATE",
+      "name": "近代国家成立",
+      "type": "event",
+      "cost": 6,
+      "knowledgeRequired": 4,
+      "effects": [],
+      "text": "【明治・象徴】制度と統治が近代化する。",
+      "image": "/assets/cards/MJ_SYM_MODERN_STATE.webp"
+    },
+    {
+      "id": "MJ_SYM_BUNMEI",
+      "name": "文明開化",
+      "type": "event",
+      "cost": 7,
+      "knowledgeRequired": 4,
+      "effects": [],
+      "text": "【明治・象徴】生活と価値観が大きく変わる。",
+      "image": "/assets/cards/MJ_SYM_BUNMEI.webp"
+    },
+    {
+      "id": "MJ_SYM_IMPERIALISM",
+      "name": "帝国主義",
+      "type": "event",
+      "cost": 7,
+      "knowledgeRequired": 5,
+      "effects": [],
+      "text": "【明治・象徴】国際競争が激化する局面。",
+      "image": "/assets/cards/MJ_SYM_IMPERIALISM.webp"
+    }
+  ]
+
+  [
+    🚂 明治時代デッキ（近代国家への転換）カード候補〈全30枚〉
+    🟩 Person（人物）12枚
+    
+    明治は「維新の指導者」「制度設計者」「思想家」が主役
+    
+    明治天皇
+    
+    西郷隆盛
+    
+    大久保利通
+    
+    木戸孝允
+    
+    岩倉具視
+    
+    伊藤博文
+    
+    山県有朋
+    
+    福沢諭吉
+    
+    板垣退助
+    
+    大隈重信
+    
+    渋沢栄一
+    
+    津田梅子
+    
+    🟦 Event（改革・政策・革命）10枚
+    
+    明治デッキの中核。「社会システムを作り替える」題材
+    
+    明治維新
+    
+    王政復古
+    
+    廃藩置県
+    
+    四民平等
+    
+    富国強兵
+    
+    殖産興業
+    
+    学制発布
+    
+    徴兵令
+    
+    大日本帝国憲法
+    
+    日清戦争
+    
+    🟨 Victory / Structure（国家・制度・近代化）6枚
+    
+    「近代国家として完成していく」ことを勝利点に変換しやすい枠
+    
+    中央集権国家
+    
+    近代官僚制
+    
+    議会政治の始まり
+    
+    鉄道網の整備
+    
+    近代工場
+    
+    近代国家の完成
+    
+    🟫 Society / Culture / Technology（社会・文明）2枚
+    
+    明治らしさを象徴する加速装置
+    
+    文明開化
+    
+    西洋技術の導入
+    
+    📌 明治デッキの性格（設計メモ）
+    
+    一気にゲームスピードを上げる時代
+    
+    知識が爆発的に増えやすい
+    
+    米（農業）中心から
+    👉 工業・制度・教育 へ軸が移る
+    
+    👉 他デッキと比べると
+    
+    ハイリスク
+    
+    ハイリターン
+    
+    コンボ依存度が高い
+    
+    🧭 時代デッキ全体での明治の役割
+    時代	役割
+    古代	国家の原型
+    中世	武士の秩序
+    戦国	破壊と統一
+    江戸	安定と経済
+    明治	急転換と加速
+
+  ]
+  
