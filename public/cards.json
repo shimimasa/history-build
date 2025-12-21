@@ -21,6 +21,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_E01.webp",
       "notes": ""
     },
     {
@@ -37,6 +38,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/AN_E02.webp",
       "notes": ""
     },
     {
@@ -60,6 +62,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_E03.webp",
       "notes": ""
     },
     {
@@ -76,6 +79,7 @@
           "gainRice": 1
         }
       ],
+      "image": "/assets/cards/AN_E04.webp",
       "notes": ""
     },
     {
@@ -99,6 +103,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_E05.webp",
       "notes": ""
     },
     {
@@ -122,6 +127,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_E06.webp",
       "notes": ""
     },
     {
@@ -138,6 +144,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/AN_E07.webp",
       "notes": ""
     },
     {
@@ -161,6 +168,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_E08.webp",
       "notes": ""
     },
     {
@@ -174,6 +182,7 @@
           "gainKnowledge": 2
         }
       ],
+      "image": "/assets/cards/AN_E09.webp",
       "notes": ""
     },
     {
@@ -190,6 +199,7 @@
           "gainRice": 1
         }
       ],
+      "image": "/assets/cards/AN_E10.webp",
       "notes": ""
     },
     {
@@ -213,6 +223,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P01.webp",
       "notes": ""
     },
     {
@@ -236,6 +247,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P02.webp",
       "notes": ""
     },
     {
@@ -259,6 +271,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P03.webp",
       "notes": ""
     },
     {
@@ -282,6 +295,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P04.webp",
       "notes": ""
     },
     {
@@ -305,6 +319,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P05.webp",
       "notes": ""
     },
     {
@@ -328,6 +343,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P06.webp",
       "notes": ""
     },
     {
@@ -344,6 +360,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/AN_P07.webp",
       "notes": ""
     },
     {
@@ -367,6 +384,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P08.webp",
       "notes": ""
     },
     {
@@ -383,6 +401,7 @@
           "gainKnowledge": 1
         }
       ],
+      "image": "/assets/cards/AN_P09.webp",
       "notes": ""
     },
     {
@@ -406,6 +425,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P10.webp",
       "notes": ""
     },
     {
@@ -429,6 +449,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P11.webp",
       "notes": ""
     },
     {
@@ -452,6 +473,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_P12.webp",
       "notes": ""
     },
     {
@@ -468,6 +490,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/AN_R01.webp",
       "notes": ""
     },
     {
@@ -491,6 +514,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_R02.webp",
       "notes": ""
     },
     {
@@ -511,6 +535,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_V01.webp",
       "notes": ""
     },
     {
@@ -531,6 +556,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_V02.webp",
       "notes": ""
     },
     {
@@ -551,6 +577,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_V03.webp",
       "notes": ""
     },
     {
@@ -571,6 +598,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_V04.webp",
       "notes": ""
     },
     {
@@ -591,6 +619,7 @@
           }
         }
       ],
+      "image": "/assets/cards/AN_V05.webp",
       "notes": ""
     },
     {
@@ -604,6 +633,7 @@
           "gainVP": 5
         }
       ],
+      "image": "/assets/cards/AN_V06.webp",
       "notes": ""
     },
     {
@@ -627,6 +657,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_C01.webp",
       "notes": ""
     },
     {
@@ -650,6 +681,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_C02.webp",
       "notes": ""
     },
     {
@@ -673,6 +705,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E01.webp",
       "notes": ""
     },
     {
@@ -696,6 +729,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E02.webp",
       "notes": ""
     },
     {
@@ -716,6 +750,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E03.webp",
       "notes": ""
     },
     {
@@ -739,6 +774,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E04.webp",
       "notes": ""
     },
     {
@@ -762,6 +798,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E05.webp",
       "notes": ""
     },
     {
@@ -778,6 +815,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/MD_E06.webp",
       "notes": ""
     },
     {
@@ -801,6 +839,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E07.webp",
       "notes": ""
     },
     {
@@ -817,6 +856,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/MD_E08.webp",
       "notes": ""
     },
     {
@@ -840,6 +880,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E09.webp",
       "notes": ""
     },
     {
@@ -863,6 +904,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_E10.webp",
       "notes": ""
     },
     {
@@ -886,6 +928,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P01.webp",
       "notes": ""
     },
     {
@@ -902,6 +945,7 @@
           "attackDiscard": 1
         }
       ],
+      "image": "/assets/cards/MD_P02.webp",
       "notes": ""
     },
     {
@@ -925,6 +969,7 @@
           "gainKnowledge": 1
         }
       ],
+      "image": "/assets/cards/MD_P03.webp",
       "notes": ""
     },
     {
@@ -948,6 +993,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P04.webp",
       "notes": ""
     },
     {
@@ -971,6 +1017,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P05.webp",
       "notes": ""
     },
     {
@@ -987,6 +1034,7 @@
           "attackDiscard": 1
         }
       ],
+      "image": "/assets/cards/MD_P06.webp",
       "notes": ""
     },
     {
@@ -1010,6 +1058,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P07.webp",
       "notes": ""
     },
     {
@@ -1033,6 +1082,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P08.webp",
       "notes": ""
     },
     {
@@ -1049,6 +1099,7 @@
           "attackDiscard": 1
         }
       ],
+      "image": "/assets/cards/MD_P09.webp",
       "notes": ""
     },
     {
@@ -1072,6 +1123,7 @@
           "attackDiscard": 1
         }
       ],
+      "image": "/assets/cards/MD_P10.webp",
       "notes": ""
     },
     {
@@ -1095,6 +1147,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P11.webp",
       "notes": ""
     },
     {
@@ -1118,6 +1171,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_P12.webp",
       "notes": ""
     },
     {
@@ -1141,6 +1195,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_V01.webp",
       "notes": ""
     },
     {
@@ -1161,6 +1216,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_V02.webp",
       "notes": ""
     },
     {
@@ -1184,6 +1240,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_V03.webp",
       "notes": ""
     },
     {
@@ -1207,6 +1264,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_V04.webp",
       "notes": ""
     },
     {
@@ -1227,6 +1285,7 @@
           }
         }
       ],
+      "image": "/assets/cards/MD_V05.webp",
       "notes": ""
     },
     {
@@ -1240,6 +1299,7 @@
           "gainVP": 3
         }
       ],
+      "image": "/assets/cards/MD_V06.webp",
       "notes": ""
     },
     {
@@ -1259,6 +1319,7 @@
           "trashFromHand": 1
         }
       ],
+      "image": "/assets/cards/SG_E01.webp",
       "notes": ""
     },
     {
@@ -1275,6 +1336,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/SG_E02.webp",
       "notes": ""
     },
     {
@@ -1301,6 +1363,7 @@
           "selfDiscard": 1
         }
       ],
+      "image": "/assets/cards/SG_E03.webp",
       "notes": ""
     },
     {
@@ -1317,6 +1380,7 @@
           "reduceCostThisTurn": 1
         }
       ],
+      "image": "/assets/cards/SG_E04.webp",
       "notes": ""
     },
     {
@@ -1333,6 +1397,7 @@
           "selfDiscard": 2
         }
       ],
+      "image": "/assets/cards/SG_E05.webp",
       "notes": ""
     },
     {
@@ -1349,6 +1414,7 @@
           "trashFromHand": 1
         }
       ],
+      "image": "/assets/cards/SG_E06.webp",
       "notes": ""
     },
     {
@@ -1365,6 +1431,7 @@
           "reduceCostThisTurn": 1
         }
       ],
+      "image": "/assets/cards/SG_E07.webp",
       "notes": ""
     },
     {
@@ -1384,6 +1451,7 @@
           "selfDiscard": 1
         }
       ],
+      "image": "/assets/cards/SG_E08.webp",
       "notes": ""
     },
     {
@@ -1400,6 +1468,7 @@
           "gainVP": 2
         }
       ],
+      "image": "/assets/cards/SG_E09.webp",
       "notes": ""
     },
     {
@@ -1419,6 +1488,7 @@
           "selfDiscard": 2
         }
       ],
+      "image": "/assets/cards/SG_E10.webp",
       "notes": ""
     },
     {
@@ -1438,6 +1508,7 @@
           "selfDiscard": 1
         }
       ],
+      "image": "/assets/cards/SG_P01.webp",
       "notes": "革新と覇権"
     },
     {
@@ -1461,6 +1532,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P02.webp",
       "notes": "下剋上の体現"
     },
     {
@@ -1491,6 +1563,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P03.webp",
       "notes": "天下統一の完成者"
     },
     {
@@ -1514,6 +1587,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P04.webp",
       "notes": "甲斐の虎"
     },
     {
@@ -1530,6 +1604,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/SG_P05.webp",
       "notes": "越後の龍"
     },
     {
@@ -1553,6 +1628,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P06.webp",
       "notes": "中国地方の覇者"
     },
     {
@@ -1573,6 +1649,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P07.webp",
       "notes": "戦国大名の先駆け"
     },
     {
@@ -1589,6 +1666,7 @@
           "selfDiscard": 2
         }
       ],
+      "image": "/assets/cards/SG_P08.webp",
       "notes": "名門大名"
     },
     {
@@ -1605,6 +1683,7 @@
           "selfDiscard": 1
         }
       ],
+      "image": "/assets/cards/SG_P09.webp",
       "notes": "謀反"
     },
     {
@@ -1628,6 +1707,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P10.webp",
       "notes": "豊臣政権"
     },
     {
@@ -1644,6 +1724,7 @@
           "reduceCostThisTurn": 1
         }
       ],
+      "image": "/assets/cards/SG_P11.webp",
       "notes": "独眼竜"
     },
     {
@@ -1657,6 +1738,7 @@
           "attackDiscard": 2
         }
       ],
+      "image": "/assets/cards/SG_P12.webp",
       "notes": "九州の雄"
     },
     {
@@ -1680,6 +1762,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_P13.webp",
       "notes": "四国統一"
     },
     {
@@ -1696,6 +1779,7 @@
           "trashFromHand": 1
         }
       ],
+      "image": "/assets/cards/SG_P14.webp",
       "notes": "下剋上"
     },
     {
@@ -1709,6 +1793,7 @@
           "reduceCostThisTurn": 2
         }
       ],
+      "image": "/assets/cards/SG_R01.webp",
       "notes": ""
     },
     {
@@ -1725,6 +1810,7 @@
           "trashFromHand": 1
         }
       ],
+      "image": "/assets/cards/SG_R02.webp",
       "notes": ""
     },
     {
@@ -1738,6 +1824,7 @@
           "gainVP": 1
         }
       ],
+      "image": "/assets/cards/SG_V01.webp",
       "notes": ""
     },
     {
@@ -1758,7 +1845,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/SG_V02.webp",
+      "notes": "領国経営"
     },
     {
       "id": "SG_V03",
@@ -1781,6 +1869,7 @@
           }
         }
       ],
+      "image": "/assets/cards/SG_V03.webp",
       "notes": ""
     },
     {
@@ -1794,6 +1883,7 @@
           "gainVP": 6
         }
       ],
+      "image": "/assets/cards/SG_V04.webp",
       "notes": ""
     },
     {
@@ -1810,6 +1900,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/ED_C01.webp",
       "notes": ""
     },
     {
@@ -1833,6 +1924,7 @@
           }
         }
       ],
+      "image": "/assets/cards/ED_C02.webp",
       "notes": ""
     },
     {
@@ -1856,6 +1948,7 @@
           }
         }
       ],
+      "image": "/assets/cards/ED_E01.webp",
       "notes": ""
     },
     {
@@ -1879,6 +1972,7 @@
           "draw": 1
         }
       ],
+      "image": "/assets/cards/ED_E02.webp",
       "notes": ""
     },
     {
@@ -1892,6 +1986,7 @@
           "trashFromHand": 2
         }
       ],
+      "image": "/assets/cards/ED_E03.webp",
       "notes": ""
     },
     {
@@ -1908,6 +2003,7 @@
           "gainRice": 1
         }
       ],
+      "image": "/assets/cards/ED_E04.webp",
       "notes": ""
     },
     {
@@ -1931,6 +2027,7 @@
           }
         }
       ],
+      "image": "/assets/cards/ED_E05.webp",
       "notes": ""
     },
     {
@@ -1947,6 +2044,7 @@
           "gainRice": 2
         }
       ],
+      "image": "/assets/cards/ED_E06.webp",
       "notes": ""
     },
     {
@@ -1963,7 +2061,8 @@
           "selfDiscard": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_E07.webp",
+      "notes": "田沼政治"
     },
     {
       "id": "ED_E08",
@@ -1979,7 +2078,8 @@
           "gainKnowledge": 2
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_E08.webp",
+      "notes": "寛政の改革"
     },
     {
       "id": "ED_E09",
@@ -2002,7 +2102,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_E09.webp",
+      "notes": "天保の改革"
     },
     {
       "id": "ED_E10",
@@ -2025,7 +2126,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_E10.webp",
+      "notes": "株仲間"
     },
     {
       "id": "ED_P01",
@@ -2048,7 +2150,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P01.webp",
+      "notes": "徳川家康"
     },
     {
       "id": "ED_P02",
@@ -2071,7 +2174,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P02.webp",
+      "notes": "徳川秀忠"
     },
     {
       "id": "ED_P03",
@@ -2087,7 +2191,8 @@
           "gainRice": 2
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P03.webp",
+      "notes": "徳川家光"
     },
     {
       "id": "ED_P04",
@@ -2110,7 +2215,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P04.webp",
+      "notes": "徳川綱吉"
     },
     {
       "id": "ED_P05",
@@ -2126,7 +2232,8 @@
           "gainRice": 3
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P05.webp",
+      "notes": "徳川吉宗"
     },
     {
       "id": "ED_P06",
@@ -2142,7 +2249,8 @@
           "selfDiscard": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P06.webp",
+      "notes": "田沼意次"
     },
     {
       "id": "ED_P07",
@@ -2158,7 +2266,8 @@
           "gainKnowledge": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P07.webp",
+      "notes": "松平定信"
     },
     {
       "id": "ED_P08",
@@ -2181,7 +2290,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P08.webp",
+      "notes": "大岡忠相"
     },
     {
       "id": "ED_P09",
@@ -2197,7 +2307,8 @@
           "draw": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P09.webp",
+      "notes": "平賀源内"
     },
     {
       "id": "ED_P10",
@@ -2220,7 +2331,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P10.webp",
+      "notes": "伊能忠敬"
     },
     {
       "id": "ED_P11",
@@ -2243,7 +2355,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P11.webp",
+      "notes": "葛飾北斎"
     },
     {
       "id": "ED_P12",
@@ -2266,7 +2379,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_P12.webp",
+      "notes": "歌川広重"
     },
     {
       "id": "ED_V01",
@@ -2289,7 +2403,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_V01.webp",
+      "notes": "江戸の町"
     },
     {
       "id": "ED_V02",
@@ -2309,7 +2424,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_V02.webp",
+      "notes": "城下町の発展"
     },
     {
       "id": "ED_V03",
@@ -2332,7 +2448,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_V03.webp",
+      "notes": "五街道"
     },
     {
       "id": "ED_V04",
@@ -2345,7 +2462,8 @@
           "gainVP": 5
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_V04.webp",
+      "notes": "天下泰平"
     },
     {
       "id": "ED_V05",
@@ -2368,7 +2486,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_V05.webp",
+      "notes": "宿場町"
     },
     {
       "id": "ED_V06",
@@ -2391,7 +2510,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/ED_V06.webp",
+      "notes": "石高制"
     },
     {
       "id": "MJ_C01",
@@ -2407,7 +2527,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_C01.webp",
+      "notes": "文明開化"
     },
     {
       "id": "MJ_C02",
@@ -2423,7 +2544,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_C02.webp",
+      "notes": "西洋技術の導入"
     },
     {
       "id": "MJ_E01",
@@ -2439,7 +2561,8 @@
           "gainKnowledge": 2
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E01.webp",
+      "notes": "明治維新"
     },
     {
       "id": "MJ_E02",
@@ -2455,7 +2578,8 @@
           "gainKnowledge": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E02.webp",
+      "notes": "王政復古"
     },
     {
       "id": "MJ_E03",
@@ -2471,7 +2595,8 @@
           "gainKnowledge": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E03.webp",
+      "notes": "廃藩置県"
     },
     {
       "id": "MJ_E04",
@@ -2494,7 +2619,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E04.webp",
+      "notes": "四民平等"
     },
     {
       "id": "MJ_E05",
@@ -2510,7 +2636,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E05.webp",
+      "notes": "富国強兵"
     },
     {
       "id": "MJ_E06",
@@ -2526,7 +2653,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E06.webp",
+      "notes": "殖産興業"
     },
     {
       "id": "MJ_E07",
@@ -2542,7 +2670,8 @@
           "draw": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E07.webp",
+      "notes": "学制発布"
     },
     {
       "id": "MJ_E08",
@@ -2565,7 +2694,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E08.webp",
+      "notes": "徴兵令"
     },
     {
       "id": "MJ_E09",
@@ -2588,7 +2718,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E09.webp",
+      "notes": "大日本帝国憲法"
     },
     {
       "id": "MJ_E10",
@@ -2604,7 +2735,8 @@
           "gainVP": 2
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_E10.webp",
+      "notes": "日清戦争"
     },
     {
       "id": "MJ_P01",
@@ -2627,7 +2759,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P01.webp",
+      "notes": "明治天皇"
     },
     {
       "id": "MJ_P02",
@@ -2653,7 +2786,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P02.webp",
+      "notes": "西郷隆盛"
     },
     {
       "id": "MJ_P03",
@@ -2669,7 +2803,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P03.webp",
+      "notes": "大久保利通"
     },
     {
       "id": "MJ_P04",
@@ -2685,7 +2820,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P04.webp",
+      "notes": "木戸孝允"
     },
     {
       "id": "MJ_P05",
@@ -2708,7 +2844,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P05.webp",
+      "notes": "岩倉具視"
     },
     {
       "id": "MJ_P06",
@@ -2724,7 +2861,8 @@
           "reduceCostThisTurn": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P06.webp",
+      "notes": "伊藤博文"
     },
     {
       "id": "MJ_P07",
@@ -2747,7 +2885,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P07.webp",
+      "notes": "山県有朋"
     },
     {
       "id": "MJ_P08",
@@ -2763,7 +2902,8 @@
           "draw": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P08.webp",
+      "notes": "福沢諭吉"
     },
     {
       "id": "MJ_P09",
@@ -2786,7 +2926,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P09.webp",
+      "notes": "板垣退助"
     },
     {
       "id": "MJ_P10",
@@ -2809,7 +2950,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P10.webp",
+      "notes": "大隈重信"
     },
     {
       "id": "MJ_P11",
@@ -2832,7 +2974,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P11.webp",
+      "notes": "渋沢栄一"
     },
     {
       "id": "MJ_P12",
@@ -2848,7 +2991,8 @@
           "draw": 1
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_P12.webp",
+      "notes": "津田梅子"
     },
     {
       "id": "MJ_V01",
@@ -2871,7 +3015,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_V01.webp",
+      "notes": "中央集権国家"
     },
     {
       "id": "MJ_V02",
@@ -2891,7 +3036,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_V02.webp",
+      "notes": "近代官僚制"
     },
     {
       "id": "MJ_V03",
@@ -2914,7 +3060,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_V03.webp",
+      "notes": "議会政治の始まり"
     },
     {
       "id": "MJ_V04",
@@ -2934,7 +3081,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_V04.webp",
+      "notes": "鉄道網の整備"
     },
     {
       "id": "MJ_V05",
@@ -2954,7 +3102,8 @@
           }
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_V05.webp",
+      "notes": "近代工場"
     },
     {
       "id": "MJ_V06",
@@ -2967,7 +3116,8 @@
           "gainVP": 6
         }
       ],
-      "notes": ""
+      "image": "/assets/cards/MJ_V06.webp",
+      "notes": "近代国家の完成"
     }
   ]
 }
