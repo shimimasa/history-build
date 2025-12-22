@@ -32,20 +32,24 @@ export function applyEffect(
 ): GameState {
   // 元の state を絶対に変更しないため、先にディープコピー（player / cpu と各配列）を作る
   let newState: GameState = cloneGameState(state);
-  const player: PlayerState = target === "player" ? newState.player : newState.cpu;
+  const player: PlayerState =
+    target === "player" ? newState.player : newState.cpu;
+
+  const raw = (effect as any).raw;
+
+  // 差分ログ用のスナップショットを取得
+  const before = snapshotPlayer(newState, target);
 
   // 1. addRice
   if (effect.addRice && effect.addRice !== 0) {
     const amount = effect.addRice;
     player.riceThisTurn += amount;
-    newState = appendLog(newState, target, `米 +${amount}`);
   }
 
   // 2. addKnowledge
   if (effect.addKnowledge && effect.addKnowledge !== 0) {
     const amount = effect.addKnowledge;
     player.knowledge += amount;
-    newState = appendLog(newState, target, `知識 +${amount}`);
   }
 
   // 3. draw
@@ -54,7 +58,6 @@ export function applyEffect(
     for (let i = 0; i < times; i++) {
       drawOneCardForPlayer(player);
     }
-    newState = appendLog(newState, target, `カードを ${times} 枚引く`);
   }
 
   // 4. discard（簡易版：手札先頭から N 枚を捨て札に送る）
@@ -66,7 +69,6 @@ export function applyEffect(
         player.discard.push(cardId);
       }
     }
-    newState = appendLog(newState, target, `手札を ${count} 枚捨て札にする`);
   }
 
   // 5. gain（AP.discard に指定 cardId を追加する）
@@ -77,7 +79,6 @@ export function applyEffect(
     // 将来的に「サプライから獲得」にしたい場合は、ここで
     // - newState.supply[gainedId].remaining-- などを行う。
     // v1.5 では最低限の実装として discard への追加のみに留める。
-    newState = appendLog(newState, target, `カード「${gainedId}」を獲得`);
   }
 
   // 6. trashSelf（簡易版：played の末尾を「自分」とみなして取り除く）
@@ -89,7 +90,6 @@ export function applyEffect(
     //   それを取り除く簡易実装としておく。
     if (player.played.length > 0) {
       player.played.pop();
-      newState = appendLog(newState, target, "カードを1枚廃棄");
     }
   }
 
@@ -101,11 +101,10 @@ export function applyEffect(
   // ここでは state の数値は変えず、ログだけ残す。
   if (effect.addVictory && effect.addVictory !== 0) {
     const amount = effect.addVictory;
-    newState = appendLog(newState, target, `勝利点 +${amount}`);
+    newState = appendLog(newState, target, `[EFF] 勝利点 +${amount}`);
   }
 
   // 8. raw DSL ベースの追加効果（discount / attackDiscard / conditional）
-  const raw = (effect as any).raw;
   if (raw && typeof raw === "object") {
     // 8-1. discount / reduceCostThisTurn
     const discountAmount =
@@ -115,14 +114,13 @@ export function applyEffect(
         ? raw.reduceCostThisTurn
         : 0;
     if (discountAmount && discountAmount !== 0) {
-      const owner =
-        target === "player" ? newState.player : newState.cpu;
+      const owner = target === "player" ? newState.player : newState.cpu;
       owner.buyDiscountThisTurn =
         (owner.buyDiscountThisTurn ?? 0) + discountAmount;
       newState = appendLog(
         newState,
         target,
-        `割引 -${discountAmount}（次の購入）`
+        `[EFF] 割引 -${discountAmount}（次の購入）`
       );
     }
 
@@ -141,12 +139,111 @@ export function applyEffect(
     }
   }
 
+  // 9. 差分ログ（conditional は内側の then 効果で個別にログを出すため除外）
+  const after = snapshotPlayer(newState, target);
+  if (!raw || !raw.conditional) {
+    newState = appendEffectDiffLog(newState, target, before, after);
+  }
+
   return newState;
 }
 
 // ------------------------------------------------------
 // 内部ヘルパー
 // ------------------------------------------------------
+
+type PlayerSnapshot = {
+  riceThisTurn: number;
+  knowledge: number;
+  actions: number;
+  buys: number;
+  handCount: number;
+  discardCount: number;
+};
+
+function snapshotPlayer(state: GameState, owner: ActivePlayer): PlayerSnapshot {
+  const p = owner === "player" ? state.player : state.cpu;
+  return {
+    riceThisTurn: p.riceThisTurn ?? 0,
+    knowledge: p.knowledge ?? 0,
+    actions: p.turn?.actions ?? 0,
+    buys: p.turn?.buys ?? 0,
+    handCount: p.hand.length,
+    discardCount: p.discard.length
+  };
+}
+
+function appendEffectDiffLog(
+  state: GameState,
+  owner: ActivePlayer,
+  before: PlayerSnapshot,
+  after: PlayerSnapshot
+): GameState {
+  let next = state;
+
+  const dRice = after.riceThisTurn - before.riceThisTurn;
+  const dKnowledge = after.knowledge - before.knowledge;
+  const dActions = after.actions - before.actions;
+  const dBuys = after.buys - before.buys;
+  const dHand = after.handCount - before.handCount;
+  const dDiscard = after.discardCount - before.discardCount;
+
+  // 米
+  if (dRice !== 0) {
+    const sign = dRice > 0 ? `+${dRice}` : `${dRice}`;
+    next = appendLog(next, owner, `[EFF] 米 ${sign}`);
+  }
+
+  // 知識
+  if (dKnowledge !== 0) {
+    const sign = dKnowledge > 0 ? `+${dKnowledge}` : `${dKnowledge}`;
+    next = appendLog(next, owner, `[EFF] 見識 ${sign}`);
+  }
+
+  // アクション
+  if (dActions !== 0) {
+    const sign = dActions > 0 ? `+${dActions}` : `${dActions}`;
+    next = appendLog(next, owner, `[EFF] アクション ${sign}`);
+  }
+
+  // 購入回数
+  if (dBuys !== 0) {
+    const sign = dBuys > 0 ? `+${dBuys}` : `${dBuys}`;
+    next = appendLog(next, owner, `[EFF] 購入回数 ${sign}`);
+  }
+
+  // 手札と捨て札
+  if (dHand !== 0 || dDiscard !== 0) {
+    // ドローのみ
+    if (dHand > 0 && dDiscard === 0) {
+      next = appendLog(
+        next,
+        owner,
+        `[EFF] ドロー +${dHand}（手札 +${dHand}）`
+      );
+    }
+    // 手札減＋捨て札増（典型的な discard / trash）
+    else if (dHand < 0 && dDiscard > 0) {
+      next = appendLog(
+        next,
+        owner,
+        `[EFF] 手札 ${dHand}（捨て札 +${dDiscard}）`
+      );
+    } else {
+      // その他の組み合わせは素朴に両方出す
+      if (dHand !== 0) {
+        const sign = dHand > 0 ? `+${dHand}` : `${dHand}`;
+        next = appendLog(next, owner, `[EFF] 手札 ${sign}`);
+      }
+      if (dDiscard !== 0) {
+        const sign = dDiscard > 0 ? `+${dDiscard}` : `${dDiscard}`;
+        next = appendLog(next, owner, `[EFF] 捨て札 ${sign}`);
+      }
+    }
+  }
+
+  return next;
+}
 
 /**
  * 攻撃効果：相手の手札からランダムに N 枚捨て札に送る。
