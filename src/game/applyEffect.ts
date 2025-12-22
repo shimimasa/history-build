@@ -147,6 +147,7 @@ type PlayerSnapshot = {
   buys: number;
   handCount: number;
   discardCount: number;
+  playedCount: number;
 };
 
 function snapshotPlayer(state: GameState, owner: ActivePlayer): PlayerSnapshot {
@@ -157,7 +158,8 @@ function snapshotPlayer(state: GameState, owner: ActivePlayer): PlayerSnapshot {
     actions: p.turn?.actions ?? 0,
     buys: p.turn?.buys ?? 0,
     handCount: p.hand.length,
-    discardCount: p.discard.length
+    discardCount: p.discard.length,
+    playedCount: p.played.length
   };
 }
 
@@ -175,6 +177,7 @@ function appendEffectDiffLog(
   const dBuys = after.buys - before.buys;
   const dHand = after.handCount - before.handCount;
   const dDiscard = after.discardCount - before.discardCount;
+  const dPlayed = after.playedCount - before.playedCount;
 
   // 米
   if (dRice !== 0) {
@@ -228,6 +231,29 @@ function appendEffectDiffLog(
         next = appendLog(next, owner, `[EFF] 捨て札 ${sign}`);
       }
     }
+  }
+
+  // プレイ済み枚数（通常は trashSelf など特殊な場合にのみ変化）
+  if (dPlayed !== 0) {
+    const sign = dPlayed > 0 ? `+${dPlayed}` : `${dPlayed}`;
+    next = appendLog(next, owner, `[EFF] プレイ済み ${sign}`);
+  }
+
+  // いずれの差分もなければ「効果なし」として明示
+  if (
+    dRice === 0 &&
+    dKnowledge === 0 &&
+    dActions === 0 &&
+    dBuys === 0 &&
+    dHand === 0 &&
+    dDiscard === 0 &&
+    dPlayed === 0
+  ) {
+    next = appendLog(
+      next,
+      owner,
+      "[EFF] 効果なし（未実装または条件未達）"
+    );
   }
 
   return next;
