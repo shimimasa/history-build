@@ -165,7 +165,13 @@ function resolvePlayCard(
     ];
   }
 
+  const name = card.name ?? card.id;
+
   const events: GameEvent[] = [
+    {
+      type: "LOG",
+      msg: `[DBG] playCard entered: ${name}`
+    },
     {
       type: "MOVE_CARD",
       playerId,
@@ -181,7 +187,7 @@ function resolvePlayCard(
     },
     {
       type: "LOG",
-      msg: `[PLAY] 「${card.name ?? card.id}」を使用`
+      msg: `[PLAY] 「${name}」を使用`
     }
   ];
 

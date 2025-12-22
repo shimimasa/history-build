@@ -334,7 +334,14 @@ export function cleanupPhase(state: GameState): GameState {
   // ゲーム終了判定＋勝者決定
   const finalState = evaluateGameEnd(withNextTurn);
 
-  return finalState;
+  // ★ デバッグ用：CLEANUP フェーズ到達をログ
+  const withLog = appendLog(
+    finalState,
+    current,
+    "[DBG] cleanupPhase reached"
+  );
+
+  return withLog;
 }
 
 /**
