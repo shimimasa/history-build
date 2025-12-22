@@ -7,6 +7,7 @@ import { CardDetailModal } from "./CardDetailModal"; // ★ 追加
 import { canBuy } from "../game/core/canBuy";
 import type { GameState } from "../game/gameState";
 import { formatEffects } from "../ui/effectFormatter";
+import { getCardRoleLabel } from "../ui/cardRole";
 import "../index.css";
 
 export type GamePhase = "DRAW" | "ACTION" | "BUY" | "CLEANUP";
@@ -642,6 +643,7 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
     card.effect ??
     card.conditionText;
 
+  const roleLabel: string = getCardRoleLabel(card);
   const effectLines: string[] = formatEffects(card);
 
   return (
@@ -653,6 +655,9 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
         {typeof knowledgeCost === "number" && knowledgeCost > 0 && (
           <span> / 知識 {knowledgeCost}</span>
         )}
+      </div>
+      <div className="hb-card-detail-role text-[11px] text-slate-300 mt-1">
+        役割：{roleLabel}
       </div>
       {mainText && (
         <p className="hb-card-detail-text">{mainText}</p>
