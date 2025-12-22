@@ -13,7 +13,7 @@ export const BASE_CARDS: Card[] = [
     cost: 1,
     knowledgeRequired: 0,
     effects: [
-      { addRice: 1 }
+      { type: "gain", riceDelta: 1 }
     ],
     text: "米+1。もっとも基本的な資源カード。"
   },
@@ -24,7 +24,7 @@ export const BASE_CARDS: Card[] = [
     cost: 2,
     knowledgeRequired: 0,
     effects: [
-      { addRice: 2 }
+      { type: "gain", riceDelta: 2 }
     ],
     text: "米+2。やや効率の良い資源カード。"
   },
@@ -35,7 +35,7 @@ export const BASE_CARDS: Card[] = [
     cost: 3,
     knowledgeRequired: 0,
     effects: [
-      { addRice: 3 }
+      { type: "gain", riceDelta: 3 }
     ],
     text: "米+3。大量の米をもたらす。"
   },

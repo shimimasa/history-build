@@ -23,7 +23,7 @@ function cardHasEffect(card: Card, predicate: (e: Effect) => boolean): boolean {
 
 /**
  * カードの簡易的な「効果量」を集計するヘルパー。
- * - addRice / addKnowledge / draw / addVictory の合計値のみを見る。
+ * - type: "gain" の riceDelta / knowledgeDelta / draw / victoryDelta の合計値のみを見る。
  * - conditional など cards.json 側の高度な DSL は現行モデルでは反映していない。
  */
 function summarizeEffects(card: Card): {
@@ -38,17 +38,18 @@ function summarizeEffects(card: Card): {
   let victory = 0;
 
   for (const ef of card.effects) {
-    if (typeof ef.addRice === "number") {
-      rice += ef.addRice;
+    if (ef.type !== "gain") continue;
+    if (typeof ef.riceDelta === "number") {
+      rice += ef.riceDelta;
     }
-    if (typeof ef.addKnowledge === "number") {
-      knowledge += ef.addKnowledge;
+    if (typeof ef.knowledgeDelta === "number") {
+      knowledge += ef.knowledgeDelta;
     }
     if (typeof ef.draw === "number") {
       draw += ef.draw;
     }
-    if (typeof ef.addVictory === "number") {
-      victory += ef.addVictory;
+    if (typeof ef.victoryDelta === "number") {
+      victory += ef.victoryDelta;
     }
   }
 
@@ -90,9 +91,9 @@ function getGameStage(state: GameState): GameStage {
  * CPU が ACTION フェーズでプレイする「行動カード」（人物 or 出来事）を 1枚選ぶ。
  *
  * 優先度（高い順）:
- * - addKnowledge を持つカード
- * - draw を持つカード
- * - addRice を持つカード
+ * - 知識を増やす gain 効果を持つカード
+ * - ドローを行う gain 効果を持つカード
+ * - 米を増やす gain 効果を持つカード
  * - 同じ優先度なら cost が高いカード
  *
  * 手札から type === "person" | "event" の cardId を候補にし、
@@ -132,9 +133,18 @@ export function chooseCpuActionCard(state: GameState): string | null {
 function scoreActionCard(card: Card): number {
   let score = 0;
 
-  const hasKnowledge = cardHasEffect(card, (e) => !!e.addKnowledge && e.addKnowledge > 0);
-  const hasDraw = cardHasEffect(card, (e) => !!e.draw && e.draw > 0);
-  const hasRice = cardHasEffect(card, (e) => !!e.addRice && e.addRice > 0);
+  const hasKnowledge = cardHasEffect(
+    card,
+    (e) => e.type === "gain" && !!e.knowledgeDelta && e.knowledgeDelta > 0
+  );
+  const hasDraw = cardHasEffect(
+    card,
+    (e) => e.type === "gain" && !!e.draw && e.draw > 0
+  );
+  const hasRice = cardHasEffect(
+    card,
+    (e) => e.type === "gain" && !!e.riceDelta && e.riceDelta > 0
+  );
 
   if (hasKnowledge) score += 100;
   if (hasDraw) score += 60;

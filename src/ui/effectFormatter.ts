@@ -5,109 +5,50 @@ import type { Card, Effect } from "../game/gameState";
 
 function formatSingleEffect(ef: Effect): string[] {
   const lines: string[] = [];
-  const raw: any = (ef as any).raw ?? ef;
 
-  // v1.5 Effect フィールド
-  if (typeof ef.addRice === "number" && ef.addRice !== 0) {
-    lines.push(`米 +${ef.addRice}`);
-  }
-
-  if (typeof ef.addKnowledge === "number" && ef.addKnowledge !== 0) {
-    lines.push(`知識 +${ef.addKnowledge}`);
-  }
-
-  if (typeof ef.draw === "number" && ef.draw > 0) {
-    lines.push(`カードを ${ef.draw} 枚引く`);
-  }
-
-  if (typeof ef.addVictory === "number" && ef.addVictory !== 0) {
-    lines.push(`勝利点 +${ef.addVictory}`);
-  }
-
-  if (typeof ef.discard === "number" && ef.discard > 0) {
-    lines.push(`手札を ${ef.discard} 枚捨て札にする`);
-  }
-
-  if (ef.trashSelf) {
-    lines.push("このカードを廃棄する");
-  }
-
-  if (typeof ef.gain === "string") {
-    lines.push(`カード「${ef.gain}」を獲得する`);
-  }
-
-  // raw DSL からの追加情報（cards.json 由来）
-
-  if (raw && typeof raw === "object") {
-    // gainRice / gainKnowledge / draw / gainVP が v1.5 にマップされていない場合のフォールバック
-    if (!ef.addRice && typeof raw.gainRice === "number" && raw.gainRice !== 0) {
-      lines.push(`米 +${raw.gainRice}`);
-    }
-
-    if (
-      !ef.addKnowledge &&
-      typeof raw.gainKnowledge === "number" &&
-      raw.gainKnowledge !== 0
-    ) {
-      lines.push(`知識 +${raw.gainKnowledge}`);
-    }
-
-    if (!ef.draw && typeof raw.draw === "number" && raw.draw > 0) {
-      lines.push(`カードを ${raw.draw} 枚引く`);
-    }
-
-    if (
-      !ef.addVictory &&
-      (typeof raw.gainVP === "number" || typeof raw.gainVictory === "number")
-    ) {
-      const v = raw.gainVP ?? raw.gainVictory;
-      lines.push(`勝利点 +${v}`);
-    }
-
-    // addActions / addBuys（cards.json で将来使う想定）
-    if (typeof raw.addActions === "number" && raw.addActions !== 0) {
-      lines.push(`アクション +${raw.addActions}`);
-    }
-
-    if (typeof raw.addBuys === "number" && raw.addBuys !== 0) {
-      lines.push(`購入権 +${raw.addBuys}`);
-    }
-
-    // 手札廃棄系
-    if (
-      typeof raw.trash === "number" ||
-      typeof raw.trashFromHand === "number"
-    ) {
-      const n = raw.trash ?? raw.trashFromHand;
-      lines.push(`手札から ${n} 枚廃棄する`);
-    }
-
-    // 割引系
-    if (raw.discount || raw.reduceCostThisTurn) {
-      let amount: number | undefined;
-      if (typeof raw.discount === "number") {
-        amount = raw.discount;
-      } else if (raw.discount && typeof raw.discount.amount === "number") {
-        amount = raw.discount.amount;
-      } else if (typeof raw.reduceCostThisTurn === "number") {
-        amount = raw.reduceCostThisTurn;
+  switch (ef.type) {
+    case "gain": {
+      if (typeof ef.riceDelta === "number" && ef.riceDelta !== 0) {
+        lines.push(`米 +${ef.riceDelta}`);
       }
-
-      if (typeof amount === "number") {
-        lines.push(`このターンの購入コスト -${amount}`);
-      } else {
-        lines.push("割引の特殊効果");
+      if (typeof ef.knowledgeDelta === "number" && ef.knowledgeDelta !== 0) {
+        lines.push(`知識 +${ef.knowledgeDelta}`);
       }
+      if (typeof ef.draw === "number" && ef.draw > 0) {
+        lines.push(`カードを ${ef.draw} 枚引く`);
+      }
+      if (typeof ef.victoryDelta === "number" && ef.victoryDelta !== 0) {
+        lines.push(`勝利点 +${ef.victoryDelta}`);
+      }
+      if (typeof ef.actionsDelta === "number" && ef.actionsDelta !== 0) {
+        lines.push(`アクション +${ef.actionsDelta}`);
+      }
+      if (typeof ef.buysDelta === "number" && ef.buysDelta !== 0) {
+        lines.push(`購入権 +${ef.buysDelta}`);
+      }
+      break;
     }
-
-    // 攻撃（手札破棄）
-    if (typeof raw.attackDiscard === "number" && raw.attackDiscard > 0) {
-      lines.push(`相手に手札を ${raw.attackDiscard} 枚捨てさせる（攻撃）`);
+    case "trash": {
+      const target =
+        ef.from === "played"
+          ? "プレイ中のカード"
+          : ef.from === "discard"
+          ? "捨て札"
+          : "手札";
+      lines.push(`${target}から ${ef.count} 枚廃棄する`);
+      break;
     }
-
-    // 条件付き効果の存在だけ知らせる
-    if (raw.conditional || raw.condition) {
+    case "discount": {
+      lines.push(`次の購入コスト -${ef.amount}`);
+      break;
+    }
+    case "attackDiscard": {
+      lines.push(`相手に手札を ${ef.count} 枚捨てさせる（攻撃）`);
+      break;
+    }
+    case "conditional": {
       lines.push("条件付きの特殊効果");
+      break;
     }
   }
 

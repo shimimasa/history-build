@@ -85,9 +85,11 @@ function resolveAutoPlayResources(
     if (!card || card.type !== "resource") continue;
     resourceIds.push(id);
 
-    // cards.json の addRice を利用。なければ暫定 1
-    const rice = card.effects.find((e) => e.addRice && e.addRice > 0)
-      ?.addRice;
+    // 正規DSLの gain 効果から米増加量を取得。なければ暫定 1。
+    const gain = card.effects.find(
+      (e) => e.type === "gain" && e.riceDelta && e.riceDelta > 0
+    );
+    const rice = gain?.riceDelta;
     totalRice += rice ?? 1;
   }
 

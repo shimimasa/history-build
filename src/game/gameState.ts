@@ -9,24 +9,58 @@ import type { EraId } from "./cardRegistry";
 
 
 /**
- * Effect DSL（history-spec v2）
- * - 各オブジェクトは「1フィールドだけ」を持つのが原則
- * - 配列として順番に適用される
+ * Effect DSL（history-spec v2）正規化済み表現
+ * - すべての cards.json の効果はこの形に集約される（normalizeEffects 経由）
  */
-export interface Effect {
-  addRice?: number;
-  addKnowledge?: number;
-  draw?: number;
-  discard?: number;
-  gain?: string;        // CardId
-  trashSelf?: boolean;
-  addVictory?: number;  // 必要なら（勝利点は最終集計時に使用）
+export type ConditionKind =
+  | "knowledgeAtLeast"
+  | "buysMadeAtLeast"
+  | "victoryBuysAtLeast"
+  | "custom";
 
-  // UI 表示などで元の DSL 情報を参照したい場合に使う拡張フィールド
-  // - cardRegistry.ts 側で raw DSL オブジェクトを格納する
-  // - applyEffect.ts などゲームロジック側では無視される
-  raw?: any;
+export interface ConditionDSL {
+  kind: ConditionKind;
+  /** knowledgeAtLeast / buysMadeAtLeast / victoryBuysAtLeast で使用するしきい値 */
+  value?: number;
+  /** custom 条件用の生文字列表現（デバッグ用途） */
+  expr?: string;
 }
+
+export type Effect =
+  | {
+      type: "gain";
+      riceDelta?: number;
+      knowledgeDelta?: number;
+      draw?: number;
+      victoryDelta?: number;
+      actionsDelta?: number;
+      buysDelta?: number;
+      raw?: any; // 元 DSL（cards.json 由来）
+    }
+  | {
+      type: "trash";
+      from?: "hand" | "played" | "discard";
+      count: number;
+      raw?: any;
+    }
+  | {
+      type: "discount";
+      amount: number;
+      scope: "nextBuyThisTurn";
+      raw?: any;
+    }
+  | {
+      type: "attackDiscard";
+      count: number;
+      raw?: any;
+    }
+  | {
+      type: "conditional";
+      condition: ConditionDSL;
+      then: Effect[];
+      else?: Effect[];
+      raw?: any;
+    };
 
 /**
  * カード定義（cards.json と対応）

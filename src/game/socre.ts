@@ -53,7 +53,7 @@ export function computeVictoryPointsForPlayer(
 }
 
 /**
- * 単一カード内の addVictory 効果を合計する。
+ * 単一カード内の勝利点（gain.victoryDelta）効果を合計する。
  */
 function sumAddVictoryInCard(card: Card): number {
   let points = 0;
@@ -66,15 +66,16 @@ function sumAddVictoryInCard(card: Card): number {
 }
 
 /**
- * Effect から addVictory 分だけを取り出す。
+ * Effect から勝利点分だけを取り出す。
  */
 function getAddVictoryValue(effect: Effect): number {
-  return effect.addVictory ?? 0;
+  if (effect.type !== "gain") return 0;
+  return effect.victoryDelta ?? 0;
 }
 
 /**
  * プレイヤーの勝利点内訳（カード別）を計算する。
- * - addVictory の合計が正のカードのみを対象とする（勝利点を持たないカードは除外）。
+ * - victoryDelta の合計が正のカードのみを対象とする（勝利点を持たないカードは除外）。
  */
 export function computeVictoryBreakdownForPlayer(
   state: GameState,

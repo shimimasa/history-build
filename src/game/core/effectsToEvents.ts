@@ -3,7 +3,7 @@
 import type { Effect } from "../gameState";
 import type { GameEvent, PlayerId } from "./types";
 
-// まずは addRice / addKnowledge / draw のみイベント化
+// まずは type: "gain" の riceDelta / knowledgeDelta / draw のみイベント化
 export function effectsToEvents(
   effects: Effect[],
   owner: PlayerId
@@ -11,25 +11,25 @@ export function effectsToEvents(
   const events: GameEvent[] = [];
 
   for (const ef of effects) {
-    if (ef.addRice && ef.addRice !== 0) {
+    if (ef.type === "gain" && ef.riceDelta && ef.riceDelta !== 0) {
       events.push({
         type: "COUNTER_ADD",
         playerId: owner,
         key: "rice",
-        amount: ef.addRice
+        amount: ef.riceDelta
       });
     }
 
-    if (ef.addKnowledge && ef.addKnowledge !== 0) {
+    if (ef.type === "gain" && ef.knowledgeDelta && ef.knowledgeDelta !== 0) {
       events.push({
         type: "COUNTER_ADD",
         playerId: owner,
         key: "knowledge",
-        amount: ef.addKnowledge
+        amount: ef.knowledgeDelta
       });
     }
 
-    if (ef.draw && ef.draw > 0) {
+    if (ef.type === "gain" && ef.draw && ef.draw > 0) {
       events.push({
         type: "DRAW",
         playerId: owner,
