@@ -98,12 +98,6 @@ function mapCategoryToType(category: string): Card["type"] {
   }
 }
 
-/**
- * public/cards.json の Effect DSL を、現行 v1.5 Effect 型に近似変換する。
- * - gainRice / gainKnowledge / draw / gainVP / trashSelf など、単純に対応付けできるもののみを反映。
- * - conditional / attackDiscard / discount などの高度な効果は、現行エンジンでは未サポートのため無視する。
- *   （バランスは完全再現されないが、最低限ゲームが進行することを優先）
- */
 function convertEffects(rawEffects: any[] | undefined): Effect[] {
   if (!rawEffects || rawEffects.length === 0) return [];
 
@@ -112,33 +106,42 @@ function convertEffects(rawEffects: any[] | undefined): Effect[] {
   for (const ef of rawEffects) {
     if (!ef || typeof ef !== "object") continue;
 
+    // UI から元の DSL を参照できるよう、常に raw を保持しておく
+    const base: any = { raw: ef };
+
     if (typeof ef.gainRice === "number" && ef.gainRice !== 0) {
-      result.push({ addRice: ef.gainRice });
+      base.addRice = ef.gainRice;
+      result.push(base);
       continue;
     }
 
     if (typeof ef.gainKnowledge === "number" && ef.gainKnowledge !== 0) {
-      result.push({ addKnowledge: ef.gainKnowledge });
+      base.addKnowledge = ef.gainKnowledge;
+      result.push(base);
       continue;
     }
 
     if (typeof ef.draw === "number" && ef.draw > 0) {
-      result.push({ draw: ef.draw });
+      base.draw = ef.draw;
+      result.push(base);
       continue;
     }
 
     if (typeof ef.gainVP === "number" && ef.gainVP !== 0) {
-      result.push({ addVictory: ef.gainVP });
+      base.addVictory = ef.gainVP;
+      result.push(base);
       continue;
     }
 
     if (ef.trashSelf === true) {
-      result.push({ trashSelf: true });
+      base.trashSelf = true;
+      result.push(base);
       continue;
     }
 
-    // conditional / discount / attackDiscard / trashFromHand などは
-    // いまの v1.5 Effect では表現できないのでスキップ
+    // v1.5 Effect では表現できない DSL についても、
+    // raw としては保持しておき、UI 側で「特殊効果」として表示できるようにする。
+    result.push(base as Effect);
   }
 
   return result;

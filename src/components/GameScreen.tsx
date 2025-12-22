@@ -6,6 +6,7 @@ import { SupplyCardPile } from "./SupplyCard";
 import { CardDetailModal } from "./CardDetailModal"; // ★ 追加
 import { canBuy } from "../game/core/canBuy";
 import type { GameState } from "../game/gameState";
+import { formatEffects } from "../ui/effectFormatter";
 import "../index.css";
 
 export type GamePhase = "DRAW" | "ACTION" | "BUY" | "CLEANUP";
@@ -20,6 +21,43 @@ export interface GameScreenProps {
   selectedHandCardId: string | null;
   onSelectHandCard: (cardId: string | null) => void;
   onHoverCard: (card: any | null) => void;
+}
+
+// サプライ表示順を安定させるためのソートヘルパー
+function sortSupplyPiles(piles: any[]): any[] {
+  const typeOrder: Record<string, number> = {
+    resource: 0,
+    victory: 1,
+    person: 2,
+    event: 3,
+    structure: 4
+  };
+
+  return [...piles].sort((a, b) => {
+    const ca = a?.card ?? {};
+    const cb = b?.card ?? {};
+
+    const ta = (ca.type ?? ca.cardType ?? "") as string;
+    const tb = (cb.type ?? cb.cardType ?? "") as string;
+
+    const oa = typeOrder[ta] ?? 99;
+    const ob = typeOrder[tb] ?? 99;
+
+    if (oa !== ob) return oa - ob;
+
+    const costA = typeof ca.cost === "number" ? ca.cost : ca.cost?.rice ?? 0;
+    const costB = typeof cb.cost === "number" ? cb.cost : cb.cost?.rice ?? 0;
+    if (costA !== costB) return costA - costB;
+
+    const nameA: string = ca.name ?? ca.id ?? "";
+    const nameB: string = cb.name ?? cb.id ?? "";
+    const nameCmp = nameA.localeCompare(nameB, "ja");
+    if (nameCmp !== 0) return nameCmp;
+
+    const idA: string = ca.id ?? "";
+    const idB: string = cb.id ?? "";
+    return idA.localeCompare(idB, "ja");
+  });
 }
 
 　export const GameScreen: React.FC<GameScreenProps> = ({
@@ -46,7 +84,7 @@ export interface GameScreenProps {
   const displayTurn = turn ?? state.turnCount ?? 1;
 
   // v2 Card / SupplyPile 想定:
-  const supplyPiles: any[] = Object.values(supply ?? {});
+  const supplyPiles: any[] = sortSupplyPiles(Object.values(supply ?? {}));
 
   const getCardType = (pile: any): string => {
     return pile?.card?.type ?? pile?.card?.cardType ?? "";
@@ -593,22 +631,36 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
     card.effect ??
     card.conditionText;
 
-    return (
-      <div className="hb-card-detail">
-        <div className="hb-card-detail-name">{card.name}</div>
-        <div className="hb-card-detail-meta">
-          {cardType && <span>{cardType}</span>}
-          <span> / コスト: 米 {riceCost}</span>
-          {typeof knowledgeCost === "number" && knowledgeCost > 0 && (
-            <span> / 知識 {knowledgeCost}</span>
-          )}
-        </div>
-        {mainText && (
-          <p className="hb-card-detail-text">{mainText}</p>
+  const effectLines: string[] = formatEffects(card);
+
+  return (
+    <div className="hb-card-detail">
+      <div className="hb-card-detail-name">{card.name}</div>
+      <div className="hb-card-detail-meta">
+        {cardType && <span>{cardType}</span>}
+        <span> / コスト: 米 {riceCost}</span>
+        {typeof knowledgeCost === "number" && knowledgeCost > 0 && (
+          <span> / 知識 {knowledgeCost}</span>
         )}
       </div>
-    );
-  };
+      {mainText && (
+        <p className="hb-card-detail-text">{mainText}</p>
+      )}
+      <div className="hb-card-detail-effects">
+        <div className="hb-card-detail-effects-title">効果：</div>
+        {effectLines.length === 0 ? (
+          <p className="hb-card-detail-effects-none">なし</p>
+        ) : (
+          <ul className="hb-card-detail-effects-list">
+            {effectLines.map((line, idx) => (
+              <li key={idx}>{line}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
 
 function getPhaseLabel(phase: GamePhase | string): string {
   switch (phase) {

@@ -21,6 +21,11 @@ export interface Effect {
   gain?: string;        // CardId
   trashSelf?: boolean;
   addVictory?: number;  // 必要なら（勝利点は最終集計時に使用）
+
+  // UI 表示などで元の DSL 情報を参照したい場合に使う拡張フィールド
+  // - cardRegistry.ts 側で raw DSL オブジェクトを格納する
+  // - applyEffect.ts などゲームロジック側では無視される
+  raw?: any;
 }
 
 /**
