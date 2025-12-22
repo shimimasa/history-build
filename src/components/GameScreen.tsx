@@ -83,6 +83,11 @@ function sortSupplyPiles(piles: any[]): any[] {
   // ▼ 修正: v1 / v1.5 両対応でターン数を解決
   const displayTurn = turn ?? state.turnCount ?? 1;
 
+// v2 Card / SupplyPile 想定:
+const getCardType = (pile: any): string => {
+  return pile?.card?.type ?? pile?.card?.cardType ?? "";
+};
+
   // v2 Card / SupplyPile 想定:
   const supplyPiles: any[] = sortSupplyPiles(Object.values(supply ?? {}));
 
@@ -92,9 +97,6 @@ function sortSupplyPiles(piles: any[]): any[] {
     (p) => getCardType(p) === "victory" && p.remaining <= 0
   ).length;
 
-  const getCardType = (pile: any): string => {
-    return pile?.card?.type ?? pile?.card?.cardType ?? "";
-  };
 
   // サプライを「基本カード（資源・勝利点）」と「王国カード（人物・出来事）」に分割
   const basicSupplyPiles = supplyPiles.filter((p) => {
