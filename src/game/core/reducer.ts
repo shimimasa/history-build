@@ -1,9 +1,10 @@
 // src/game/core/reducer.ts
-import type { GameState, Card, PlayerState } from "../gameState";
+import type { GameState, Card, PlayerState, ActivePlayer } from "../gameState";
 import type { Command } from "./types";
 import { resolveCommand } from "./resolve";
 import { applyAll } from "./applyEvent";
 import { appendLog } from "../log";
+import { applyEffects } from "../applyEffect";
 
 // コマンド → イベント列 → state 更新の唯一の入口
 export function dispatch(state: GameState, cmd: Command): GameState {
@@ -75,7 +76,13 @@ export function dispatch(state: GameState, cmd: Command): GameState {
     const before = snapshotPlayer(traced, cmd.playerId);
 
     const events = resolveCommand(traced, cmd);
-    const afterState = applyAll(traced, events);
+    let afterState = applyAll(traced, events);
+
+    // カード効果（正規DSL Effect[]）を適用
+    if (card && Array.isArray(card.effects) && card.effects.length > 0) {
+      const owner: ActivePlayer = cmd.playerId;
+      afterState = applyEffects(afterState, owner, card.effects);
+    }
 
     // 参照が変化したかを確認
     const refChanged = afterState !== traced;

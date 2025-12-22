@@ -191,9 +191,6 @@ function resolvePlayCard(
     }
   ];
 
-  // 効果を Event 列に変換して後続に追加
-  events.push(...effectsToEvents(card.effects, playerId));
-
   return events;
 }
 

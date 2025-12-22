@@ -46,6 +46,13 @@ export function applyEffect(
 
   switch (effect.type) {
     case "gain": {
+      // ★ デバッグ用：gain の適用内容をトレース
+      newState = appendLog(
+        newState,
+        target,
+        `[TRACE] APPLY_GAIN: riceDelta=${effect.riceDelta ?? 0}, knowledgeDelta=${effect.knowledgeDelta ?? 0}, draw=${effect.draw ?? 0}, actionsDelta=${effect.actionsDelta ?? 0}, buysDelta=${effect.buysDelta ?? 0}`
+      );
+
       if (effect.riceDelta && effect.riceDelta !== 0) {
         player.riceThisTurn += effect.riceDelta;
       }
