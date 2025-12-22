@@ -27,6 +27,8 @@ interface GameContainerProps {
   deckConfig?: DeckConfig;
 }
 
+// ... 先頭の import / 型定義 / useState などはそのまま ...
+
 const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) => {
   // 新コアによるゲームエンジン
   const {
@@ -52,31 +54,27 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   const [uiRecentBuys, setUiRecentBuys] = useState<UiEvent[]>([]);
   const [uiRecentPlays, setUiRecentPlays] = useState<UiEvent[]>([]);
 
-  // ローディング中は簡易なプレースホルダを表示
-  if (!ready || !state || !viewState) {
-    return (
-      <div className="hb-game-screen flex items-center justify-center text-slate-100">
-        ゲームを読み込み中です...
-      </div>
-    );
-  }
-
-  // ★ GameScreen に渡す state に UI 情報を埋め込む
+  // ★ GameScreen に渡す state に UI 情報を埋め込む（常に useMemo を呼ぶ）
   const screenState = useMemo(
-    () => ({
-      ...viewState,
-      hoveredCard,
-      uiLastEvent,
-      uiRecentBuys,
-      uiRecentPlays
-    }),
-    [viewState, hoveredCard, uiLastEvent, uiRecentBuys, uiRecentPlays]
+    () => {
+      if (!state || !viewState) return null;
+      return {
+        ...viewState,
+        hoveredCard,
+        uiLastEvent,
+        uiRecentBuys,
+        uiRecentPlays
+      };
+    },
+    [state, viewState, hoveredCard, uiLastEvent, uiRecentBuys, uiRecentPlays]
   );
 
   // 直前の gameEnded の値を保持し、「false → true」遷移を検知する
-  const prevGameEndedRef = useRef<boolean>(state.gameEnded);
+  const prevGameEndedRef = useRef<boolean>(state?.gameEnded ?? false);
 
   useEffect(() => {
+    if (!state) return;
+
     const prev = prevGameEndedRef.current;
 
     if (!prev && state.gameEnded && onGameEnd) {
@@ -94,77 +92,70 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
     }
 
     prevGameEndedRef.current = state.gameEnded;
-  }, [state, state.gameEnded, onGameEnd]);
+  }, [state, onGameEnd]);
 
-  const handleShowCardDetail = (card: Card) => {
-    setSelectedCardForDetail(card);
-    setIsDetailOpen(true);
-  };
-
-  const handleCloseCardDetail = () => {
-    setIsDetailOpen(false);
-  };
-
-
- // プレイヤー操作ハンドラ:
- const handlePlayHandCard = (cardId: string) => {
-  if (state.gameEnded || state.activePlayer !== "player") return;
-  if (state.phase !== "ACTION") return;
-  playCard(cardId);
-};
-
-const handleBuyCard = (cardId: string) => {
-  if (state.gameEnded || state.activePlayer !== "player") return;
-  if (state.phase !== "BUY") return;
-  buyCard(cardId);
-};
-
-const handleProceedPhase = () => {
-  if (state.gameEnded || state.activePlayer !== "player") return;
-
-  if (state.phase === "ACTION") {
-    // 1. 資源カードを一括使用して米を加算
-    autoPlayResources();
-    // 2. BUY フェーズへ遷移
-    endPhase();
-    return;
+  // ★ ローディング時の早期 return（フックの後に置く）
+  if (!ready || !state || !viewState || !screenState) {
+    return (
+      <div className="hb-game-screen flex items-center justify-center text-slate-100">
+        ゲームを読み込み中です...
+      </div>
+    );
   }
 
-  if (state.phase === "BUY") {
-    // 何も買わずにターン終了
+  // プレイヤー操作ハンドラなどはそのまま（state が null でない前提で使える）
+  const handlePlayHandCard = (cardId: string) => {
+    if (state.gameEnded || state.activePlayer !== "player") return;
+    if (state.phase !== "ACTION") return;
+    playCard(cardId);
+  };
+
+  const handleBuyCard = (cardId: string) => {
+    if (state.gameEnded || state.activePlayer !== "player") return;
+    if (state.phase !== "BUY") return;
+    buyCard(cardId);
+  };
+
+  const handleProceedPhase = () => {
+    if (state.gameEnded || state.activePlayer !== "player") return;
+
+    if (state.phase === "ACTION") {
+      autoPlayResources();
+      endPhase();
+      return;
+    }
+
+    if (state.phase === "BUY") {
+      endTurn();
+      return;
+    }
+  };
+
+  const handleEndTurn = () => {
+    if (state.gameEnded || state.activePlayer !== "player") return;
     endTurn();
-    return;
-  }
-
-  // その他のフェーズでは何もしない（CLEANUP などは END_TURN の中だけで使う）
-};
-
-// END_TURN は GameScreen から呼ばれる
-const handleEndTurn = () => {
-  if (state.gameEnded || state.activePlayer !== "player") return;
-  endTurn();
-};
+  };
 
   return (
     <>
       <GameScreen
-        state={screenState}          // ★ ここだけ screenState に変更
-        logs={state.eventLog}       // ★ [] → eventLog に変更
+        state={screenState}
+        logs={state.eventLog}
         onPlayHandCard={handlePlayHandCard}
         onBuyCard={handleBuyCard}
         onEndPhase={handleProceedPhase}
         onEndTurn={handleEndTurn}
         selectedHandCardId={selectedHandCardId}
         onSelectHandCard={setSelectedHandCardId}
-        onHoverCard={setHoveredCard}  // ★ Supply / Hand からの hover を受け取る
+        onHoverCard={setHoveredCard}
       />
       <CardDetailModal
         card={selectedCardForDetail}
         isOpen={isDetailOpen}
-        onClose={handleCloseCardDetail}
+        onClose={() => setIsDetailOpen(false)}
       />
     </>
   );
-};
+}
 
 export default GameContainer;
