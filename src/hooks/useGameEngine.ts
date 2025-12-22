@@ -6,7 +6,6 @@ import { createGameStateFromDeck } from "../logic/initGameState";
 import type { DeckConfig } from "../ui/uiTypes";
 import { dispatch } from "../game/core/reducer";
 import type { Command } from "../game/core/types";
-import { appendLog } from "../game/log";
 
 type UseGameEngineOptions = {
   deckConfig?: DeckConfig;
@@ -27,18 +26,11 @@ export function useGameEngine(options: UseGameEngineOptions = {}) {
       const gameState = await createGameStateFromDeck(deckConfig);
       if (cancelled) return;
 
-      // ★ デバッグ用：マウント直後に強制ログを1行追加
-      const withDbg = appendLog(
-        gameState,
-        "system",
-        "[DBG] GameContainer mounted log test"
-      );
-
-      setState(withDbg);
+      setState(gameState);
 
       // supply から Card マップを構築（id → Card）
       const map: Record<string, Card> = {};
-      for (const pile of Object.values(withDbg.supply)) {
+      for (const pile of Object.values(gameState.supply)) {
         map[pile.card.id] = pile.card;
       }
       setCardMap(map);
