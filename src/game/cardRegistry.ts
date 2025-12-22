@@ -2,7 +2,7 @@
 // public/cards.json を読み込んで保持する CardRegistry と、
 // ゲーム内で使う v1.5 Card 型への変換ヘルパーを提供する。
 
-import type { Card, Effect, ConditionDSL } from "./gameState";
+import type { Card, Effect, ConditionDSL, EffectsMeta } from "./gameState";
 
 // era / deckType は将来の拡張も見越して型として定義しておく
 export type EraId = "ancient" | "medieval" | "sengoku" | "edo" | "meiji";
@@ -384,13 +384,21 @@ function normalizeConditionFromString(expr: any): ConditionDSL {
  * - text には notes をそのまま入れる（説明文がない場合は空文字）。
  */
 export function convertRawCardToGameCard(raw: RawCard): Card {
+  const effects = normalizeEffects(raw);
+  const effectsMeta: EffectsMeta = {
+    rawCount: raw.effects?.length ?? 0,
+    normCount: effects.length,
+    types: effects.map((e) => e.type)
+  };
+
   return {
     id: raw.id,
     name: raw.name,
     type: mapCategoryToType(raw.category),
     cost: typeof raw.cost === "number" ? raw.cost : 0,
     knowledgeRequired: 0,
-    effects: normalizeEffects(raw),
+    effects,
+    effectsMeta,
     text: raw.notes ?? "",
     image: raw.image
   };

@@ -65,6 +65,12 @@ export type Effect =
 /**
  * カード定義（cards.json と対応）
  */
+export interface EffectsMeta {
+  rawCount?: number;
+  normCount?: number;
+  types?: string[];
+}
+
 export interface Card {
   id: string;
   name: string;
@@ -74,6 +80,7 @@ export interface Card {
   effects: Effect[];
   text: string;
   image?: string; // 任意: 指定があれば優先し、なければ id ベースで解決
+  effectsMeta?: EffectsMeta; // normalize 前後の件数などメタ情報
 }
 
 // ------------------------------------------------------
