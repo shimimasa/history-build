@@ -32,6 +32,7 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   const {
     state,
     viewState,
+    ready,
     playCard,
     autoPlayResources,
     buyCard,
@@ -50,6 +51,15 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
   const [uiLastEvent, setUiLastEvent] = useState<UiEvent | null>(null);
   const [uiRecentBuys, setUiRecentBuys] = useState<UiEvent[]>([]);
   const [uiRecentPlays, setUiRecentPlays] = useState<UiEvent[]>([]);
+
+  // ローディング中は簡易なプレースホルダを表示
+  if (!ready || !state || !viewState) {
+    return (
+      <div className="hb-game-screen flex items-center justify-center text-slate-100">
+        ゲームを読み込み中です...
+      </div>
+    );
+  }
 
   // ★ GameScreen に渡す state に UI 情報を埋め込む
   const screenState = useMemo(

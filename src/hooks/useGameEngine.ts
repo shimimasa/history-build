@@ -1,9 +1,8 @@
 // src/hooks/useGameEngine.ts
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { GameState, Card } from "../game/gameState";
 import { createGameStateFromDeck } from "../logic/initGameState";
-import { createCardMap } from "../game/cardDefinitions";
 import type { DeckConfig } from "../ui/uiTypes";
 import { dispatch } from "../game/core/reducer";
 import type { Command } from "../game/core/types";
@@ -15,16 +14,37 @@ type UseGameEngineOptions = {
 export function useGameEngine(options: UseGameEngineOptions = {}) {
   const { deckConfig } = options;
 
-  const [state, setState] = useState<GameState>(() =>
-    createGameStateFromDeck(deckConfig)
-  );
+  const [state, setState] = useState<GameState | null>(null);
+  const [cardMap, setCardMap] = useState<Record<string, Card>>({});
+  const [ready, setReady] = useState(false);
 
-  // カードマップ
-  const cardMap = useMemo(() => createCardMap(), []);
+  // 初期化：public/cards.json からカードを読み込み、GameState を構築
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      const gameState = await createGameStateFromDeck(deckConfig);
+      if (cancelled) return;
+
+      setState(gameState);
+
+      // supply から Card マップを構築（id → Card）
+      const map: Record<string, Card> = {};
+      for (const pile of Object.values(gameState.supply)) {
+        map[pile.card.id] = pile.card;
+      }
+      setCardMap(map);
+      setReady(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [deckConfig]);
 
   // 共通 dispatch
   const send = useCallback((cmd: Command) => {
-    setState((prev) => dispatch(prev, cmd));
+    setState((prev) => (prev ? dispatch(prev, cmd) : prev));
   }, []);
 
   // プレイヤー専用ラッパ
@@ -54,6 +74,8 @@ export function useGameEngine(options: UseGameEngineOptions = {}) {
 
   const endTurn = useCallback(() => {
         setState((prev) => {
+          if (!prev) return prev;
+
           // まずプレイヤーの END_TURN を適用
           let s: GameState = dispatch(prev, { type: "END_TURN", playerId });
     
@@ -80,6 +102,8 @@ export function useGameEngine(options: UseGameEngineOptions = {}) {
 
   // UI 用 viewState（GameContainer と同様に hand を Card[] に解決）
   const viewState: any = useMemo(() => {
+    if (!state) return null;
+
     const resolveHand = (ids: string[]): Card[] =>
       ids.map((id) => cardMap[id] ?? ({
         id,
@@ -107,6 +131,7 @@ export function useGameEngine(options: UseGameEngineOptions = {}) {
   return {
     state,
     viewState,
+    ready,
     playCard,
     autoPlayResources,
     buyCard,

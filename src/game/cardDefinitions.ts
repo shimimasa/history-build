@@ -1,32 +1,32 @@
 // src/game/cardDefinitions.ts
-// history-spec v2 / tech.md v2 に準拠したカード定義ローダー
-// - cards.json はすでに v2 Card 形式（effects: Effect[]）で記述されている前提
-// - ランタイムではこの v2 Card[] をそのまま扱う
+// public/cards.json ベースのカード定義ローダー
+// - 実体のロードは cardRegistry 経由で行う
 
-import rawCards from "./cards.json";
 import type { Card } from "./gameState";
-
-// cards.json は v2 Card の配列として扱う
-const cards = rawCards as Card[];
+import { loadCardRegistry, convertRawCardToGameCard } from "./cardRegistry";
+import { BASE_CARDS } from "./baseCards";
 
 /**
- * ゲーム内で使用する全カード一覧を返す。
- * - 呼び出し側は戻り値をそのまま createInitialGameState(cards) などに渡してよい。
- * - 変更不可の前提で使いたい場合は、必要に応じて呼び出し側で shallow copy する。
+ * ゲーム内で使用する全カード一覧を返す（非同期）。
+ * - public/cards.json に定義されたカードを v1.5 Card 型に変換し、BASE_CARDS と結合して返す。
  */
-export function loadCards(): Card[] {
-  return cards;
+export async function loadCards(): Promise<Card[]> {
+  const registry = await loadCardRegistry();
+  const converted = registry.all.map(convertRawCardToGameCard);
+  return [...BASE_CARDS, ...converted];
 }
 
 /**
- * cardId → Card のマップを返すユーティリティ。
+ * cardId → Card のマップを返すユーティリティ（非同期）。
  * - サプライ構築や CPU ロジックなど、頻繁に Card を引きたい箇所向け。
- * - パフォーマンス最適化が必要になるまでは毎回生成でも問題ない規模。
  */
-export function createCardMap(): Record<string, Card> {
+export async function createCardMap(): Promise<Record<string, Card>> {
+  const cards = await loadCards();
   const map: Record<string, Card> = {};
   for (const card of cards) {
     map[card.id] = card;
   }
   return map;
 }
+
+

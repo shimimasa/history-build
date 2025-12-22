@@ -17,17 +17,33 @@ interface CardDexScreenProps {
 export const CardDexScreen: React.FC<CardDexScreenProps> = ({
   onBackToTitle
 }) => {
-  const cards = React.useMemo<Card[]>(() => {
-    const all = loadCards();
-    return [...all].sort((a, b) => {
-      if (a.type !== b.type) {
-        return a.type.localeCompare(b.type);
-      }
-      if (a.cost !== b.cost) {
-        return a.cost - b.cost;
-      }
-      return a.name.localeCompare(b.name, "ja");
-    });
+  const [cards, setCards] = React.useState<Card[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      const all = await loadCards();
+      if (cancelled) return;
+
+      const sorted = [...all].sort((a, b) => {
+        if (a.type !== b.type) {
+          return a.type.localeCompare(b.type);
+        }
+        if (a.cost !== b.cost) {
+          return a.cost - b.cost;
+        }
+        return a.name.localeCompare(b.name, "ja");
+      });
+
+      setCards(sorted);
+      setLoading(false);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const [selectedCard, setSelectedCard] = React.useState<Card | null>(null);
@@ -52,20 +68,26 @@ export const CardDexScreen: React.FC<CardDexScreenProps> = ({
       </header>
 
       <main className="flex-1 overflow-auto px-4 py-3">
-        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {cards.map((card) => (
-            <article
-              key={card.id}
-              className="hb-carddex-item border border-slate-700 rounded-lg bg-slate-900/80 px-2 py-2 flex justify-center"
-            >
-              <CardView
-                card={card}
-                variant="supply"
-                onHover={() => handleOpenDetail(card)}
-              />
-            </article>
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center text-slate-300 text-sm">
+            カードを読み込み中です...
+          </div>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {cards.map((card) => (
+              <article
+                key={card.id}
+                className="hb-carddex-item border border-slate-700 rounded-lg bg-slate-900/80 px-2 py-2 flex justify-center"
+              >
+                <CardView
+                  card={card}
+                  variant="supply"
+                  onHover={() => handleOpenDetail(card)}
+                />
+              </article>
+            ))}
+          </div>
+        )}
       </main>
 
       <footer className="px-4 py-3 border-t border-slate-700 bg-slate-950/80">

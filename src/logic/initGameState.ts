@@ -1,55 +1,84 @@
 // src/logic/initGameState.ts
-// cards.json から v2 GameState を初期化するラッパ
-// - history-spec v2 / tech.md v2 / gameState.ts に準拠
-// - 旧 ExtendedGameState / currentTurn / turnNumber / maxTurnsPerPlayer / isGameOver などは廃止
-// - DeckConfig から初期デッキを差し替えるヘルパーも提供する
+// public/cards.json を唯一のソースとした v2 GameState 初期化ラッパ
+// - era / deckType / DeckConfig に基づいて、指定した時代のみのサプライを構築する
 
 import type { Card, GameState } from "../game/gameState";
 import {
   createInitialGameState,
   createInitialPlayerState
 } from "../game/gameState";
-import { loadCards } from "../game/cardDefinitions";
+import { loadCardRegistry, convertRawCardToGameCard } from "../game/cardRegistry";
+import { BASE_CARDS } from "../game/baseCards";
 import type { DeckConfig } from "../ui/uiTypes";
-
-//------------------------------------------------------
-// 基本ヘルパー
-//------------------------------------------------------
-
-function loadAllCards(): Card[] {
-  return loadCards();
-}
 
 //------------------------------------------------------
 // 公開 API
 //------------------------------------------------------
 
 /**
- * 従来どおりのデフォルト初期 GameState を生成する。
- * - 戦国基本デッキ（RICE_SMALL×7 + VP_VILLAGE×3）が gameState.ts 側で使われる。
+ * デフォルト設定（戦国基本デッキ）で GameState を生成する。
+ * - era: "sengoku"
+ * - deckType: "basic"
  */
-export function createDefaultGameState(): GameState {
-  const cards = loadAllCards();
-  return createInitialGameState(cards);
+export async function createDefaultGameState(): Promise<GameState> {
+  return createGameStateFromDeck();
 }
 
 /**
- * DeckConfig をもとに初期 GameState を生成する。
+ * DeckConfig をもとに初期 GameState を生成する（非同期）。
  *
- * - deckConfig が渡されない場合は createDefaultGameState() を利用。
- * - 渡された場合は：
- *   - supply / phase / activePlayer / turnCount などは createInitialGameState(cards) の結果を流用
- *   - player / cpu だけを deckConfig.initialDeck から作り直して差し替える。
- *
- * TODO: 将来的に「デッキごとにサプライ構成も変えたい」場合は、
- *       ここで deckConfig.id ごとに supply 初期化ロジックを分岐させる。
+ * - public/cards.json を読み込み、
+ *   - deckConfig.era で指定された時代（なければ "sengoku"）のカードのみを抽出
+ *   - v1.5 Card 型に変換し、BASE_CARDS と結合してサプライ用カード配列を作成
+ * - createInitialGameState(cards) でサプライ / フェーズなどを構築
+ * - player / cpu の初期デッキだけを deckConfig.initialDeck から作り直して差し替える
  */
-export function createGameStateFromDeck(deckConfig?: DeckConfig): GameState {
-  const cards = loadAllCards();
-  const base = createInitialGameState(cards);
+export async function createGameStateFromDeck(
+  deckConfig?: DeckConfig
+): Promise<GameState> {
+  const registry = await loadCardRegistry();
 
+  const era = deckConfig?.era ?? "sengoku";
+  const rawEraCards = registry.byEra[era] ?? [];
+
+  // v1.5 Card へ変換し、汎用ベースカードを結合
+  const eraCards: Card[] = rawEraCards.map(convertRawCardToGameCard);
+  const allCards: Card[] = [...BASE_CARDS, ...eraCards];
+
+  const base = createInitialGameState(allCards);
+
+  // public/cards.json に supplyCount が定義されているカードがあれば、
+  // その値で remaining を上書きする。
+  const supplyCountOverride: Record<string, number> = {};
+  for (const raw of rawEraCards) {
+    if (typeof raw.supplyCount === "number") {
+      supplyCountOverride[raw.id] = raw.supplyCount;
+    }
+  }
+
+  const overriddenSupply =
+    Object.keys(supplyCountOverride).length === 0
+      ? base.supply
+      : Object.fromEntries(
+          Object.entries(base.supply).map(([id, pile]) => {
+            const override = supplyCountOverride[id];
+            if (override == null) return [id, pile];
+            return [
+              id,
+              {
+                ...pile,
+                remaining: override
+              }
+            ];
+          })
+        );
+
+  // DeckConfig が無ければ、createInitialGameState が作ったプレイヤー初期デッキをそのまま使う
   if (!deckConfig) {
-    return base;
+    return {
+      ...base,
+      supply: overriddenSupply
+    };
   }
 
   const player = createInitialPlayerState(deckConfig.initialDeck);
@@ -57,15 +86,16 @@ export function createGameStateFromDeck(deckConfig?: DeckConfig): GameState {
 
   return {
     ...base,
+    supply: overriddenSupply,
     player,
     cpu
   };
 }
 
 /**
- * アプリ起動時に呼び出す従来の初期 GameState 生成関数。
- * - 互換性維持のため残しておき、内部的には createDefaultGameState() を呼ぶ。
+ * 互換用エイリアス。
+ * - 旧コードからの呼び出しを考慮しつつ、内部では createDefaultGameState() を利用する。
  */
-export function initGameState(): GameState {
+export async function initGameState(): Promise<GameState> {
   return createDefaultGameState();
 }

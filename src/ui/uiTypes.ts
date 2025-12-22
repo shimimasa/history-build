@@ -2,6 +2,7 @@
 // アプリ全体で共有する UI スクリーン状態とゲーム結果・デッキ情報の型
 
 import type { GameState, ActivePlayer } from "../game/gameState";
+import type { EraId } from "../game/cardRegistry";
 
 export type UiScreen = "start" | "deckSelect" | "game" | "result" | "cardDex";
 
@@ -17,6 +18,8 @@ export interface DeckConfig {
   id: string;
   name: string;
   description: string;
+  era: EraId;
+  deckType: "basic" | "challenge";
   initialDeck: string[]; // CardId の配列（cards.json の id と一致させる）
 }
 
@@ -27,6 +30,8 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     name: "戦国基本デッキ",
     description:
       "こめ袋（小）7枚と村落3枚の、もっとも標準的なデッキ。",
+    era: "sengoku",
+    deckType: "basic",
     initialDeck: [
       "RICE_SMALL",
       "RICE_SMALL",
@@ -45,6 +50,8 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     name: "戦国チャレンジデッキ",
     description:
       "こめ袋（小）を減らし、中サイズの米を混ぜた上級者向け構成。",
+    era: "sengoku",
+    deckType: "challenge",
     initialDeck: [
       "RICE_SMALL",
       "RICE_SMALL",
