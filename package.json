@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-  "build": "node node_modules/vite/bin/vite.js build",
-  "preview": "vite preview"
+    "build": "node node_modules/vite/bin/vite.js build",
+    "preview": "vite preview",
+    "scan:effects": "node scripts/scan-effects.cjs"
   },
   "dependencies": {
     "react": "^19.2.1",
