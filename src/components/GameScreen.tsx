@@ -86,6 +86,12 @@ function sortSupplyPiles(piles: any[]): any[] {
   // v2 Card / SupplyPile 想定:
   const supplyPiles: any[] = sortSupplyPiles(Object.values(supply ?? {}));
 
+  // ゲーム終了条件用の「空山カウント」
+  const emptyPileCount = supplyPiles.filter((p) => p.remaining <= 0).length;
+  const emptyVictoryPileCount = supplyPiles.filter(
+    (p) => getCardType(p) === "victory" && p.remaining <= 0
+  ).length;
+
   const getCardType = (pile: any): string => {
     return pile?.card?.type ?? pile?.card?.cardType ?? "";
   };
@@ -351,6 +357,9 @@ React.useEffect(() => {
           {toastMessage}
         </div>
         )}
+          </div>
+          <div className="hb-endgame-hint text-[11px] text-slate-300 mt-1">
+            空になった山: {emptyPileCount} / 3　勝利点の空山: {emptyVictoryPileCount} / 2
           </div>
         </div>
       </header>

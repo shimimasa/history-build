@@ -8,7 +8,10 @@
 // 新:
 import React, { useState, useRef, useEffect, useMemo} from "react";
 import { GameScreen } from "../components/GameScreen";
-import { computeVictoryPointsForPlayer } from "../game/socre";
+import {
+  computeVictoryPointsForPlayer,
+  computeVictoryBreakdownForPlayer
+} from "../game/socre";
 import type { Card } from "../game/gameState";
 import type { GameOutcome, DeckConfig } from "../ui/uiTypes";
 import { CardDetailModal } from "../components/CardDetailModal";
@@ -80,12 +83,19 @@ const GameContainer: React.FC<GameContainerProps> = ({ onGameEnd, deckConfig }) 
     if (!prev && state.gameEnded && onGameEnd) {
       const playerScore = computeVictoryPointsForPlayer(state, "player");
       const cpuScore = computeVictoryPointsForPlayer(state, "cpu");
+      const playerBreakdown = computeVictoryBreakdownForPlayer(
+        state,
+        "player"
+      );
+      const cpuBreakdown = computeVictoryBreakdownForPlayer(state, "cpu");
 
       const outcome: GameOutcome = {
         finalState: state,
         winner: state.winner,
         playerScore,
-        cpuScore
+        cpuScore,
+        playerBreakdown,
+        cpuBreakdown
       };
 
       onGameEnd(outcome);

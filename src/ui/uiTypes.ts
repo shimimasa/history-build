@@ -3,6 +3,7 @@
 
 import type { GameState, ActivePlayer } from "../game/gameState";
 import type { EraId } from "../game/cardRegistry";
+import type { VictoryBreakdownEntry } from "../game/socre";
 
 export type UiScreen = "start" | "deckSelect" | "game" | "result" | "cardDex";
 
@@ -11,6 +12,8 @@ export interface GameOutcome {
   winner: ActivePlayer | "draw" | null;
   playerScore: number;
   cpuScore: number;
+  playerBreakdown: VictoryBreakdownEntry[];
+  cpuBreakdown: VictoryBreakdownEntry[];
 }
 
 // デッキ設定（将来の拡張を見越した構成）

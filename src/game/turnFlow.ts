@@ -427,21 +427,6 @@ function drawUntilHandSizeFive(
   };
 }
 
-/**
- * ゲーム終了判定 + 勝者決定。
- *
- * 終了条件（暫定実装）:
- * - ターン数上限に達した場合: state.turnCount >= MAX_TURN_COUNT
- * - サプライ枯渇:
- *   - remaining === 0 のサプライ山が 3つ以上ある もしくは
- *   - victory タイプのサプライが 1種類でも remaining <= 0
- *
- * 条件を満たしたら judgeWinner(state) で勝者を決め、
- * gameEnded / winner をセットした新しい GameState を返す。
- * 条件を満たさない場合は引数の state をそのまま返す。
- */
-const MAX_TURN_COUNT = 25; // TODO: バランス調整に応じて変更
-
 function evaluateGameEnd(state: GameState): GameState {
   // すでにゲーム終了している場合はそのまま返す
   if (state.gameEnded) {
@@ -451,14 +436,17 @@ function evaluateGameEnd(state: GameState): GameState {
   const piles = Object.values(state.supply);
 
   const emptyPileCount = piles.filter((p) => p.remaining <= 0).length;
-  const anyVictoryEmpty = piles.some(
+  const emptyVictoryPileCount = piles.filter(
     (p) => p.card.type === "victory" && p.remaining <= 0
-  );
+  ).length;
 
-  const reachedTurnLimit = state.turnCount >= MAX_TURN_COUNT;
-  const supplyDepleted = emptyPileCount >= 3 || anyVictoryEmpty;
+  // ゲーム終了条件:
+  // A) 勝利点カードのサプライ山のうち、残り 0 の山が 2つ以上
+  // B) 全サプライ山のうち、残り 0 の山が 3つ以上
+  const endByVictory = emptyVictoryPileCount >= 2;
+  const endByAny = emptyPileCount >= 3;
 
-  if (reachedTurnLimit || supplyDepleted) {
+  if (endByVictory || endByAny) {
     const winner = judgeWinner(state);
     return {
       ...state,

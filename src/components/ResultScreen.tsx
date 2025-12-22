@@ -14,7 +14,13 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   onRestart,
   onBackToTitle
 }) => {
-  const { winner, playerScore, cpuScore } = outcome;
+  const {
+    winner,
+    playerScore,
+    cpuScore,
+    playerBreakdown,
+    cpuBreakdown
+  } = outcome;
 
   let resultLabel: string;
   if (winner === "player") {
@@ -44,7 +50,56 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           </div>
         </div>
 
-        <div className="hb-result-actions flex flex-col gap-3 mt-4">
+        {/* 勝利点内訳 */}
+        <div className="space-y-4 text-xs">
+          <section>
+            <h2 className="font-semibold mb-1 text-sky-200">
+              プレイヤーの勝利点内訳
+            </h2>
+            {playerBreakdown.length === 0 ? (
+              <p className="text-slate-300">勝利点カードはありませんでした。</p>
+            ) : (
+              <ul className="space-y-1 text-slate-200">
+                {playerBreakdown.map((e) => (
+                  <li key={`p-${e.cardId}`} className="flex justify-between">
+                    <span>
+                      {e.cardName}（{e.cardId}）：枚数 {e.count} ×{" "}
+                      {e.pointsPerCard} = {e.totalPoints}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-1 text-right text-slate-300">
+              合計: <span className="font-semibold">{playerScore}</span> 点
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-semibold mb-1 text-sky-200">
+              CPU の勝利点内訳
+            </h2>
+            {cpuBreakdown.length === 0 ? (
+              <p className="text-slate-300">勝利点カードはありませんでした。</p>
+            ) : (
+              <ul className="space-y-1 text-slate-200">
+                {cpuBreakdown.map((e) => (
+                  <li key={`c-${e.cardId}`} className="flex justify-between">
+                    <span>
+                      {e.cardName}（{e.cardId}）：枚数 {e.count} ×{" "}
+                      {e.pointsPerCard} = {e.totalPoints}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-1 text-right text-slate-300">
+              合計: <span className="font-semibold">{cpuScore}</span> 点
+            </p>
+          </section>
+        </div>
+
+        <div className="hb-result-actions flex flex-col gap-3 mt-6">
           <button
             type="button"
             onClick={onRestart}
