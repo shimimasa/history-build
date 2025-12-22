@@ -5,6 +5,7 @@
 // カード関連の型
 // ------------------------------------------------------
 import type { Phase, TurnCounters } from "./core/types";
+import type { EraId } from "./cardRegistry";
 
 
 /**
@@ -94,6 +95,10 @@ export interface GameState {
 
   // ★ 追加：イベントログ
   eventLog: string[];
+
+  // ★ 追加：ゲーム開始時に選択された時代とデッキ種別（UI 表示用 / 将来拡張用）
+  era?: EraId;
+  deckType?: "basic" | "challenge";
 }
 
 // ------------------------------------------------------

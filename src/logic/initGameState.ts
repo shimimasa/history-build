@@ -77,7 +77,9 @@ export async function createGameStateFromDeck(
   if (!deckConfig) {
     return {
       ...base,
-      supply: overriddenSupply
+      supply: overriddenSupply,
+      era,
+      deckType: "basic"
     };
   }
 
@@ -87,6 +89,8 @@ export async function createGameStateFromDeck(
   return {
     ...base,
     supply: overriddenSupply,
+    era,
+    deckType: deckConfig.deckType,
     player,
     cpu
   };

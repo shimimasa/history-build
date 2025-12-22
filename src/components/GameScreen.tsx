@@ -277,7 +277,24 @@ React.useEffect(() => {
       
       <header className="hb-game-header">
         <div className="hb-game-title">
-          <span>History Build - 戦国デッキ v1.5</span>
+          {(() => {
+            const eraLabelMap: Record<string, string> = {
+              ancient: "古代",
+              medieval: "中世",
+              sengoku: "戦国",
+              edo: "江戸",
+              meiji: "明治"
+            };
+            const eraKey: string = state.era ?? "sengoku";
+            const eraLabel = eraLabelMap[eraKey] ?? "戦国";
+            const deckTypeLabel =
+              state.deckType === "challenge" ? "チャレンジ" : "基本";
+            return (
+              <span>
+                History Build - {eraLabel}デッキ（{deckTypeLabel}）
+              </span>
+            );
+          })()}
         </div>
         <div className="hb-top-status">
           <div className="hb-status-group">

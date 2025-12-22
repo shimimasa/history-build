@@ -24,9 +24,9 @@ export const DeckSelectScreen: React.FC<DeckSelectScreenProps> = ({
           デッキを選ぶ
         </h1>
         <p className="text-sm text-slate-200 mb-4 text-center">
-          まずは使うデッキを選んでください。
+          まずは遊びたい時代とデッキを選んでください。
           <br />
-          （現時点では「戦国基本デッキ」のみ選択できます）
+          （古代 / 中世 / 戦国 / 江戸 / 明治 から選べます）
         </p>
 
         <ul className="hb-deck-list space-y-3 mb-4">
