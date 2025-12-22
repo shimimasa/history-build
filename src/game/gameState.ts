@@ -70,6 +70,11 @@ export interface PlayerState {
   knowledge: number;    // 累積知識（ゲームを通じて保持）
   turnsTaken: number;   // 行動したターン数
 
+  // 購入・割引・条件付き効果用のターン中カウンタ
+  buyDiscountThisTurn: number;      // 次の購入 1 回に適用される割引合計（米）
+  buysMadeThisTurn: number;         // このターンに行った購入回数
+  boughtVictoryThisTurn: number;    // このターンに購入した勝利点カード枚数
+
   // ★ 追加：フェーズをまたいで保持されるターンカウンタ
   turn: TurnCounters;
 }
@@ -128,6 +133,9 @@ export function createInitialPlayerState(initialDeck: string[]): PlayerState {
     riceThisTurn: 0,
     knowledge: 0,
     turnsTaken: 0,
+    buyDiscountThisTurn: 0,
+    buysMadeThisTurn: 0,
+    boughtVictoryThisTurn: 0,
     turn: {
       actions: 1,
       buys: 1,

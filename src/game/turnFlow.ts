@@ -8,7 +8,11 @@ import type {
   PlayerState
 } from "./gameState";
 import { applyEffects } from "./applyEffect";
-import { canBuyCard, applyOnBuyEffects } from "../logic/cardEffects";
+import {
+  canBuyCard,
+  applyOnBuyEffects,
+  getEffectiveCostForPlayer
+} from "../logic/cardEffects";
 import { judgeWinner } from "./socre";
 import { appendLog } from "./log";
 
@@ -220,11 +224,20 @@ export function buyPhase(
 
   // ---- ここから新しい GameState を構築（state は mutate しない）----
 
+  const effectiveCost = getEffectiveCostForPlayer(activePlayer, card);
+  const discountUsed = Math.max(0, card.cost - effectiveCost);
+
   // プレイヤー側の更新
   const updatedActive: PlayerState = {
     ...activePlayer,
-    riceThisTurn: activePlayer.riceThisTurn - card.cost,
-    discard: [...activePlayer.discard, chosenCardId]
+    riceThisTurn: activePlayer.riceThisTurn - effectiveCost,
+    discard: [...activePlayer.discard, chosenCardId],
+    buyDiscountThisTurn: 0, // 「次の購入」1回で消費
+    buysMadeThisTurn: (activePlayer.buysMadeThisTurn ?? 0) + 1,
+    boughtVictoryThisTurn:
+      card.type === "victory"
+        ? (activePlayer.boughtVictoryThisTurn ?? 0) + 1
+        : activePlayer.boughtVictoryThisTurn ?? 0
   };
 
   // サプライ側の更新
@@ -246,12 +259,20 @@ export function buyPhase(
     supply: updatedSupply
   };
 
-  // ログ：購入
-  newState = appendLog(
-    newState,
-    current,
-    `${card.name ?? chosenCardId} を購入`
-  );
+  // ログ：購入（割引があれば内容を明示）
+  if (discountUsed > 0) {
+    newState = appendLog(
+      newState,
+      current,
+      `${card.name ?? chosenCardId} を購入（割引 -${discountUsed}、支払い 米 ${effectiveCost}）`
+    );
+  } else {
+    newState = appendLog(
+      newState,
+      current,
+      `${card.name ?? chosenCardId} を購入（米 ${effectiveCost}）`
+    );
+  }
 
   // 購入時効果（将来拡張用）：現状はそのまま state を返す実装
   newState = applyOnBuyEffects(newState, card, current);
@@ -290,6 +311,9 @@ export function cleanupPhase(state: GameState): GameState {
     played: [],
     discard: mergedDiscard,
     riceThisTurn: 0,
+    buyDiscountThisTurn: 0,
+    buysMadeThisTurn: 0,
+    boughtVictoryThisTurn: 0,
     turnsTaken: activePlayer.turnsTaken + 1
   };
 

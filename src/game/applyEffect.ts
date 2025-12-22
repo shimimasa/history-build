@@ -104,12 +104,236 @@ export function applyEffect(
     newState = appendLog(newState, target, `勝利点 +${amount}`);
   }
 
+  // 8. raw DSL ベースの追加効果（discount / attackDiscard / conditional）
+  const raw = (effect as any).raw;
+  if (raw && typeof raw === "object") {
+    // 8-1. discount / reduceCostThisTurn
+    const discountAmount =
+      typeof raw.discount === "number"
+        ? raw.discount
+        : typeof raw.reduceCostThisTurn === "number"
+        ? raw.reduceCostThisTurn
+        : 0;
+    if (discountAmount && discountAmount !== 0) {
+      const owner =
+        target === "player" ? newState.player : newState.cpu;
+      owner.buyDiscountThisTurn =
+        (owner.buyDiscountThisTurn ?? 0) + discountAmount;
+      newState = appendLog(
+        newState,
+        target,
+        `割引 -${discountAmount}（次の購入）`
+      );
+    }
+
+    // 8-2. attackDiscard
+    if (typeof raw.attackDiscard === "number" && raw.attackDiscard > 0) {
+      newState = applyAttackDiscard(
+        newState,
+        target,
+        raw.attackDiscard
+      );
+    }
+
+    // 8-3. conditional
+    if (raw.conditional) {
+      newState = applyConditionalEffect(newState, target, raw.conditional);
+    }
+  }
+
   return newState;
 }
 
 // ------------------------------------------------------
 // 内部ヘルパー
 // ------------------------------------------------------
+
+/**
+ * 攻撃効果：相手の手札からランダムに N 枚捨て札に送る。
+ */
+function applyAttackDiscard(
+  state: GameState,
+  attacker: ActivePlayer,
+  count: number
+): GameState {
+  const defender: ActivePlayer = attacker === "player" ? "cpu" : "player";
+  const player = defender === "player" ? state.player : state.cpu;
+
+  if (player.hand.length === 0) {
+    return appendLog(state, defender, "捨てるカードがない（攻撃）");
+  }
+
+  const newHand = [...player.hand];
+  const newDiscard = [...player.discard];
+  let discarded = 0;
+
+  for (let i = 0; i < count && newHand.length > 0; i++) {
+    const idx = Math.floor(Math.random() * newHand.length);
+    const [cardId] = newHand.splice(idx, 1);
+    if (cardId !== undefined) {
+      newDiscard.push(cardId);
+      discarded++;
+    }
+  }
+
+  const updatedDefender: PlayerState = {
+    ...player,
+    hand: newHand,
+    discard: newDiscard
+  };
+
+  let nextState: GameState =
+    defender === "player"
+      ? { ...state, player: updatedDefender }
+      : { ...state, cpu: updatedDefender };
+
+  if (discarded > 0) {
+    nextState = appendLog(
+      nextState,
+      defender,
+      `手札から${discarded}枚を捨てた（攻撃）`
+    );
+  } else {
+    nextState = appendLog(nextState, defender, "捨てるカードがない（攻撃）");
+  }
+
+  return nextState;
+}
+
+/**
+ * conditional DSL の評価と then 効果の適用。
+ * - 対応条件:
+ *   - "totalKnowledge>=N"
+ *   - "boughtVictoryThisTurn" / "boughtVictoryThisTurn>=N"
+ * - それ以外の条件は「未対応」としてログを出してスキップする。
+ */
+function applyConditionalEffect(
+  state: GameState,
+  owner: ActivePlayer,
+  conditional: any
+): GameState {
+  const expr = conditional?.if;
+  const thenEffects = conditional?.then;
+
+  if (!expr || !Array.isArray(thenEffects)) {
+    return state;
+  }
+
+  const evalResult = evaluateCondition(state, owner, expr);
+
+  if (evalResult === "unsupported") {
+    return appendLog(
+      state,
+      owner,
+      `条件付きの特殊効果（未対応）：${String(expr)}`
+    );
+  }
+
+  if (!evalResult) {
+    // 対応条件だが未達成の場合は何もしない（ログも最小限）
+    return state;
+  }
+
+  // 条件達成：then 配列を Effect[] に変換して再帰的に適用
+  const subEffects: Effect[] = convertConditionalThenToEffects(thenEffects);
+  let next = appendLog(
+    state,
+    owner,
+    `条件達成（${describeCondition(expr)}）→ 効果発動`
+  );
+  next = applyEffects(next, owner, subEffects);
+  return next;
+}
+
+type ConditionEvalResult = boolean | "unsupported";
+
+function evaluateCondition(
+  state: GameState,
+  owner: ActivePlayer,
+  expr: string
+): ConditionEvalResult {
+  const player = owner === "player" ? state.player : state.cpu;
+
+  // totalKnowledge>=N
+  let m = expr.match(/^totalKnowledge>=(\d+)$/);
+  if (m) {
+    const threshold = parseInt(m[1], 10);
+    return player.knowledge >= threshold;
+  }
+
+  // boughtVictoryThisTurn または boughtVictoryThisTurn>=N
+  m = expr.match(/^boughtVictoryThisTurn(?:>=(\d+))?$/);
+  if (m) {
+    const threshold = m[1] ? parseInt(m[1], 10) : 1;
+    const count = player.boughtVictoryThisTurn ?? 0;
+    return count >= threshold;
+  }
+
+  // それ以外は今回対象外
+  return "unsupported";
+}
+
+function describeCondition(expr: string): string {
+  if (/^totalKnowledge>=(\d+)$/.test(expr)) {
+    const n = RegExp.$1;
+    return `知識${n}以上`;
+  }
+  if (/^boughtVictoryThisTurn(?:>=(\d+))?$/.test(expr)) {
+    const n = RegExp.$1 || "1";
+    return `このターンに勝利点カードを${n}枚以上購入`;
+  }
+  return expr;
+}
+
+/**
+ * conditional.then の raw DSL を v1.5 Effect[] に簡易変換する。
+ * - gainRice / gainKnowledge / draw / gainVP / trashSelf のみマップする。
+ * - それ以外は raw だけ保持した Effect として返し、applyEffect 側で
+ *   今回対象外の DSL は無視される。
+ */
+function convertConditionalThenToEffects(rawEffects: any[]): Effect[] {
+  const result: Effect[] = [];
+
+  for (const ef of rawEffects) {
+    if (!ef || typeof ef !== "object") continue;
+
+    const base: any = { raw: ef };
+
+    if (typeof ef.gainRice === "number" && ef.gainRice !== 0) {
+      base.addRice = ef.gainRice;
+      result.push(base);
+      continue;
+    }
+
+    if (typeof ef.gainKnowledge === "number" && ef.gainKnowledge !== 0) {
+      base.addKnowledge = ef.gainKnowledge;
+      result.push(base);
+      continue;
+    }
+
+    if (typeof ef.draw === "number" && ef.draw > 0) {
+      base.draw = ef.draw;
+      result.push(base);
+      continue;
+    }
+
+    if (typeof ef.gainVP === "number" && ef.gainVP !== 0) {
+      base.addVictory = ef.gainVP;
+      result.push(base);
+      continue;
+    }
+
+    if (ef.trashSelf === true) {
+      base.trashSelf = true;
+      result.push(base);
+      continue;
+    }
+
+    result.push(base as Effect);
+  }
+
+  return result;
+}
 
 /**
  * GameState をディープコピーする。

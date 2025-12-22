@@ -2,6 +2,7 @@
 // CPU が「どのカードをプレイするか」「どのカードを買うか」を決めるロジック（v2 GameState 対応）
 
 import type { GameState, PlayerState, Card, Effect } from "../game/gameState";
+import { getEffectiveCostForPlayer } from "./cardEffects";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
 
 //------------------------------------------------------
@@ -176,8 +177,9 @@ export function chooseCpuBuyCard(state: GameState): string | null {
     if (!pile || pile.remaining <= 0) continue;
 
     const card = pile.card;
+    const effectiveCost = getEffectiveCostForPlayer(cpu, card);
     const affordable =
-      cpu.riceThisTurn >= card.cost &&
+      cpu.riceThisTurn >= effectiveCost &&
       cpu.knowledge >= card.knowledgeRequired;
 
     if (!affordable) continue;

@@ -63,8 +63,9 @@ export function applyOnBuyEffects(
  *    turnFlow.ts の BUY フェーズ側や UI 側で行う。
  */
 export function canBuyCard(player: PlayerState, card: Card): boolean {
+  const effectiveCost = getEffectiveCostForPlayer(player, card);
   return (
-    player.riceThisTurn >= card.cost &&
+    player.riceThisTurn >= effectiveCost &&
     player.knowledge >= card.knowledgeRequired
   );
 }
@@ -82,8 +83,11 @@ export function canBuyCard(player: PlayerState, card: Card): boolean {
  * という流れで拡張する。
  */
 export function getEffectiveCostForPlayer(
-  player: PlayerState, // 将来の拡張用に残しておく
+  player: PlayerState, // 割引などを考慮する
   card: Card
 ): number {
-  return card.cost;
+  const discount = Math.max(0, player.buyDiscountThisTurn ?? 0);
+  const baseCost = card.cost;
+  const effective = Math.max(0, baseCost - discount);
+  return effective;
 }
