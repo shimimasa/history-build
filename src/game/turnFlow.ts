@@ -10,6 +10,7 @@ import type {
 import { applyEffects } from "./applyEffect";
 import { canBuyCard, applyOnBuyEffects } from "../logic/cardEffects";
 import { judgeWinner } from "./socre";
+import { appendLog } from "./log";
 
 // ------------------------------------------------------
 // 公開 API：フェーズごとの純関数
@@ -79,6 +80,13 @@ export function resourcePhase(state: GameState): GameState {
     cpu: current === "cpu" ? updatedActive : state.cpu
   };
 
+  // リソースカードのプレイログ
+  for (const cardId of resourceIds) {
+    const card = getCardFromSupply(state, cardId);
+    if (!card) continue;
+    newState = appendLog(newState, current, `${card.name ?? cardId} をプレイ`);
+  }
+
   // 資源カードの effects を順番に適用
   for (const cardId of resourceIds) {
     const card = getCardFromSupply(newState, cardId);
@@ -144,6 +152,13 @@ export function actionPhase(
     player: current === "player" ? updatedActive : state.player,
     cpu: current === "cpu" ? updatedActive : state.cpu
   };
+
+  // 行動カードのプレイをログ
+  newState = appendLog(
+    newState,
+    current,
+    `${card.name ?? chosenCardId} をプレイ`
+  );
 
   // 行動カードの effects を適用
   newState = applyEffects(newState, current, card.effects);
@@ -230,6 +245,13 @@ export function buyPhase(
     cpu: current === "cpu" ? updatedActive : state.cpu,
     supply: updatedSupply
   };
+
+  // ログ：購入
+  newState = appendLog(
+    newState,
+    current,
+    `${card.name ?? chosenCardId} を購入`
+  );
 
   // 購入時効果（将来拡張用）：現状はそのまま state を返す実装
   newState = applyOnBuyEffects(newState, card, current);

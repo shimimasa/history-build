@@ -459,7 +459,7 @@ React.useEffect(() => {
         </main>
       </div>
 
-      {/* --- 下：手札エリア＋アクションボタン --- */}
+      {/* --- 下：手札エリア＋アクションボタン＋ログ --- */}
       <section className="hb-hand-area">
         <div className="hb-hand-header">
           <span className="hb-section-title">手札</span>
@@ -518,6 +518,27 @@ React.useEffect(() => {
           <button className="hb-btn hb-btn-primary" onClick={onEndTurn}>
             ターンを終了
           </button>
+        </div>
+
+        {/* ログパネル：直近のイベントログを表示 */}
+        <div className="hb-log-panel mt-3 border border-slate-700 rounded-md bg-slate-900/80 px-3 py-2 text-[11px] text-slate-200 max-h-32 overflow-y-auto">
+          <div className="hb-log-title font-semibold text-sky-200 mb-1">
+            ログ
+          </div>
+          {logs && logs.length > 0 ? (
+            <ul className="space-y-0.5">
+              {logs
+                .slice(-15) // 最新 15 件
+                .reverse() // 新しいものを上に
+                .map((line, idx) => (
+                  <li key={idx} className="whitespace-pre-wrap">
+                    {line}
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <p className="text-slate-400">まだログはありません。</p>
+          )}
         </div>
       </section>
 
