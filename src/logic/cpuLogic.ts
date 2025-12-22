@@ -1,13 +1,7 @@
 // src/logic/cpuLogic.ts
 // CPU が「どのカードをプレイするか」「どのカードを買うか」を決めるロジック（v2 GameState 対応）
 
-import type {
-  GameState,
-  PlayerState,
-  Card,
-  CardType,
-  Effect
-} from "../game/gameState";
+import type { GameState, PlayerState, Card, Effect } from "../game/gameState";
 import { proceedPhase, actionPhase, buyPhase } from "../game/turnFlow";
 
 //------------------------------------------------------
@@ -24,6 +18,67 @@ function getCardFromId(state: GameState, cardId: string): Card | null {
 
 function cardHasEffect(card: Card, predicate: (e: Effect) => boolean): boolean {
   return card.effects.some(predicate);
+}
+
+/**
+ * カードの簡易的な「効果量」を集計するヘルパー。
+ * - addRice / addKnowledge / draw / addVictory の合計値のみを見る。
+ * - conditional など cards.json 側の高度な DSL は現行モデルでは反映していない。
+ */
+function summarizeEffects(card: Card): {
+  rice: number;
+  knowledge: number;
+  draw: number;
+  victory: number;
+} {
+  let rice = 0;
+  let knowledge = 0;
+  let draw = 0;
+  let victory = 0;
+
+  for (const ef of card.effects) {
+    if (typeof ef.addRice === "number") {
+      rice += ef.addRice;
+    }
+    if (typeof ef.addKnowledge === "number") {
+      knowledge += ef.addKnowledge;
+    }
+    if (typeof ef.draw === "number") {
+      draw += ef.draw;
+    }
+    if (typeof ef.addVictory === "number") {
+      victory += ef.addVictory;
+    }
+  }
+
+  return { rice, knowledge, draw, victory };
+}
+
+//------------------------------------------------------
+// ゲーム進行度（early / mid / late）の簡易判定
+//------------------------------------------------------
+
+type GameStage = "early" | "mid" | "late";
+
+function getGameStage(state: GameState): GameStage {
+  const turn = state.turnCount ?? 1;
+
+  // VP 山の残りをざっくりチェック
+  const piles = Object.values(state.supply);
+  const totalVpPiles = piles.filter((p) => p.card.type === "victory").length;
+  const lowVpPiles = piles.filter(
+    (p) => p.card.type === "victory" && p.remaining <= 4
+  ).length;
+
+  const vpNearlyDepleted = totalVpPiles > 0 && lowVpPiles / totalVpPiles >= 0.5;
+
+  if (turn >= 15 || vpNearlyDepleted) {
+    return "late";
+  }
+  if (turn >= 8) {
+    return "mid";
+  }
+  return "early";
 }
 
 //------------------------------------------------------
@@ -99,18 +154,21 @@ function scoreActionCard(card: Card): number {
  * 候補条件:
  * - pile.remaining > 0
  * - cpu.riceThisTurn >= card.cost
- * - cpu.knowledge >= card.knowledgeRequired
+ * - cpu.knowledge   >= card.knowledgeRequired
  *
- * スコアリング:
- * - type === "victory"              : base 100 + cost
- * - addKnowledge を持つカード       : base 80 + cost
- * - type === "resource"            : base 60 + cost
- * - それ以外                       : base 40 + cost
+ * スコアリング方針（時代非依存）:
+ * - 早期: 資源 / ドロー / 知識カードをやや優先
+ * - 中盤: バランス良く、勝利点カードも視野に入れる
+ * - 終盤: 勝利点カードを強く優先する
+ *
+ * 同点の場合:
+ * - cost が高いカードを優先（それでも同じなら配列順）
  *
  * 最もスコアが高い cardId を返す（候補がなければ null）。
  */
 export function chooseCpuBuyCard(state: GameState): string | null {
   const cpu = getCpu(state);
+  const stage = getGameStage(state);
 
   const candidates: { id: string; card: Card }[] = [];
 
@@ -124,6 +182,7 @@ export function chooseCpuBuyCard(state: GameState): string | null {
 
     if (!affordable) continue;
 
+    // 現仕様では resource / victory もサプライから購入対象に含める。
     candidates.push({ id: pileId, card });
   }
 
@@ -131,33 +190,91 @@ export function chooseCpuBuyCard(state: GameState): string | null {
     return null;
   }
 
-  const scored = candidates.map(({ id, card }) => ({
-    id,
-    card,
-    score: scoreBuyCandidate(card)
-  }));
+  const scored = candidates.map(({ id, card }) => {
+    const score = scoreBuyCandidate(card, stage);
+    return { id, card, score };
+  });
 
-  scored.sort((a, b) => b.score - a.score);
-  return scored[0].id;
+  scored.sort((a, b) => {
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    // スコア同点時はコストの高いカードを優先
+    return b.card.cost - a.card.cost;
+  });
+
+  return scored[0]?.id ?? null;
 }
 
 /**
  * 購入候補カードのスコアリング（BUY フェーズ用）
  */
-function scoreBuyCandidate(card: Card): number {
-  const hasKnowledge = cardHasEffect(card, (e) => !!e.addKnowledge && e.addKnowledge > 0);
+function scoreBuyCandidate(card: Card, stage: GameStage): number {
+  const { rice, knowledge, draw, victory } = summarizeEffects(card);
 
-  let base = 40; // その他
+  const isResource = card.type === "resource";
+  const isVictory = card.type === "victory";
+  const isAction = card.type === "person" || card.type === "event";
 
-  if (card.type === "victory") {
-    base = 100;
-  } else if (hasKnowledge) {
-    base = 80;
-  } else if (card.type === "resource") {
-    base = 60;
+  // タイプごとのベーススコア
+  let base = 0;
+  if (isVictory) {
+    base = 30;
+  } else if (isResource) {
+    base = 20;
+  } else if (isAction) {
+    base = 25;
+  } else {
+    base = 10;
   }
 
-  return base + card.cost;
+  // ゲーム進行度ごとの重み
+  let wRice = 0;
+  let wDraw = 0;
+  let wKnowledge = 0;
+  let wVictory = 0;
+
+  switch (stage) {
+    case "early":
+      wRice = 3.0;
+      wDraw = 2.0;
+      wKnowledge = 2.0;
+      wVictory = 0.5;
+      break;
+    case "mid":
+      wRice = 2.0;
+      wDraw = 2.0;
+      wKnowledge = 2.0;
+      wVictory = 1.5;
+      break;
+    case "late":
+      wRice = 1.0;
+      wDraw = 1.5;
+      wKnowledge = 1.0;
+      wVictory = 3.0;
+      break;
+  }
+
+  let score =
+    base +
+    wRice * rice +
+    wDraw * draw +
+    wKnowledge * knowledge +
+    wVictory * victory;
+
+  // 知識要求が高いカードは「買えるなら少しだけ加点」
+  if (card.knowledgeRequired >= 2) {
+    score += 2;
+  } else if (card.knowledgeRequired === 1) {
+    score += 1;
+  }
+
+  // あまりに安いカードは序盤以外では控えめに
+  if (stage !== "early" && card.cost <= 2 && !isVictory) {
+    score -= 3;
+  }
+
+  return score;
 }
 
 //------------------------------------------------------
