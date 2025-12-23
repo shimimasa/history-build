@@ -28,6 +28,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     ancient: "古代",
     ancient_mediterranean: "古代地中海",
     medieval: "中世",
+    medieval_europe: "中世ヨーロッパ",
     sengoku: "戦国",
     edo: "江戸",
     meiji: "明治"

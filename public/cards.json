@@ -3489,6 +3489,318 @@
       ],
       "image": "/assets/cards/AMM_S02.webp",
       "notes": "統合"
+    },
+    {
+      "id": "MEU_R01",
+      "name": "羊毛",
+      "era": "medieval_europe",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/MEU_R01.webp",
+      "notes": "毛織物の基盤"
+    },
+    {
+      "id": "MEU_R02",
+      "name": "地中海交易",
+      "era": "medieval_europe",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_R02.webp",
+      "notes": "港市の繁栄"
+    },
+    {
+      "id": "MEU_V01",
+      "name": "ゴシック大聖堂",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/MEU_V01.webp",
+      "notes": "信仰と都市"
+    },
+    {
+      "id": "MEU_V02",
+      "name": "大学",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/MEU_V02.webp",
+      "notes": "学問の拠点"
+    },
+    {
+      "id": "MEU_V03",
+      "name": "騎士叙任",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/MEU_V03.webp",
+      "notes": "武と名誉"
+    },
+    {
+      "id": "MEU_V04",
+      "name": "王権強化",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/MEU_V04.webp",
+      "notes": "中央集権"
+    },
+    {
+      "id": "MEU_V05",
+      "name": "都市自治",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/MEU_V05.webp",
+      "notes": "自由都市"
+    },
+    {
+      "id": "MEU_V06",
+      "name": "封建秩序の完成",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/MEU_V06.webp",
+      "notes": "身分と契約"
+    },
+    {
+      "id": "MEU_P01",
+      "name": "カール大帝",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_P01.webp",
+      "notes": "帝国の統合"
+    },
+    {
+      "id": "MEU_P02",
+      "name": "ウルバヌス2世",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "draw": 1 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/MEU_P02.webp",
+      "notes": "十字軍の呼びかけ"
+    },
+    {
+      "id": "MEU_P03",
+      "name": "サラディン",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_P03.webp",
+      "notes": "対抗"
+    },
+    {
+      "id": "MEU_P04",
+      "name": "ジャンヌ・ダルク",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_P04.webp",
+      "notes": "鼓舞"
+    },
+    {
+      "id": "MEU_P05",
+      "name": "マルコ・ポーロ",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MEU_P05.webp",
+      "notes": "見聞"
+    },
+    {
+      "id": "MEU_P06",
+      "name": "トマス・アクィナス",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/MEU_P06.webp",
+      "notes": "スコラ学"
+    },
+    {
+      "id": "MEU_P07",
+      "name": "教皇",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_P07.webp",
+      "notes": "権威"
+    },
+    {
+      "id": "MEU_P08",
+      "name": "封建領主",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/MEU_P08.webp",
+      "notes": "領地経営"
+    },
+    {
+      "id": "MEU_P09",
+      "name": "十字軍騎士",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainVP": 1 } ],
+      "image": "/assets/cards/MEU_P09.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "MEU_P10",
+      "name": "職人",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MEU_P10.webp",
+      "notes": "手札を整える"
+    },
+    {
+      "id": "MEU_P11",
+      "name": "修道士",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MEU_P11.webp",
+      "notes": "清貧と学び"
+    },
+    {
+      "id": "MEU_P12",
+      "name": "吟遊詩人",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "draw": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MEU_P12.webp",
+      "notes": "語りと祝祭"
+    },
+    {
+      "id": "MEU_E01",
+      "name": "封建制",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_E01.webp",
+      "notes": "主従関係"
+    },
+    {
+      "id": "MEU_E02",
+      "name": "荘園制",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/MEU_E02.webp",
+      "notes": "農村"
+    },
+    {
+      "id": "MEU_E03",
+      "name": "十字軍",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_E03.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "MEU_E04",
+      "name": "叙任権闘争",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_E04.webp",
+      "notes": "権力の衝突"
+    },
+    {
+      "id": "MEU_E05",
+      "name": "都市の発達",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_E05.webp",
+      "notes": "市場"
+    },
+    {
+      "id": "MEU_E06",
+      "name": "黒死病",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MEU_E06.webp",
+      "notes": "社会の衝撃"
+    },
+    {
+      "id": "MEU_E07",
+      "name": "通貨経済の拡大",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_E07.webp",
+      "notes": "商業"
+    },
+    {
+      "id": "MEU_E08",
+      "name": "修道院改革",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_E08.webp",
+      "notes": "規律"
+    },
+    {
+      "id": "MEU_S01",
+      "name": "修道院",
+      "era": "medieval_europe",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainVP": 1 } ],
+      "image": "/assets/cards/MEU_S01.webp",
+      "notes": "共同体"
+    },
+    {
+      "id": "MEU_S02",
+      "name": "ギルド",
+      "era": "medieval_europe",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_S02.webp",
+      "notes": "職人の組合"
     }
   ]
 }

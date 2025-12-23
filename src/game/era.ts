@@ -4,6 +4,7 @@
 export type EraId =
   | "ancient"
   | "medieval"
+  | "medieval_europe"
   | "sengoku"
   | "edo"
   | "meiji"

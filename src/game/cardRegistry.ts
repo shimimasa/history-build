@@ -51,6 +51,7 @@ export async function loadCardRegistry(): Promise<CardRegistry> {
     const byEra: Record<EraId, RawCard[]> = {
       ancient: [],
       medieval: [],
+      medieval_europe: [],
       sengoku: [],
       edo: [],
       meiji: [],

@@ -27,6 +27,7 @@ type Issue = {
 const KNOWN_ERAS = new Set([
   "ancient",
   "medieval",
+  "medieval_europe",
   "sengoku",
   "edo",
   "meiji",

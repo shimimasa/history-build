@@ -73,6 +73,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "medieval-europe-basic",
+    name: "中世ヨーロッパデッキ（基本）",
+    description:
+      "封建制・十字軍・都市の発達など、中世ヨーロッパ世界をテーマにした基本デッキ。",
+    era: "medieval_europe",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-basic",
     name: "中世デッキ（基本）",
     description:
