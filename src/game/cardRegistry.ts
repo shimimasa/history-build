@@ -147,17 +147,13 @@ function normalizeTypedEffect(ef: any): Effect | Effect[] | null {
       const knowledge = ef.knowledgeDelta ?? 0;
       const draw = ef.draw ?? 0;
       const victory = ef.victoryDelta ?? 0;
-      const actions = ef.actionsDelta ?? 0;
-      const buys = ef.buysDelta ?? 0;
       if (
         !rice &&
         !knowledge &&
         !draw &&
-        !victory &&
-        !actions &&
-        !buys
+        !victory
       ) {
-        return { type: "gain", raw };
+        return { type: "unknown", raw };
       }
       return {
         type: "gain",
@@ -165,26 +161,28 @@ function normalizeTypedEffect(ef: any): Effect | Effect[] | null {
         knowledgeDelta: knowledge || undefined,
         draw: draw || undefined,
         victoryDelta: victory || undefined,
-        actionsDelta: actions || undefined,
-        buysDelta: buys || undefined,
         raw
       };
-    }
-    case "trash": {
-      const count = typeof ef.count === "number" ? ef.count : 1;
-      const from = ef.from ?? "hand";
-      return { type: "trash", from, count, raw };
     }
     case "discount": {
       const amount = typeof ef.amount === "number" ? ef.amount : 0;
       if (!amount) return null;
-      const scope = ef.scope ?? "nextBuyThisTurn";
-      return { type: "discount", amount, scope, raw };
+      return { type: "discount", amount, scope: "thisTurn", raw };
+    }
+    case "trashFromHand": {
+      const count = typeof ef.count === "number" ? ef.count : 1;
+      if (count <= 0) return null;
+      return { type: "trashFromHand", count, raw };
     }
     case "attackDiscard": {
       const count = typeof ef.count === "number" ? ef.count : 1;
       if (count <= 0) return null;
       return { type: "attackDiscard", count, raw };
+    }
+    case "selfDiscard": {
+      const count = typeof ef.count === "number" ? ef.count : 1;
+      if (count <= 0) return null;
+      return { type: "selfDiscard", count, raw };
     }
     case "conditional": {
       const condition: ConditionDSL =
@@ -214,65 +212,38 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
   const raw = ef;
   const result: Effect[] = [];
 
-  // gain 系（v1.5 / v2 DSL 混在）
-  const rice = ef.addRice ?? ef.gainRice ?? 0;
-  const knowledge = ef.addKnowledge ?? ef.gainKnowledge ?? 0;
+  // gain 系（public/cards.json の RAW_KEYS を完全吸収）
+  const rice = ef.gainRice ?? ef.addRice ?? 0;
+  const knowledge = ef.gainKnowledge ?? ef.addKnowledge ?? 0;
   const draw = ef.draw ?? 0;
-  const victory =
-    ef.addVictory ?? ef.gainVP ?? ef.gainVictory ?? 0;
-  const actions = ef.addActions ?? 0;
-  const buys = ef.addBuys ?? 0;
+  const victory = ef.gainVP ?? ef.gainVictory ?? ef.addVictory ?? 0;
 
-  if (rice || knowledge || draw || victory || actions || buys) {
+  if (rice || knowledge || draw || victory) {
     result.push({
       type: "gain",
       riceDelta: rice || undefined,
       knowledgeDelta: knowledge || undefined,
       draw: draw || undefined,
       victoryDelta: victory || undefined,
-      actionsDelta: actions || undefined,
-      buysDelta: buys || undefined,
       raw
     });
   }
 
-  // trash 系
-  if (typeof ef.trashFromHand === "number" || typeof ef.trash === "number") {
-    const count = ef.trashFromHand ?? ef.trash;
-    if (typeof count === "number" && count > 0) {
-      result.push({
-        type: "trash",
-        from: "hand",
-        count,
-        raw
-      });
-    }
-  }
-
-  if (ef.trashSelf === true) {
+  // trashFromHand
+  if (typeof ef.trashFromHand === "number" && ef.trashFromHand > 0) {
     result.push({
-      type: "trash",
-      from: "played",
-      count: 1,
+      type: "trashFromHand",
+      count: ef.trashFromHand,
       raw
     });
   }
 
-  // discount 系（discount / reduceCostThisTurn）
-  let discountAmount: number | undefined;
-  if (typeof ef.discount === "number") {
-    discountAmount = ef.discount;
-  } else if (ef.discount && typeof ef.discount.amount === "number") {
-    discountAmount = ef.discount.amount;
-  } else if (typeof ef.reduceCostThisTurn === "number") {
-    discountAmount = ef.reduceCostThisTurn;
-  }
-
-  if (typeof discountAmount === "number" && discountAmount !== 0) {
+  // discount（reduceCostThisTurn）
+  if (typeof ef.reduceCostThisTurn === "number" && ef.reduceCostThisTurn !== 0) {
     result.push({
       type: "discount",
-      amount: discountAmount,
-      scope: "nextBuyThisTurn",
+      amount: ef.reduceCostThisTurn,
+      scope: "thisTurn",
       raw
     });
   }
@@ -282,6 +253,15 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
     result.push({
       type: "attackDiscard",
       count: ef.attackDiscard,
+      raw
+    });
+  }
+
+  // selfDiscard
+  if (typeof ef.selfDiscard === "number" && ef.selfDiscard > 0) {
+    result.push({
+      type: "selfDiscard",
+      count: ef.selfDiscard,
       raw
     });
   }
@@ -306,8 +286,8 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
   }
 
   if (result.length === 0) {
-    // 何も解釈できない場合は no-op gain として raw だけ保持
-    return { type: "gain", raw };
+    // 何も解釈できない場合は unknown として保持（クラッシュ禁止＋可視化）
+    return { type: "unknown", raw };
   }
 
   return result;
@@ -361,17 +341,46 @@ function normalizeConditionFromString(expr: any): ConditionDSL {
   m = expr.match(/^buysMadeThisTurn>=(\d+)$/);
   if (m) {
     return {
-      kind: "buysMadeAtLeast",
+      kind: "boughtThisTurnAtLeast",
       value: parseInt(m[1], 10)
     };
   }
 
-  // boughtVictoryThisTurn / boughtVictoryThisTurn>=N
-  m = expr.match(/^boughtVictoryThisTurn(?:>=(\d+))?$/);
+  // playedXThisTurn（例: playedPersonThisTurn / playedEventThisTurn / playedCultureThisTurn）
+  m = expr.match(/^played([A-Za-z]+)ThisTurn$/);
+  if (m) {
+    const t = m[1];
+    const lower = t.charAt(0).toLowerCase() + t.slice(1);
+    return {
+      kind: "hasCardTypeInPlay",
+      cardType: lower as any
+    };
+  }
+
+  // gainedKnowledgeThisTurn>=N
+  m = expr.match(/^gainedKnowledgeThisTurn>=(\d+)$/);
   if (m) {
     return {
-      kind: "victoryBuysAtLeast",
-      value: m[1] ? parseInt(m[1], 10) : 1
+      kind: "gainedKnowledgeThisTurnAtLeast",
+      value: parseInt(m[1], 10)
+    };
+  }
+
+  // trashedThisTurn>=N
+  m = expr.match(/^trashedThisTurn>=(\d+)$/);
+  if (m) {
+    return {
+      kind: "trashedThisTurnAtLeast",
+      value: parseInt(m[1], 10)
+    };
+  }
+
+  // attackDiscarded>=N
+  m = expr.match(/^attackDiscarded>=(\d+)$/);
+  if (m) {
+    return {
+      kind: "attackDiscardedAtLeast",
+      value: parseInt(m[1], 10)
     };
   }
 
@@ -395,6 +404,7 @@ export function convertRawCardToGameCard(raw: RawCard): Card {
     id: raw.id,
     name: raw.name,
     type: mapCategoryToType(raw.category),
+    category: raw.category,
     cost: typeof raw.cost === "number" ? raw.cost : 0,
     knowledgeRequired: 0,
     effects,

@@ -84,10 +84,10 @@ function sortSupplyPiles(piles: any[]): any[] {
   // ▼ 修正: v1 / v1.5 両対応でターン数を解決
   const displayTurn = turn ?? state.turnCount ?? 1;
 
-// v2 Card / SupplyPile 想定:
-const getCardType = (pile: any): string => {
-  return pile?.card?.type ?? pile?.card?.cardType ?? "";
-};
+  // v2 Card / SupplyPile 想定:
+  const getCardType = (pile: any): string => {
+    return pile?.card?.type ?? pile?.card?.cardType ?? "";
+  };
 
   // v2 Card / SupplyPile 想定:
   const supplyPiles: any[] = sortSupplyPiles(Object.values(supply ?? {}));
@@ -667,22 +667,22 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
   const roleLabel: string = getCardRoleLabel(card);
   const effectLines: string[] = formatEffects(card);
 
-  return (
-    <div className="hb-card-detail">
-      <div className="hb-card-detail-name">{card.name}</div>
-      <div className="hb-card-detail-meta">
-        {cardType && <span>{cardType}</span>}
-        <span> / コスト: 米 {riceCost}</span>
-        {typeof knowledgeCost === "number" && knowledgeCost > 0 && (
-          <span> / 知識 {knowledgeCost}</span>
-        )}
-      </div>
+    return (
+      <div className="hb-card-detail">
+        <div className="hb-card-detail-name">{card.name}</div>
+        <div className="hb-card-detail-meta">
+          {cardType && <span>{cardType}</span>}
+          <span> / コスト: 米 {riceCost}</span>
+          {typeof knowledgeCost === "number" && knowledgeCost > 0 && (
+            <span> / 知識 {knowledgeCost}</span>
+          )}
+        </div>
       <div className="hb-card-detail-role text-[11px] text-slate-300 mt-1">
         役割：{roleLabel}
       </div>
-      {mainText && (
-        <p className="hb-card-detail-text">{mainText}</p>
-      )}
+        {mainText && (
+          <p className="hb-card-detail-text">{mainText}</p>
+        )}
       <div className="hb-card-detail-effects">
         <div className="hb-card-detail-effects-title">効果：</div>
         {effectLines.length === 0 ? (
@@ -695,9 +695,9 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
           </ul>
         )}
       </div>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 function getPhaseLabel(phase: GamePhase | string): string {
   switch (phase) {

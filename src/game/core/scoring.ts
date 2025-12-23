@@ -21,19 +21,23 @@ export function calcPowerForPlayer(
   for (const id of allIds) {
     const card: Card | undefined = state.supply[id]?.card;
     if (!card) continue;
-    total += sumAddVictory(card);
+    // 勝利点カードのみ内訳として加算（gainVP は vpTokens へ）
+    if (card.type === "victory" || card.category === "victory") {
+      total += sumVictoryOnCard(card);
+    }
   }
-  return total;
+  return total + (p.vpTokens ?? 0);
 }
 
-function sumAddVictory(card: Card): number {
+function sumVictoryOnCard(card: Card): number {
   let sum = 0;
   for (const ef of card.effects) {
-    sum += getAddVictory(ef);
+    sum += getVictoryValue(ef);
   }
   return sum;
 }
 
-function getAddVictory(effect: Effect): number {
-  return effect.addVictory ?? 0;
+function getVictoryValue(effect: Effect): number {
+  if (effect.type !== "gain") return 0;
+  return effect.victoryDelta ?? 0;
 }

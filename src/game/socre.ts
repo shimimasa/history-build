@@ -45,11 +45,14 @@ export function computeVictoryPointsForPlayer(
   for (const id of allIds) {
     const card: Card | undefined = state.supply[id]?.card;
     if (!card) continue;
-
-    total += sumAddVictoryInCard(card);
+    // 勝利点カード（category/type= victory）のみ「カード内訳として」加算する
+    if (card.type === "victory" || card.category === "victory") {
+      total += sumAddVictoryInCard(card);
+    }
   }
 
-  return total;
+  // 効果で獲得した勝利点はトークンとして別管理し、ここで合算する
+  return total + (player.vpTokens ?? 0);
 }
 
 /**
@@ -101,6 +104,9 @@ export function computeVictoryBreakdownForPlayer(
     const card: Card | undefined = state.supply[id]?.card;
     if (!card) continue;
 
+    // 勝利点カード以外は内訳に出さない（gainVP は vpTokens へ移行）
+    if (!(card.type === "victory" || card.category === "victory")) continue;
+
     const pointsPerCard = sumAddVictoryInCard(card);
     if (pointsPerCard <= 0) continue;
 
@@ -125,6 +131,18 @@ export function computeVictoryBreakdownForPlayer(
     }
     return a.cardName.localeCompare(b.cardName, "ja");
   });
+
+  // 勝利点トークン（効果で得たVP）
+  const tokens = player.vpTokens ?? 0;
+  if (tokens > 0) {
+    entries.unshift({
+      cardId: "VP_TOKENS",
+      cardName: "勝利点トークン",
+      count: 1,
+      pointsPerCard: tokens,
+      totalPoints: tokens
+    });
+  }
 
   return entries;
 }

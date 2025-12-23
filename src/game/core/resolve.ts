@@ -214,6 +214,12 @@ function resolveBuyCard(
 
   const card = state.supply[supplyCardId]?.card;
   const name = card?.name ?? supplyCardId;
+  const baseCost = card?.cost ?? 0;
+  const discount = Math.max(
+    0,
+    (playerId === "player" ? state.player : state.cpu).buyDiscountThisTurn ?? 0
+  );
+  const discountUsed = Math.max(0, baseCost - result.costRice);
 
   const events: GameEvent[] = [
     {
@@ -241,7 +247,10 @@ function resolveBuyCard(
     },
     {
       type: "LOG",
-      msg: `[BUY] 「${name}」を購入（米 -${result.costRice}）`
+      msg:
+        discountUsed > 0
+          ? `[BUY] 「${name}」を購入（割引 -${Math.min(discount, discountUsed)}、米 -${result.costRice}）`
+          : `[BUY] 「${name}」を購入（米 -${result.costRice}）`
     }
   ];
 

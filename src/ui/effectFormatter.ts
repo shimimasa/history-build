@@ -12,42 +12,38 @@ function formatSingleEffect(ef: Effect): string[] {
         lines.push(`米 +${ef.riceDelta}`);
       }
       if (typeof ef.knowledgeDelta === "number" && ef.knowledgeDelta !== 0) {
-        lines.push(`知識 +${ef.knowledgeDelta}`);
+        lines.push(`見識 +${ef.knowledgeDelta}`);
       }
       if (typeof ef.draw === "number" && ef.draw > 0) {
         lines.push(`カードを ${ef.draw} 枚引く`);
       }
       if (typeof ef.victoryDelta === "number" && ef.victoryDelta !== 0) {
-        lines.push(`勝利点 +${ef.victoryDelta}`);
-      }
-      if (typeof ef.actionsDelta === "number" && ef.actionsDelta !== 0) {
-        lines.push(`アクション +${ef.actionsDelta}`);
-      }
-      if (typeof ef.buysDelta === "number" && ef.buysDelta !== 0) {
-        lines.push(`購入権 +${ef.buysDelta}`);
+        lines.push(`勝利点トークン +${ef.victoryDelta}`);
       }
       break;
     }
-    case "trash": {
-      const target =
-        ef.from === "played"
-          ? "プレイ中のカード"
-          : ef.from === "discard"
-          ? "捨て札"
-          : "手札";
-      lines.push(`${target}から ${ef.count} 枚廃棄する`);
+    case "trashFromHand": {
+      lines.push(`手札から ${ef.count} 枚廃棄する`);
       break;
     }
     case "discount": {
-      lines.push(`次の購入コスト -${ef.amount}`);
+      lines.push(`このターンの購入コスト -${ef.amount}`);
       break;
     }
     case "attackDiscard": {
       lines.push(`相手に手札を ${ef.count} 枚捨てさせる（攻撃）`);
       break;
     }
+    case "selfDiscard": {
+      lines.push(`手札を ${ef.count} 枚捨てる`);
+      break;
+    }
     case "conditional": {
       lines.push("条件付きの特殊効果");
+      break;
+    }
+    case "unknown": {
+      lines.push("未対応効果");
       break;
     }
   }

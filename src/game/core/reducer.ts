@@ -5,6 +5,7 @@ import { resolveCommand } from "./resolve";
 import { applyAll } from "./applyEvent";
 import { appendLog } from "../log";
 import { applyEffects } from "../applyEffect";
+import { canBuy } from "./canBuy";
 
 // コマンド → イベント列 → state 更新の唯一の入口
 export function dispatch(state: GameState, cmd: Command): GameState {
@@ -97,6 +98,73 @@ export function dispatch(state: GameState, cmd: Command): GameState {
     withTrace = appendTraceDiff(withTrace, cmd.playerId, before, after);
 
     return withTrace;
+  }
+
+  // BUY_CARD: 割引消費・購入回数カウンタ更新（成功時のみ）
+  if (cmd.type === "BUY_CARD") {
+    const preCheck = canBuy(state, cmd.playerId, cmd.supplyCardId);
+    const events = resolveCommand(state, cmd);
+    let next = applyAll(state, events);
+
+    if (preCheck.ok) {
+      const pile = next.supply[cmd.supplyCardId];
+      const boughtCard = pile?.card;
+      next = {
+        ...next,
+        player:
+          cmd.playerId === "player"
+            ? {
+                ...next.player,
+                buyDiscountThisTurn: 0,
+                buysMadeThisTurn: (next.player.buysMadeThisTurn ?? 0) + 1,
+                boughtVictoryThisTurn:
+                  boughtCard?.type === "victory"
+                    ? (next.player.boughtVictoryThisTurn ?? 0) + 1
+                    : next.player.boughtVictoryThisTurn ?? 0
+              }
+            : next.player,
+        cpu:
+          cmd.playerId === "cpu"
+            ? {
+                ...next.cpu,
+                buyDiscountThisTurn: 0,
+                buysMadeThisTurn: (next.cpu.buysMadeThisTurn ?? 0) + 1,
+                boughtVictoryThisTurn:
+                  boughtCard?.type === "victory"
+                    ? (next.cpu.boughtVictoryThisTurn ?? 0) + 1
+                    : next.cpu.boughtVictoryThisTurn ?? 0
+              }
+            : next.cpu
+      };
+
+      // デバッグ用（割引が残りっぱなしを早期検知）
+      next = appendLog(next, cmd.playerId, "[TRACE] BUY_SUCCESS: discountConsumed=1");
+    }
+
+    return next;
+  }
+
+  // END_TURN: ターン系カウンタを全リセット（core 側の唯一の経路）
+  if (cmd.type === "END_TURN") {
+    const events = resolveCommand(state, cmd);
+    let next = applyAll(state, events);
+
+    const reset = (p: PlayerState): PlayerState => ({
+      ...p,
+      buyDiscountThisTurn: 0,
+      buysMadeThisTurn: 0,
+      boughtVictoryThisTurn: 0,
+      trashedThisTurn: 0,
+      attackDiscardedThisTurn: 0,
+      gainedKnowledgeThisTurn: 0
+    });
+
+    next = {
+      ...next,
+      player: cmd.playerId === "player" ? reset(next.player) : next.player,
+      cpu: cmd.playerId === "cpu" ? reset(next.cpu) : next.cpu
+    };
+    return next;
   }
 
   const events = resolveCommand(state, cmd);

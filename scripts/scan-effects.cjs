@@ -37,46 +37,38 @@ function normalizeEffectTypesForRawEffect(rawEf) {
     const t = rawEf.type;
     if (
       t === "gain" ||
-      t === "trash" ||
       t === "discount" ||
       t === "attackDiscard" ||
-      t === "conditional"
+      t === "trashFromHand" ||
+      t === "selfDiscard" ||
+      t === "conditional" ||
+      t === "unknown"
     ) {
       return [t];
     }
     return ["unknown"];
   }
 
-  // legacy DSL / v1.5
-  const rice = rawEf.addRice ?? rawEf.gainRice ?? 0;
-  const knowledge = rawEf.addKnowledge ?? rawEf.gainKnowledge ?? 0;
+  // legacy DSL
+  const rice = rawEf.gainRice ?? rawEf.addRice ?? 0;
+  const knowledge = rawEf.gainKnowledge ?? rawEf.addKnowledge ?? 0;
   const draw = rawEf.draw ?? 0;
-  const victory = rawEf.addVictory ?? rawEf.gainVP ?? rawEf.gainVictory ?? 0;
-  const actions = rawEf.addActions ?? rawEf.gainActions ?? 0;
-  const buys = rawEf.addBuys ?? rawEf.gainBuys ?? 0;
+  const victory = rawEf.gainVP ?? rawEf.gainVictory ?? rawEf.addVictory ?? 0;
 
   const types = [];
-  if (rice || knowledge || draw || victory || actions || buys) types.push("gain");
+  if (rice || knowledge || draw || victory) types.push("gain");
 
-  const trashCount =
-    typeof rawEf.trashFromHand === "number"
-      ? rawEf.trashFromHand
-      : typeof rawEf.trash === "number"
-      ? rawEf.trash
-      : undefined;
-  if (typeof trashCount === "number" && trashCount > 0) types.push("trash");
-  if (rawEf.trashSelf === true) types.push("trash");
+  if (typeof rawEf.trashFromHand === "number" && rawEf.trashFromHand > 0)
+    types.push("trashFromHand");
 
-  let discountAmount;
-  if (typeof rawEf.discount === "number") discountAmount = rawEf.discount;
-  else if (rawEf.discount && typeof rawEf.discount.amount === "number")
-    discountAmount = rawEf.discount.amount;
-  else if (typeof rawEf.reduceCostThisTurn === "number")
-    discountAmount = rawEf.reduceCostThisTurn;
-  if (typeof discountAmount === "number" && discountAmount !== 0) types.push("discount");
+  if (typeof rawEf.reduceCostThisTurn === "number" && rawEf.reduceCostThisTurn !== 0)
+    types.push("discount");
 
   if (typeof rawEf.attackDiscard === "number" && rawEf.attackDiscard > 0)
     types.push("attackDiscard");
+
+  if (typeof rawEf.selfDiscard === "number" && rawEf.selfDiscard > 0)
+    types.push("selfDiscard");
 
   const condSrc = rawEf.conditional ?? rawEf.condition;
   if (condSrc && typeof condSrc === "object") types.push("conditional");

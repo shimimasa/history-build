@@ -28,7 +28,7 @@ export function applyEffects(
 
 /**
  * 単一の Effect を適用する。
- * - 正規DSL（type: "gain" / "trash" / "discount" / "attackDiscard" / "conditional"）に対応。
+ * - 正規DSL（type: "gain" / "discount" / "trashFromHand" / "attackDiscard" / "selfDiscard" / "conditional" / "unknown"）に対応。
  * - state は決して mutate せず、新しい GameState を返す。
  */
 export function applyEffect(
@@ -50,67 +50,34 @@ export function applyEffect(
       newState = appendLog(
         newState,
         target,
-        `[TRACE] APPLY_GAIN: riceDelta=${effect.riceDelta ?? 0}, knowledgeDelta=${effect.knowledgeDelta ?? 0}, draw=${effect.draw ?? 0}, actionsDelta=${effect.actionsDelta ?? 0}, buysDelta=${effect.buysDelta ?? 0}`
+        `[TRACE] APPLY_GAIN: riceDelta=${effect.riceDelta ?? 0}, knowledgeDelta=${effect.knowledgeDelta ?? 0}, draw=${effect.draw ?? 0}, victoryDelta=${effect.victoryDelta ?? 0}`
       );
 
       if (effect.riceDelta && effect.riceDelta !== 0) {
         player.riceThisTurn += effect.riceDelta;
+        player.turn = {
+          ...player.turn,
+          rice: (player.turn?.rice ?? 0) + effect.riceDelta
+        };
       }
       if (effect.knowledgeDelta && effect.knowledgeDelta !== 0) {
         player.knowledge += effect.knowledgeDelta;
+        player.gainedKnowledgeThisTurn =
+          (player.gainedKnowledgeThisTurn ?? 0) + effect.knowledgeDelta;
+        player.turn = {
+          ...player.turn,
+          knowledge: (player.turn?.knowledge ?? 0) + effect.knowledgeDelta
+        };
       }
       if (effect.draw && effect.draw > 0) {
         for (let i = 0; i < effect.draw; i++) {
           drawOneCardForPlayer(player);
         }
       }
-      // 勝利点は即時 state には反映せず、ログのみ
+      // 勝利点（トークン）は即時に vpTokens へ加算
       if (effect.victoryDelta && effect.victoryDelta !== 0) {
-        newState = appendLog(
-          newState,
-          target,
-          `[EFF] 勝利点 +${effect.victoryDelta}`
-        );
-      }
-      // actions / buys は TurnCounters に反映（あれば）
-      if (effect.actionsDelta && effect.actionsDelta !== 0) {
-        player.turn = {
-          ...player.turn,
-          actions: (player.turn?.actions ?? 0) + effect.actionsDelta
-        };
-      }
-      if (effect.buysDelta && effect.buysDelta !== 0) {
-        player.turn = {
-          ...player.turn,
-          buys: (player.turn?.buys ?? 0) + effect.buysDelta
-        };
-      }
-      break;
-    }
-    case "trash": {
-      const from = effect.from ?? "hand";
-      let remaining = effect.count;
-      if (remaining <= 0) break;
-
-      if (from === "hand") {
-        while (remaining > 0 && player.hand.length > 0) {
-          const cardId = player.hand.shift();
-          if (cardId !== undefined) {
-            // v1.5 では廃棄置き場を持っていないため、
-            // 簡易的に discard からも取り除くことなく「消える」とする。
-          }
-          remaining--;
-        }
-      } else if (from === "played") {
-        while (remaining > 0 && player.played.length > 0) {
-          player.played.pop();
-          remaining--;
-        }
-      } else if (from === "discard") {
-        while (remaining > 0 && player.discard.length > 0) {
-          player.discard.pop();
-          remaining--;
-        }
+        player.vpTokens = (player.vpTokens ?? 0) + effect.victoryDelta;
+        newState = appendLog(newState, target, `[EFF] 勝利点トークン +${effect.victoryDelta}`);
       }
       break;
     }
@@ -121,18 +88,82 @@ export function applyEffect(
       newState = appendLog(
         newState,
         target,
-        `[EFF] 割引 -${effect.amount}（次の購入）`
+        `[EFF] 割引 -${effect.amount}（このターン）`
       );
+      break;
+    }
+    case "trashFromHand": {
+      const count = effect.count ?? 0;
+      if (count <= 0) break;
+
+      const trashed: string[] = [];
+      for (let i = 0; i < count && player.hand.length > 0; i++) {
+        const idx = Math.floor(Math.random() * player.hand.length);
+        const [cardId] = player.hand.splice(idx, 1);
+        if (cardId !== undefined) {
+          trashed.push(cardId);
+          player.trashedThisTurn = (player.trashedThisTurn ?? 0) + 1;
+          newState.trashPile = [...(newState.trashPile ?? []), cardId];
+        }
+      }
+
+      if (trashed.length === 0) {
+        newState = appendLog(newState, target, "[EFF] 廃棄：手札にカードがない");
+      } else {
+        for (const id of trashed) {
+          const name = newState.supply[id]?.card?.name ?? id;
+          newState = appendLog(newState, target, `[EFF] 手札から「${name}」を廃棄`);
+        }
+      }
       break;
     }
     case "attackDiscard": {
       newState = applyAttackDiscard(newState, target, effect.count);
       break;
     }
+    case "selfDiscard": {
+      const count = effect.count ?? 0;
+      if (count <= 0) break;
+      const discarded: string[] = [];
+      for (let i = 0; i < count && player.hand.length > 0; i++) {
+        const idx = Math.floor(Math.random() * player.hand.length);
+        const [cardId] = player.hand.splice(idx, 1);
+        if (cardId !== undefined) {
+          discarded.push(cardId);
+          player.discard.push(cardId);
+        }
+      }
+      if (discarded.length === 0) {
+        newState = appendLog(newState, target, "[EFF] 捨てるカードがない");
+      } else {
+        for (const id of discarded) {
+          const name = newState.supply[id]?.card?.name ?? id;
+          newState = appendLog(newState, target, `[EFF] 手札から「${name}」を捨てた`);
+        }
+      }
+      break;
+    }
     case "conditional": {
       newState = applyConditionalEffect(newState, target, effect);
-      // conditional 自体では差分ログを出さず、内側の then/else 効果に任せる
+      // conditional 自体でも「達成/未達」をログに残す（then/else の中身は通常のログに任せる）
       return newState;
+    }
+    case "unknown": {
+      newState = appendLog(
+        newState,
+        target,
+        `[EFF] 未対応効果: ${safeShortJson(effect.raw)}`
+      );
+      break;
+    }
+    default: {
+      // 将来追加された型に備えてクラッシュしない
+      newState = appendLog(
+        newState,
+        target,
+        `[EFF] 未対応効果: ${safeShortJson(effect as any)}`
+      );
+      break;
     }
   }
 
@@ -275,44 +306,63 @@ function applyAttackDiscard(
   count: number
 ): GameState {
   const defender: ActivePlayer = attacker === "player" ? "cpu" : "player";
-  const player = defender === "player" ? state.player : state.cpu;
+  const defenderPlayer = defender === "player" ? state.player : state.cpu;
+  const attackerPlayer = attacker === "player" ? state.player : state.cpu;
 
-  if (player.hand.length === 0) {
-    return appendLog(state, defender, "捨てるカードがない（攻撃）");
+  if (defenderPlayer.hand.length === 0) {
+    return appendLog(state, defender, "[EFF] 捨てるカードがない（攻撃）");
   }
 
-  const newHand = [...player.hand];
-  const newDiscard = [...player.discard];
+  const newHand = [...defenderPlayer.hand];
+  const newDiscard = [...defenderPlayer.discard];
   let discarded = 0;
+  const discardedIds: string[] = [];
 
   for (let i = 0; i < count && newHand.length > 0; i++) {
     const idx = Math.floor(Math.random() * newHand.length);
     const [cardId] = newHand.splice(idx, 1);
     if (cardId !== undefined) {
       newDiscard.push(cardId);
+      discardedIds.push(cardId);
       discarded++;
     }
   }
 
   const updatedDefender: PlayerState = {
-    ...player,
+    ...defenderPlayer,
     hand: newHand,
     discard: newDiscard
   };
 
-  let nextState: GameState =
-    defender === "player"
-      ? { ...state, player: updatedDefender }
-      : { ...state, cpu: updatedDefender };
+  const updatedAttacker: PlayerState = {
+    ...attackerPlayer,
+    attackDiscardedThisTurn:
+      (attackerPlayer.attackDiscardedThisTurn ?? 0) + discarded
+  };
+
+  let nextState: GameState = {
+    ...state,
+    player:
+      attacker === "player"
+        ? updatedAttacker
+        : defender === "player"
+        ? updatedDefender
+        : state.player,
+    cpu:
+      attacker === "cpu"
+        ? updatedAttacker
+        : defender === "cpu"
+        ? updatedDefender
+        : state.cpu
+  };
 
   if (discarded > 0) {
-    nextState = appendLog(
-      nextState,
-      defender,
-      `手札から${discarded}枚を捨てた（攻撃）`
-    );
+    for (const id of discardedIds) {
+      const name = nextState.supply[id]?.card?.name ?? id;
+      nextState = appendLog(nextState, defender, `[EFF] 手札から「${name}」を捨てた（攻撃）`);
+    }
   } else {
-    nextState = appendLog(nextState, defender, "捨てるカードがない（攻撃）");
+    nextState = appendLog(nextState, defender, "[EFF] 捨てるカードがない（攻撃）");
   }
 
   return nextState;
@@ -320,11 +370,7 @@ function applyAttackDiscard(
 
 /**
  * conditional DSL の評価と then / else 効果の適用。
- * - 対応条件:
- *   - knowledgeAtLeast
- *   - buysMadeAtLeast
- *   - victoryBuysAtLeast
- * - custom は「未対応」としてログを出してスキップする。
+ * - 未対応条件は必ずログに残し、クラッシュしない。
  */
 function applyConditionalEffect(
   state: GameState,
@@ -341,22 +387,21 @@ function applyConditionalEffect(
     return appendLog(
       state,
       owner,
-      `条件付きの特殊効果（未対応）：${describeCondition(cond)}`
+      `[EFF] 未対応条件：${describeCondition(cond)}`
     );
   }
 
-  if (!evalResult) {
-    // 対応条件だが未達成の場合は何もしない（ログも最小限）
-    return state;
+  if (evalResult) {
+    let next = appendLog(state, owner, `[EFF] 条件達成（${describeCondition(cond)}）→ 効果発動`);
+    next = applyEffects(next, owner, thenEffects);
+    return next;
   }
 
-  // 条件達成：then 配列を Effect[] に変換して再帰的に適用
-  let next = appendLog(
-    state,
-    owner,
-    `条件達成（${describeCondition(cond)}）→ 効果発動`
-  );
-  next = applyEffects(next, owner, thenEffects);
+  // 条件未達：else があれば適用
+  let next = appendLog(state, owner, `[EFF] 条件未達（${describeCondition(cond)}）`);
+  if (elseEffects && elseEffects.length > 0) {
+    next = applyEffects(next, owner, elseEffects);
+  }
   return next;
 }
 
@@ -374,15 +419,33 @@ function evaluateCondition(
       const threshold = cond.value ?? 0;
       return player.knowledge >= threshold;
     }
-    case "buysMadeAtLeast": {
+    case "boughtThisTurnAtLeast": {
       const threshold = cond.value ?? 0;
       const count = player.buysMadeThisTurn ?? 0;
       return count >= threshold;
     }
-    case "victoryBuysAtLeast": {
+    case "hasCardTypeInPlay": {
+      const t = cond.cardType;
+      if (!t) return "unsupported";
+      for (const id of player.played) {
+        const card = state.supply[id]?.card;
+        if (!card) continue;
+        if (card.type === t) return true;
+        if ((card.category ?? "").toLowerCase() === t) return true;
+      }
+      return false;
+    }
+    case "trashedThisTurnAtLeast": {
       const threshold = cond.value ?? 0;
-      const count = player.boughtVictoryThisTurn ?? 0;
-      return count >= threshold;
+      return (player.trashedThisTurn ?? 0) >= threshold;
+    }
+    case "attackDiscardedAtLeast": {
+      const threshold = cond.value ?? 0;
+      return (player.attackDiscardedThisTurn ?? 0) >= threshold;
+    }
+    case "gainedKnowledgeThisTurnAtLeast": {
+      const threshold = cond.value ?? 0;
+      return (player.gainedKnowledgeThisTurn ?? 0) >= threshold;
     }
     case "custom":
     default:
@@ -394,10 +457,16 @@ function describeCondition(cond: ConditionDSL): string {
   switch (cond.kind) {
     case "knowledgeAtLeast":
       return `知識${cond.value ?? 0}以上`;
-    case "buysMadeAtLeast":
+    case "boughtThisTurnAtLeast":
       return `このターンに購入を${cond.value ?? 0}回以上`;
-    case "victoryBuysAtLeast":
-      return `このターンに勝利点カードを${cond.value ?? 0}枚以上購入`;
+    case "hasCardTypeInPlay":
+      return `プレイ済みに${cond.cardType ?? "?"}がある`;
+    case "trashedThisTurnAtLeast":
+      return `このターンに廃棄を${cond.value ?? 0}回以上`;
+    case "attackDiscardedAtLeast":
+      return `攻撃で捨てさせた枚数が${cond.value ?? 0}以上`;
+    case "gainedKnowledgeThisTurnAtLeast":
+      return `このターンに得た見識が${cond.value ?? 0}以上`;
     case "custom":
     default:
       return cond.expr ?? "特殊条件";
@@ -413,10 +482,21 @@ function cloneGameState(state: GameState): GameState {
     ...state,
     player: clonePlayerState(state.player),
     cpu: clonePlayerState(state.cpu),
+    trashPile: [...(state.trashPile ?? [])],
     // supply はここでは変更しない前提のため、参照のままでもよい。
     // 将来 gain で supply.remaining を減らすようにする場合は、
     // 必要に応じて supply もコピーする。
   };
+}
+
+function safeShortJson(v: any): string {
+  try {
+    const s = JSON.stringify(v);
+    if (s.length <= 160) return s;
+    return s.slice(0, 157) + "...";
+  } catch {
+    return String(v);
+  }
 }
 
 function clonePlayerState(player: PlayerState): PlayerState {

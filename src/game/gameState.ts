@@ -13,15 +13,21 @@ import type { EraId } from "./cardRegistry";
  * - すべての cards.json の効果はこの形に集約される（normalizeEffects 経由）
  */
 export type ConditionKind =
-  | "knowledgeAtLeast"
-  | "buysMadeAtLeast"
-  | "victoryBuysAtLeast"
+  | "knowledgeAtLeast" // totalKnowledge>=N
+  | "boughtThisTurnAtLeast" // buysMadeThisTurn>=N
+  | "hasCardTypeInPlay" // playedXThisTurn
+  // 実データ頻出（代表カードがこれを使うため必須）
+  | "trashedThisTurnAtLeast" // trashedThisTurn>=N
+  | "attackDiscardedAtLeast" // attackDiscarded>=N
+  | "gainedKnowledgeThisTurnAtLeast" // gainedKnowledgeThisTurn>=N
+  // 最後の逃げ道（クラッシュ禁止＋ログ用）
   | "custom";
 
 export interface ConditionDSL {
   kind: ConditionKind;
-  /** knowledgeAtLeast / buysMadeAtLeast / victoryBuysAtLeast で使用するしきい値 */
   value?: number;
+  /** hasCardTypeInPlay で使用（cards.json の playedPersonThisTurn 等を吸収） */
+  cardType?: "resource" | "victory" | "person" | "event" | "structure" | "culture";
   /** custom 条件用の生文字列表現（デバッグ用途） */
   expr?: string;
 }
@@ -33,24 +39,26 @@ export type Effect =
       knowledgeDelta?: number;
       draw?: number;
       victoryDelta?: number;
-      actionsDelta?: number;
-      buysDelta?: number;
       raw?: any; // 元 DSL（cards.json 由来）
-    }
-  | {
-      type: "trash";
-      from?: "hand" | "played" | "discard";
-      count: number;
-      raw?: any;
     }
   | {
       type: "discount";
       amount: number;
-      scope: "nextBuyThisTurn";
+      scope: "thisTurn";
+      raw?: any;
+    }
+  | {
+      type: "trashFromHand";
+      count: number;
       raw?: any;
     }
   | {
       type: "attackDiscard";
+      count: number;
+      raw?: any;
+    }
+  | {
+      type: "selfDiscard";
       count: number;
       raw?: any;
     }
@@ -60,6 +68,10 @@ export type Effect =
       then: Effect[];
       else?: Effect[];
       raw?: any;
+    }
+  | {
+      type: "unknown";
+      raw: any;
     };
 
 /**
@@ -75,6 +87,8 @@ export interface Card {
   id: string;
   name: string;
   type: "resource" | "victory" | "person" | "event";
+  /** public/cards.json の category を保持（条件判定やデバッグ用） */
+  category?: string;
   cost: number;
   knowledgeRequired: number;
   effects: Effect[];
@@ -112,9 +126,15 @@ export interface PlayerState {
   turnsTaken: number;   // 行動したターン数
 
   // 購入・割引・条件付き効果用のターン中カウンタ
-  buyDiscountThisTurn: number;      // 次の購入 1 回に適用される割引合計（米）
+  buyDiscountThisTurn: number;      // このターンに適用される割引合計（米）※購入成功で消費（0に戻す）
   buysMadeThisTurn: number;         // このターンに行った購入回数
   boughtVictoryThisTurn: number;    // このターンに購入した勝利点カード枚数
+  trashedThisTurn: number;          // このターンに廃棄した枚数
+  attackDiscardedThisTurn: number;  // このターンに攻撃で相手に捨てさせた枚数
+  gainedKnowledgeThisTurn: number;  // このターンに獲得した知識量（>=判定用）
+
+  // 勝利点トークン（カード内訳スコアとは別に「効果で得たVP」を保持）
+  vpTokens: number;
 
   // ★ 追加：フェーズをまたいで保持されるターンカウンタ
   turn: TurnCounters;
@@ -147,6 +167,9 @@ export interface GameState {
   // ★ 追加：イベントログ
   eventLog: string[];
 
+  // ★ 追加：廃棄置き場（trashFromHand の実体）
+  trashPile: string[];
+
   // ★ 追加：ゲーム開始時に選択された時代とデッキ種別（UI 表示用 / 将来拡張用）
   era?: EraId;
   deckType?: "basic" | "challenge";
@@ -177,6 +200,10 @@ export function createInitialPlayerState(initialDeck: string[]): PlayerState {
     buyDiscountThisTurn: 0,
     buysMadeThisTurn: 0,
     boughtVictoryThisTurn: 0,
+    trashedThisTurn: 0,
+    attackDiscardedThisTurn: 0,
+    gainedKnowledgeThisTurn: 0,
+    vpTokens: 0,
     turn: {
       actions: 1,
       buys: 1,
@@ -221,7 +248,8 @@ export function createInitialGameState(cards: Card[]): GameState {
     turnCount: 1,
     gameEnded: false,
     winner: null,
-    eventLog: []
+    eventLog: [],
+    trashPile: []
   };
 }
 
