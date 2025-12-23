@@ -3801,6 +3801,324 @@
       ],
       "image": "/assets/cards/MEU_S02.webp",
       "notes": "職人の組合"
+    },
+    {
+      "id": "ISW_R01",
+      "name": "香辛料交易",
+      "era": "islamic_world",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/ISW_R01.webp",
+      "notes": "インド洋交易"
+    },
+    {
+      "id": "ISW_R02",
+      "name": "シルクロード",
+      "era": "islamic_world",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_R02.webp",
+      "notes": "隊商路"
+    },
+    {
+      "id": "ISW_V01",
+      "name": "知恵の館",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/ISW_V01.webp",
+      "notes": "学問の集積"
+    },
+    {
+      "id": "ISW_V02",
+      "name": "シャリーア体系化",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/ISW_V02.webp",
+      "notes": "法学"
+    },
+    {
+      "id": "ISW_V03",
+      "name": "学問都市",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/ISW_V03.webp",
+      "notes": "教育と交流"
+    },
+    {
+      "id": "ISW_V04",
+      "name": "灌漑網の拡張",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/ISW_V04.webp",
+      "notes": "農業の発展"
+    },
+    {
+      "id": "ISW_V05",
+      "name": "交易圏の形成",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/ISW_V05.webp",
+      "notes": "広域経済"
+    },
+    {
+      "id": "ISW_V06",
+      "name": "イスラーム文明の成熟",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/ISW_V06.webp",
+      "notes": "文化の総合"
+    },
+    {
+      "id": "ISW_P01",
+      "name": "ムハンマド",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainKnowledge": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/ISW_P01.webp",
+      "notes": "共同体の形成"
+    },
+    {
+      "id": "ISW_P02",
+      "name": "アブー＝バクル",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_P02.webp",
+      "notes": "初代正統カリフ"
+    },
+    {
+      "id": "ISW_P03",
+      "name": "ウマイヤ朝のカリフ",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/ISW_P03.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "ISW_P04",
+      "name": "アッバース朝のカリフ",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_P04.webp",
+      "notes": "バグダード"
+    },
+    {
+      "id": "ISW_P05",
+      "name": "イブン＝シーナ",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/ISW_P05.webp",
+      "notes": "医学と哲学"
+    },
+    {
+      "id": "ISW_P06",
+      "name": "イブン＝ハルドゥーン",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_P06.webp",
+      "notes": "歴史叙述"
+    },
+    {
+      "id": "ISW_P07",
+      "name": "サラディン",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_P07.webp",
+      "notes": "十字軍への対抗"
+    },
+    {
+      "id": "ISW_P08",
+      "name": "ウラマー",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_P08.webp",
+      "notes": "宗教的権威"
+    },
+    {
+      "id": "ISW_P09",
+      "name": "書記",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/ISW_P09.webp",
+      "notes": "記録"
+    },
+    {
+      "id": "ISW_P10",
+      "name": "隊商長",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/ISW_P10.webp",
+      "notes": "交易の実務"
+    },
+    {
+      "id": "ISW_P11",
+      "name": "天文学者",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/ISW_P11.webp",
+      "notes": "暦と観測"
+    },
+    {
+      "id": "ISW_P12",
+      "name": "商人",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/ISW_P12.webp",
+      "notes": "手札を整える"
+    },
+    {
+      "id": "ISW_E01",
+      "name": "カリフ制",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E01.webp",
+      "notes": "統治"
+    },
+    {
+      "id": "ISW_E02",
+      "name": "ジズヤ",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/ISW_E02.webp",
+      "notes": "税制"
+    },
+    {
+      "id": "ISW_E03",
+      "name": "翻訳運動",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E03.webp",
+      "notes": "知の継承"
+    },
+    {
+      "id": "ISW_E04",
+      "name": "隊商交易",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/ISW_E04.webp",
+      "notes": "市場"
+    },
+    {
+      "id": "ISW_E05",
+      "name": "スーフィズム",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/ISW_E05.webp",
+      "notes": "内面的修養"
+    },
+    {
+      "id": "ISW_E06",
+      "name": "ワクフ（寄進）",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E06.webp",
+      "notes": "慈善"
+    },
+    {
+      "id": "ISW_E07",
+      "name": "十字軍対応",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E07.webp",
+      "notes": "防衛"
+    },
+    {
+      "id": "ISW_E08",
+      "name": "学問の奨励",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_E08.webp",
+      "notes": "後援"
+    },
+    {
+      "id": "ISW_S01",
+      "name": "バグダード",
+      "era": "islamic_world",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_S01.webp",
+      "notes": "都"
+    },
+    {
+      "id": "ISW_S02",
+      "name": "モスク",
+      "era": "islamic_world",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_S02.webp",
+      "notes": "共同体の中心"
     }
   ]
 }

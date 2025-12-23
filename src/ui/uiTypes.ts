@@ -73,6 +73,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "islamic-world-basic",
+    name: "イスラーム世界デッキ（基本）",
+    description:
+      "翻訳運動・隊商交易・学問都市など、イスラーム世界をテーマにした基本デッキ。",
+    era: "islamic_world",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:
