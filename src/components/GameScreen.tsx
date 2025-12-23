@@ -478,6 +478,8 @@ React.useEffect(() => {
               east_asia: "東アジア",
               south_asia: "南アジア世界",
               southeast_asia: "東南アジア世界",
+              central_asia: "中央アジア世界",
+              sub_saharan_africa: "サハラ以南アフリカ",
               sengoku: "戦国",
               edo: "江戸",
               meiji: "明治"

@@ -5058,6 +5058,636 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/SEA_S02.webp",
       "notes": "寺院"
+    },
+    {
+      "id": "CAS_R01",
+      "name": "馬（遊牧資源）",
+      "era": "central_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/CAS_R01.webp",
+      "notes": "機動力"
+    },
+    {
+      "id": "CAS_R02",
+      "name": "交易税（関所収入）",
+      "era": "central_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_R02.webp",
+      "notes": "通行税"
+    },
+    {
+      "id": "CAS_V01",
+      "name": "東西交易の結節点",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/CAS_V01.webp",
+      "notes": "結節"
+    },
+    {
+      "id": "CAS_V02",
+      "name": "遊牧と農耕の交差",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/CAS_V02.webp",
+      "notes": "境界"
+    },
+    {
+      "id": "CAS_V03",
+      "name": "世界帝国の形成",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/CAS_V03.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "CAS_V04",
+      "name": "イスラーム学術の発展",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/CAS_V04.webp",
+      "notes": "学術"
+    },
+    {
+      "id": "CAS_V05",
+      "name": "シルクロード文化交流",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/CAS_V05.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "CAS_V06",
+      "name": "オアシス文明の成熟",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/CAS_V06.webp",
+      "notes": "成熟"
+    },
+    {
+      "id": "CAS_P01",
+      "name": "チンギス・ハン",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_P01.webp",
+      "notes": "遊牧帝国"
+    },
+    {
+      "id": "CAS_P02",
+      "name": "フビライ",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/CAS_P02.webp",
+      "notes": "征服"
+    },
+    {
+      "id": "CAS_P03",
+      "name": "ティムール",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_P03.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "CAS_P04",
+      "name": "バーブル",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/CAS_P04.webp",
+      "notes": "征服"
+    },
+    {
+      "id": "CAS_P05",
+      "name": "マフムード・ガズナヴィー",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_P05.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "CAS_P06",
+      "name": "アル＝フワーリズミー",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/CAS_P06.webp",
+      "notes": "数学"
+    },
+    {
+      "id": "CAS_P07",
+      "name": "イブン＝スィーナー（アヴィケンナ）",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/CAS_P07.webp",
+      "notes": "医学と哲学"
+    },
+    {
+      "id": "CAS_P08",
+      "name": "アル＝ビールーニー",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_P08.webp",
+      "notes": "学術"
+    },
+    {
+      "id": "CAS_P09",
+      "name": "トゥグリル・ベク",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/CAS_P09.webp",
+      "notes": "セルジューク"
+    },
+    {
+      "id": "CAS_P10",
+      "name": "ジャラールッディーン",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/CAS_P10.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "CAS_P11",
+      "name": "マナス（叙事詩の英雄）",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_P11.webp",
+      "notes": "英雄"
+    },
+    {
+      "id": "CAS_P12",
+      "name": "アッティラ",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/CAS_P12.webp",
+      "notes": "侵攻"
+    },
+    {
+      "id": "CAS_E01",
+      "name": "シルクロード（中央アジア）",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/CAS_E01.webp",
+      "notes": "交易路"
+    },
+    {
+      "id": "CAS_E02",
+      "name": "オアシス都市の繁栄",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_E02.webp",
+      "notes": "繁栄"
+    },
+    {
+      "id": "CAS_E03",
+      "name": "遊牧国家の興亡",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/CAS_E03.webp",
+      "notes": "興亡"
+    },
+    {
+      "id": "CAS_E04",
+      "name": "モンゴル帝国の拡大",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_E04.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "CAS_E05",
+      "name": "イル汗国",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_E05.webp",
+      "notes": "分立"
+    },
+    {
+      "id": "CAS_E06",
+      "name": "チャガタイ・ハン国",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/CAS_E06.webp",
+      "notes": "分立"
+    },
+    {
+      "id": "CAS_E07",
+      "name": "ティムール朝",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/CAS_E07.webp",
+      "notes": "王朝"
+    },
+    {
+      "id": "CAS_E08",
+      "name": "キャラバン交易",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_E08.webp",
+      "notes": "隊商"
+    },
+    {
+      "id": "CAS_S01",
+      "name": "サマルカンド",
+      "era": "central_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_S01.webp",
+      "notes": "都"
+    },
+    {
+      "id": "CAS_S02",
+      "name": "ブハラ",
+      "era": "central_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/CAS_S02.webp",
+      "notes": "オアシス"
+    },
+    {
+      "id": "SSA_R01",
+      "name": "金",
+      "era": "sub_saharan_africa",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/SSA_R01.webp",
+      "notes": "富の源"
+    },
+    {
+      "id": "SSA_R02",
+      "name": "象牙",
+      "era": "sub_saharan_africa",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_R02.webp",
+      "notes": "交易品"
+    },
+    {
+      "id": "SSA_V01",
+      "name": "交易帝国の繁栄",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/SSA_V01.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "SSA_V02",
+      "name": "学問都市の発展",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/SSA_V02.webp",
+      "notes": "学問"
+    },
+    {
+      "id": "SSA_V03",
+      "name": "スワヒリ都市国家",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/SSA_V03.webp",
+      "notes": "港市"
+    },
+    {
+      "id": "SSA_V04",
+      "name": "王国の統合",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/SSA_V04.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "SSA_V05",
+      "name": "植民地支配からの独立",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/SSA_V05.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SSA_V06",
+      "name": "アフリカ文化の多様性",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/SSA_V06.webp",
+      "notes": "多様性"
+    },
+    {
+      "id": "SSA_P01",
+      "name": "マンサ・ムーサ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SSA_P01.webp",
+      "notes": "富"
+    },
+    {
+      "id": "SSA_P02",
+      "name": "スンジャタ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/SSA_P02.webp",
+      "notes": "建国"
+    },
+    {
+      "id": "SSA_P03",
+      "name": "シャカ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SSA_P03.webp",
+      "notes": "軍事改革"
+    },
+    {
+      "id": "SSA_P04",
+      "name": "ラティ・ジョロン",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_P04.webp",
+      "notes": "統率"
+    },
+    {
+      "id": "SSA_P05",
+      "name": "エンジンガ（ンジンガ女王）",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_P05.webp",
+      "notes": "外交"
+    },
+    {
+      "id": "SSA_P06",
+      "name": "メネリク2世",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_P06.webp",
+      "notes": "近代化"
+    },
+    {
+      "id": "SSA_P07",
+      "name": "ラリベラ王",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_P07.webp",
+      "notes": "造営"
+    },
+    {
+      "id": "SSA_P08",
+      "name": "アフマド・ババ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_P08.webp",
+      "notes": "学問"
+    },
+    {
+      "id": "SSA_P09",
+      "name": "オサマネ・ダン・フォディオ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_P09.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "SSA_P10",
+      "name": "ヤア・アサンテワ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_P10.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "SSA_P11",
+      "name": "アブドゥルラフマン・アル＝サアディ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_P11.webp",
+      "notes": "歴史叙述"
+    },
+    {
+      "id": "SSA_P12",
+      "name": "ハイレ・セラシエ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SSA_P12.webp",
+      "notes": "近代国家"
+    },
+    {
+      "id": "SSA_E01",
+      "name": "サハラ交易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SSA_E01.webp",
+      "notes": "交易路"
+    },
+    {
+      "id": "SSA_E02",
+      "name": "金交易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_E02.webp",
+      "notes": "富"
+    },
+    {
+      "id": "SSA_E03",
+      "name": "塩交易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SSA_E03.webp",
+      "notes": "必需品"
+    },
+    {
+      "id": "SSA_E04",
+      "name": "トンブクトゥの学問",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_E04.webp",
+      "notes": "学問都市"
+    },
+    {
+      "id": "SSA_E05",
+      "name": "スワヒリ交易圏",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_E05.webp",
+      "notes": "海域交易"
+    },
+    {
+      "id": "SSA_E06",
+      "name": "大西洋奴隷貿易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_E06.webp",
+      "notes": "衝撃"
+    },
+    {
+      "id": "SSA_E07",
+      "name": "ベルリン会議（アフリカ分割）",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_E07.webp",
+      "notes": "分割"
+    },
+    {
+      "id": "SSA_E08",
+      "name": "独立運動の波",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_E08.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SSA_S01",
+      "name": "トンブクトゥ",
+      "era": "sub_saharan_africa",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_S01.webp",
+      "notes": "学問都市"
+    },
+    {
+      "id": "SSA_S02",
+      "name": "グレート・ジンバブエ",
+      "era": "sub_saharan_africa",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SSA_S02.webp",
+      "notes": "石造遺跡"
     }
   ]
 }

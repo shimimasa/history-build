@@ -109,6 +109,24 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "central-asia-basic",
+    name: "中央アジア世界デッキ（基本）",
+    description:
+      "シルクロード・オアシス都市・遊牧帝国など、中央アジア世界をテーマにした基本デッキ。",
+    era: "central_asia",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
+    id: "sub-saharan-africa-basic",
+    name: "サハラ以南アフリカ世界デッキ（基本）",
+    description:
+      "サハラ交易・学問都市・王国の統合と独立など、サハラ以南アフリカ世界をテーマにした基本デッキ。",
+    era: "sub_saharan_africa",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:
