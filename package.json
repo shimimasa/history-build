@@ -8,11 +8,14 @@
     "preview": "vite preview",
     "scan:effects": "node scripts/scan-effects.cjs",
     "validate:cards": "tsx scripts/validateCards.ts",
-    "validate:assets": "tsx scripts/validateAssets.ts"
+    "validate:assets": "tsx scripts/validateAssets.ts",
+    "sync:images": "tsx scripts/syncCardImages.ts",
+    "sync:images:force": "tsx scripts/syncCardImages.ts --force"
   },
   "dependencies": {
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "sharp": "^0.34.3"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
