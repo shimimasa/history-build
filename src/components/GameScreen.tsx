@@ -8,6 +8,7 @@ import { canBuy } from "../game/core/canBuy";
 import type { GameState } from "../game/gameState";
 import { formatEffects } from "../ui/effectFormatter";
 import { getCardRoleLabel } from "../ui/cardRole";
+import { enhanceEventLogForDisplay } from "../ui/logEnhancer";
 import "../index.css";
 
 export type GamePhase = "DRAW" | "ACTION" | "BUY" | "CLEANUP";
@@ -74,19 +75,32 @@ function sortSupplyPiles(piles: any[]): any[] {
 }) => {
   // ログ表示モード（Default: デバッグ系を隠す / Debug: 全表示）
   const [logMode, setLogMode] = React.useState<"default" | "debug">("default");
+  const [logFilter, setLogFilter] = React.useState<string>("");
 
   const filteredLogs = React.useMemo(() => {
     if (!logs) return [];
-    if (logMode === "debug") return logs;
+    const enriched = enhanceEventLogForDisplay(logs);
 
-    // Default: [EFF][BUY][PLAY][TURN][WARN] のみ + プレフィックス無しは表示
-    const allow = new Set(["EFF", "BUY", "PLAY", "TURN", "WARN"]);
-    return logs.filter((line) => {
-      const m = /^\[([A-Z]+)\]/.exec(line);
-      if (!m) return true;
-      return allow.has(m[1]);
-    });
-  }, [logs, logMode]);
+    const base =
+      logMode === "debug"
+        ? enriched
+        : (() => {
+            // Default: [EFF][BUY][PLAY][TURN][WARN] のみ + プレフィックス無しは表示
+            const allow = new Set(["EFF", "BUY", "PLAY", "TURN", "WARN"]);
+            return enriched.filter((line) => {
+              // "プレイヤー：..." 形式を考慮して message 部分だけを見る
+              const idx = line.indexOf("：");
+              const msg = idx >= 0 ? line.slice(idx + 1) : line;
+              const m = /^\[([A-Z]+)\]/.exec(msg);
+              if (!m) return true;
+              return allow.has(m[1]);
+            });
+          })();
+
+    const q = logFilter.trim();
+    if (!q) return base;
+    return base.filter((line) => line.includes(q));
+  }, [logs, logMode, logFilter]);
   const { player, cpu, currentPhase, turn, supply } = state;
 
   　
@@ -564,6 +578,12 @@ React.useEffect(() => {
               </button>
             </div>
           </div>
+          <input
+            value={logFilter}
+            onChange={(e) => setLogFilter(e.target.value)}
+            placeholder="カード名でフィルタ（部分一致）"
+            className="mb-1 w-full px-2 py-1 rounded border border-slate-700 bg-slate-950/60 text-[10px] text-slate-200 placeholder:text-slate-500"
+          />
           {filteredLogs.length > 0 ? (
             <ul className="space-y-0.5">
               {filteredLogs
@@ -709,6 +729,11 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
     return (
       <div className="hb-card-detail">
         <div className="hb-card-detail-name">{card.name}</div>
+        {card?.id && (
+          <div className="text-[10px] text-slate-500 mt-0.5">
+            ID: {card.id}
+          </div>
+        )}
         <div className="hb-card-detail-meta">
           {cardType && <span>{cardType}</span>}
           <span> / コスト: 米 {riceCost}</span>
