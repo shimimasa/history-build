@@ -26,6 +26,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
 
   const eraLabelMap: Record<string, string> = {
     ancient: "古代",
+    ancient_mediterranean: "古代地中海",
     medieval: "中世",
     sengoku: "戦国",
     edo: "江戸",

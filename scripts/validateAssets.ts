@@ -11,11 +11,13 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 
 type Level = "WARN" | "ERROR";
 type Issue = { level: Level; cardId: string; message: string; sizeBytes?: number };
 
 const HEAVY_THRESHOLD_BYTES = 1_000_000;
+const PLACEHOLDER_PATH = path.join(process.cwd(), "public", "assets", "cards", "RICE_SMALL.webp");
 
 function readCardsJson(): any[] {
   const p = path.join(process.cwd(), "public", "cards.json");
@@ -47,11 +49,26 @@ function fmtBytes(n: number): string {
   return `${n}B`;
 }
 
+function sha256(buf: Buffer): string {
+  return crypto.createHash("sha256").update(buf).digest("hex");
+}
+
 function main() {
   const cards = readCardsJson();
   const issues: Issue[] = [];
 
   let ok = 0;
+
+  // placeholder 検出用（存在しない場合は検出をスキップ）
+  let placeholder: { size: number; hash: string } | null = null;
+  try {
+    if (fs.existsSync(PLACEHOLDER_PATH)) {
+      const buf = fs.readFileSync(PLACEHOLDER_PATH);
+      placeholder = { size: buf.byteLength, hash: sha256(buf) };
+    }
+  } catch {
+    // ignore
+  }
 
   for (const c of cards) {
     const cardId = String(c?.id ?? "(missing)");
@@ -92,6 +109,23 @@ function main() {
             sizeBytes: st.size
           });
         }
+
+        // placeholder webp 検出（RICE_SMALL.webp と同一バイナリの場合）
+        if (placeholder && st.size === placeholder.size) {
+          try {
+            const buf = fs.readFileSync(fsPath);
+            if (sha256(buf) === placeholder.hash) {
+              issues.push({
+                level: "WARN",
+                cardId,
+                message: `プレースホルダー画像の可能性: ${img}（${path.basename(PLACEHOLDER_PATH)} と同一）`,
+                sizeBytes: st.size
+              });
+            }
+          } catch {
+            // ignore
+          }
+        }
       } else {
         issues.push({ level: "ERROR", cardId, message: `image がファイルではありません: ${img}` });
       }
@@ -121,12 +155,26 @@ function main() {
   }
 
   if (warn.length > 0) {
-    console.log("[WARN] 重い画像（サイズ上位）");
-    const top = [...warn]
-      .sort((a, b) => (b.sizeBytes ?? 0) - (a.sizeBytes ?? 0))
-      .slice(0, 10);
-    for (const i of top) {
-      console.log(`- ${i.cardId}: ${i.message}`);
+    const heavy = warn.filter((i) => i.message.startsWith("重い画像:"));
+    const placeholders = warn.filter((i) => i.message.startsWith("プレースホルダー画像の可能性:"));
+
+    if (placeholders.length > 0) {
+      console.log("[WARN] プレースホルダーの可能性（要差し替え）");
+      for (const i of placeholders) {
+        console.log(`- ${i.cardId}: ${i.message}`);
+      }
+      console.log("");
+    }
+
+    if (heavy.length > 0) {
+      console.log("[WARN] 重い画像（サイズ上位）");
+      const top = [...heavy]
+        .sort((a, b) => (b.sizeBytes ?? 0) - (a.sizeBytes ?? 0))
+        .slice(0, 10);
+      for (const i of top) {
+        console.log(`- ${i.cardId}: ${i.message}`);
+      }
+      console.log("");
     }
     console.log("");
   }
