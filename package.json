@@ -7,7 +7,8 @@
     "build": "node node_modules/vite/bin/vite.js build",
     "preview": "vite preview",
     "scan:effects": "node scripts/scan-effects.cjs",
-    "validate:cards": "tsx scripts/validateCards.ts"
+    "validate:cards": "tsx scripts/validateCards.ts",
+    "validate:assets": "tsx scripts/validateAssets.ts"
   },
   "dependencies": {
     "react": "^19.2.1",
@@ -17,6 +18,7 @@
     "typescript": "^5.3.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@types/node": "^22.10.2",
     "vite": "^5.0.0",
     "@vitejs/plugin-react": "^4.2.0",
     "tailwindcss": "^3.4.1",
