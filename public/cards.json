@@ -4119,6 +4119,318 @@
       ],
       "image": "/assets/cards/ISW_S02.webp",
       "notes": "共同体の中心"
+    },
+    {
+      "id": "EAS_R01",
+      "name": "稲作農業",
+      "era": "east_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/EAS_R01.webp",
+      "notes": "生産の基盤"
+    },
+    {
+      "id": "EAS_R02",
+      "name": "絹織物",
+      "era": "east_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_R02.webp",
+      "notes": "高級交易品"
+    },
+    {
+      "id": "EAS_V01",
+      "name": "儒教国家体制",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/EAS_V01.webp",
+      "notes": "倫理と秩序"
+    },
+    {
+      "id": "EAS_V02",
+      "name": "皇帝支配体制",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/EAS_V02.webp",
+      "notes": "中央集権"
+    },
+    {
+      "id": "EAS_V03",
+      "name": "漢字文化の拡大",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/EAS_V03.webp",
+      "notes": "共通の文字"
+    },
+    {
+      "id": "EAS_V04",
+      "name": "官僚制国家",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/EAS_V04.webp",
+      "notes": "行政の整備"
+    },
+    {
+      "id": "EAS_V05",
+      "name": "中華思想",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/EAS_V05.webp",
+      "notes": "世界観"
+    },
+    {
+      "id": "EAS_V06",
+      "name": "冊封秩序の確立",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/EAS_V06.webp",
+      "notes": "国際秩序"
+    },
+    {
+      "id": "EAS_P01",
+      "name": "孔子",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/EAS_P01.webp",
+      "notes": "倫理"
+    },
+    {
+      "id": "EAS_P02",
+      "name": "孟子",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_P02.webp",
+      "notes": "性善説"
+    },
+    {
+      "id": "EAS_P03",
+      "name": "始皇帝",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_P03.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "EAS_P04",
+      "name": "劉邦",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_P04.webp",
+      "notes": "漢の建国"
+    },
+    {
+      "id": "EAS_P05",
+      "name": "漢武帝",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_P05.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "EAS_P06",
+      "name": "張騫",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_P06.webp",
+      "notes": "西域"
+    },
+    {
+      "id": "EAS_P07",
+      "name": "曹操",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/EAS_P07.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "EAS_P08",
+      "name": "諸葛亮",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_P08.webp",
+      "notes": "政略"
+    },
+    {
+      "id": "EAS_P09",
+      "name": "隋文帝",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/EAS_P09.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "EAS_P10",
+      "name": "唐太宗",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_P10.webp",
+      "notes": "貞観の治"
+    },
+    {
+      "id": "EAS_P11",
+      "name": "朱元璋",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/EAS_P11.webp",
+      "notes": "明の建国"
+    },
+    {
+      "id": "EAS_P12",
+      "name": "忽必烈",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_P12.webp",
+      "notes": "元の支配"
+    },
+    {
+      "id": "EAS_E01",
+      "name": "科挙",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_E01.webp",
+      "notes": "官僚登用"
+    },
+    {
+      "id": "EAS_E02",
+      "name": "郡県制",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_E02.webp",
+      "notes": "地方統治"
+    },
+    {
+      "id": "EAS_E03",
+      "name": "封建制（中国）",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/EAS_E03.webp",
+      "notes": "諸侯"
+    },
+    {
+      "id": "EAS_E04",
+      "name": "漢字文化圏",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_E04.webp",
+      "notes": "共通文化"
+    },
+    {
+      "id": "EAS_E05",
+      "name": "三国時代",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_E05.webp",
+      "notes": "群雄"
+    },
+    {
+      "id": "EAS_E06",
+      "name": "シルクロード（東端）",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_E06.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "EAS_E07",
+      "name": "冊封体制",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_E07.webp",
+      "notes": "外交儀礼"
+    },
+    {
+      "id": "EAS_E08",
+      "name": "遊牧国家との抗争",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_E08.webp",
+      "notes": "辺境"
+    },
+    {
+      "id": "EAS_S01",
+      "name": "万里の長城",
+      "era": "east_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_S01.webp",
+      "notes": "防衛線"
+    },
+    {
+      "id": "EAS_S02",
+      "name": "大運河",
+      "era": "east_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/EAS_S02.webp",
+      "notes": "物流"
     }
   ]
 }
