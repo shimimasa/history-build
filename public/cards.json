@@ -4743,6 +4743,321 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/SAS_S02.webp",
       "notes": "建築"
+    },
+    {
+      "id": "SEA_R01",
+      "name": "香辛料（マルク諸島）",
+      "era": "southeast_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/SEA_R01.webp",
+      "notes": "交易品"
+    },
+    {
+      "id": "SEA_R02",
+      "name": "米作（デルタ農業）",
+      "era": "southeast_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_R02.webp",
+      "notes": "稲作"
+    },
+    {
+      "id": "SEA_V01",
+      "name": "海上交易ネットワーク",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/SEA_V01.webp",
+      "notes": "海の道"
+    },
+    {
+      "id": "SEA_V02",
+      "name": "港市国家の繁栄",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/SEA_V02.webp",
+      "notes": "港市"
+    },
+    {
+      "id": "SEA_V03",
+      "name": "多民族社会",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/SEA_V03.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "SEA_V04",
+      "name": "上座部仏教の広がり",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/SEA_V04.webp",
+      "notes": "信仰"
+    },
+    {
+      "id": "SEA_V05",
+      "name": "イスラーム化（海域部）",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/SEA_V05.webp",
+      "notes": "海域交易"
+    },
+    {
+      "id": "SEA_V06",
+      "name": "独立国家の成立",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/SEA_V06.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_P01",
+      "name": "スールヤヴァルマン2世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SEA_P01.webp",
+      "notes": "アンコール"
+    },
+    {
+      "id": "SEA_P02",
+      "name": "ジャヤヴァルマン7世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_P02.webp",
+      "notes": "公共事業"
+    },
+    {
+      "id": "SEA_P03",
+      "name": "アノーヤター",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_P03.webp",
+      "notes": "王国の基盤"
+    },
+    {
+      "id": "SEA_P04",
+      "name": "バインナウン",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/SEA_P04.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "SEA_P05",
+      "name": "ラーマ1世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/SEA_P05.webp",
+      "notes": "王朝の整備"
+    },
+    {
+      "id": "SEA_P06",
+      "name": "ラーマ5世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_P06.webp",
+      "notes": "近代化"
+    },
+    {
+      "id": "SEA_P07",
+      "name": "阮福映（嘉隆帝）",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_P07.webp",
+      "notes": "王朝の成立"
+    },
+    {
+      "id": "SEA_P08",
+      "name": "鄭和",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_P08.webp",
+      "notes": "海域交易"
+    },
+    {
+      "id": "SEA_P09",
+      "name": "アウン・サン",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SEA_P09.webp",
+      "notes": "独立運動"
+    },
+    {
+      "id": "SEA_P10",
+      "name": "ホー・チ・ミン",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_P10.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_P11",
+      "name": "スカルノ",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_P11.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_P12",
+      "name": "リー・クアンユー",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_P12.webp",
+      "notes": "都市国家"
+    },
+    {
+      "id": "SEA_E01",
+      "name": "マラッカ王国",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SEA_E01.webp",
+      "notes": "港市国家"
+    },
+    {
+      "id": "SEA_E02",
+      "name": "香辛料貿易",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_E02.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "SEA_E03",
+      "name": "東南アジア海域交易",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SEA_E03.webp",
+      "notes": "海路"
+    },
+    {
+      "id": "SEA_E04",
+      "name": "海の道（インド洋交易）",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_E04.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "SEA_E05",
+      "name": "植民地支配の開始（東南アジア）",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_E05.webp",
+      "notes": "支配"
+    },
+    {
+      "id": "SEA_E06",
+      "name": "オランダ東インド会社",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_E06.webp",
+      "notes": "会社"
+    },
+    {
+      "id": "SEA_E07",
+      "name": "仏領インドシナ",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_E07.webp",
+      "notes": "植民地"
+    },
+    {
+      "id": "SEA_E08",
+      "name": "東南アジア独立運動",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_E08.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_S01",
+      "name": "アンコール・ワット",
+      "era": "southeast_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_S01.webp",
+      "notes": "造営"
+    },
+    {
+      "id": "SEA_S02",
+      "name": "ボロブドゥール",
+      "era": "southeast_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SEA_S02.webp",
+      "notes": "寺院"
     }
   ]
 }

@@ -11,6 +11,7 @@ export type EraId =
   | "ancient_mediterranean"
   | "islamic_world"
   | "east_asia"
-  | "south_asia";
+  | "south_asia"
+  | "southeast_asia";
 
 

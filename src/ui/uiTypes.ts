@@ -100,6 +100,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "southeast-asia-basic",
+    name: "東南アジア世界デッキ（基本）",
+    description:
+      "海域交易・港市国家・植民地支配から独立まで、東南アジア世界をテーマにした基本デッキ。",
+    era: "southeast_asia",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:
