@@ -2,7 +2,7 @@
 // public/cards.json を読み込んで保持する CardRegistry と、
 // ゲーム内で使う v1.5 Card 型への変換ヘルパーを提供する。
 
-import type { Card, Effect, ConditionDSL, EffectsMeta } from "./gameState";
+import type { Card, Effect, EffectsMeta } from "./gameState";
 
 // era / deckType は将来の拡張も見越して型として定義しておく
 export type EraId = "ancient" | "medieval" | "sengoku" | "edo" | "meiji";
@@ -114,7 +114,7 @@ export function normalizeEffects(rawCard: RawCard): Effect[] {
 
     // すでに正規DSL（type フィールドあり）の場合
     if (typeof (ef as any).type === "string") {
-      const typed = normalizeTypedEffect(ef as any);
+      const typed = normalizeTypedEffect(rawCard.id, ef as any);
       if (typed) {
         if (Array.isArray(typed)) {
           result.push(...typed);
@@ -126,7 +126,7 @@ export function normalizeEffects(rawCard: RawCard): Effect[] {
     }
 
     // 旧 DSL / v1.5 互換表現の場合
-    const legacy = normalizeLegacyEffect(ef);
+    const legacy = normalizeLegacyEffect(rawCard.id, ef);
     if (legacy) {
       if (Array.isArray(legacy)) {
         result.push(...legacy);
@@ -139,35 +139,43 @@ export function normalizeEffects(rawCard: RawCard): Effect[] {
   return result;
 }
 
-function normalizeTypedEffect(ef: any): Effect | Effect[] | null {
+function normalizeTypedEffect(cardId: string, ef: any): Effect | Effect[] | null {
   const raw = ef;
   switch (ef.type) {
     case "gain": {
-      const rice = ef.riceDelta ?? 0;
-      const knowledge = ef.knowledgeDelta ?? 0;
+      // 互換吸収: 旧キー（riceDelta/knowledgeDelta/victoryDelta）も受ける
+      const rice = ef.rice ?? ef.riceDelta ?? 0;
+      const knowledge = ef.knowledge ?? ef.knowledgeDelta ?? 0;
       const draw = ef.draw ?? 0;
-      const victory = ef.victoryDelta ?? 0;
+      const actions = ef.actions ?? ef.actionsDelta ?? 0;
+      const buys = ef.buys ?? ef.buysDelta ?? 0;
+      const vp = ef.vp ?? ef.victoryDelta ?? 0;
       if (
         !rice &&
         !knowledge &&
         !draw &&
-        !victory
+        !actions &&
+        !buys &&
+        !vp
       ) {
+        warnUnknown(cardId, raw);
         return { type: "unknown", raw };
       }
       return {
         type: "gain",
-        riceDelta: rice || undefined,
-        knowledgeDelta: knowledge || undefined,
+        rice: rice || undefined,
+        knowledge: knowledge || undefined,
         draw: draw || undefined,
-        victoryDelta: victory || undefined,
+        actions: actions || undefined,
+        buys: buys || undefined,
+        vp: vp || undefined,
         raw
       };
     }
     case "discount": {
       const amount = typeof ef.amount === "number" ? ef.amount : 0;
       if (!amount) return null;
-      return { type: "discount", amount, scope: "thisTurn", raw };
+      return { type: "discount", amount, raw };
     }
     case "trashFromHand": {
       const count = typeof ef.count === "number" ? ef.count : 1;
@@ -185,30 +193,32 @@ function normalizeTypedEffect(ef: any): Effect | Effect[] | null {
       return { type: "selfDiscard", count, raw };
     }
     case "conditional": {
-      const condition: ConditionDSL =
-        normalizeConditionObject(ef.condition) ?? {
-          kind: "custom",
-          expr: JSON.stringify(ef.condition)
-        };
-      const thenEffects = normalizeEffectsFromArray(ef.then);
+      const ifStr =
+        typeof ef.if === "string"
+          ? ef.if
+          : typeof ef.condition === "string"
+            ? ef.condition
+            : "";
+      const thenEffects = normalizeEffectsFromArray(cardId, ef.then);
       const elseEffects =
         ef.else && Array.isArray(ef.else)
-          ? normalizeEffectsFromArray(ef.else)
+          ? normalizeEffectsFromArray(cardId, ef.else)
           : undefined;
       return {
         type: "conditional",
-        condition,
+        if: ifStr,
         then: thenEffects,
         else: elseEffects,
         raw
       };
     }
     default:
-      return null;
+      warnUnknown(cardId, raw);
+      return { type: "unknown", raw };
   }
 }
 
-function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
+function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | null {
   const raw = ef;
   const result: Effect[] = [];
 
@@ -216,15 +226,19 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
   const rice = ef.gainRice ?? ef.addRice ?? 0;
   const knowledge = ef.gainKnowledge ?? ef.addKnowledge ?? 0;
   const draw = ef.draw ?? 0;
-  const victory = ef.gainVP ?? ef.gainVictory ?? ef.addVictory ?? 0;
+  const vp = ef.gainVP ?? ef.gainVictory ?? ef.addVictory ?? 0;
+  const actions = ef.addActions ?? ef.actions ?? 0;
+  const buys = ef.addBuys ?? ef.buys ?? 0;
 
-  if (rice || knowledge || draw || victory) {
+  if (rice || knowledge || draw || vp || actions || buys) {
     result.push({
       type: "gain",
-      riceDelta: rice || undefined,
-      knowledgeDelta: knowledge || undefined,
+      rice: rice || undefined,
+      knowledge: knowledge || undefined,
       draw: draw || undefined,
-      victoryDelta: victory || undefined,
+      actions: actions || undefined,
+      buys: buys || undefined,
+      vp: vp || undefined,
       raw
     });
   }
@@ -243,7 +257,6 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
     result.push({
       type: "discount",
       amount: ef.reduceCostThisTurn,
-      scope: "thisTurn",
       raw
     });
   }
@@ -269,16 +282,16 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
   // 条件付き効果（文字列表現 if: "..." ）
   const condSrc = ef.conditional ?? ef.condition;
   if (condSrc && typeof condSrc === "object") {
-    const cond = normalizeConditionFromString(condSrc.if);
-    const thenEffects = normalizeEffectsFromArray(condSrc.then);
+    const ifStr = typeof condSrc.if === "string" ? condSrc.if : "";
+    const thenEffects = normalizeEffectsFromArray(cardId, condSrc.then);
     const elseEffects =
       condSrc.else && Array.isArray(condSrc.else)
-        ? normalizeEffectsFromArray(condSrc.else)
+        ? normalizeEffectsFromArray(cardId, condSrc.else)
         : undefined;
 
     result.push({
       type: "conditional",
-      condition: cond,
+      if: ifStr,
       then: thenEffects,
       else: elseEffects,
       raw: condSrc
@@ -287,25 +300,26 @@ function normalizeLegacyEffect(ef: any): Effect | Effect[] | null {
 
   if (result.length === 0) {
     // 何も解釈できない場合は unknown として保持（クラッシュ禁止＋可視化）
+    warnUnknown(cardId, raw);
     return { type: "unknown", raw };
   }
 
   return result;
 }
 
-function normalizeEffectsFromArray(effects: any[] | undefined): Effect[] {
+function normalizeEffectsFromArray(cardId: string, effects: any[] | undefined): Effect[] {
   if (!effects || !Array.isArray(effects)) return [];
   const out: Effect[] = [];
   for (const ef of effects) {
     if (!ef || typeof ef !== "object") continue;
     if (typeof (ef as any).type === "string") {
-      const n = normalizeTypedEffect(ef as any);
+      const n = normalizeTypedEffect(cardId, ef as any);
       if (n) {
         if (Array.isArray(n)) out.push(...n);
         else out.push(n);
       }
     } else {
-      const n = normalizeLegacyEffect(ef);
+      const n = normalizeLegacyEffect(cardId, ef);
       if (n) {
         if (Array.isArray(n)) out.push(...n);
         else out.push(n);
@@ -315,76 +329,18 @@ function normalizeEffectsFromArray(effects: any[] | undefined): Effect[] {
   return out;
 }
 
-function normalizeConditionObject(obj: any | undefined): ConditionDSL | null {
-  if (!obj || typeof obj !== "object") return null;
-  if (typeof obj.kind === "string") {
-    return obj as ConditionDSL;
+function warnUnknown(cardId: string, raw: any): void {
+  const keys = raw && typeof raw === "object" ? Object.keys(raw) : [];
+  // normalize は GameState を持たないので、ここは console.warn（[WARN]）で出す
+  try {
+    console.warn(
+      `[WARN] normalizeEffects unknown: cardId=${cardId} keys=${keys.join(",")} raw=${JSON.stringify(raw)}`
+    );
+  } catch {
+    console.warn(
+      `[WARN] normalizeEffects unknown: cardId=${cardId} keys=${keys.join(",")} raw=${String(raw)}`
+    );
   }
-  return null;
-}
-
-function normalizeConditionFromString(expr: any): ConditionDSL {
-  if (typeof expr !== "string") {
-    return { kind: "custom", expr: JSON.stringify(expr) };
-  }
-
-  // totalKnowledge>=N
-  let m = expr.match(/^totalKnowledge>=(\d+)$/);
-  if (m) {
-    return {
-      kind: "knowledgeAtLeast",
-      value: parseInt(m[1], 10)
-    };
-  }
-
-  // buysMadeThisTurn>=N
-  m = expr.match(/^buysMadeThisTurn>=(\d+)$/);
-  if (m) {
-    return {
-      kind: "boughtThisTurnAtLeast",
-      value: parseInt(m[1], 10)
-    };
-  }
-
-  // playedXThisTurn（例: playedPersonThisTurn / playedEventThisTurn / playedCultureThisTurn）
-  m = expr.match(/^played([A-Za-z]+)ThisTurn$/);
-  if (m) {
-    const t = m[1];
-    const lower = t.charAt(0).toLowerCase() + t.slice(1);
-    return {
-      kind: "hasCardTypeInPlay",
-      cardType: lower as any
-    };
-  }
-
-  // gainedKnowledgeThisTurn>=N
-  m = expr.match(/^gainedKnowledgeThisTurn>=(\d+)$/);
-  if (m) {
-    return {
-      kind: "gainedKnowledgeThisTurnAtLeast",
-      value: parseInt(m[1], 10)
-    };
-  }
-
-  // trashedThisTurn>=N
-  m = expr.match(/^trashedThisTurn>=(\d+)$/);
-  if (m) {
-    return {
-      kind: "trashedThisTurnAtLeast",
-      value: parseInt(m[1], 10)
-    };
-  }
-
-  // attackDiscarded>=N
-  m = expr.match(/^attackDiscarded>=(\d+)$/);
-  if (m) {
-    return {
-      kind: "attackDiscardedAtLeast",
-      value: parseInt(m[1], 10)
-    };
-  }
-
-  return { kind: "custom", expr };
 }
 
 /**

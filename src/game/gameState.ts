@@ -6,73 +6,15 @@
 // ------------------------------------------------------
 import type { Phase, TurnCounters } from "./core/types";
 import type { EraId } from "./cardRegistry";
+import type { EffectDSL } from "./effects";
 
 
 /**
- * Effect DSL（history-spec v2）正規化済み表現
- * - すべての cards.json の効果はこの形に集約される（normalizeEffects 経由）
+ * Effect DSL（正規化済み）
+ * - すべての cards.json の効果は normalizeEffects() 経由で EffectDSL に集約される
+ * - applyEffect は EffectDSL のみを解釈する
  */
-export type ConditionKind =
-  | "knowledgeAtLeast" // totalKnowledge>=N
-  | "boughtThisTurnAtLeast" // buysMadeThisTurn>=N
-  | "hasCardTypeInPlay" // playedXThisTurn
-  // 実データ頻出（代表カードがこれを使うため必須）
-  | "trashedThisTurnAtLeast" // trashedThisTurn>=N
-  | "attackDiscardedAtLeast" // attackDiscarded>=N
-  | "gainedKnowledgeThisTurnAtLeast" // gainedKnowledgeThisTurn>=N
-  // 最後の逃げ道（クラッシュ禁止＋ログ用）
-  | "custom";
-
-export interface ConditionDSL {
-  kind: ConditionKind;
-  value?: number;
-  /** hasCardTypeInPlay で使用（cards.json の playedPersonThisTurn 等を吸収） */
-  cardType?: "resource" | "victory" | "person" | "event" | "structure" | "culture";
-  /** custom 条件用の生文字列表現（デバッグ用途） */
-  expr?: string;
-}
-
-export type Effect =
-  | {
-      type: "gain";
-      riceDelta?: number;
-      knowledgeDelta?: number;
-      draw?: number;
-      victoryDelta?: number;
-      raw?: any; // 元 DSL（cards.json 由来）
-    }
-  | {
-      type: "discount";
-      amount: number;
-      scope: "thisTurn";
-      raw?: any;
-    }
-  | {
-      type: "trashFromHand";
-      count: number;
-      raw?: any;
-    }
-  | {
-      type: "attackDiscard";
-      count: number;
-      raw?: any;
-    }
-  | {
-      type: "selfDiscard";
-      count: number;
-      raw?: any;
-    }
-  | {
-      type: "conditional";
-      condition: ConditionDSL;
-      then: Effect[];
-      else?: Effect[];
-      raw?: any;
-    }
-  | {
-      type: "unknown";
-      raw: any;
-    };
+export type Effect = EffectDSL;
 
 /**
  * カード定義（cards.json と対応）
@@ -126,12 +68,15 @@ export interface PlayerState {
   turnsTaken: number;   // 行動したターン数
 
   // 購入・割引・条件付き効果用のターン中カウンタ
-  buyDiscountThisTurn: number;      // このターンに適用される割引合計（米）※購入成功で消費（0に戻す）
+  discountThisTurn: number;         // このターンに適用される割引合計（米）
   buysMadeThisTurn: number;         // このターンに行った購入回数
   boughtVictoryThisTurn: number;    // このターンに購入した勝利点カード枚数
   trashedThisTurn: number;          // このターンに廃棄した枚数
-  attackDiscardedThisTurn: number;  // このターンに攻撃で相手に捨てさせた枚数
-  gainedKnowledgeThisTurn: number;  // このターンに獲得した知識量（>=判定用）
+  attackDiscardedThisTurn: number;  // このターンに攻撃で相手に捨てさせた枚数（条件用）
+  gainedKnowledgeThisTurn: number;  // このターンに獲得した知識量（将来拡張用）
+
+  // conditional(if="playedPersonThisTurn") 用のフラグ
+  playedPersonThisTurn: boolean;
 
   // 勝利点トークン（カード内訳スコアとは別に「効果で得たVP」を保持）
   vpTokens: number;
@@ -197,12 +142,13 @@ export function createInitialPlayerState(initialDeck: string[]): PlayerState {
     riceThisTurn: 0,
     knowledge: 0,
     turnsTaken: 0,
-    buyDiscountThisTurn: 0,
+    discountThisTurn: 0,
     buysMadeThisTurn: 0,
     boughtVictoryThisTurn: 0,
     trashedThisTurn: 0,
     attackDiscardedThisTurn: 0,
     gainedKnowledgeThisTurn: 0,
+    playedPersonThisTurn: false,
     vpTokens: 0,
     turn: {
       actions: 1,
