@@ -78,6 +78,8 @@ src/
 git clone https://github.com/shimimasa/history-build
 cd history-build
 
+新しい時代（era）の追加手順は `docs/adding-era.md` を参照してください。
+
 2. 依存インストール
 npm install
 
