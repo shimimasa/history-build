@@ -22,6 +22,35 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     cpuBreakdown
   } = outcome;
 
+  const finalState = outcome.finalState;
+
+  const eraLabelMap: Record<string, string> = {
+    ancient: "古代",
+    medieval: "中世",
+    sengoku: "戦国",
+    edo: "江戸",
+    meiji: "明治"
+  };
+  const eraKey: string = finalState.era ?? "sengoku";
+  const eraLabel = eraLabelMap[eraKey] ?? String(eraKey);
+  const deckTypeLabel =
+    finalState.deckType === "challenge" ? "チャレンジ" : "基本";
+
+  const piles = Object.values(finalState.supply ?? {});
+  const emptyPileCount = piles.filter((p) => (p?.remaining ?? 0) <= 0).length;
+  const emptyVictoryPileCount = piles.filter(
+    (p) =>
+      (p?.remaining ?? 0) <= 0 &&
+      (p?.card?.type === "victory" || p?.card?.category === "victory")
+  ).length;
+
+  let endReason = "不明";
+  if (emptyVictoryPileCount >= 2) {
+    endReason = `A: 勝利点の空山が2つ以上（${emptyVictoryPileCount}/2）`;
+  } else if (emptyPileCount >= 3) {
+    endReason = `B: 空山が3つ以上（${emptyPileCount}/3）`;
+  }
+
   let resultLabel: string;
   if (winner === "player") {
     resultLabel = "あなたの勝ち！";
@@ -38,6 +67,26 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           対戦結果
         </h1>
         <p className="text-sm mb-4 text-center">{resultLabel}</p>
+
+        <div className="mb-3 text-xs text-slate-300 flex justify-between">
+          <span>
+            デッキ: {eraLabel}（{deckTypeLabel}）
+          </span>
+          <span>ターン: {finalState.turnCount ?? 0}</span>
+        </div>
+
+        <div className="mb-4 border border-slate-700 rounded-lg bg-slate-900/80 px-4 py-3 text-xs text-slate-200">
+          <div className="flex justify-between">
+            <span className="text-slate-300">終了理由</span>
+            <span>{endReason}</span>
+          </div>
+          <div className="flex justify-between mt-1">
+            <span className="text-slate-300">空山</span>
+            <span>
+              {emptyPileCount}/3（勝利点 {emptyVictoryPileCount}/2）
+            </span>
+          </div>
+        </div>
 
         <div className="mb-4 border border-slate-700 rounded-lg bg-slate-900/80 px-4 py-3 text-sm">
           <div className="flex justify-between mb-1">
@@ -63,8 +112,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 {playerBreakdown.map((e) => (
                   <li key={`p-${e.cardId}`} className="flex justify-between">
                     <span>
-                      {e.cardName}（{e.cardId}）：枚数 {e.count} ×{" "}
-                      {e.pointsPerCard} = {e.totalPoints}
+                      {e.cardName}：{e.count} 枚 × {e.pointsPerCard} ={" "}
+                      {e.totalPoints}
                     </span>
                   </li>
                 ))}
@@ -86,8 +135,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 {cpuBreakdown.map((e) => (
                   <li key={`c-${e.cardId}`} className="flex justify-between">
                     <span>
-                      {e.cardName}（{e.cardId}）：枚数 {e.count} ×{" "}
-                      {e.pointsPerCard} = {e.totalPoints}
+                      {e.cardName}：{e.count} 枚 × {e.pointsPerCard} ={" "}
+                      {e.totalPoints}
                     </span>
                   </li>
                 ))}

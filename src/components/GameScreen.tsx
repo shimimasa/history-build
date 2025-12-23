@@ -72,6 +72,21 @@ function sortSupplyPiles(piles: any[]): any[] {
   onSelectHandCard,
   onHoverCard,
 }) => {
+  // ログ表示モード（Default: デバッグ系を隠す / Debug: 全表示）
+  const [logMode, setLogMode] = React.useState<"default" | "debug">("default");
+
+  const filteredLogs = React.useMemo(() => {
+    if (!logs) return [];
+    if (logMode === "debug") return logs;
+
+    // Default: [EFF][BUY][PLAY][TURN][WARN] のみ + プレフィックス無しは表示
+    const allow = new Set(["EFF", "BUY", "PLAY", "TURN", "WARN"]);
+    return logs.filter((line) => {
+      const m = /^\[([A-Z]+)\]/.exec(line);
+      if (!m) return true;
+      return allow.has(m[1]);
+    });
+  }, [logs, logMode]);
   const { player, cpu, currentPhase, turn, supply } = state;
 
   　
@@ -522,12 +537,36 @@ React.useEffect(() => {
 
         {/* ログパネル：直近のイベントログを表示 */}
         <div className="hb-log-panel mt-3 border border-slate-700 rounded-md bg-slate-900/80 px-3 py-2 text-[11px] text-slate-200 max-h-32 overflow-y-auto">
-          <div className="hb-log-title font-semibold text-sky-200 mb-1">
-            ログ
+          <div className="hb-log-title font-semibold text-sky-200 mb-1 flex items-center justify-between">
+            <span>ログ</span>
+            <div className="flex gap-1">
+              <button
+                type="button"
+                className={`px-2 py-0.5 rounded border text-[10px] ${
+                  logMode === "default"
+                    ? "border-sky-400 text-sky-200"
+                    : "border-slate-600 text-slate-300"
+                }`}
+                onClick={() => setLogMode("default")}
+              >
+                Default
+              </button>
+              <button
+                type="button"
+                className={`px-2 py-0.5 rounded border text-[10px] ${
+                  logMode === "debug"
+                    ? "border-sky-400 text-sky-200"
+                    : "border-slate-600 text-slate-300"
+                }`}
+                onClick={() => setLogMode("debug")}
+              >
+                Debug
+              </button>
+            </div>
           </div>
-          {logs && logs.length > 0 ? (
+          {filteredLogs.length > 0 ? (
             <ul className="space-y-0.5">
-              {logs
+              {filteredLogs
                 .slice(-15) // 最新 15 件
                 .reverse() // 新しいものを上に
                 .map((line, idx) => (

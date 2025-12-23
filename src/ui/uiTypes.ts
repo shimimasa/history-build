@@ -2,7 +2,7 @@
 // アプリ全体で共有する UI スクリーン状態とゲーム結果・デッキ情報の型
 
 import type { GameState, ActivePlayer } from "../game/gameState";
-import type { EraId } from "../game/cardRegistry";
+import type { EraId } from "../game/era";
 import type { VictoryBreakdownEntry } from "../game/socre";
 
 export type UiScreen = "start" | "deckSelect" | "game" | "result" | "cardDex";

@@ -6,6 +6,7 @@ import { applyAll } from "./applyEvent";
 import { appendLog } from "../log";
 import { applyEffects } from "../applyEffect";
 import { canBuy } from "./canBuy";
+import { judgeWinner } from "../socre";
 
 // コマンド → イベント列 → state 更新の唯一の入口
 export function dispatch(state: GameState, cmd: Command): GameState {
@@ -106,7 +107,7 @@ export function dispatch(state: GameState, cmd: Command): GameState {
     const after = snapshotPlayer(withTrace, cmd.playerId);
     withTrace = appendTraceDiff(withTrace, cmd.playerId, before, after);
 
-    return withTrace;
+    return evaluateGameEndCore(withTrace);
   }
 
   // BUY_CARD: 割引消費・購入回数カウンタ更新（成功時のみ）
@@ -150,7 +151,7 @@ export function dispatch(state: GameState, cmd: Command): GameState {
       next = appendLog(next, cmd.playerId, "[TRACE] BUY_SUCCESS: discountConsumed=1");
     }
 
-    return next;
+    return evaluateGameEndCore(next);
   }
 
   // END_TURN: ターン系カウンタを全リセット（core 側の唯一の経路）
@@ -174,11 +175,58 @@ export function dispatch(state: GameState, cmd: Command): GameState {
       player: cmd.playerId === "player" ? reset(next.player) : next.player,
       cpu: cmd.playerId === "cpu" ? reset(next.cpu) : next.cpu
     };
-    return next;
+    return evaluateGameEndCore(next);
   }
 
   const events = resolveCommand(state, cmd);
-  return applyAll(state, events);
+  return evaluateGameEndCore(applyAll(state, events));
+}
+
+type EndReason = "victory2" | "any3" | null;
+
+function evaluateGameEndCore(state: GameState): GameState {
+  if (state.gameEnded) return state;
+
+  const { end, reason, emptyPileCount, emptyVictoryPileCount } = computeEndCondition(state);
+  if (!end || !reason) return state;
+
+  const winner = judgeWinner(state);
+  let next: GameState = {
+    ...state,
+    gameEnded: true,
+    winner,
+    phase: "GAME_OVER"
+  };
+
+  const reasonLabel =
+    reason === "victory2"
+      ? `勝利点の空山が2つ以上（${emptyVictoryPileCount}/2）`
+      : `空山が3つ以上（${emptyPileCount}/3）`;
+
+  next = appendLog(next, "player", `[TURN] ゲーム終了：${reasonLabel}`);
+  next = appendLog(next, "cpu", `[TURN] ゲーム終了：${reasonLabel}`);
+  return next;
+}
+
+function computeEndCondition(state: GameState): {
+  end: boolean;
+  reason: EndReason;
+  emptyPileCount: number;
+  emptyVictoryPileCount: number;
+} {
+  const piles = Object.values(state.supply ?? {});
+  const emptyPileCount = piles.filter((p) => (p?.remaining ?? 0) <= 0).length;
+  const emptyVictoryPileCount = piles.filter(
+    (p) => (p?.remaining ?? 0) <= 0 && (p?.card?.type === "victory" || p?.card?.category === "victory")
+  ).length;
+
+  if (emptyVictoryPileCount >= 2) {
+    return { end: true, reason: "victory2", emptyPileCount, emptyVictoryPileCount };
+  }
+  if (emptyPileCount >= 3) {
+    return { end: true, reason: "any3", emptyPileCount, emptyVictoryPileCount };
+  }
+  return { end: false, reason: null, emptyPileCount, emptyVictoryPileCount };
 }
 
 // ---- デバッグ用スナップショット＆ DIFF ログ ----
