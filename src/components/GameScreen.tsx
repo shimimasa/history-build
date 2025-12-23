@@ -76,6 +76,7 @@ function sortSupplyPiles(piles: any[]): any[] {
   // ログ表示モード（Default: デバッグ系を隠す / Debug: 全表示）
   const [logMode, setLogMode] = React.useState<"default" | "debug">("default");
   const [logFilter, setLogFilter] = React.useState<string>("");
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false);
 
   const filteredLogs = React.useMemo(() => {
     if (!logs) return [];
@@ -301,6 +302,11 @@ function sortSupplyPiles(piles: any[]): any[] {
     const onKeyDown = (e: KeyboardEvent) => {
       if (isTyping(e.target)) return;
       if (e.key === "Escape") {
+        if (isHelpOpen) {
+          e.preventDefault();
+          setIsHelpOpen(false);
+          return;
+        }
         onSelectHandCard(null);
         setSelectedSupplyCardId(null);
         return;
@@ -322,7 +328,7 @@ function sortSupplyPiles(piles: any[]): any[] {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard]);
+  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard, isHelpOpen]);
 
   // BUYフェーズ + プレイヤー手番なら「クリックで即購入」
 // それ以外（他フェーズ or CPU 手番 or 在庫0）は詳細モーダルを開くだけ
@@ -713,8 +719,44 @@ React.useEffect(() => {
               >
                 Debug
               </button>
+              <button
+                type="button"
+                className={`px-2 py-0.5 rounded border text-[10px] ${
+                  isHelpOpen
+                    ? "border-amber-300 text-amber-200"
+                    : "border-slate-600 text-slate-300"
+                }`}
+                onClick={() => setIsHelpOpen((v) => !v)}
+                title="ヘルプ"
+              >
+                ？
+              </button>
             </div>
           </div>
+          {isHelpOpen && (
+            <div className="relative mb-2">
+              <div className="rounded-md border border-slate-700 bg-slate-950/80 px-3 py-2 text-[11px] text-slate-200">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="font-semibold text-amber-200">ミニヘルプ</div>
+                  <button
+                    type="button"
+                    className="px-2 py-0.5 rounded border border-slate-700 text-slate-300 hover:text-slate-100"
+                    onClick={() => setIsHelpOpen(false)}
+                    title="閉じる（Esc）"
+                  >
+                    閉じる
+                  </button>
+                </div>
+                <ul className="space-y-0.5 text-slate-200">
+                  <li>フェーズ：ACTION → BUY → CLEANUP</li>
+                  <li>操作：サプライ/手札クリックで詳細、背景クリック/Escで解除</li>
+                  <li>ショートカット：Enter=次へ、Shift+Enter=ターン終了</li>
+                  <li>終了条件：空山3 or 勝利点空山2</li>
+                  <li>ログ：Default/Debug切替、フィルタ可能</li>
+                </ul>
+              </div>
+            </div>
+          )}
           <input
             value={logFilter}
             onChange={(e) => setLogFilter(e.target.value)}
