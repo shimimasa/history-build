@@ -4431,6 +4431,318 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/EAS_S02.webp",
       "notes": "物流"
+    },
+    {
+      "id": "SAS_R01",
+      "name": "香辛料",
+      "era": "south_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/SAS_R01.webp",
+      "notes": "交易品"
+    },
+    {
+      "id": "SAS_R02",
+      "name": "綿織物",
+      "era": "south_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_R02.webp",
+      "notes": "手工業"
+    },
+    {
+      "id": "SAS_V01",
+      "name": "アショーカの法",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/SAS_V01.webp",
+      "notes": "統治理念"
+    },
+    {
+      "id": "SAS_V02",
+      "name": "グプタの黄金期",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/SAS_V02.webp",
+      "notes": "文化の繁栄"
+    },
+    {
+      "id": "SAS_V03",
+      "name": "インド洋交易圏",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/SAS_V03.webp",
+      "notes": "海上交易"
+    },
+    {
+      "id": "SAS_V04",
+      "name": "仏教文化の広がり",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/SAS_V04.webp",
+      "notes": "信仰と交流"
+    },
+    {
+      "id": "SAS_V05",
+      "name": "ムガル建築",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/SAS_V05.webp",
+      "notes": "壮麗な造営"
+    },
+    {
+      "id": "SAS_V06",
+      "name": "南アジア文明の多様性",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/SAS_V06.webp",
+      "notes": "多文化"
+    },
+    {
+      "id": "SAS_P01",
+      "name": "ゴータマ・ブッダ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/SAS_P01.webp",
+      "notes": "悟り"
+    },
+    {
+      "id": "SAS_P02",
+      "name": "アショーカ王",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainKnowledge": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SAS_P02.webp",
+      "notes": "法と布教"
+    },
+    {
+      "id": "SAS_P03",
+      "name": "チャンドラグプタ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_P03.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "SAS_P04",
+      "name": "カウティリヤ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_P04.webp",
+      "notes": "政略"
+    },
+    {
+      "id": "SAS_P05",
+      "name": "カーリダーサ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_P05.webp",
+      "notes": "サンスクリット文学"
+    },
+    {
+      "id": "SAS_P06",
+      "name": "アーリヤバタ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_P06.webp",
+      "notes": "数学と天文学"
+    },
+    {
+      "id": "SAS_P07",
+      "name": "ハルシャ王",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/SAS_P07.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "SAS_P08",
+      "name": "アクバル",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_P08.webp",
+      "notes": "寛容"
+    },
+    {
+      "id": "SAS_P09",
+      "name": "バーブル",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/SAS_P09.webp",
+      "notes": "ムガルの始動"
+    },
+    {
+      "id": "SAS_P10",
+      "name": "アウラングゼーブ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_P10.webp",
+      "notes": "強権"
+    },
+    {
+      "id": "SAS_P11",
+      "name": "グル・ナーナク",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SAS_P11.webp",
+      "notes": "信仰"
+    },
+    {
+      "id": "SAS_P12",
+      "name": "商人ギルド",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_P12.webp",
+      "notes": "取引"
+    },
+    {
+      "id": "SAS_E01",
+      "name": "マウリヤ朝",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SAS_E01.webp",
+      "notes": "統一王朝"
+    },
+    {
+      "id": "SAS_E02",
+      "name": "グプタ朝",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E02.webp",
+      "notes": "繁栄"
+    },
+    {
+      "id": "SAS_E03",
+      "name": "インド洋交易",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SAS_E03.webp",
+      "notes": "海路"
+    },
+    {
+      "id": "SAS_E04",
+      "name": "仏教の伝播",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E04.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "SAS_E05",
+      "name": "バクティ運動",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/SAS_E05.webp",
+      "notes": "信仰運動"
+    },
+    {
+      "id": "SAS_E06",
+      "name": "デリー・スルターン朝",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E06.webp",
+      "notes": "政権"
+    },
+    {
+      "id": "SAS_E07",
+      "name": "ムガル帝国の成立",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E07.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "SAS_E08",
+      "name": "カースト制度",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_E08.webp",
+      "notes": "社会構造"
+    },
+    {
+      "id": "SAS_S01",
+      "name": "サーンチーの仏塔",
+      "era": "south_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_S01.webp",
+      "notes": "信仰の象徴"
+    },
+    {
+      "id": "SAS_S02",
+      "name": "タージ・マハル",
+      "era": "south_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SAS_S02.webp",
+      "notes": "建築"
     }
   ]
 }

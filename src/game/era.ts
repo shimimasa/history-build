@@ -10,6 +10,7 @@ export type EraId =
   | "meiji"
   | "ancient_mediterranean"
   | "islamic_world"
-  | "east_asia";
+  | "east_asia"
+  | "south_asia";
 
 
