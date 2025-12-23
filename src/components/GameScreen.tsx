@@ -716,9 +716,11 @@ const CardDetail: React.FC<{ card: any }> = ({ card }) => {
             <span> / 知識 {knowledgeCost}</span>
           )}
         </div>
-      <div className="hb-card-detail-role text-[11px] text-slate-300 mt-1">
-        役割：{roleLabel}
-      </div>
+      {roleLabel && roleLabel !== "その他" && (
+        <div className="hb-card-detail-role text-[11px] text-slate-300 mt-1">
+          役割：{roleLabel}
+        </div>
+      )}
         {mainText && (
           <p className="hb-card-detail-text">{mainText}</p>
         )}

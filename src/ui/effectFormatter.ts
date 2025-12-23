@@ -30,23 +30,33 @@ function formatSingleEffect(ef: Effect): string[] {
       break;
     }
     case "trashFromHand": {
-      lines.push(`手札から ${ef.count} 枚廃棄する`);
+      lines.push(`廃棄：手札から ${ef.count} 枚`);
       break;
     }
     case "discount": {
-      lines.push(`このターンの購入コスト -${ef.discountThisTurn}`);
+      lines.push(`割引：-${ef.discountThisTurn}（このターン）`);
       break;
     }
     case "attackDiscard": {
-      lines.push(`相手に手札を ${ef.count} 枚捨てさせる（攻撃）`);
+      lines.push(`攻撃：相手は手札から ${ef.count} 枚捨て札`);
       break;
     }
     case "selfDiscard": {
-      lines.push(`手札を ${ef.count} 枚捨てる`);
+      lines.push(`自分：手札から ${ef.count} 枚捨て札`);
       break;
     }
     case "conditional": {
-      lines.push("条件付きの特殊効果");
+      const ifStr = ef.if ?? "";
+      lines.push(`条件：${ifStr || "（不明）"}`);
+      const hasThen = Array.isArray(ef.then) && ef.then.length > 0;
+      const hasElse = Array.isArray(ef.else) && ef.else.length > 0;
+      const flags = [
+        hasThen ? "thenあり" : null,
+        hasElse ? "elseあり" : null
+      ].filter(Boolean);
+      if (flags.length > 0) {
+        lines.push(`分岐：${flags.join(" / ")}`);
+      }
       break;
     }
     case "unknown": {
