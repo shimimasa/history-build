@@ -113,6 +113,9 @@ function sortSupplyPiles(piles: any[]): any[] {
   // ▼ 修正: v1 / v1.5 両対応でターン数を解決
   const displayTurn = turn ?? state.turnCount ?? 1;
 
+  // 追加：サプライの選択状態（クリックで選択／背景クリックで解除）
+  const [selectedSupplyCardId, setSelectedSupplyCardId] = React.useState<string | null>(null);
+
   // v2 Card / SupplyPile 想定:
   const getCardType = (pile: any): string => {
     return pile?.card?.type ?? pile?.card?.cardType ?? "";
@@ -232,11 +235,101 @@ function sortSupplyPiles(piles: any[]): any[] {
   const rawPhase =
     state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
 
+  const nextPhase = React.useMemo(() => {
+    const p = String(rawPhase);
+    switch (p) {
+      case "DRAW":
+        return "RESOURCE";
+      case "RESOURCE":
+        return "ACTION";
+      case "ACTION":
+        return "BUY";
+      case "BUY":
+        return "CLEANUP";
+      case "CLEANUP":
+        return "DRAW";
+      default:
+        return "";
+    }
+  }, [rawPhase]);
+
+  const primaryActionLabel = React.useMemo(() => {
+    if (!isPlayerTurn) return "待機中";
+    if (rawPhase === "ACTION") return "BUYへ進む";
+    if (rawPhase === "BUY") return "ターンを終える";
+    if (rawPhase === "DRAW") return "ドローを進める";
+    if (rawPhase === "CLEANUP") return "片付けを進める";
+    return "進める";
+  }, [isPlayerTurn, rawPhase]);
+
+  const proceedEnabled =
+    isPlayerTurn && !state.gameEnded && (rawPhase === "ACTION" || rawPhase === "BUY");
+  const proceedDisabledReason = !isPlayerTurn
+    ? "CPUの手番です"
+    : state.gameEnded
+      ? "ゲームは終了しています"
+      : rawPhase !== "ACTION" && rawPhase !== "BUY"
+        ? "このフェーズでは操作できません"
+        : undefined;
+
+  const endTurnEnabled =
+    isPlayerTurn && !state.gameEnded && rawPhase === "BUY";
+  const endTurnDisabledReason = !isPlayerTurn
+    ? "CPUの手番です"
+    : state.gameEnded
+      ? "ゲームは終了しています"
+      : rawPhase !== "BUY"
+        ? "BUYフェーズでのみ終了できます"
+        : undefined;
+
+  // クリックで選択中のカード（デバッグ/ナビ用）
+  const selectedSupplyCard =
+    selectedSupplyCardId ? supply?.[selectedSupplyCardId]?.card : null;
+  const selectedCardForLabel =
+    selectedCardFromHand ?? selectedSupplyCard ?? null;
+
+  // キーボードショートカット（UI層のみ）
+  React.useEffect(() => {
+    const isTyping = (t: EventTarget | null): boolean => {
+      const el = t as HTMLElement | null;
+      if (!el) return false;
+      if (el.isContentEditable) return true;
+      const tag = (el.tagName ?? "").toLowerCase();
+      return tag === "input" || tag === "textarea" || tag === "select";
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (isTyping(e.target)) return;
+      if (e.key === "Escape") {
+        onSelectHandCard(null);
+        setSelectedSupplyCardId(null);
+        return;
+      }
+      if (e.key === "Enter" && e.shiftKey) {
+        if (endTurnEnabled) {
+          e.preventDefault();
+          onEndTurn();
+        }
+        return;
+      }
+      if (e.key === "Enter") {
+        if (proceedEnabled) {
+          e.preventDefault();
+          onEndPhase();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard]);
+
   // BUYフェーズ + プレイヤー手番なら「クリックで即購入」
 // それ以外（他フェーズ or CPU 手番 or 在庫0）は詳細モーダルを開くだけ
 const handleSupplyClick = (pile: any) => {
   const cardId = pile?.card?.id;
   if (!cardId) return;
+  setSelectedSupplyCardId(cardId);
 
   const remaining = pile?.remaining;
   const isOutOfStock =
@@ -348,7 +441,23 @@ React.useEffect(() => {
     // - 上部: ヘッダー（タイトル＋ターン情報）
     // - 中央: .hb-game-layout（左サイドバー＋右ボード＝サプライ＋カード詳細）
     // - 下部: 手札エリア（横1列＋横スクロール）とアクションボタン
-    <div className="hb-game-screen">
+    <div
+      className="hb-game-screen"
+      onMouseDown={(e) => {
+        const t = e.target as HTMLElement | null;
+        if (!t) return;
+        // カード/ボタン/入力/モーダル内のクリックは無視
+        if (
+          t.closest(
+            ".hb-hand-card, .hb-supply-card, .hb-log-panel, .hb-hand-actions, .hb-modal-overlay, input, button, textarea, select"
+          )
+        ) {
+          return;
+        }
+        onSelectHandCard(null);
+        setSelectedSupplyCardId(null);
+      }}
+    >
       {/* --- 上部ヘッダー（タイトル＋ターン情報） --- */}
       
       <header className="hb-game-header">
@@ -379,8 +488,16 @@ React.useEffect(() => {
             <StatusBadge label="米" value={riceThisTurn} />
             <StatusBadge label="知識" value={knowledge} />
           </div>
-          <div className="hb-turn-indicator">
+            <div className="hb-turn-indicator">
             <div className="hb-turn-text">ターン {displayTurn}</div>
+              <div className="mt-1">
+                <div className="text-base font-semibold text-amber-200">
+                  {String(rawPhase)}
+                </div>
+                {nextPhase && (
+                  <div className="text-[11px] text-slate-300">次: {nextPhase}</div>
+                )}
+              </div>
             <div className="hb-phase-pill">
               手番 {isPlayerTurn ? "プレイヤー" : "CPU"} / フェーズ: {phaseLabel}
             </div>
@@ -418,6 +535,11 @@ React.useEffect(() => {
             }`}
           >
             <div className="hb-section-title">カードの説明</div>
+            {selectedCardForLabel && (
+              <div className="text-[11px] text-slate-300 mb-1">
+                選択中：{selectedCardForLabel.name ?? selectedCardForLabel.id}
+              </div>
+            )}
             <div className="hb-card-detail-scroll">
               {cardForDetail ? (
                 <CardDetail card={cardForDetail} />
@@ -445,6 +567,7 @@ React.useEffect(() => {
     variant="basic"
     // プレイヤー手番かつ BUY フェーズ以外は「見た目だけ」無効化
     isDisabled={!canBuyFromState(pile)}
+    isSelected={selectedSupplyCardId === pile.card.id}
     isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
@@ -461,6 +584,7 @@ React.useEffect(() => {
     pile={pile}
     variant="basic"
     isDisabled={!isPlayerBuyPhase}
+    isSelected={selectedSupplyCardId === pile.card.id}
     isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
@@ -477,6 +601,7 @@ React.useEffect(() => {
     pile={pile}
     variant="kingdom"
     isDisabled={!isPlayerBuyPhase}
+    isSelected={selectedSupplyCardId === pile.card.id}
     isFlashingBuy={buyFlashCardId === pile.card.id}
     onClick={() => handleSupplyClick(pile)}
     onHover={onHoverCard}
@@ -541,12 +666,24 @@ React.useEffect(() => {
           <button
             className="hb-btn hb-btn-secondary"
             onClick={onEndPhase}
+            disabled={!proceedEnabled}
+            title={proceedDisabledReason}
           >
-            フェーズを進める
+            {primaryActionLabel}
           </button>
-          <button className="hb-btn hb-btn-primary" onClick={onEndTurn}>
+          <button
+            className="hb-btn hb-btn-primary"
+            onClick={onEndTurn}
+            disabled={!endTurnEnabled}
+            title={endTurnDisabledReason}
+          >
             ターンを終了
           </button>
+          {!proceedEnabled && proceedDisabledReason && (
+            <div className="text-[10px] text-slate-400 ml-2 self-center">
+              {proceedDisabledReason}
+            </div>
+          )}
         </div>
 
         {/* ログパネル：直近のイベントログを表示 */}

@@ -7,6 +7,7 @@ export interface SupplyCardPileProps {
   pile: any; // { card, remaining }
   variant?: SupplyCardVariant;
   isDisabled?: boolean;
+  isSelected?: boolean;
   onClick?: () => void;
   onHover?: (card: any | null) => void;
   // ★ BUY 成功直後の 600ms ハイライト用
@@ -17,6 +18,7 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   pile,
   variant = "kingdom",
   isDisabled,
+  isSelected,
   onClick,
   onHover,
   isFlashingBuy,
@@ -42,7 +44,9 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
       disabled={isOutOfStock}
       className={`hb-supply-card hb-supply-card-${variant}${
         isDisabled || isOutOfStock ? " hb-supply-card--disabled" : ""
-      }${isFlashingBuy ? " hb-flash-buy" : ""}`}
+      }${isSelected ? " hb-supply-card--selected" : ""}${
+        isFlashingBuy ? " hb-flash-buy" : ""
+      }`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
