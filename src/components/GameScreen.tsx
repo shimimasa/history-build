@@ -475,6 +475,7 @@ React.useEffect(() => {
               medieval: "中世",
               medieval_europe: "中世ヨーロッパ",
               islamic_world: "イスラーム世界",
+              east_asia: "東アジア",
               sengoku: "戦国",
               edo: "江戸",
               meiji: "明治"

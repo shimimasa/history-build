@@ -32,7 +32,8 @@ const KNOWN_ERAS = new Set([
   "edo",
   "meiji",
   "ancient_mediterranean",
-  "islamic_world"
+  "islamic_world",
+  "east_asia"
 ]);
 
 // cards.json の category として許容する値（プロジェクト側で将来拡張しても壊れにくいよう広め）

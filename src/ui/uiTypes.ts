@@ -82,6 +82,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "east_asia-basic",
+    name: "東アジア世界デッキ（基本）",
+    description:
+      "中国を中心に、漢字文化・官僚制・交易網など東アジア世界をテーマにした基本デッキ。",
+    era: "east_asia",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:
