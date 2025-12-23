@@ -6003,6 +6003,321 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/NAM_S02.webp",
       "notes": "物流"
+    },
+    {
+      "id": "LAM_R01",
+      "name": "銀",
+      "era": "latin_america",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/LAM_R01.webp",
+      "notes": "銀山"
+    },
+    {
+      "id": "LAM_R02",
+      "name": "砂糖",
+      "era": "latin_america",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_R02.webp",
+      "notes": "プランテーション"
+    },
+    {
+      "id": "LAM_V01",
+      "name": "独立国家の成立",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/LAM_V01.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "LAM_V02",
+      "name": "先住民文明の遺産",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/LAM_V02.webp",
+      "notes": "遺産"
+    },
+    {
+      "id": "LAM_V03",
+      "name": "大西洋経済への統合",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/LAM_V03.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "LAM_V04",
+      "name": "革命と社会改革",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/LAM_V04.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "LAM_V05",
+      "name": "文化の混淆（メスティーソ）",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/LAM_V05.webp",
+      "notes": "混淆"
+    },
+    {
+      "id": "LAM_V06",
+      "name": "民主化の進展",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/LAM_V06.webp",
+      "notes": "民主化"
+    },
+    {
+      "id": "LAM_P01",
+      "name": "シモン・ボリバル",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_P01.webp",
+      "notes": "解放者"
+    },
+    {
+      "id": "LAM_P02",
+      "name": "ホセ・デ・サン・マルティン",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/LAM_P02.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "LAM_P03",
+      "name": "ミゲル・イダルゴ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_P03.webp",
+      "notes": "蜂起"
+    },
+    {
+      "id": "LAM_P04",
+      "name": "ベニート・フアレス",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/LAM_P04.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "LAM_P05",
+      "name": "ポルフィリオ・ディアス",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/LAM_P05.webp",
+      "notes": "体制"
+    },
+    {
+      "id": "LAM_P06",
+      "name": "エミリアーノ・サパタ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_P06.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_P07",
+      "name": "パンチョ・ビリャ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/LAM_P07.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_P08",
+      "name": "エバ・ペロン",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_P08.webp",
+      "notes": "大衆"
+    },
+    {
+      "id": "LAM_P09",
+      "name": "サルバドール・アジェンデ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_P09.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "LAM_P10",
+      "name": "フィデル・カストロ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_P10.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_P11",
+      "name": "チェ・ゲバラ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/LAM_P11.webp",
+      "notes": "運動"
+    },
+    {
+      "id": "LAM_P12",
+      "name": "ジュセリーノ・クビチェック",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_P12.webp",
+      "notes": "開発"
+    },
+    {
+      "id": "LAM_E01",
+      "name": "ラテンアメリカ独立運動",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_E01.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "LAM_E02",
+      "name": "先住民文明の征服",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/LAM_E02.webp",
+      "notes": "征服"
+    },
+    {
+      "id": "LAM_E03",
+      "name": "エンコミエンダ制",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_E03.webp",
+      "notes": "労働"
+    },
+    {
+      "id": "LAM_E04",
+      "name": "銀山開発（ポトシ）",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_E04.webp",
+      "notes": "資源"
+    },
+    {
+      "id": "LAM_E05",
+      "name": "三角貿易（大西洋経済）",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_E05.webp",
+      "notes": "大西洋"
+    },
+    {
+      "id": "LAM_E06",
+      "name": "メキシコ革命",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/LAM_E06.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_E07",
+      "name": "キューバ革命",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_E07.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_E08",
+      "name": "軍事政権と民主化",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_E08.webp",
+      "notes": "民主化"
+    },
+    {
+      "id": "LAM_S01",
+      "name": "マチュ・ピチュ",
+      "era": "latin_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_S01.webp",
+      "notes": "遺産"
+    },
+    {
+      "id": "LAM_S02",
+      "name": "チチェン・イッツァ",
+      "era": "latin_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/LAM_S02.webp",
+      "notes": "遺産"
     }
   ]
 }

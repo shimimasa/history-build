@@ -481,6 +481,7 @@ React.useEffect(() => {
               central_asia: "中央アジア世界",
               sub_saharan_africa: "サハラ以南アフリカ",
               north_america: "北アメリカ",
+              latin_america: "ラテンアメリカ",
               sengoku: "戦国",
               edo: "江戸",
               meiji: "明治"

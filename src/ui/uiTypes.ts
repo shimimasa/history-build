@@ -136,6 +136,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "latin-america-basic",
+    name: "ラテンアメリカ世界デッキ（基本）",
+    description:
+      "独立運動・征服と植民地支配・革命と民主化など、ラテンアメリカ世界をテーマにした基本デッキ。",
+    era: "latin_america",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:
