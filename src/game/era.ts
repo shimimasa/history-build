@@ -1,6 +1,12 @@
 // src/game/era.ts
 // 時代ID（cards.json の era）を、循環参照を避けるために独立定義する。
 
-export type EraId = "ancient" | "medieval" | "sengoku" | "edo" | "meiji";
+export type EraId =
+  | "ancient"
+  | "medieval"
+  | "sengoku"
+  | "edo"
+  | "meiji"
+  | "ancient_mediterranean";
 
 

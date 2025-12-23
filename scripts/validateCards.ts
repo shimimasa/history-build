@@ -24,7 +24,14 @@ type Issue = {
   message: string;
 };
 
-const KNOWN_ERAS = new Set(["ancient", "medieval", "sengoku", "edo", "meiji"]);
+const KNOWN_ERAS = new Set([
+  "ancient",
+  "medieval",
+  "sengoku",
+  "edo",
+  "meiji",
+  "ancient_mediterranean"
+]);
 
 // cards.json の category として許容する値（プロジェクト側で将来拡張しても壊れにくいよう広め）
 const KNOWN_CATEGORIES = new Set([

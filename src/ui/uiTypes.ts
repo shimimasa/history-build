@@ -64,6 +64,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "ancient-mediterranean-basic",
+    name: "古代地中海世界デッキ（基本）",
+    description:
+      "メソポタミア・ギリシア・ローマを中心とした古代地中海世界の基本デッキ。",
+    era: "ancient_mediterranean",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-basic",
     name: "中世デッキ（基本）",
     description:

@@ -3118,6 +3118,377 @@
       ],
       "image": "/assets/cards/MJ_V06.webp",
       "notes": "近代国家の完成"
+    },
+    {
+      "id": "AMM_R01",
+      "name": "穀物交易",
+      "era": "ancient_mediterranean",
+      "category": "resource",
+      "cost": 2,
+      "effects": [
+        { "gainRice": 2 }
+      ],
+      "image": "/assets/cards/AMM_R01.webp",
+      "notes": "地中海の穀物供給"
+    },
+    {
+      "id": "AMM_R02",
+      "name": "オリーブ油",
+      "era": "ancient_mediterranean",
+      "category": "resource",
+      "cost": 3,
+      "effects": [
+        { "gainRice": 1 },
+        { "draw": 1 }
+      ],
+      "image": "/assets/cards/AMM_R02.webp",
+      "notes": "保存と交易に強い資源"
+    },
+    {
+      "id": "AMM_V01",
+      "name": "アレクサンドリア図書館",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/AMM_V01.webp",
+      "notes": "知の集積"
+    },
+    {
+      "id": "AMM_V02",
+      "name": "ローマのフォルム",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/AMM_V02.webp",
+      "notes": "公共空間"
+    },
+    {
+      "id": "AMM_V03",
+      "name": "大灯台（ファロス）",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/AMM_V03.webp",
+      "notes": "航海と交易の象徴"
+    },
+    {
+      "id": "AMM_V04",
+      "name": "コロッセウム",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/AMM_V04.webp",
+      "notes": "帝国の威信"
+    },
+    {
+      "id": "AMM_V05",
+      "name": "パンテオン",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/AMM_V05.webp",
+      "notes": "宗教と統合"
+    },
+    {
+      "id": "AMM_V06",
+      "name": "ローマ法の体系化",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/AMM_V06.webp",
+      "notes": "制度の完成"
+    },
+    {
+      "id": "AMM_P01",
+      "name": "ハンムラビ",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P01.webp",
+      "notes": "法の支配"
+    },
+    {
+      "id": "AMM_P02",
+      "name": "ソクラテス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "selfDiscard": 1 },
+        { "gainKnowledge": 2 }
+      ],
+      "image": "/assets/cards/AMM_P02.webp",
+      "notes": "問答法"
+    },
+    {
+      "id": "AMM_P03",
+      "name": "プラトン",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "draw": 1 }
+      ],
+      "image": "/assets/cards/AMM_P03.webp",
+      "notes": "アカデメイア"
+    },
+    {
+      "id": "AMM_P04",
+      "name": "アリストテレス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 2 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P04.webp",
+      "notes": "体系化"
+    },
+    {
+      "id": "AMM_P05",
+      "name": "アレクサンドロス大王",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "gainRice": 2 },
+        { "attackDiscard": 1 }
+      ],
+      "image": "/assets/cards/AMM_P05.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "AMM_P06",
+      "name": "カエサル",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_P06.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "AMM_P07",
+      "name": "クレオパトラ",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "draw": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_P07.webp",
+      "notes": "外交"
+    },
+    {
+      "id": "AMM_P08",
+      "name": "アウグストゥス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "trashFromHand": 1 },
+        { "gainVP": 1 }
+      ],
+      "image": "/assets/cards/AMM_P08.webp",
+      "notes": "秩序の再建"
+    },
+    {
+      "id": "AMM_P09",
+      "name": "ハンニバル",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P09.webp",
+      "notes": "奇襲"
+    },
+    {
+      "id": "AMM_P10",
+      "name": "ペリクレス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "image": "/assets/cards/AMM_P10.webp",
+      "notes": "民主政の発展"
+    },
+    {
+      "id": "AMM_P11",
+      "name": "スパルタクス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "selfDiscard": 1 },
+        { "attackDiscard": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_P11.webp",
+      "notes": "反乱"
+    },
+    {
+      "id": "AMM_P12",
+      "name": "ピタゴラス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P12.webp",
+      "notes": "数学"
+    },
+    {
+      "id": "AMM_E01",
+      "name": "ポリス",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "draw": 1 }
+      ],
+      "image": "/assets/cards/AMM_E01.webp",
+      "notes": "都市国家"
+    },
+    {
+      "id": "AMM_E02",
+      "name": "共和政ローマ",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 2 }
+      ],
+      "image": "/assets/cards/AMM_E02.webp",
+      "notes": "市民参加"
+    },
+    {
+      "id": "AMM_E03",
+      "name": "ローマ街道",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainRice": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "image": "/assets/cards/AMM_E03.webp",
+      "notes": "物流"
+    },
+    {
+      "id": "AMM_E04",
+      "name": "十二表法",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "trashFromHand": 1 },
+        { "gainKnowledge": 1 }
+      ],
+      "image": "/assets/cards/AMM_E04.webp",
+      "notes": "成文化"
+    },
+    {
+      "id": "AMM_E05",
+      "name": "オリンピア競技",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "draw": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_E05.webp",
+      "notes": "祭典"
+    },
+    {
+      "id": "AMM_E06",
+      "name": "パクス・ロマーナ",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 2 },
+        { "gainVP": 1 }
+      ],
+      "image": "/assets/cards/AMM_E06.webp",
+      "notes": "平和と繁栄"
+    },
+    {
+      "id": "AMM_E07",
+      "name": "貨幣経済",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainRice": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "image": "/assets/cards/AMM_E07.webp",
+      "notes": "市場"
+    },
+    {
+      "id": "AMM_E08",
+      "name": "ストア派",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "selfDiscard": 1 },
+        { "gainKnowledge": 2 }
+      ],
+      "image": "/assets/cards/AMM_E08.webp",
+      "notes": "理性"
+    },
+    {
+      "id": "AMM_S01",
+      "name": "水道橋",
+      "era": "ancient_mediterranean",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 2 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_S01.webp",
+      "notes": "インフラ"
+    },
+    {
+      "id": "AMM_S02",
+      "name": "道路網",
+      "era": "ancient_mediterranean",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_S02.webp",
+      "notes": "統合"
     }
   ]
 }

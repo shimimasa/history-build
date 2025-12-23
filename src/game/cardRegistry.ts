@@ -53,7 +53,8 @@ export async function loadCardRegistry(): Promise<CardRegistry> {
       medieval: [],
       sengoku: [],
       edo: [],
-      meiji: []
+      meiji: [],
+      ancient_mediterranean: []
     };
 
     for (const c of rawCards) {
