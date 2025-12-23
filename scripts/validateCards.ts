@@ -37,7 +37,8 @@ const KNOWN_ERAS = new Set([
   "south_asia",
   "southeast_asia",
   "central_asia",
-  "sub_saharan_africa"
+  "sub_saharan_africa",
+  "north_america"
 ]);
 
 // cards.json の category として許容する値（プロジェクト側で将来拡張しても壊れにくいよう広め）

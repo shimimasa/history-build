@@ -35,6 +35,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     southeast_asia: "東南アジア世界",
     central_asia: "中央アジア世界",
     sub_saharan_africa: "サハラ以南アフリカ",
+    north_america: "北アメリカ",
     sengoku: "戦国",
     edo: "江戸",
     meiji: "明治"

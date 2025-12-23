@@ -127,6 +127,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "north-america-basic",
+    name: "北アメリカ世界デッキ（基本）",
+    description:
+      "独立・憲法・西部開拓から公民権まで、北アメリカ世界をテーマにした基本デッキ。",
+    era: "north_america",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:

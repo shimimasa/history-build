@@ -5688,6 +5688,321 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/SSA_S02.webp",
       "notes": "石造遺跡"
+    },
+    {
+      "id": "NAM_R01",
+      "name": "綿花",
+      "era": "north_america",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/NAM_R01.webp",
+      "notes": "プランテーション"
+    },
+    {
+      "id": "NAM_R02",
+      "name": "石油",
+      "era": "north_america",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_R02.webp",
+      "notes": "エネルギー"
+    },
+    {
+      "id": "NAM_V01",
+      "name": "連邦国家の成立",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/NAM_V01.webp",
+      "notes": "建国"
+    },
+    {
+      "id": "NAM_V02",
+      "name": "産業化の進展",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/NAM_V02.webp",
+      "notes": "工業"
+    },
+    {
+      "id": "NAM_V03",
+      "name": "大陸国家の拡大",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/NAM_V03.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "NAM_V04",
+      "name": "民主主義の拡張",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/NAM_V04.webp",
+      "notes": "参政"
+    },
+    {
+      "id": "NAM_V05",
+      "name": "公民権の前進",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/NAM_V05.webp",
+      "notes": "権利"
+    },
+    {
+      "id": "NAM_V06",
+      "name": "世界大国への台頭",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/NAM_V06.webp",
+      "notes": "大国"
+    },
+    {
+      "id": "NAM_P01",
+      "name": "ジョージ・ワシントン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/NAM_P01.webp",
+      "notes": "建国"
+    },
+    {
+      "id": "NAM_P02",
+      "name": "トマス・ジェファーソン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_P02.webp",
+      "notes": "理念"
+    },
+    {
+      "id": "NAM_P03",
+      "name": "エイブラハム・リンカーン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_P03.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "NAM_P04",
+      "name": "フランクリン・ルーズベルト",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_P04.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "NAM_P05",
+      "name": "マーティン・ルーサー・キング",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_P05.webp",
+      "notes": "公民権"
+    },
+    {
+      "id": "NAM_P06",
+      "name": "アレクサンダー・ハミルトン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_P06.webp",
+      "notes": "財政"
+    },
+    {
+      "id": "NAM_P07",
+      "name": "ベンジャミン・フランクリン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/NAM_P07.webp",
+      "notes": "啓蒙"
+    },
+    {
+      "id": "NAM_P08",
+      "name": "セオドア・ルーズベルト",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/NAM_P08.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "NAM_P09",
+      "name": "スーザン・B・アンソニー",
+      "era": "north_america",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/NAM_P09.webp",
+      "notes": "参政権"
+    },
+    {
+      "id": "NAM_P10",
+      "name": "シッティング・ブル",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_P10.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "NAM_P11",
+      "name": "ポカホンタス",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_P11.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "NAM_P12",
+      "name": "ルイ・リエル",
+      "era": "north_america",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_P12.webp",
+      "notes": "自治"
+    },
+    {
+      "id": "NAM_E01",
+      "name": "アメリカ独立戦争",
+      "era": "north_america",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_E01.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "NAM_E02",
+      "name": "合衆国憲法制定",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_E02.webp",
+      "notes": "制度"
+    },
+    {
+      "id": "NAM_E03",
+      "name": "ルイジアナ買収",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/NAM_E03.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "NAM_E04",
+      "name": "西部開拓",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/NAM_E04.webp",
+      "notes": "開拓"
+    },
+    {
+      "id": "NAM_E05",
+      "name": "南北戦争",
+      "era": "north_america",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_E05.webp",
+      "notes": "内戦"
+    },
+    {
+      "id": "NAM_E06",
+      "name": "奴隷解放宣言",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_E06.webp",
+      "notes": "解放"
+    },
+    {
+      "id": "NAM_E07",
+      "name": "ニューディール政策",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_E07.webp",
+      "notes": "政策"
+    },
+    {
+      "id": "NAM_E08",
+      "name": "公民権運動",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_E08.webp",
+      "notes": "権利"
+    },
+    {
+      "id": "NAM_S01",
+      "name": "ホワイトハウス",
+      "era": "north_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_S01.webp",
+      "notes": "政庁"
+    },
+    {
+      "id": "NAM_S02",
+      "name": "大陸横断鉄道",
+      "era": "north_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/NAM_S02.webp",
+      "notes": "物流"
     }
   ]
 }

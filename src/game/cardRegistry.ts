@@ -61,7 +61,8 @@ export async function loadCardRegistry(): Promise<CardRegistry> {
       south_asia: [],
       southeast_asia: [],
       central_asia: [],
-      sub_saharan_africa: []
+      sub_saharan_africa: [],
+      north_america: []
     };
 
     for (const c of rawCards) {
