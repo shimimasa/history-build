@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "node node_modules/vite/bin/vite.js build",
     "preview": "vite preview",
-    "scan:effects": "node scripts/scan-effects.cjs"
+    "scan:effects": "node scripts/scan-effects.cjs",
+    "validate:cards": "tsx scripts/validateCards.ts"
   },
   "dependencies": {
     "react": "^19.2.1",
@@ -21,6 +22,7 @@
     "tailwindcss": "^3.4.1",
     "postcss": "^8.4.31",
     "autoprefixer": "^10.4.16",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "tsx": "^4.19.2"
   }
 }
