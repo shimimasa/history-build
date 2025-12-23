@@ -2,11 +2,14 @@
 // src/game/turnFlow.test.ts
 
 import { describe, it, expect } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
 import {
   createInitialGameState,
   type GameState
 } from "./gameState";
-import { loadCards } from "./cardDefinitions";
+import { convertRawCardToGameCard } from "./cardRegistry";
+import { BASE_CARDS } from "./baseCards";
 import {
   proceedPhase,
   cleanupPhase,
@@ -14,8 +17,15 @@ import {
 } from "./turnFlow";
 
 function createInitialState(): GameState {
-  const cards = loadCards();
-  return createInitialGameState(cards);
+  const cards = loadCardsFromFile();
+  return { ...createInitialGameState(cards), phase: "DRAW", activePlayer: "player", gameEnded: false };
+}
+
+function loadCardsFromFile() {
+  const p = path.join(process.cwd(), "public", "cards.json");
+  const raw = JSON.parse(fs.readFileSync(p, "utf8"));
+  const cards = (raw.cards ?? raw) as any[];
+  return [...BASE_CARDS, ...cards.map(convertRawCardToGameCard)];
 }
 
 describe("turnFlow v2 - 基本フェーズ遷移", () => {

@@ -4,7 +4,8 @@
 export type PlayerId = "player" | "cpu";
 
 // 新フェーズ（状態遷移のステートマシン）
-export type Phase = "ACTION" | "BUY" | "CLEANUP" | "GAME_OVER";
+// - turnFlow.ts（5フェーズ）と core/*（3フェーズ）を同一の GameState.phase で扱うため union を広げる
+export type Phase = "DRAW" | "RESOURCE" | "ACTION" | "BUY" | "CLEANUP" | "GAME_OVER";
 
 // 1ターン中のカウンタ
 export type TurnCounters = {

@@ -86,7 +86,7 @@ export function getEffectiveCostForPlayer(
   player: PlayerState, // 割引などを考慮する
   card: Card
 ): number {
-  const discount = Math.max(0, player.buyDiscountThisTurn ?? 0);
+  const discount = Math.max(0, player.discountThisTurn ?? 0);
   const baseCost = card.cost;
   const effective = Math.max(0, baseCost - discount);
   return effective;

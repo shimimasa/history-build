@@ -5,7 +5,7 @@
 // カード関連の型
 // ------------------------------------------------------
 import type { Phase, TurnCounters } from "./core/types";
-import type { EraId } from "./cardRegistry";
+import type { EraId } from "./era";
 import type { EffectDSL } from "./effects";
 
 
@@ -23,6 +23,8 @@ export interface EffectsMeta {
   rawCount?: number;
   normCount?: number;
   types?: string[];
+  /** raw.effects の top-level keys（デバッグ用） */
+  rawKeys?: string[];
 }
 
 export interface Card {

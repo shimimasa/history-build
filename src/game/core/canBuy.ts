@@ -43,7 +43,7 @@ export function canBuy(
   const baseCostRice = card?.cost ?? 0;
   const reqKnow = card?.knowledgeRequired ?? 0;
 
-  const discount = Math.max(0, player.buyDiscountThisTurn ?? 0);
+  const discount = Math.max(0, player.discountThisTurn ?? 0);
   const costRice = Math.max(0, baseCostRice - discount);
 
   if (turn.rice < costRice) {

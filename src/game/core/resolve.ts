@@ -4,6 +4,7 @@ import type { GameState, Card } from "../gameState";
 import type { Command, GameEvent, Phase, PlayerId } from "./types";
 import { canBuy } from "../core/canBuy";
 import { effectsToEvents } from "./effectsToEvents";
+import type { Effect } from "../gameState";
 
 export function resolveCommand(
   state: GameState,
@@ -87,9 +88,10 @@ function resolveAutoPlayResources(
 
     // 正規DSLの gain 効果から米増加量を取得。なければ暫定 1。
     const gain = card.effects.find(
-      (e) => e.type === "gain" && e.riceDelta && e.riceDelta > 0
+      (e): e is Extract<Effect, { type: "gain" }> =>
+        e.type === "gain" && (e.gain?.rice ?? 0) > 0
     );
-    const rice = gain?.riceDelta;
+    const rice = gain?.gain?.rice;
     totalRice += rice ?? 1;
   }
 
@@ -217,7 +219,7 @@ function resolveBuyCard(
   const baseCost = card?.cost ?? 0;
   const discount = Math.max(
     0,
-    (playerId === "player" ? state.player : state.cpu).buyDiscountThisTurn ?? 0
+    (playerId === "player" ? state.player : state.cpu).discountThisTurn ?? 0
   );
   const discountUsed = Math.max(0, baseCost - result.costRice);
 

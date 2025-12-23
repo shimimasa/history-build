@@ -8,17 +8,24 @@ function formatSingleEffect(ef: Effect): string[] {
 
   switch (ef.type) {
     case "gain": {
-      if (typeof ef.riceDelta === "number" && ef.riceDelta !== 0) {
-        lines.push(`米 +${ef.riceDelta}`);
+      const g = ef.gain ?? {};
+      if (typeof g.rice === "number" && g.rice !== 0) {
+        lines.push(`米 +${g.rice}`);
       }
-      if (typeof ef.knowledgeDelta === "number" && ef.knowledgeDelta !== 0) {
-        lines.push(`見識 +${ef.knowledgeDelta}`);
+      if (typeof g.knowledge === "number" && g.knowledge !== 0) {
+        lines.push(`見識 +${g.knowledge}`);
       }
-      if (typeof ef.draw === "number" && ef.draw > 0) {
-        lines.push(`カードを ${ef.draw} 枚引く`);
+      if (typeof g.draw === "number" && g.draw > 0) {
+        lines.push(`カードを ${g.draw} 枚引く`);
       }
-      if (typeof ef.victoryDelta === "number" && ef.victoryDelta !== 0) {
-        lines.push(`勝利点トークン +${ef.victoryDelta}`);
+      if (typeof g.actions === "number" && g.actions !== 0) {
+        lines.push(`アクション +${g.actions}`);
+      }
+      if (typeof g.buys === "number" && g.buys !== 0) {
+        lines.push(`購入 +${g.buys}`);
+      }
+      if (typeof g.vp === "number" && g.vp !== 0) {
+        lines.push(`勝利点トークン +${g.vp}`);
       }
       break;
     }
@@ -27,7 +34,7 @@ function formatSingleEffect(ef: Effect): string[] {
       break;
     }
     case "discount": {
-      lines.push(`このターンの購入コスト -${ef.amount}`);
+      lines.push(`このターンの購入コスト -${ef.discountThisTurn}`);
       break;
     }
     case "attackDiscard": {

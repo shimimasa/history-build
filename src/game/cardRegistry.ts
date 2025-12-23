@@ -3,9 +3,7 @@
 // ゲーム内で使う v1.5 Card 型への変換ヘルパーを提供する。
 
 import type { Card, Effect, EffectsMeta } from "./gameState";
-
-// era / deckType は将来の拡張も見越して型として定義しておく
-export type EraId = "ancient" | "medieval" | "sengoku" | "edo" | "meiji";
+import type { EraId } from "./era";
 
 /**
  * public/cards.json の 1 エントリに対応する生データ型
@@ -143,54 +141,54 @@ function normalizeTypedEffect(cardId: string, ef: any): Effect | Effect[] | null
   const raw = ef;
   switch (ef.type) {
     case "gain": {
-      // 互換吸収: 旧キー（riceDelta/knowledgeDelta/victoryDelta）も受ける
-      const rice = ef.rice ?? ef.riceDelta ?? 0;
-      const knowledge = ef.knowledge ?? ef.knowledgeDelta ?? 0;
-      const draw = ef.draw ?? 0;
-      const actions = ef.actions ?? ef.actionsDelta ?? 0;
-      const buys = ef.buys ?? ef.buysDelta ?? 0;
-      const vp = ef.vp ?? ef.victoryDelta ?? 0;
-      if (
-        !rice &&
-        !knowledge &&
-        !draw &&
-        !actions &&
-        !buys &&
-        !vp
-      ) {
-        warnUnknown(cardId, raw);
-        return { type: "unknown", raw };
-      }
-      return {
-        type: "gain",
+      // canonical: {type:"gain", gain:{...}}
+      // 互換吸収: 旧キー（gainRice / gainKnowledge / gainVP / draw / addActions / addBuys 等）も受ける
+      const rice = ef.gain?.rice ?? ef.rice ?? ef.gainRice ?? ef.addRice ?? 0;
+      const knowledge =
+        ef.gain?.knowledge ?? ef.knowledge ?? ef.gainKnowledge ?? ef.addKnowledge ?? 0;
+      const draw = ef.gain?.draw ?? ef.draw ?? 0;
+      const actions = ef.gain?.actions ?? ef.actions ?? ef.addActions ?? 0;
+      const buys = ef.gain?.buys ?? ef.buys ?? ef.addBuys ?? 0;
+      const vp = ef.gain?.vp ?? ef.vp ?? ef.gainVP ?? ef.addVictory ?? 0;
+
+      const gain = {
         rice: rice || undefined,
         knowledge: knowledge || undefined,
         draw: draw || undefined,
         actions: actions || undefined,
         buys: buys || undefined,
-        vp: vp || undefined,
-        raw
+        vp: vp || undefined
       };
+
+      if (!gain.rice && !gain.knowledge && !gain.draw && !gain.actions && !gain.buys && !gain.vp) {
+        warnUnknown(cardId, raw);
+        return { type: "unknown", raw, __cardId: cardId };
+      }
+
+      return { type: "gain", gain, __cardId: cardId, raw };
     }
     case "discount": {
-      const amount = typeof ef.amount === "number" ? ef.amount : 0;
-      if (!amount) return null;
-      return { type: "discount", amount, raw };
+      const n =
+        typeof ef.discountThisTurn === "number"
+          ? ef.discountThisTurn
+          : 0;
+      if (!n) return null;
+      return { type: "discount", discountThisTurn: n, __cardId: cardId, raw };
     }
     case "trashFromHand": {
       const count = typeof ef.count === "number" ? ef.count : 1;
       if (count <= 0) return null;
-      return { type: "trashFromHand", count, raw };
+      return { type: "trashFromHand", count, __cardId: cardId, raw };
     }
     case "attackDiscard": {
       const count = typeof ef.count === "number" ? ef.count : 1;
       if (count <= 0) return null;
-      return { type: "attackDiscard", count, raw };
+      return { type: "attackDiscard", count, __cardId: cardId, raw };
     }
     case "selfDiscard": {
       const count = typeof ef.count === "number" ? ef.count : 1;
       if (count <= 0) return null;
-      return { type: "selfDiscard", count, raw };
+      return { type: "selfDiscard", count, __cardId: cardId, raw };
     }
     case "conditional": {
       const ifStr =
@@ -209,12 +207,13 @@ function normalizeTypedEffect(cardId: string, ef: any): Effect | Effect[] | null
         if: ifStr,
         then: thenEffects,
         else: elseEffects,
+        __cardId: cardId,
         raw
       };
     }
     default:
       warnUnknown(cardId, raw);
-      return { type: "unknown", raw };
+      return { type: "unknown", raw, __cardId: cardId };
   }
 }
 
@@ -233,12 +232,15 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
   if (rice || knowledge || draw || vp || actions || buys) {
     result.push({
       type: "gain",
-      rice: rice || undefined,
-      knowledge: knowledge || undefined,
-      draw: draw || undefined,
-      actions: actions || undefined,
-      buys: buys || undefined,
-      vp: vp || undefined,
+      gain: {
+        rice: rice || undefined,
+        knowledge: knowledge || undefined,
+        draw: draw || undefined,
+        actions: actions || undefined,
+        buys: buys || undefined,
+        vp: vp || undefined
+      },
+      __cardId: cardId,
       raw
     });
   }
@@ -248,6 +250,7 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
     result.push({
       type: "trashFromHand",
       count: ef.trashFromHand,
+      __cardId: cardId,
       raw
     });
   }
@@ -256,7 +259,8 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
   if (typeof ef.reduceCostThisTurn === "number" && ef.reduceCostThisTurn !== 0) {
     result.push({
       type: "discount",
-      amount: ef.reduceCostThisTurn,
+      discountThisTurn: ef.reduceCostThisTurn,
+      __cardId: cardId,
       raw
     });
   }
@@ -266,6 +270,7 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
     result.push({
       type: "attackDiscard",
       count: ef.attackDiscard,
+      __cardId: cardId,
       raw
     });
   }
@@ -275,6 +280,7 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
     result.push({
       type: "selfDiscard",
       count: ef.selfDiscard,
+      __cardId: cardId,
       raw
     });
   }
@@ -294,6 +300,7 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
       if: ifStr,
       then: thenEffects,
       else: elseEffects,
+      __cardId: cardId,
       raw: condSrc
     });
   }
@@ -301,7 +308,7 @@ function normalizeLegacyEffect(cardId: string, ef: any): Effect | Effect[] | nul
   if (result.length === 0) {
     // 何も解釈できない場合は unknown として保持（クラッシュ禁止＋可視化）
     warnUnknown(cardId, raw);
-    return { type: "unknown", raw };
+    return { type: "unknown", raw, __cardId: cardId };
   }
 
   return result;
@@ -350,10 +357,12 @@ function warnUnknown(cardId: string, raw: any): void {
  */
 export function convertRawCardToGameCard(raw: RawCard): Card {
   const effects = normalizeEffects(raw);
+  const rawKeys = collectRawEffectKeys(raw.effects);
   const effectsMeta: EffectsMeta = {
     rawCount: raw.effects?.length ?? 0,
     normCount: effects.length,
-    types: effects.map((e) => e.type)
+    types: effects.map((e) => e.type),
+    rawKeys
   };
 
   return {
@@ -370,4 +379,15 @@ export function convertRawCardToGameCard(raw: RawCard): Card {
   };
 }
 
+function collectRawEffectKeys(rawEffects: any[] | undefined): string[] {
+  if (!rawEffects || !Array.isArray(rawEffects)) return [];
+  const set = new Set<string>();
+  for (const ef of rawEffects) {
+    if (!ef || typeof ef !== "object") continue;
+    for (const k of Object.keys(ef)) {
+      set.add(k);
+    }
+  }
+  return Array.from(set.values()).sort();
+}
 

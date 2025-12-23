@@ -39,5 +39,5 @@ function sumVictoryOnCard(card: Card): number {
 
 function getVictoryValue(effect: Effect): number {
   if (effect.type !== "gain") return 0;
-  return effect.victoryDelta ?? 0;
+  return effect.gain?.vp ?? 0;
 }

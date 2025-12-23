@@ -148,7 +148,9 @@ export function actionPhase(
   const updatedActive: PlayerState = {
     ...activePlayer,
     hand: newHand,
-    played: newPlayed
+    played: newPlayed,
+    playedPersonThisTurn:
+      card.type === "person" ? true : (activePlayer.playedPersonThisTurn ?? false)
   };
 
   let newState: GameState = {
@@ -232,7 +234,7 @@ export function buyPhase(
     ...activePlayer,
     riceThisTurn: activePlayer.riceThisTurn - effectiveCost,
     discard: [...activePlayer.discard, chosenCardId],
-    buyDiscountThisTurn: 0, // 「次の購入」1回で消費
+    discountThisTurn: 0, // 購入成功で消費
     buysMadeThisTurn: (activePlayer.buysMadeThisTurn ?? 0) + 1,
     boughtVictoryThisTurn:
       card.type === "victory"
@@ -311,9 +313,10 @@ export function cleanupPhase(state: GameState): GameState {
     played: [],
     discard: mergedDiscard,
     riceThisTurn: 0,
-    buyDiscountThisTurn: 0,
+    discountThisTurn: 0,
     buysMadeThisTurn: 0,
     boughtVictoryThisTurn: 0,
+    playedPersonThisTurn: false,
     turnsTaken: activePlayer.turnsTaken + 1
   };
 

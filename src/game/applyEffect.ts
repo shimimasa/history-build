@@ -1,23 +1,13 @@
 // src/game/applyEffect.ts
-// Effect DSL（history-spec v2 / tech.md v2）に基づく純関数的な効果適用ロジック
+// Effect DSL（canonical: src/game/effects.ts）に基づく純関数的な効果適用ロジック
 
-import type {
-  ActivePlayer,
-  Effect,
-  GameState,
-  PlayerState,
-  ConditionDSL
-} from "./gameState";
+import type { ActivePlayer, Effect, GameState, PlayerState } from "./gameState";
 import { appendLog } from "./log";
 
 // ------------------------------------------------------
 // 公開 API
 // ------------------------------------------------------
 
-/**
- * Effect 配列を順番に適用するヘルパー。
- * - state は決して mutate せず、新しい GameState を返す。
- */
 export function applyEffects(
   state: GameState,
   target: ActivePlayer,
@@ -26,151 +16,113 @@ export function applyEffects(
   return effects.reduce((s, ef) => applyEffect(s, target, ef), state);
 }
 
-/**
- * 単一の Effect を適用する。
- * - 正規DSL（type: "gain" / "discount" / "trashFromHand" / "attackDiscard" / "selfDiscard" / "conditional" / "unknown"）に対応。
- * - state は決して mutate せず、新しい GameState を返す。
- */
 export function applyEffect(
   state: GameState,
   target: ActivePlayer,
   effect: Effect
 ): GameState {
-  // 元の state を絶対に変更しないため、先にディープコピー（player / cpu と各配列）を作る
   let newState: GameState = cloneGameState(state);
-  const player: PlayerState =
-    target === "player" ? newState.player : newState.cpu;
+  const player: PlayerState = target === "player" ? newState.player : newState.cpu;
 
-  // 差分ログ用のスナップショットを取得
   const before = snapshotPlayer(newState, target);
 
   switch (effect.type) {
     case "gain": {
-      // ★ デバッグ用：gain の適用内容をトレース
+      const g = effect.gain ?? {};
+      const rice = g.rice ?? 0;
+      const knowledge = g.knowledge ?? 0;
+      const draw = g.draw ?? 0;
+      const actions = g.actions ?? 0;
+      const buys = g.buys ?? 0;
+      const vp = g.vp ?? 0;
+
       newState = appendLog(
         newState,
         target,
-        `[TRACE] APPLY_GAIN: riceDelta=${effect.riceDelta ?? 0}, knowledgeDelta=${effect.knowledgeDelta ?? 0}, draw=${effect.draw ?? 0}, victoryDelta=${effect.victoryDelta ?? 0}`
+        `[TRACE] APPLY_GAIN: rice=${rice}, knowledge=${knowledge}, draw=${draw}, actions=${actions}, buys=${buys}, vp=${vp}`
       );
 
-      if (effect.riceDelta && effect.riceDelta !== 0) {
-        player.riceThisTurn += effect.riceDelta;
+      if (rice !== 0) {
+        player.riceThisTurn += rice;
+        player.turn = { ...player.turn, rice: (player.turn?.rice ?? 0) + rice };
+      }
+      if (knowledge !== 0) {
+        player.knowledge += knowledge;
+        player.gainedKnowledgeThisTurn = (player.gainedKnowledgeThisTurn ?? 0) + knowledge;
         player.turn = {
           ...player.turn,
-          rice: (player.turn?.rice ?? 0) + effect.riceDelta
+          knowledge: (player.turn?.knowledge ?? 0) + knowledge
         };
       }
-      if (effect.knowledgeDelta && effect.knowledgeDelta !== 0) {
-        player.knowledge += effect.knowledgeDelta;
-        player.gainedKnowledgeThisTurn =
-          (player.gainedKnowledgeThisTurn ?? 0) + effect.knowledgeDelta;
-        player.turn = {
-          ...player.turn,
-          knowledge: (player.turn?.knowledge ?? 0) + effect.knowledgeDelta
-        };
-      }
-      if (effect.draw && effect.draw > 0) {
-        for (let i = 0; i < effect.draw; i++) {
+      if (draw > 0) {
+        for (let i = 0; i < draw; i++) {
           drawOneCardForPlayer(player);
         }
       }
-      // 勝利点（トークン）は即時に vpTokens へ加算
-      if (effect.victoryDelta && effect.victoryDelta !== 0) {
-        player.vpTokens = (player.vpTokens ?? 0) + effect.victoryDelta;
-        newState = appendLog(newState, target, `[EFF] 勝利点トークン +${effect.victoryDelta}`);
+      if (actions !== 0) {
+        player.turn = { ...player.turn, actions: (player.turn?.actions ?? 0) + actions };
+      }
+      if (buys !== 0) {
+        player.turn = { ...player.turn, buys: (player.turn?.buys ?? 0) + buys };
+      }
+      if (vp !== 0) {
+        player.vpTokens = (player.vpTokens ?? 0) + vp;
+        newState = appendLog(newState, target, `[EFF] 勝利点トークン +${vp}`);
       }
       break;
     }
     case "discount": {
-      const owner = target === "player" ? newState.player : newState.cpu;
-      owner.buyDiscountThisTurn =
-        (owner.buyDiscountThisTurn ?? 0) + effect.amount;
-      newState = appendLog(
-        newState,
-        target,
-        `[EFF] 割引 -${effect.amount}（このターン）`
-      );
+      const n = effect.discountThisTurn ?? 0;
+      if (n !== 0) {
+        player.discountThisTurn = (player.discountThisTurn ?? 0) + n;
+        newState = appendLog(newState, target, `[EFF] 割引 -${n}（このターン）`);
+      } else {
+        newState = appendLog(newState, target, "[EFF] 割引 0（このターン）");
+      }
       break;
     }
     case "trashFromHand": {
-      const count = effect.count ?? 0;
-      if (count <= 0) break;
-
-      const trashed: string[] = [];
-      for (let i = 0; i < count && player.hand.length > 0; i++) {
-        const idx = Math.floor(Math.random() * player.hand.length);
-        const [cardId] = player.hand.splice(idx, 1);
-        if (cardId !== undefined) {
-          trashed.push(cardId);
-          player.trashedThisTurn = (player.trashedThisTurn ?? 0) + 1;
-          newState.trashPile = [...(newState.trashPile ?? []), cardId];
-        }
-      }
-
-      if (trashed.length === 0) {
-        newState = appendLog(newState, target, "[EFF] 廃棄：手札にカードがない");
-      } else {
-        for (const id of trashed) {
-          const name = newState.supply[id]?.card?.name ?? id;
-          newState = appendLog(newState, target, `[EFF] 手札から「${name}」を廃棄`);
-        }
-      }
-      break;
-    }
-    case "attackDiscard": {
-      newState = applyAttackDiscard(newState, target, effect.count);
+      const want = effect.count ?? 0;
+      const actual = moveCardsFromHand(player, want, "TRASH", newState);
+      player.trashedThisTurn = (player.trashedThisTurn ?? 0) + actual;
+      newState = appendLog(newState, target, `[EFF] 廃棄 ${actual}`);
       break;
     }
     case "selfDiscard": {
-      const count = effect.count ?? 0;
-      if (count <= 0) break;
-      const discarded: string[] = [];
-      for (let i = 0; i < count && player.hand.length > 0; i++) {
-        const idx = Math.floor(Math.random() * player.hand.length);
-        const [cardId] = player.hand.splice(idx, 1);
-        if (cardId !== undefined) {
-          discarded.push(cardId);
-          player.discard.push(cardId);
-        }
-      }
-      if (discarded.length === 0) {
-        newState = appendLog(newState, target, "[EFF] 捨てるカードがない");
-      } else {
-        for (const id of discarded) {
-          const name = newState.supply[id]?.card?.name ?? id;
-          newState = appendLog(newState, target, `[EFF] 手札から「${name}」を捨てた`);
-        }
-      }
+      const want = effect.count ?? 0;
+      const actual = moveCardsFromHand(player, want, "DISCARD", newState);
+      newState = appendLog(newState, target, `[EFF] 捨て札 ${actual}`);
+      break;
+    }
+    case "attackDiscard": {
+      const want = effect.count ?? 0;
+      newState = applyAttackDiscard(newState, target, want);
       break;
     }
     case "conditional": {
       newState = applyConditionalEffect(newState, target, effect);
-      // conditional 自体でも「達成/未達」をログに残す（then/else の中身は通常のログに任せる）
       return newState;
     }
     case "unknown": {
       newState = appendLog(
         newState,
         target,
-        `[EFF] 未対応効果: ${safeShortJson(effect.raw)}`
+        `[WARN] 未対応効果: cardId=${effect.__cardId ?? "?"} keys=${safeKeys(effect.raw)} raw=${safeShortJson(effect.raw)}`
       );
       break;
     }
     default: {
-      // 将来追加された型に備えてクラッシュしない
       newState = appendLog(
         newState,
         target,
-        `[EFF] 未対応効果: ${safeShortJson(effect as any)}`
+        `[WARN] 未対応効果: ${safeShortJson(effect as any)}`
       );
       break;
     }
   }
 
-  // 差分ログ
   const after = snapshotPlayer(newState, target);
   newState = appendEffectDiffLog(newState, target, before, after);
-
   return newState;
 }
 
@@ -238,7 +190,7 @@ function appendEffectDiffLog(
   // 購入回数
   if (dBuys !== 0) {
     const sign = dBuys > 0 ? `+${dBuys}` : `${dBuys}`;
-    next = appendLog(next, owner, `[EFF] 購入回数 ${sign}`);
+    next = appendLog(next, owner, `[EFF] 購入 ${sign}`);
   }
 
   // 手札と捨て札
@@ -297,75 +249,49 @@ function appendEffectDiffLog(
   return next;
 }
 
-/**
- * 攻撃効果：相手の手札からランダムに N 枚捨て札に送る。
- */
-function applyAttackDiscard(
-  state: GameState,
-  attacker: ActivePlayer,
-  count: number
-): GameState {
+function applyAttackDiscard(state: GameState, attacker: ActivePlayer, want: number): GameState {
   const defender: ActivePlayer = attacker === "player" ? "cpu" : "player";
   const defenderPlayer = defender === "player" ? state.player : state.cpu;
   const attackerPlayer = attacker === "player" ? state.player : state.cpu;
 
-  if (defenderPlayer.hand.length === 0) {
-    return appendLog(state, defender, "[EFF] 捨てるカードがない（攻撃）");
-  }
+  const actual = Math.max(0, Math.min(want, defenderPlayer.hand.length));
 
   const newHand = [...defenderPlayer.hand];
   const newDiscard = [...defenderPlayer.discard];
-  let discarded = 0;
-  const discardedIds: string[] = [];
-
-  for (let i = 0; i < count && newHand.length > 0; i++) {
-    const idx = Math.floor(Math.random() * newHand.length);
-    const [cardId] = newHand.splice(idx, 1);
-    if (cardId !== undefined) {
-      newDiscard.push(cardId);
-      discardedIds.push(cardId);
-      discarded++;
-    }
+  for (let i = 0; i < actual; i++) {
+    const id = newHand.shift();
+    if (id !== undefined) newDiscard.push(id);
   }
 
-  const updatedDefender: PlayerState = {
-    ...defenderPlayer,
-    hand: newHand,
-    discard: newDiscard
-  };
-
+  const updatedDefender: PlayerState = { ...defenderPlayer, hand: newHand, discard: newDiscard };
   const updatedAttacker: PlayerState = {
     ...attackerPlayer,
-    attackDiscardedThisTurn:
-      (attackerPlayer.attackDiscardedThisTurn ?? 0) + discarded
+    attackDiscardedThisTurn: (attackerPlayer.attackDiscardedThisTurn ?? 0) + actual
   };
 
-  let nextState: GameState = {
+  let next: GameState = {
     ...state,
     player:
       attacker === "player"
         ? updatedAttacker
         : defender === "player"
-        ? updatedDefender
-        : state.player,
+          ? updatedDefender
+          : state.player,
     cpu:
       attacker === "cpu"
         ? updatedAttacker
         : defender === "cpu"
-        ? updatedDefender
-        : state.cpu
+          ? updatedDefender
+          : state.cpu
   };
 
-  if (discarded > 0) {
-    for (const id of discardedIds) {
-      const name = nextState.supply[id]?.card?.name ?? id;
-      nextState = appendLog(nextState, defender, `[EFF] 手札から「${name}」を捨てた（攻撃）`);
-    }
+  next = appendLog(next, attacker, `[EFF] 攻撃: 相手が捨て札 ${actual}`);
+  if (actual === 0) {
+    next = appendLog(next, defender, "[EFF] 攻撃で捨てるカードがない");
   } else {
-    nextState = appendLog(nextState, defender, "[EFF] 捨てるカードがない（攻撃）");
+    next = appendLog(next, defender, `[EFF] 攻撃で捨て札 ${actual}`);
   }
-
-  return nextState;
+  return next;
 }
 
 /**
@@ -377,100 +303,58 @@ function applyConditionalEffect(
   owner: ActivePlayer,
   conditional: Extract<Effect, { type: "conditional" }>
 ): GameState {
-  const cond = conditional.condition;
-  const thenEffects = conditional.then;
-  const elseEffects = conditional.else;
+  const ifStr = conditional.if ?? "";
+  const thenEffects = conditional.then ?? [];
+  const elseEffects = conditional.else ?? [];
 
-  const evalResult = evaluateCondition(state, owner, cond);
+  const res = evaluateIfString(state, owner, ifStr);
 
-  if (evalResult === "unsupported") {
-    return appendLog(
-      state,
-      owner,
-      `[EFF] 未対応条件：${describeCondition(cond)}`
-    );
+  if (res === "unsupported") {
+    let next = appendLog(state, owner, `[WARN] 未対応条件: ${ifStr}`);
+    next = appendLog(next, owner, `[EFF] 条件未達（${ifStr}）`);
+    if (elseEffects.length > 0) next = applyEffects(next, owner, elseEffects);
+    return next;
   }
 
-  if (evalResult) {
-    let next = appendLog(state, owner, `[EFF] 条件達成（${describeCondition(cond)}）→ 効果発動`);
+  if (res) {
+    let next = appendLog(state, owner, `[EFF] 条件達成（${ifStr}）→ 効果発動`);
     next = applyEffects(next, owner, thenEffects);
     return next;
   }
 
-  // 条件未達：else があれば適用
-  let next = appendLog(state, owner, `[EFF] 条件未達（${describeCondition(cond)}）`);
-  if (elseEffects && elseEffects.length > 0) {
-    next = applyEffects(next, owner, elseEffects);
-  }
+  let next = appendLog(state, owner, `[EFF] 条件未達（${ifStr}）`);
+  if (elseEffects.length > 0) next = applyEffects(next, owner, elseEffects);
   return next;
 }
 
 type ConditionEvalResult = boolean | "unsupported";
 
-function evaluateCondition(
-  state: GameState,
-  owner: ActivePlayer,
-  cond: ConditionDSL
-): ConditionEvalResult {
-  const player = owner === "player" ? state.player : state.cpu;
+function evaluateIfString(state: GameState, owner: ActivePlayer, ifStr: string): ConditionEvalResult {
+  const p = owner === "player" ? state.player : state.cpu;
 
-  switch (cond.kind) {
-    case "knowledgeAtLeast": {
-      const threshold = cond.value ?? 0;
-      return player.knowledge >= threshold;
-    }
-    case "boughtThisTurnAtLeast": {
-      const threshold = cond.value ?? 0;
-      const count = player.buysMadeThisTurn ?? 0;
-      return count >= threshold;
-    }
-    case "hasCardTypeInPlay": {
-      const t = cond.cardType;
-      if (!t) return "unsupported";
-      for (const id of player.played) {
-        const card = state.supply[id]?.card;
-        if (!card) continue;
-        if (card.type === t) return true;
-        if ((card.category ?? "").toLowerCase() === t) return true;
-      }
-      return false;
-    }
-    case "trashedThisTurnAtLeast": {
-      const threshold = cond.value ?? 0;
-      return (player.trashedThisTurn ?? 0) >= threshold;
-    }
-    case "attackDiscardedAtLeast": {
-      const threshold = cond.value ?? 0;
-      return (player.attackDiscardedThisTurn ?? 0) >= threshold;
-    }
-    case "gainedKnowledgeThisTurnAtLeast": {
-      const threshold = cond.value ?? 0;
-      return (player.gainedKnowledgeThisTurn ?? 0) >= threshold;
-    }
-    case "custom":
-    default:
-      return "unsupported";
+  // 最小必須（指定3条件）
+  if (ifStr === "playedPersonThisTurn") {
+    return !!p.playedPersonThisTurn;
   }
-}
+  const mTrash = ifStr.match(/^trashedThisTurn>=(\d+)$/);
+  if (mTrash) {
+    const n = parseInt(mTrash[1], 10);
+    return (p.trashedThisTurn ?? 0) >= n;
+  }
+  const mAtk = ifStr.match(/^attackDiscarded>=(\d+)$/);
+  if (mAtk) {
+    const n = parseInt(mAtk[1], 10);
+    return (p.attackDiscardedThisTurn ?? 0) >= n;
+  }
 
-function describeCondition(cond: ConditionDSL): string {
-  switch (cond.kind) {
-    case "knowledgeAtLeast":
-      return `知識${cond.value ?? 0}以上`;
-    case "boughtThisTurnAtLeast":
-      return `このターンに購入を${cond.value ?? 0}回以上`;
-    case "hasCardTypeInPlay":
-      return `プレイ済みに${cond.cardType ?? "?"}がある`;
-    case "trashedThisTurnAtLeast":
-      return `このターンに廃棄を${cond.value ?? 0}回以上`;
-    case "attackDiscardedAtLeast":
-      return `攻撃で捨てさせた枚数が${cond.value ?? 0}以上`;
-    case "gainedKnowledgeThisTurnAtLeast":
-      return `このターンに得た見識が${cond.value ?? 0}以上`;
-    case "custom":
-    default:
-      return cond.expr ?? "特殊条件";
+  // 余裕枠（cards.json に頻出する場合に備える）
+  const mKnow = ifStr.match(/^gainedKnowledgeThisTurn>=(\d+)$/);
+  if (mKnow) {
+    const n = parseInt(mKnow[1], 10);
+    return (p.gainedKnowledgeThisTurn ?? 0) >= n;
   }
+
+  return "unsupported";
 }
 
 /**
@@ -496,6 +380,15 @@ function safeShortJson(v: any): string {
     return s.slice(0, 157) + "...";
   } catch {
     return String(v);
+  }
+}
+
+function safeKeys(v: any): string {
+  try {
+    if (!v || typeof v !== "object") return "";
+    return Object.keys(v).join(",");
+  } catch {
+    return "";
   }
 }
 
@@ -547,4 +440,20 @@ function shuffle<T>(array: T[]): T[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+type MoveDest = "DISCARD" | "TRASH";
+
+function moveCardsFromHand(player: PlayerState, want: number, dest: MoveDest, state: GameState): number {
+  const n = Math.max(0, Math.min(want, player.hand.length));
+  for (let i = 0; i < n; i++) {
+    const id = player.hand.shift();
+    if (id === undefined) continue;
+    if (dest === "DISCARD") {
+      player.discard.push(id);
+    } else {
+      state.trashPile = [...(state.trashPile ?? []), id];
+    }
+  }
+  return n;
 }

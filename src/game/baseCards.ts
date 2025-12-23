@@ -13,7 +13,7 @@ export const BASE_CARDS: Card[] = [
     cost: 1,
     knowledgeRequired: 0,
     effects: [
-      { type: "gain", riceDelta: 1 }
+      { type: "gain", gain: { rice: 1 } }
     ],
     text: "米+1。もっとも基本的な資源カード。"
   },
@@ -24,7 +24,7 @@ export const BASE_CARDS: Card[] = [
     cost: 2,
     knowledgeRequired: 0,
     effects: [
-      { type: "gain", riceDelta: 2 }
+      { type: "gain", gain: { rice: 2 } }
     ],
     text: "米+2。やや効率の良い資源カード。"
   },
@@ -35,7 +35,7 @@ export const BASE_CARDS: Card[] = [
     cost: 3,
     knowledgeRequired: 0,
     effects: [
-      { type: "gain", riceDelta: 3 }
+      { type: "gain", gain: { rice: 3 } }
     ],
     text: "米+3。大量の米をもたらす。"
   },
@@ -45,7 +45,7 @@ export const BASE_CARDS: Card[] = [
     type: "victory",
     cost: 2,
     knowledgeRequired: 1,
-    effects: [],
+    effects: [{ type: "gain", gain: { vp: 1 } }],
     text: "勝利点+1。ゲーム終了時に国力として数えられる。"
   },
   {
@@ -54,7 +54,7 @@ export const BASE_CARDS: Card[] = [
     type: "victory",
     cost: 4,
     knowledgeRequired: 2,
-    effects: [],
+    effects: [{ type: "gain", gain: { vp: 2 } }],
     text: "勝利点+2。発展した城下町。"
   },
   {
@@ -63,7 +63,7 @@ export const BASE_CARDS: Card[] = [
     type: "victory",
     cost: 8,
     knowledgeRequired: 3,
-    effects: [],
+    effects: [{ type: "gain", gain: { vp: 6 } }],
     text: "勝利点+6。1つの国を支配した証。"
   }
 ];

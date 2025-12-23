@@ -23,7 +23,7 @@ function cardHasEffect(card: Card, predicate: (e: Effect) => boolean): boolean {
 
 /**
  * カードの簡易的な「効果量」を集計するヘルパー。
- * - type: "gain" の riceDelta / knowledgeDelta / draw / victoryDelta の合計値のみを見る。
+ * - type: "gain" の gain.{rice,knowledge,draw,vp} の合計値のみを見る。
  * - conditional など cards.json 側の高度な DSL は現行モデルでは反映していない。
  */
 function summarizeEffects(card: Card): {
@@ -39,18 +39,11 @@ function summarizeEffects(card: Card): {
 
   for (const ef of card.effects) {
     if (ef.type !== "gain") continue;
-    if (typeof ef.riceDelta === "number") {
-      rice += ef.riceDelta;
-    }
-    if (typeof ef.knowledgeDelta === "number") {
-      knowledge += ef.knowledgeDelta;
-    }
-    if (typeof ef.draw === "number") {
-      draw += ef.draw;
-    }
-    if (typeof ef.victoryDelta === "number") {
-      victory += ef.victoryDelta;
-    }
+    const g = ef.gain ?? {};
+    if (typeof g.rice === "number") rice += g.rice;
+    if (typeof g.knowledge === "number") knowledge += g.knowledge;
+    if (typeof g.draw === "number") draw += g.draw;
+    if (typeof g.vp === "number") victory += g.vp;
   }
 
   return { rice, knowledge, draw, victory };
@@ -135,15 +128,15 @@ function scoreActionCard(card: Card): number {
 
   const hasKnowledge = cardHasEffect(
     card,
-    (e) => e.type === "gain" && !!e.knowledgeDelta && e.knowledgeDelta > 0
+    (e) => e.type === "gain" && (e.gain?.knowledge ?? 0) > 0
   );
   const hasDraw = cardHasEffect(
     card,
-    (e) => e.type === "gain" && !!e.draw && e.draw > 0
+    (e) => e.type === "gain" && (e.gain?.draw ?? 0) > 0
   );
   const hasRice = cardHasEffect(
     card,
-    (e) => e.type === "gain" && !!e.riceDelta && e.riceDelta > 0
+    (e) => e.type === "gain" && (e.gain?.rice ?? 0) > 0
   );
 
   if (hasKnowledge) score += 100;

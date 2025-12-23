@@ -2,21 +2,31 @@
 // src/game/score.test.ts
 
 import { describe, it, expect } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
 import { createInitialGameState, type GameState } from "./gameState";
-import { loadCards } from "./cardDefinitions";
+import { convertRawCardToGameCard } from "./cardRegistry";
+import { BASE_CARDS } from "./baseCards";
 import {
   computeVictoryPointsForPlayer,
   judgeWinner
 } from "./socre"; // ファイル名に合わせて一旦 socre に統一
 
 function createEmptyState(): GameState {
-  const cards = loadCards();
+  const cards = loadCardsFromFile();
   return createInitialGameState(cards);
+}
+
+function loadCardsFromFile() {
+  const p = path.join(process.cwd(), "public", "cards.json");
+  const raw = JSON.parse(fs.readFileSync(p, "utf8"));
+  const cards = (raw.cards ?? raw) as any[];
+  return [...BASE_CARDS, ...cards.map(convertRawCardToGameCard)];
 }
 
 describe("score - computeVictoryPointsForPlayer", () => {
   it("VP_VILLAGE を2枚捨て札に追加すると勝利点が2点増えること", () => {
-    const cards = loadCards();
+    const cards = loadCardsFromFile();
     let state = createInitialGameState(cards);
 
     const baseVp = computeVictoryPointsForPlayer(state, "player");

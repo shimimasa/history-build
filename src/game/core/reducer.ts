@@ -63,14 +63,8 @@ export function dispatch(state: GameState, cmd: Command): GameState {
         );
       }
 
-      const unhandledTypes = types.filter((t) => t !== "gain");
-      if (unhandledTypes.length > 0) {
-        traced = appendLog(
-          traced,
-          cmd.playerId,
-          `[TRACE] SKIP_EFFECT: types=${unhandledTypes.join(",")} reason=notHandledInEffectsToEvents`
-        );
-      }
+      // 旧実装では effectsToEvents が gain 以外をイベント化できず SKIP していたが、
+      // 現行は applyEffects() が正規DSLを直接適用するため、ここでは SKIP 判定しない。
     }
 
     // 適用前スナップショット
@@ -78,6 +72,21 @@ export function dispatch(state: GameState, cmd: Command): GameState {
 
     const events = resolveCommand(traced, cmd);
     let afterState = applyAll(traced, events);
+
+    // conditional(if="playedPersonThisTurn") 用：人物をプレイしたらフラグを立てる
+    if (card?.type === "person") {
+      afterState = {
+        ...afterState,
+        player:
+          cmd.playerId === "player"
+            ? { ...afterState.player, playedPersonThisTurn: true }
+            : afterState.player,
+        cpu:
+          cmd.playerId === "cpu"
+            ? { ...afterState.cpu, playedPersonThisTurn: true }
+            : afterState.cpu
+      };
+    }
 
     // カード効果（正規DSL Effect[]）を適用
     if (card && Array.isArray(card.effects) && card.effects.length > 0) {
@@ -115,7 +124,7 @@ export function dispatch(state: GameState, cmd: Command): GameState {
           cmd.playerId === "player"
             ? {
                 ...next.player,
-                buyDiscountThisTurn: 0,
+                discountThisTurn: 0,
                 buysMadeThisTurn: (next.player.buysMadeThisTurn ?? 0) + 1,
                 boughtVictoryThisTurn:
                   boughtCard?.type === "victory"
@@ -127,7 +136,7 @@ export function dispatch(state: GameState, cmd: Command): GameState {
           cmd.playerId === "cpu"
             ? {
                 ...next.cpu,
-                buyDiscountThisTurn: 0,
+                discountThisTurn: 0,
                 buysMadeThisTurn: (next.cpu.buysMadeThisTurn ?? 0) + 1,
                 boughtVictoryThisTurn:
                   boughtCard?.type === "victory"
@@ -151,12 +160,13 @@ export function dispatch(state: GameState, cmd: Command): GameState {
 
     const reset = (p: PlayerState): PlayerState => ({
       ...p,
-      buyDiscountThisTurn: 0,
+      discountThisTurn: 0,
       buysMadeThisTurn: 0,
       boughtVictoryThisTurn: 0,
       trashedThisTurn: 0,
       attackDiscardedThisTurn: 0,
-      gainedKnowledgeThisTurn: 0
+      gainedKnowledgeThisTurn: 0,
+      playedPersonThisTurn: false
     });
 
     next = {
