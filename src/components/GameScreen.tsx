@@ -482,6 +482,7 @@ React.useEffect(() => {
               sub_saharan_africa: "サハラ以南アフリカ",
               north_america: "北アメリカ",
               latin_america: "ラテンアメリカ",
+              oceania: "オセアニア",
               sengoku: "戦国",
               edo: "江戸",
               meiji: "明治"

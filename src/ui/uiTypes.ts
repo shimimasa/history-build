@@ -145,6 +145,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "oceania-basic",
+    name: "オセアニア世界デッキ（基本）",
+    description:
+      "航海文化・植民地化と独立・先住民権利の回復など、オセアニア世界をテーマにした基本デッキ。",
+    era: "oceania",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:

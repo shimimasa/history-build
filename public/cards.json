@@ -6318,6 +6318,321 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/LAM_S02.webp",
       "notes": "遺産"
+    },
+    {
+      "id": "OCE_R01",
+      "name": "羊毛",
+      "era": "oceania",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/OCE_R01.webp",
+      "notes": "牧羊"
+    },
+    {
+      "id": "OCE_R02",
+      "name": "金",
+      "era": "oceania",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_R02.webp",
+      "notes": "鉱山"
+    },
+    {
+      "id": "OCE_V01",
+      "name": "航海文化の継承",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/OCE_V01.webp",
+      "notes": "航海"
+    },
+    {
+      "id": "OCE_V02",
+      "name": "植民地社会の形成",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/OCE_V02.webp",
+      "notes": "社会"
+    },
+    {
+      "id": "OCE_V03",
+      "name": "先住民文化の復権",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/OCE_V03.webp",
+      "notes": "復権"
+    },
+    {
+      "id": "OCE_V04",
+      "name": "国家の自立と発展",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/OCE_V04.webp",
+      "notes": "発展"
+    },
+    {
+      "id": "OCE_V05",
+      "name": "多文化社会の成熟",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/OCE_V05.webp",
+      "notes": "多文化"
+    },
+    {
+      "id": "OCE_V06",
+      "name": "太平洋地域の連携",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/OCE_V06.webp",
+      "notes": "連携"
+    },
+    {
+      "id": "OCE_P01",
+      "name": "ジェームズ・クック",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_P01.webp",
+      "notes": "探検"
+    },
+    {
+      "id": "OCE_P02",
+      "name": "アーサー・フィリップ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_P02.webp",
+      "notes": "入植"
+    },
+    {
+      "id": "OCE_P03",
+      "name": "ウィリアム・ブライ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_P03.webp",
+      "notes": "航海"
+    },
+    {
+      "id": "OCE_P04",
+      "name": "バンジル（先住民の祖霊）",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/OCE_P04.webp",
+      "notes": "伝承"
+    },
+    {
+      "id": "OCE_P05",
+      "name": "トルガ（先住民指導者）",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_P05.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "OCE_P06",
+      "name": "テ・ラウパラハ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/OCE_P06.webp",
+      "notes": "統率"
+    },
+    {
+      "id": "OCE_P07",
+      "name": "アピラナ・ンガタ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_P07.webp",
+      "notes": "政治"
+    },
+    {
+      "id": "OCE_P08",
+      "name": "エディ・マボ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/OCE_P08.webp",
+      "notes": "権利回復"
+    },
+    {
+      "id": "OCE_P09",
+      "name": "ロバート・メンジーズ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/OCE_P09.webp",
+      "notes": "長期政権"
+    },
+    {
+      "id": "OCE_P10",
+      "name": "ゴフ・ウィットラム",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_P10.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "OCE_P11",
+      "name": "デイヴィッド・ウナイポン",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_P11.webp",
+      "notes": "発明と思想"
+    },
+    {
+      "id": "OCE_P12",
+      "name": "キャシー・フリーマン",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_P12.webp",
+      "notes": "象徴"
+    },
+    {
+      "id": "OCE_E01",
+      "name": "ポリネシア航海術",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_E01.webp",
+      "notes": "航海"
+    },
+    {
+      "id": "OCE_E02",
+      "name": "オーストラリア植民地化",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/OCE_E02.webp",
+      "notes": "植民地"
+    },
+    {
+      "id": "OCE_E03",
+      "name": "囚人流刑",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_E03.webp",
+      "notes": "流刑"
+    },
+    {
+      "id": "OCE_E04",
+      "name": "ゴールドラッシュ（豪州）",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/OCE_E04.webp",
+      "notes": "金"
+    },
+    {
+      "id": "OCE_E05",
+      "name": "マオリ戦争",
+      "era": "oceania",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_E05.webp",
+      "notes": "戦争"
+    },
+    {
+      "id": "OCE_E06",
+      "name": "オセアニア戦線（太平洋戦争）",
+      "era": "oceania",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_E06.webp",
+      "notes": "戦争"
+    },
+    {
+      "id": "OCE_E07",
+      "name": "先住民権利回復運動",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_E07.webp",
+      "notes": "権利"
+    },
+    {
+      "id": "OCE_E08",
+      "name": "多文化主義政策",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_E08.webp",
+      "notes": "多文化"
+    },
+    {
+      "id": "OCE_S01",
+      "name": "シドニー湾入植地",
+      "era": "oceania",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_S01.webp",
+      "notes": "入植地"
+    },
+    {
+      "id": "OCE_S02",
+      "name": "イースター島のモアイ",
+      "era": "oceania",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/OCE_S02.webp",
+      "notes": "遺産"
     }
   ]
 }

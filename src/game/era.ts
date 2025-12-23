@@ -16,6 +16,7 @@ export type EraId =
   | "central_asia"
   | "sub_saharan_africa"
   | "north_america"
-  | "latin_america";
+  | "latin_america"
+  | "oceania";
 
 
