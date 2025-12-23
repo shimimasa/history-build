@@ -6633,6 +6633,321 @@
       "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
       "image": "/assets/cards/OCE_S02.webp",
       "notes": "遺産"
+    },
+    {
+      "id": "MOG_R01",
+      "name": "石油資本",
+      "era": "modern_global",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/MOG_R01.webp",
+      "notes": "資本"
+    },
+    {
+      "id": "MOG_R02",
+      "name": "大量生産",
+      "era": "modern_global",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_R02.webp",
+      "notes": "工業"
+    },
+    {
+      "id": "MOG_V01",
+      "name": "植民地帝国の拡大",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/MOG_V01.webp",
+      "notes": "帝国"
+    },
+    {
+      "id": "MOG_V02",
+      "name": "戦時総力体制",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/MOG_V02.webp",
+      "notes": "総力"
+    },
+    {
+      "id": "MOG_V03",
+      "name": "福祉国家の形成",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/MOG_V03.webp",
+      "notes": "福祉"
+    },
+    {
+      "id": "MOG_V04",
+      "name": "東西対立の収束",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/MOG_V04.webp",
+      "notes": "冷戦"
+    },
+    {
+      "id": "MOG_V05",
+      "name": "国際協調の枠組み",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/MOG_V05.webp",
+      "notes": "協調"
+    },
+    {
+      "id": "MOG_V06",
+      "name": "情報化社会の到来",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/MOG_V06.webp",
+      "notes": "情報"
+    },
+    {
+      "id": "MOG_P01",
+      "name": "ビスマルク",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MOG_P01.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "MOG_P02",
+      "name": "セシル・ローズ",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/MOG_P02.webp",
+      "notes": "帝国"
+    },
+    {
+      "id": "MOG_P03",
+      "name": "レーニン",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_P03.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "MOG_P04",
+      "name": "スターリン",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_P04.webp",
+      "notes": "体制"
+    },
+    {
+      "id": "MOG_P05",
+      "name": "チャーチル",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_P05.webp",
+      "notes": "戦時"
+    },
+    {
+      "id": "MOG_P06",
+      "name": "ルーズベルト（FDR）",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_P06.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "MOG_P07",
+      "name": "ヒトラー",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_P07.webp",
+      "notes": "独裁"
+    },
+    {
+      "id": "MOG_P08",
+      "name": "トルーマン",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_P08.webp",
+      "notes": "冷戦"
+    },
+    {
+      "id": "MOG_P09",
+      "name": "マオ・沢東",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/MOG_P09.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "MOG_P10",
+      "name": "ゴルバチョフ",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_P10.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "MOG_P11",
+      "name": "マハトマ・ガンディー",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MOG_P11.webp",
+      "notes": "非暴力"
+    },
+    {
+      "id": "MOG_P12",
+      "name": "ネルソン・マンデラ",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_P12.webp",
+      "notes": "人権"
+    },
+    {
+      "id": "MOG_E01",
+      "name": "帝国主義の進展",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MOG_E01.webp",
+      "notes": "帝国"
+    },
+    {
+      "id": "MOG_E02",
+      "name": "第一次世界大戦",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E02.webp",
+      "notes": "大戦"
+    },
+    {
+      "id": "MOG_E03",
+      "name": "ロシア革命",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E03.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "MOG_E04",
+      "name": "世界恐慌",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_E04.webp",
+      "notes": "恐慌"
+    },
+    {
+      "id": "MOG_E05",
+      "name": "第二次世界大戦",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E05.webp",
+      "notes": "大戦"
+    },
+    {
+      "id": "MOG_E06",
+      "name": "冷戦",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_E06.webp",
+      "notes": "対立"
+    },
+    {
+      "id": "MOG_E07",
+      "name": "脱植民地化",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E07.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "MOG_E08",
+      "name": "グローバル化",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_E08.webp",
+      "notes": "接続"
+    },
+    {
+      "id": "MOG_S01",
+      "name": "国際連盟",
+      "era": "modern_global",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_S01.webp",
+      "notes": "協調"
+    },
+    {
+      "id": "MOG_S02",
+      "name": "国際連合",
+      "era": "modern_global",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MOG_S02.webp",
+      "notes": "協調"
     }
   ]
 }

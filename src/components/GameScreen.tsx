@@ -483,6 +483,7 @@ React.useEffect(() => {
               north_america: "北アメリカ",
               latin_america: "ラテンアメリカ",
               oceania: "オセアニア",
+              modern_global: "近現代グローバル",
               sengoku: "戦国",
               edo: "江戸",
               meiji: "明治"

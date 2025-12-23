@@ -154,6 +154,15 @@ export const DEFAULT_DECKS: DeckConfig[] = [
     initialDeck: COMMON_STARTER_BASIC
   },
   {
+    id: "modern-global-basic",
+    name: "近現代グローバルデッキ（基本）",
+    description:
+      "帝国主義・大戦・冷戦からグローバル化まで、近現代世界の流れをテーマにした基本デッキ。",
+    era: "modern_global",
+    deckType: "basic",
+    initialDeck: COMMON_STARTER_BASIC
+  },
+  {
     id: "medieval-europe-basic",
     name: "中世ヨーロッパデッキ（基本）",
     description:
