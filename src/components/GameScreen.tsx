@@ -116,6 +116,50 @@ function sortSupplyPiles(piles: any[]): any[] {
   const isActionPhase = rawPhase === "ACTION";
   const isBuyPhase = rawPhase === "BUY";
 
+  // VP（勝利点）を UI 側で軽量計算（ロジックは変更せず、表示用のみ）
+  const calcVpFor = React.useCallback(
+    (p: any): number => {
+      const vpTokens = Number(p?.vpTokens ?? 0) || 0;
+      const deckIds: string[] = Array.isArray(p?.deck) ? p.deck : [];
+      const discardIds: string[] = Array.isArray(p?.discard) ? p.discard : [];
+      const playedIds: string[] = Array.isArray(p?.played) ? p.played : [];
+      const handIds: string[] = Array.isArray(p?.hand)
+        ? p.hand.map((c: any) => (typeof c === "string" ? c : c?.id)).filter(Boolean)
+        : [];
+
+      const allIds: string[] = [...deckIds, ...handIds, ...discardIds, ...playedIds];
+      let total = 0;
+      for (const id of allIds) {
+        const card = supply?.[id]?.card;
+        if (!card) continue;
+        if (card.type !== "victory" && card.category !== "victory") continue;
+        const effects = Array.isArray(card.effects) ? card.effects : [];
+        for (const ef of effects) {
+          if (ef?.type !== "gain") continue;
+          total += Number(ef?.gain?.vp ?? 0) || 0;
+        }
+      }
+      return total + vpTokens;
+    },
+    [supply]
+  );
+
+  const playerStatus = React.useMemo(() => {
+    const vp = calcVpFor(player);
+    const d = Array.isArray(player?.deck) ? player.deck.length : player?.deckCount ?? 0;
+    const x = Array.isArray(player?.discard) ? player.discard.length : player?.discardCount ?? 0;
+    const h = Array.isArray(player?.hand) ? player.hand.length : 0;
+    return { vp, d, x, h };
+  }, [calcVpFor, player]);
+
+  const cpuStatus = React.useMemo(() => {
+    const vp = calcVpFor(cpu);
+    const d = Array.isArray(cpu?.deck) ? cpu.deck.length : cpu?.deckCount ?? 0;
+    const x = Array.isArray(cpu?.discard) ? cpu.discard.length : cpu?.discardCount ?? 0;
+    const h = Array.isArray(cpu?.hand) ? cpu.hand.length : 0;
+    return { vp, d, x, h };
+  }, [calcVpFor, cpu]);
+
   　
   // ▼ 修正: v1 / v1.5 両対応で「アクティブプレイヤー」を解決
   const activeSide =
@@ -617,6 +661,15 @@ React.useEffect(() => {
               <StatusBadge label="割引" value={discountThisTurn} />
             </div>
 
+            <div className="hb-status-strip" aria-label="プレイヤー/CPU ステータス">
+              <div className="hb-status-chip">
+                P: VP{playerStatus.vp} D{playerStatus.d} X{playerStatus.x} H{playerStatus.h}
+              </div>
+              <div className="hb-status-chip hb-status-chip--cpu">
+                CPU: VP{cpuStatus.vp} D{cpuStatus.d} X{cpuStatus.x} H{cpuStatus.h}
+              </div>
+            </div>
+
             <div className="hb-phase-pill">
               手番 {isPlayerTurn ? "プレイヤー" : "CPU"}
             </div>
@@ -817,16 +870,6 @@ React.useEffect(() => {
           {/* 右：DETAIL */}
           <aside className="hb-detail-column">
             <div className="hb-detail-stack">
-              <div className="hb-player-row">
-                <PlayerHud
-                  title="プレイヤー"
-                  data={player}
-                  recentBuys={recentBuyCards}
-                  recentPlays={recentPlayCards}
-                />
-                <PlayerHud title="CPU" data={cpu} compact />
-              </div>
-
               <section className="hb-card-detail-panel hb-card-detail-panel--detail">
                 <div className="hb-section-title">DETAIL</div>
                 <div className="hb-card-detail-scroll">
