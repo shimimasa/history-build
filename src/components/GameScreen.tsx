@@ -78,8 +78,8 @@ function sortSupplyPiles(piles: any[]): any[] {
   const [logFilter, setLogFilter] = React.useState<string>("");
   const [isHelpOpen, setIsHelpOpen] = React.useState(false);
   // Phase 3: フェーズで主役UIを切り替える（UIのみ）
-  const [showHandInBuy, setShowHandInBuy] = React.useState(false);
-  const [showLogInBuy, setShowLogInBuy] = React.useState(false);
+  const [isHandOpen, setIsHandOpen] = React.useState(false);
+  const [isLogOpen, setIsLogOpen] = React.useState(false);
   // ACTION中のサプライは「縮小がデフォ」。true のときだけ通常表示
   const [showSupplyInAction, setShowSupplyInAction] = React.useState(false);
 
@@ -300,8 +300,8 @@ function sortSupplyPiles(piles: any[]): any[] {
   // フェーズ移動時のデフォルトUI（迷子防止：BUYはサプライ主役=手札は折りたたみ）
   React.useEffect(() => {
     if (rawPhase === "BUY") {
-      setShowHandInBuy(false);
-      setShowLogInBuy(false);
+      setIsHandOpen(false);
+      setIsLogOpen(false);
     }
     if (rawPhase === "ACTION") setShowSupplyInAction(false);
   }, [rawPhase]);
@@ -374,6 +374,13 @@ function sortSupplyPiles(piles: any[]): any[] {
           setIsHelpOpen(false);
           return;
         }
+        // BUY中のDrawerは先に閉じる（ヘルプ > Drawer > 選択解除）
+        if (rawPhase === "BUY" && (isHandOpen || isLogOpen)) {
+          e.preventDefault();
+          setIsHandOpen(false);
+          setIsLogOpen(false);
+          return;
+        }
         onSelectHandCard(null);
         setSelectedSupplyCardId(null);
         return;
@@ -395,7 +402,7 @@ function sortSupplyPiles(piles: any[]): any[] {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard, isHelpOpen]);
+  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard, isHelpOpen, rawPhase, isHandOpen, isLogOpen]);
 
   // BUYフェーズ + プレイヤー手番なら「クリックで即購入」
 // それ以外（他フェーズ or CPU 手番 or 在庫0）は詳細モーダルを開くだけ
@@ -584,7 +591,9 @@ React.useEffect(() => {
             // スクロール領域（スクロールバー操作含む）で選択解除しない
             ".hb-supply-area, .hb-detail-stack, .hb-log-area, .hb-hand-area," +
               // 既存の除外
-              " .hb-hand-card, .hb-supply-card, .hb-log-panel, .hb-phase-actions, .hb-modal-overlay, input, button, textarea, select"
+              " .hb-hand-card, .hb-supply-card, .hb-log-panel, .hb-phase-actions," +
+              " .hb-buy-drawer-toggle-row, .hb-drawer, .hb-drawer-backdrop," +
+              " .hb-modal-overlay, input, button, textarea, select"
           )
         ) {
           return;
@@ -900,195 +909,338 @@ React.useEffect(() => {
           </aside>
         </div>
 
-        {/* --- 下：手札 --- */}
-        <section
-          className={[
-            "hb-hand-area",
-            "hb-hand",
-            isActionPhase ? "hb-hand--primary" : "",
-            isBuyPhase ? "hb-hand--secondary" : "",
-            isBuyPhase && !showHandInBuy ? "hb-hand--collapsed" : "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-        >
-        <div className="hb-hand-header">
-          <div className="hb-hand-header-left">
-            <span className="hb-section-title">手札（{handCount}枚）</span>
-            {isBuyPhase && !showHandInBuy && (
-              <span className="hb-hand-phase-hint">BUY中：サプライが主役</span>
-            )}
-          </div>
-          <div className="hb-hand-header-right">
-            {isBuyPhase && (
-              <button
-                type="button"
-                className="hb-toggle-btn"
-                onClick={() => setShowHandInBuy((v) => !v)}
-                title={showHandInBuy ? "手札を折りたたむ" : "手札を表示する"}
-              >
-                {showHandInBuy ? "折りたたむ" : "表示"}
-              </button>
-            )}
-            <span className="hb-hand-hint">
-              クリックで選択 / ダブルクリックで即プレイ
-            </span>
-          </div>
-        </div>
-
-        {/* 下部いっぱいに横一列に並ぶ手札。多い場合は横スクロール */}
-        <div className="hb-hand-cards">
-        {player.hand?.map((card: any, index: number) => {
-            // 選択・描画のための「手札1枚ごとの一意キー」
-            const handKey = resolveHandKey(card, index);
-            // 実際にプレイ処理に渡すID（既存ロジック互換）
-            const playId = (card.instanceId ?? card.id);
-
-            const selected = selectedHandCardId === handKey;
-            const isPlayFlash = playFlashCardId === card.id; // ★ PLAY ハイライト判定
-
-            return (
-              <div
-                key={handKey}
-                className={`hb-hand-card${
-                  selected ? " hb-hand-card--selected" : ""
-                }${isPlayFlash ? " hb-flash-play" : ""}`}
-                onClick={() => handleHandClick(handKey)}
-                onDoubleClick={(e) => {
-                     e.stopPropagation();
-                     handleHandDoubleClick(playId);
-                   }}
-                onContextMenu={(e) => {
-                      e.preventDefault();
-                      setDetailModalCard(card);
-                      setIsDetailModalOpen(true);
-                    }}
-                    // BUY中はクリック固定：hoverではDETAILを更新しない
-                    onMouseEnter={!isBuyPhase ? () => onHoverCard(card) : undefined}
-                     onMouseLeave={!isBuyPhase ? () => onHoverCard(null) : undefined}
-                     // ★ 600ms の一時的なハイライト用
-                     // className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}${playFlashCardId === playId ? " hb-flash-play" : ""}`}
-
-              >
-                <CardView card={card} variant="hand" />
+        {/* --- 下：手札/ログ（BUY以外は従来どおりレイアウトに載せる） --- */}
+        {!isBuyPhase && (
+          <>
+            <section
+              className={[
+                "hb-hand-area",
+                "hb-hand",
+                isActionPhase ? "hb-hand--primary" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <div className="hb-hand-header">
+                <div className="hb-hand-header-left">
+                  <span className="hb-section-title">手札（{handCount}枚）</span>
+                </div>
+                <div className="hb-hand-header-right">
+                  <span className="hb-hand-hint">
+                    クリックで選択 / ダブルクリックで即プレイ
+                  </span>
+                </div>
               </div>
-            );
-          })}
-        </div>
 
-        </section>
+              <div className="hb-hand-cards">
+                {player.hand?.map((card: any, index: number) => {
+                  const handKey = resolveHandKey(card, index);
+                  const playId = (card.instanceId ?? card.id);
+                  const selected = selectedHandCardId === handKey;
+                  const isPlayFlash = playFlashCardId === card.id;
+                  return (
+                    <div
+                      key={handKey}
+                      className={`hb-hand-card${
+                        selected ? " hb-hand-card--selected" : ""
+                      }${isPlayFlash ? " hb-flash-play" : ""}`}
+                      onClick={() => handleHandClick(handKey)}
+                      onDoubleClick={(e) => {
+                        e.stopPropagation();
+                        handleHandDoubleClick(playId);
+                      }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        setDetailModalCard(card);
+                        setIsDetailModalOpen(true);
+                      }}
+                      onMouseEnter={() => onHoverCard(card)}
+                      onMouseLeave={() => onHoverCard(null)}
+                    >
+                      <CardView card={card} variant="hand" />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
 
-        {/* --- 下：ログ（固定高＋内部スクロール） --- */}
-        <section
-          className={[
-            "hb-log-area",
-            "hb-log",
-            isBuyPhase && !showLogInBuy ? "hb-log--collapsed" : "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-          aria-label="ログ"
-        >
-          <div className="hb-log-panel">
-            <div className="hb-log-title">
-              <span>ログ</span>
-              <div className="flex gap-1">
-                {isBuyPhase && (
-                  <button
-                    type="button"
-                    className="hb-toggle-btn"
-                    onClick={() => setShowLogInBuy((v) => !v)}
-                    title={showLogInBuy ? "ログを折りたたむ" : "ログを表示する"}
-                  >
-                    {showLogInBuy ? "折りたたむ" : "表示"}
-                  </button>
+            <section className="hb-log-area" aria-label="ログ">
+              <div className="hb-log-panel">
+                <div className="hb-log-title">
+                  <span>ログ</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      className={`px-2 py-0.5 rounded border text-[10px] ${
+                        logMode === "default"
+                          ? "border-sky-400 text-sky-200"
+                          : "border-slate-600 text-slate-300"
+                      }`}
+                      onClick={() => setLogMode("default")}
+                    >
+                      Default
+                    </button>
+                    <button
+                      type="button"
+                      className={`px-2 py-0.5 rounded border text-[10px] ${
+                        logMode === "debug"
+                          ? "border-sky-400 text-sky-200"
+                          : "border-slate-600 text-slate-300"
+                      }`}
+                      onClick={() => setLogMode("debug")}
+                    >
+                      Debug
+                    </button>
+                    <button
+                      type="button"
+                      className={`px-2 py-0.5 rounded border text-[10px] ${
+                        isHelpOpen
+                          ? "border-amber-300 text-amber-200"
+                          : "border-slate-600 text-slate-300"
+                      }`}
+                      onClick={() => setIsHelpOpen((v) => !v)}
+                      title="ヘルプ"
+                    >
+                      ？
+                    </button>
+                  </div>
+                </div>
+
+                {isHelpOpen && (
+                  <div className="hb-log-help">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="font-semibold text-amber-200">ミニヘルプ</div>
+                      <button
+                        type="button"
+                        className="px-2 py-0.5 rounded border border-slate-700 text-slate-300 hover:text-slate-100"
+                        onClick={() => setIsHelpOpen(false)}
+                        title="閉じる（Esc）"
+                      >
+                        閉じる
+                      </button>
+                    </div>
+                    <ul className="space-y-0.5 text-slate-200">
+                      <li>フェーズ：ACTION → BUY → CLEANUP</li>
+                      <li>操作：サプライ/手札クリックで詳細、背景クリック/Escで解除</li>
+                      <li>ショートカット：Enter=次へ、Shift+Enter=ターン終了</li>
+                      <li>終了条件：空山3 or 勝利点空山2</li>
+                      <li>ログ：Default/Debug切替、フィルタ可能</li>
+                    </ul>
+                  </div>
                 )}
-                <button
-                  type="button"
-                  className={`px-2 py-0.5 rounded border text-[10px] ${
-                    logMode === "default"
-                      ? "border-sky-400 text-sky-200"
-                      : "border-slate-600 text-slate-300"
-                  }`}
-                  onClick={() => setLogMode("default")}
-                >
-                  Default
-                </button>
-                <button
-                  type="button"
-                  className={`px-2 py-0.5 rounded border text-[10px] ${
-                    logMode === "debug"
-                      ? "border-sky-400 text-sky-200"
-                      : "border-slate-600 text-slate-300"
-                  }`}
-                  onClick={() => setLogMode("debug")}
-                >
-                  Debug
-                </button>
-                <button
-                  type="button"
-                  className={`px-2 py-0.5 rounded border text-[10px] ${
-                    isHelpOpen
-                      ? "border-amber-300 text-amber-200"
-                      : "border-slate-600 text-slate-300"
-                  }`}
-                  onClick={() => setIsHelpOpen((v) => !v)}
-                  title="ヘルプ"
-                >
-                  ？
-                </button>
-              </div>
-            </div>
 
-            {isHelpOpen && (
-              <div className="hb-log-help">
-                <div className="flex items-center justify-between mb-1">
-                  <div className="font-semibold text-amber-200">ミニヘルプ</div>
+                <input
+                  value={logFilter}
+                  onChange={(e) => setLogFilter(e.target.value)}
+                  placeholder="カード名でフィルタ（部分一致）"
+                  className="hb-log-filter"
+                />
+
+                <div className="hb-log-list">
+                  {filteredLogs.length > 0 ? (
+                    <ul className="space-y-0.5">
+                      {filteredLogs
+                        .slice(-15)
+                        .reverse()
+                        .map((line, idx) => (
+                          <li key={idx} className="whitespace-pre-wrap">
+                            {line}
+                          </li>
+                        ))}
+                    </ul>
+                  ) : (
+                    <p className="text-slate-400">まだログはありません。</p>
+                  )}
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+      </div>
+
+      {/* BUYフェーズ：手札/ログはDrawer（レイアウトから完全に外す） */}
+      {isBuyPhase && (
+        <>
+          <div className="hb-buy-drawer-toggle-row" aria-label="BUY Drawer トグル">
+            <button
+              type="button"
+              className="hb-buy-drawer-toggle"
+              onClick={() => setIsHandOpen(true)}
+            >
+              手札
+            </button>
+            <button
+              type="button"
+              className="hb-buy-drawer-toggle"
+              onClick={() => setIsLogOpen(true)}
+            >
+              ログ
+            </button>
+          </div>
+
+          {isHandOpen && (
+            <>
+              <div
+                className="hb-drawer-backdrop"
+                onMouseDown={() => setIsHandOpen(false)}
+              />
+              <div className="hb-drawer hb-drawer--hand" role="dialog" aria-label="手札Drawer">
+                <div className="hb-drawer-header">
+                  <div className="hb-drawer-title">手札（{handCount}枚）</div>
                   <button
                     type="button"
-                    className="px-2 py-0.5 rounded border border-slate-700 text-slate-300 hover:text-slate-100"
-                    onClick={() => setIsHelpOpen(false)}
-                    title="閉じる（Esc）"
+                    className="hb-drawer-close"
+                    onClick={() => setIsHandOpen(false)}
                   >
                     閉じる
                   </button>
                 </div>
-                <ul className="space-y-0.5 text-slate-200">
-                  <li>フェーズ：ACTION → BUY → CLEANUP</li>
-                  <li>操作：サプライ/手札クリックで詳細、背景クリック/Escで解除</li>
-                  <li>ショートカット：Enter=次へ、Shift+Enter=ターン終了</li>
-                  <li>終了条件：空山3 or 勝利点空山2</li>
-                  <li>ログ：Default/Debug切替、フィルタ可能</li>
-                </ul>
+                <div className="hb-drawer-body">
+                  <div className="hb-hand-cards">
+                    {player.hand?.map((card: any, index: number) => {
+                      const handKey = resolveHandKey(card, index);
+                      const playId = (card.instanceId ?? card.id);
+                      const selected = selectedHandCardId === handKey;
+                      const isPlayFlash = playFlashCardId === card.id;
+                      return (
+                        <div
+                          key={handKey}
+                          className={`hb-hand-card${
+                            selected ? " hb-hand-card--selected" : ""
+                          }${isPlayFlash ? " hb-flash-play" : ""}`}
+                          onClick={() => handleHandClick(handKey)}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            handleHandDoubleClick(playId);
+                          }}
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            setDetailModalCard(card);
+                            setIsDetailModalOpen(true);
+                          }}
+                        >
+                          <CardView card={card} variant="hand" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
-            )}
+            </>
+          )}
 
-            <input
-              value={logFilter}
-              onChange={(e) => setLogFilter(e.target.value)}
-              placeholder="カード名でフィルタ（部分一致）"
-              className="hb-log-filter"
-            />
+          {isLogOpen && (
+            <>
+              <div
+                className="hb-drawer-backdrop"
+                onMouseDown={() => setIsLogOpen(false)}
+              />
+              <div className="hb-drawer hb-drawer--log" role="dialog" aria-label="ログDrawer">
+                <div className="hb-drawer-header">
+                  <div className="hb-drawer-title">ログ</div>
+                  <button
+                    type="button"
+                    className="hb-drawer-close"
+                    onClick={() => setIsLogOpen(false)}
+                  >
+                    閉じる
+                  </button>
+                </div>
+                <div className="hb-drawer-body">
+                  <div className="hb-log-panel hb-log-panel--drawer">
+                    <div className="hb-log-title">
+                      <span>ログ</span>
+                      <div className="flex gap-1">
+                        <button
+                          type="button"
+                          className={`px-2 py-0.5 rounded border text-[10px] ${
+                            logMode === "default"
+                              ? "border-sky-400 text-sky-200"
+                              : "border-slate-600 text-slate-300"
+                          }`}
+                          onClick={() => setLogMode("default")}
+                        >
+                          Default
+                        </button>
+                        <button
+                          type="button"
+                          className={`px-2 py-0.5 rounded border text-[10px] ${
+                            logMode === "debug"
+                              ? "border-sky-400 text-sky-200"
+                              : "border-slate-600 text-slate-300"
+                          }`}
+                          onClick={() => setLogMode("debug")}
+                        >
+                          Debug
+                        </button>
+                        <button
+                          type="button"
+                          className={`px-2 py-0.5 rounded border text-[10px] ${
+                            isHelpOpen
+                              ? "border-amber-300 text-amber-200"
+                              : "border-slate-600 text-slate-300"
+                          }`}
+                          onClick={() => setIsHelpOpen((v) => !v)}
+                          title="ヘルプ"
+                        >
+                          ？
+                        </button>
+                      </div>
+                    </div>
 
-            <div className="hb-log-list">
-              {filteredLogs.length > 0 ? (
-                <ul className="space-y-0.5">
-                  {filteredLogs
-                    .slice(-15) // 最新 15 件
-                    .reverse() // 新しいものを上に
-                    .map((line, idx) => (
-                      <li key={idx} className="whitespace-pre-wrap">
-                        {line}
-                      </li>
-                    ))}
-                </ul>
-              ) : (
-                <p className="text-slate-400">まだログはありません。</p>
-              )}
-            </div>
-          </div>
-        </section>
-      </div>
+                    {isHelpOpen && (
+                      <div className="hb-log-help">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="font-semibold text-amber-200">ミニヘルプ</div>
+                          <button
+                            type="button"
+                            className="px-2 py-0.5 rounded border border-slate-700 text-slate-300 hover:text-slate-100"
+                            onClick={() => setIsHelpOpen(false)}
+                            title="閉じる（Esc）"
+                          >
+                            閉じる
+                          </button>
+                        </div>
+                        <ul className="space-y-0.5 text-slate-200">
+                          <li>フェーズ：ACTION → BUY → CLEANUP</li>
+                          <li>操作：サプライ/手札クリックで詳細、背景クリック/Escで解除</li>
+                          <li>ショートカット：Enter=次へ、Shift+Enter=ターン終了</li>
+                          <li>終了条件：空山3 or 勝利点空山2</li>
+                          <li>ログ：Default/Debug切替、フィルタ可能</li>
+                        </ul>
+                      </div>
+                    )}
+
+                    <input
+                      value={logFilter}
+                      onChange={(e) => setLogFilter(e.target.value)}
+                      placeholder="カード名でフィルタ（部分一致）"
+                      className="hb-log-filter"
+                    />
+
+                    <div className="hb-log-list">
+                      {filteredLogs.length > 0 ? (
+                        <ul className="space-y-0.5">
+                          {filteredLogs
+                            .slice(-15)
+                            .reverse()
+                            .map((line, idx) => (
+                              <li key={idx} className="whitespace-pre-wrap">
+                                {line}
+                              </li>
+                            ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-400">まだログはありません。</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
 
     {/* ★ モーダルは CardDetailModal 側の overlay で完結させる */}
       <CardDetailModal
