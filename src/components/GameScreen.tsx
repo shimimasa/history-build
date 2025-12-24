@@ -109,6 +109,13 @@ function sortSupplyPiles(piles: any[]): any[] {
   }, [logs, logMode, logFilter]);
   const { player, cpu, currentPhase, turn, supply } = state;
 
+  // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
+  // ★ 重要：以降の useMemo などで参照するので、宣言は必ず上（TDZ回避）
+  const rawPhase =
+    state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
+  const isActionPhase = rawPhase === "ACTION";
+  const isBuyPhase = rawPhase === "BUY";
+
   　
   // ▼ 修正: v1 / v1.5 両対応で「アクティブプレイヤー」を解決
   const activeSide =
@@ -245,12 +252,6 @@ function sortSupplyPiles(piles: any[]): any[] {
 };
 
 
-
-  // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
-  const rawPhase =
-    state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
-  const isActionPhase = rawPhase === "ACTION";
-  const isBuyPhase = rawPhase === "BUY";
 
   // フェーズ移動時のデフォルトUI（迷子防止：BUYはサプライ主役=手札は折りたたみ）
   React.useEffect(() => {
