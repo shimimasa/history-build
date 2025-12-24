@@ -537,7 +537,10 @@ React.useEffect(() => {
         // カード/ボタン/入力/モーダル内のクリックは無視
         if (
           t.closest(
-            ".hb-hand-card, .hb-supply-card, .hb-log-panel, .hb-phase-actions, .hb-modal-overlay, input, button, textarea, select"
+            // スクロール領域（スクロールバー操作含む）で選択解除しない
+            ".hb-supply-area, .hb-detail-stack, .hb-log-area, .hb-hand-area," +
+              // 既存の除外
+              " .hb-hand-card, .hb-supply-card, .hb-log-panel, .hb-phase-actions, .hb-modal-overlay, input, button, textarea, select"
           )
         ) {
           return;

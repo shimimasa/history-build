@@ -33,6 +33,10 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   isFlashingBuy,
 }) => {
   const { card, remaining } = pile;
+  const riceCost =
+    (typeof card?.cost === "number" ? card.cost : card?.cost?.rice) ?? 0;
+  const rawType: string = card?.type ?? card?.cardType ?? "";
+  const typeChipClass = rawType ? `hb-supply-type-chip--${rawType}` : "hb-supply-type-chip--unknown";
 
   const isOutOfStock =
     typeof remaining === "number" && remaining <= 0;
@@ -67,10 +71,18 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
       {typeof remaining === "number" && (
         <div className="hb-supply-remaining-badge">残り {remaining}</div>
       )}
-      {!!buyHintBadge && !isSelected && (
+      {!!buyHintBadge && !isSelected && uiMode !== "buy" && (
         <div className="hb-supply-buy-hint-badge" aria-label="購入不可のヒント">
           {buyHintBadge}
         </div>
+      )}
+      {uiMode === "buy" && (
+        <>
+          <div className="hb-supply-cost-overlay" aria-label="米コスト">
+            米 {riceCost}
+          </div>
+          <div className={`hb-supply-type-chip ${typeChipClass}`} aria-label="種類色" />
+        </>
       )}
 
       <div className="hb-card-frame">

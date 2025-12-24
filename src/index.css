@@ -674,30 +674,72 @@ body {
     border-radius: 14px;
   }
 
+  /* BUY時は「色＋残り＋米」だけに寄せる（文字ラベル/フッターは消す） */
   .hb-supply-card--buy .hb-card-footer {
-    gap: 0.25rem;
-  }
-
-  /* 名前は省略して視覚把握に寄せる（DETAILに集約） */
-  .hb-supply-card--buy .hb-card-name {
     display: none;
   }
 
-  .hb-supply-card--buy .hb-card-name-row {
-    justify-content: flex-end;
+  /* 種別の派手なoutlineはBUYでは抑える（色はチップ/細縁で表現） */
+  .hb-supply-card--buy .hb-card--resource,
+  .hb-supply-card--buy .hb-card--victory,
+  .hb-supply-card--buy .hb-card--person,
+  .hb-supply-card--buy .hb-card--event,
+  .hb-supply-card--buy .hb-card--unknown,
+  .hb-supply-card--buy .hb-card--type-resource,
+  .hb-supply-card--buy .hb-card--type-victory,
+  .hb-supply-card--buy .hb-card--type-person,
+  .hb-supply-card--buy .hb-card--type-event {
+    outline: none !important;
   }
 
-  .hb-supply-card--buy .hb-cost-badge {
-    font-size: 0.78rem;
+  /* BUYのカード本体は余白最小 */
+  .hb-supply-card--buy .hb-card {
+    padding: 0;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* 残り枚数：左上（画像上） */
+  .hb-supply-card--buy .hb-supply-remaining-badge {
+    top: 0.35rem;
+    left: 0.45rem;
+    font-size: 0.7rem;
+    padding: 0.12rem 0.45rem;
+    background: rgba(2, 6, 23, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+  }
+
+  /* 米コスト：右上（画像上） */
+  .hb-supply-cost-overlay {
+    position: absolute;
+    top: 0.35rem;
+    right: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 900;
     padding: 0.12rem 0.5rem;
+    border-radius: 999px;
     background: rgba(251, 191, 36, 0.95);
+    color: #111827;
+    box-shadow: 0 0 0 1px rgba(2, 6, 23, 0.35);
   }
 
-  .hb-supply-card--buy .hb-card-type,
-  .hb-supply-card--buy .hb-card-type-badge {
-    font-size: 0.68rem;
-    padding: 0.1rem 0.35rem;
+  /* 種類色：左上に小チップ（残りバッジの下に重ならない位置） */
+  .hb-supply-type-chip {
+    position: absolute;
+    bottom: 0.45rem;
+    left: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    box-shadow: 0 0 0 2px rgba(2, 6, 23, 0.75), 0 0 0 1px rgba(148, 163, 184, 0.15);
   }
+
+  .hb-supply-type-chip--resource { background: #eab308; }
+  .hb-supply-type-chip--victory { background: #22c55e; }
+  .hb-supply-type-chip--person { background: #e5e7eb; }
+  .hb-supply-type-chip--event { background: #38bdf8; }
+  .hb-supply-type-chip--structure { background: #a78bfa; }
+  .hb-supply-type-chip--unknown { background: rgba(148, 163, 184, 0.9); }
 
   .hb-supply-remaining-badge {
     position: absolute;
