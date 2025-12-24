@@ -208,7 +208,13 @@ function sortSupplyPiles(piles: any[]): any[] {
   //    3. lastEvent（直近の BUY / PLAY）のカード
   //    4. なし
   const cardForDetail = React.useMemo(() => {
-    // 1 & 2: 直接の対象があれば、それを優先
+    // BUY中は「クリック固定」：hoverでは更新しない
+    if (rawPhase === "BUY") {
+      const clicked = selectedSupplyCard ?? selectedCardFromHand;
+      return clicked ?? null;
+    }
+
+    // 1 & 2: 直接の対象があれば、それを優先（ACTIONなど）
     const direct = hoveredCard ?? selectedCardFromHand;
     if (direct) return direct;
 
@@ -218,7 +224,7 @@ function sortSupplyPiles(piles: any[]): any[] {
 
     const pile = supply?.[uiLast.cardId];
     return pile?.card ?? null;
-  }, [hoveredCard, selectedCardFromHand, state.uiLastEvent, state.ui?.lastEvent, supply]);
+  }, [rawPhase, selectedSupplyCard, hoveredCard, selectedCardFromHand, state.uiLastEvent, state.ui?.lastEvent, supply]);
 
 // ... existing code ...
 
@@ -723,7 +729,9 @@ React.useEffect(() => {
                             isPlayerBuyPhase && b && !b.ok ? buyHintForReasons(b.reasons) : null
                           }
                           onClick={() => handleSupplyClick(pile)}
-                          onHover={onHoverCard}
+                          // BUY中はクリック固定：hoverではDETAILを更新しない
+                          onHover={!isBuyPhase ? onHoverCard : undefined}
+                          uiMode={isBuyPhase ? "buy" : undefined}
                         />
                           );
                         })()
@@ -753,7 +761,8 @@ React.useEffect(() => {
                             isPlayerBuyPhase && b && !b.ok ? buyHintForReasons(b.reasons) : null
                           }
                           onClick={() => handleSupplyClick(pile)}
-                          onHover={onHoverCard}
+                          onHover={!isBuyPhase ? onHoverCard : undefined}
+                          uiMode={isBuyPhase ? "buy" : undefined}
                         />
                           );
                         })()
@@ -789,7 +798,8 @@ React.useEffect(() => {
                           isPlayerBuyPhase && b && !b.ok ? buyHintForReasons(b.reasons) : null
                         }
                         onClick={() => handleSupplyClick(pile)}
-                        onHover={onHoverCard}
+                        onHover={!isBuyPhase ? onHoverCard : undefined}
+                        uiMode={isBuyPhase ? "buy" : undefined}
                       />
                         );
                       })()
@@ -906,8 +916,9 @@ React.useEffect(() => {
                       setDetailModalCard(card);
                       setIsDetailModalOpen(true);
                     }}
-                    onMouseEnter={() => onHoverCard(card)}
-                     onMouseLeave={() => onHoverCard(null)}
+                    // BUY中はクリック固定：hoverではDETAILを更新しない
+                    onMouseEnter={!isBuyPhase ? () => onHoverCard(card) : undefined}
+                     onMouseLeave={!isBuyPhase ? () => onHoverCard(null) : undefined}
                      // ★ 600ms の一時的なハイライト用
                      // className={`hb-hand-card${selected ? " hb-hand-card--selected" : ""}${playFlashCardId === playId ? " hb-flash-play" : ""}`}
 

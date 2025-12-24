@@ -668,6 +668,37 @@ body {
     border: 1px solid rgba(253, 186, 116, 0.65);
   }
 
+  /* BUYフェーズ：サプライカード簡略化（イラスト優先） */
+  .hb-supply-card--buy .hb-card-image-wrapper {
+    margin-bottom: 0.1rem;
+    border-radius: 14px;
+  }
+
+  .hb-supply-card--buy .hb-card-footer {
+    gap: 0.25rem;
+  }
+
+  /* 名前は省略して視覚把握に寄せる（DETAILに集約） */
+  .hb-supply-card--buy .hb-card-name {
+    display: none;
+  }
+
+  .hb-supply-card--buy .hb-card-name-row {
+    justify-content: flex-end;
+  }
+
+  .hb-supply-card--buy .hb-cost-badge {
+    font-size: 0.78rem;
+    padding: 0.12rem 0.5rem;
+    background: rgba(251, 191, 36, 0.95);
+  }
+
+  .hb-supply-card--buy .hb-card-type,
+  .hb-supply-card--buy .hb-card-type-badge {
+    font-size: 0.68rem;
+    padding: 0.1rem 0.35rem;
+  }
+
   .hb-supply-remaining-badge {
     position: absolute;
     top: 0.35rem;

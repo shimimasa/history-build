@@ -12,6 +12,8 @@ export interface SupplyCardPileProps {
   buyState?: "buyable" | "not-buyable";
   /** 買えない理由の最小バッジ（例: "米×" / "知識×"） */
   buyHintBadge?: string | null;
+  /** BUYフェーズ用の簡略カードUI（イラスト優先） */
+  uiMode?: "buy";
   onClick?: () => void;
   onHover?: (card: any | null) => void;
   // ★ BUY 成功直後の 600ms ハイライト用
@@ -25,6 +27,7 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   isSelected,
   buyState,
   buyHintBadge,
+  uiMode,
   onClick,
   onHover,
   isFlashingBuy,
@@ -54,6 +57,8 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
         isFlashingBuy ? " hb-flash-buy" : ""
       }${
         buyState ? ` hb-supply-card--${buyState}` : ""
+      }${
+        uiMode === "buy" ? " hb-supply-card--buy" : ""
       }`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
