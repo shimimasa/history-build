@@ -181,6 +181,31 @@ body {
     color: rgba(148, 163, 184, 0.9);
   }
 
+  /* ====== 小トグル（Phase 3） ====== */
+  .hb-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .hb-toggle-btn {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(2, 6, 23, 0.35);
+    color: rgba(226, 232, 240, 0.95);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .hb-toggle-btn:hover {
+    background: rgba(15, 23, 42, 0.65);
+  }
+
   /* ====== メインレイアウト：左サイドバー + 右ボード ====== */
  /* hb-game-layout：左サイドバー + 右メイン（←ここを縦積みにするとUIが崩れる） */
     .hb-game-layout {
@@ -246,6 +271,19 @@ body {
        overflow: hidden;
        display: flex;
        flex-direction: column;
+     }
+
+     /* ====== Phase 3: 主役切り替え（SUPPLY） ====== */
+     .hb-supply--primary {
+       opacity: 1;
+     }
+
+     .hb-supply--secondary {
+       opacity: 0.88;
+       filter: saturate(0.95);
+       /* 副役はカードを少し小さくして視線を手札へ */
+       --hb-card-w-supply-kingdom: 105px;
+       --hb-card-w-supply-basic: 82px;
      }
 
      .hb-detail-column {
@@ -835,6 +873,26 @@ body {
   @apply flex items-baseline justify-between;
 }
 
+.hb-hand-header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hb-hand-header-right {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hb-hand-phase-hint {
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.95);
+}
+
 .hb-hand-hint {
   @apply text-[11px] text-slate-400;
 }
@@ -860,6 +918,36 @@ body {
   @apply flex-shrink-0 cursor-pointer transition-transform duration-150 ease-out;
   width: var(--hb-card-w-hand, 100px);
   max-width: var(--hb-card-w-hand, 100px);
+}
+
+/* ====== Phase 3: 主役切り替え（HAND） ====== */
+.hb-hand--primary {
+  /* ACTION：手札を主役に */
+  border-top-color: rgba(56, 189, 248, 0.35);
+  background: rgba(2, 6, 23, 0.88);
+  min-height: 240px;
+  --hb-card-w-hand: 132px;
+}
+
+.hb-hand--secondary {
+  /* BUY：手札は副役に */
+  opacity: 0.92;
+  min-height: 120px;
+  --hb-card-w-hand: 96px;
+}
+
+.hb-hand--collapsed {
+  /* BUYデフォルト：見出し＋トグルだけ残す */
+  min-height: 58px;
+  padding-bottom: 8px;
+}
+
+.hb-hand--collapsed .hb-hand-cards {
+  display: none !important;
+}
+
+.hb-hand--collapsed::after {
+  display: none !important;
 }
 
 /* 選択中カードの主張を強める */

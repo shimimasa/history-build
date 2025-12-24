@@ -77,6 +77,10 @@ function sortSupplyPiles(piles: any[]): any[] {
   const [logMode, setLogMode] = React.useState<"default" | "debug">("default");
   const [logFilter, setLogFilter] = React.useState<string>("");
   const [isHelpOpen, setIsHelpOpen] = React.useState(false);
+  // Phase 3: フェーズで主役UIを切り替える（UIのみ）
+  const [showHandInBuy, setShowHandInBuy] = React.useState(false);
+  // ACTION中のサプライは「縮小がデフォ」。true のときだけ通常表示
+  const [showSupplyInAction, setShowSupplyInAction] = React.useState(false);
 
   const filteredLogs = React.useMemo(() => {
     if (!logs) return [];
@@ -235,6 +239,14 @@ function sortSupplyPiles(piles: any[]): any[] {
   // v2 GameState 互換：turnPhase / phase / currentPhase のどれかを参照
   const rawPhase =
     state.turnPhase ?? state.phase ?? currentPhase ?? "DRAW";
+  const isActionPhase = rawPhase === "ACTION";
+  const isBuyPhase = rawPhase === "BUY";
+
+  // フェーズ移動時のデフォルトUI（迷子防止：BUYはサプライ主役=手札は折りたたみ）
+  React.useEffect(() => {
+    if (rawPhase === "BUY") setShowHandInBuy(false);
+    if (rawPhase === "ACTION") setShowSupplyInAction(false);
+  }, [rawPhase]);
 
   const nextPhase = React.useMemo(() => {
     const p = String(rawPhase);
@@ -375,6 +387,9 @@ const handleSupplyClick = (pile: any) => {
      player.turn?.buys ?? (rawPhase === "BUY" ? 1 : 0);
 
   const isPlayerBuyPhase = isPlayerTurn && rawPhase === "BUY";
+  const handCount = player.hand?.length ?? 0;
+  const basicSupplyCount = basicSupplyPiles.length;
+  const kingdomSupplyCount = kingdomSupplyPiles.length;
 
   // 購入可能判定（ボタン見た目用）
   const canBuyFromState = (pile: any): boolean => {
@@ -616,9 +631,35 @@ React.useEffect(() => {
         {/* --- 中央：左 SUPPLY / 右 DETAIL --- */}
         <div className="hb-main-grid">
           {/* 左：SUPPLY */}
-          <main className="hb-supply-column">
+          <main
+            className={[
+              "hb-supply-column",
+              "hb-supply",
+              isBuyPhase ? "hb-supply--primary" : "",
+              isActionPhase ? "hb-supply--secondary" : "",
+              isActionPhase && !showSupplyInAction ? "hb-supply--collapsed" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
             <section className="hb-supply-area">
-              <h2 className="hb-section-title">SUPPLY</h2>
+              <div className="hb-section-header">
+                <h2 className="hb-section-title">
+                  サプライ（基本 {basicSupplyCount} / 王国 {kingdomSupplyCount}）
+                </h2>
+                {isActionPhase && (
+                  <button
+                    type="button"
+                    className="hb-toggle-btn"
+                    onClick={() => setShowSupplyInAction((v) => !v)}
+                    title={
+                      showSupplyInAction ? "サプライを縮小表示に戻す" : "サプライを展開表示する"
+                    }
+                  >
+                    {showSupplyInAction ? "縮小" : "展開"}
+                  </button>
+                )}
+              </div>
 
               <div className="hb-supply-board" onMouseLeave={() => onHoverCard?.(null)}>
                 {/* 基本（資源 / 勝利点） */}
@@ -749,12 +790,39 @@ React.useEffect(() => {
         </div>
 
         {/* --- 下：手札 --- */}
-        <section className="hb-hand-area">
+        <section
+          className={[
+            "hb-hand-area",
+            "hb-hand",
+            isActionPhase ? "hb-hand--primary" : "",
+            isBuyPhase ? "hb-hand--secondary" : "",
+            isBuyPhase && !showHandInBuy ? "hb-hand--collapsed" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
         <div className="hb-hand-header">
-          <span className="hb-section-title">手札</span>
-          <span className="hb-hand-hint">
-            クリックで選択 / ダブルクリックで即プレイ
-          </span>
+          <div className="hb-hand-header-left">
+            <span className="hb-section-title">手札（{handCount}枚）</span>
+            {isBuyPhase && !showHandInBuy && (
+              <span className="hb-hand-phase-hint">BUY中：サプライが主役</span>
+            )}
+          </div>
+          <div className="hb-hand-header-right">
+            {isBuyPhase && (
+              <button
+                type="button"
+                className="hb-toggle-btn"
+                onClick={() => setShowHandInBuy((v) => !v)}
+                title={showHandInBuy ? "手札を折りたたむ" : "手札を表示する"}
+              >
+                {showHandInBuy ? "折りたたむ" : "表示"}
+              </button>
+            )}
+            <span className="hb-hand-hint">
+              クリックで選択 / ダブルクリックで即プレイ
+            </span>
+          </div>
         </div>
 
         {/* 下部いっぱいに横一列に並ぶ手札。多い場合は横スクロール */}
