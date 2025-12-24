@@ -79,6 +79,7 @@ function sortSupplyPiles(piles: any[]): any[] {
   const [isHelpOpen, setIsHelpOpen] = React.useState(false);
   // Phase 3: フェーズで主役UIを切り替える（UIのみ）
   const [showHandInBuy, setShowHandInBuy] = React.useState(false);
+  const [showLogInBuy, setShowLogInBuy] = React.useState(false);
   // ACTION中のサプライは「縮小がデフォ」。true のときだけ通常表示
   const [showSupplyInAction, setShowSupplyInAction] = React.useState(false);
 
@@ -244,7 +245,10 @@ function sortSupplyPiles(piles: any[]): any[] {
 
   // フェーズ移動時のデフォルトUI（迷子防止：BUYはサプライ主役=手札は折りたたみ）
   React.useEffect(() => {
-    if (rawPhase === "BUY") setShowHandInBuy(false);
+    if (rawPhase === "BUY") {
+      setShowHandInBuy(false);
+      setShowLogInBuy(false);
+    }
     if (rawPhase === "ACTION") setShowSupplyInAction(false);
   }, [rawPhase]);
 
@@ -867,11 +871,30 @@ React.useEffect(() => {
         </section>
 
         {/* --- 下：ログ（固定高＋内部スクロール） --- */}
-        <section className="hb-log-area" aria-label="ログ">
+        <section
+          className={[
+            "hb-log-area",
+            "hb-log",
+            isBuyPhase && !showLogInBuy ? "hb-log--collapsed" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          aria-label="ログ"
+        >
           <div className="hb-log-panel">
             <div className="hb-log-title">
               <span>ログ</span>
               <div className="flex gap-1">
+                {isBuyPhase && (
+                  <button
+                    type="button"
+                    className="hb-toggle-btn"
+                    onClick={() => setShowLogInBuy((v) => !v)}
+                    title={showLogInBuy ? "ログを折りたたむ" : "ログを表示する"}
+                  >
+                    {showLogInBuy ? "折りたたむ" : "表示"}
+                  </button>
+                )}
                 <button
                   type="button"
                   className={`px-2 py-0.5 rounded border text-[10px] ${

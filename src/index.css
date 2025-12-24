@@ -812,6 +812,18 @@ body {
   overflow: hidden; /* リストだけがスクロール */
 }
 
+.hb-log--collapsed .hb-log-panel {
+  height: 52px; /* 見出し＋トグルだけ */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.hb-log--collapsed .hb-log-help,
+.hb-log--collapsed .hb-log-filter,
+.hb-log--collapsed .hb-log-list {
+  display: none !important;
+}
+
 .hb-log-title {
   display: flex;
   align-items: center;
