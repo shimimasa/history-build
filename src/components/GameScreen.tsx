@@ -612,136 +612,144 @@ React.useEffect(() => {
         </div>
       </header>
 
-      {/* --- 中央：左 SUPPLY / 右 DETAIL --- */}
-      <div className="hb-main-grid">
-        {/* 左：SUPPLY */}
-        <main className="hb-supply-column">
-          <section className="hb-supply-area">
-            <h2 className="hb-section-title">SUPPLY</h2>
-            <div className="hb-supply-board" onMouseLeave={() => onHoverCard?.(null)}>
-              {/* 基本（資源 / 勝利点） */}
-              <div className="hb-basic-grid" aria-label="基本カード">
-                <div className="hb-basic-column hb-basic-column--resource">
-                  {resourceSupplyPiles.map((pile: any) => (
-                    <SupplyCardPile
-                      key={pile.card.id}
-                      pile={pile}
-                      variant="basic"
-                      isDisabled={!canBuyFromState(pile)}
-                      isSelected={selectedSupplyCardId === pile.card.id}
-                      isFlashingBuy={buyFlashCardId === pile.card.id}
-                      onClick={() => handleSupplyClick(pile)}
-                      onHover={onHoverCard}
-                    />
-                  ))}
-                </div>
-                <div className="hb-basic-column hb-basic-column--victory">
-                  {victorySupplyPiles.map((pile: any) => (
-                    <SupplyCardPile
-                      key={pile.card.id}
-                      pile={pile}
-                      variant="basic"
-                      isDisabled={!isPlayerBuyPhase}
-                      isSelected={selectedSupplyCardId === pile.card.id}
-                      isFlashingBuy={buyFlashCardId === pile.card.id}
-                      onClick={() => handleSupplyClick(pile)}
-                      onHover={onHoverCard}
-                    />
-                  ))}
-                </div>
-              </div>
+      <div className="hb-game-body">
+        {/* --- 中央：左 SUPPLY / 右 DETAIL --- */}
+        <div className="hb-main-grid">
+          {/* 左：SUPPLY */}
+          <main className="hb-supply-column">
+            <section className="hb-supply-area">
+              <h2 className="hb-section-title">SUPPLY</h2>
 
-              {/* 王国（人物 / 出来事 / 建物） */}
-              <div className="hb-kingdom-supply-grid" aria-label="王国カード">
-                {kingdomSupplyPiles.map((pile: any) => (
-                  <SupplyCardPile
-                    key={pile.card.id}
-                    pile={pile}
-                    variant="kingdom"
-                    isDisabled={!isPlayerBuyPhase}
-                    isSelected={selectedSupplyCardId === pile.card.id}
-                    isFlashingBuy={buyFlashCardId === pile.card.id}
-                    onClick={() => handleSupplyClick(pile)}
-                    onHover={onHoverCard}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        </main>
-
-        {/* 右：DETAIL */}
-        <aside className="hb-detail-column">
-          <div className="hb-detail-stack">
-            <div className="hb-player-row">
-              <PlayerHud
-                title="プレイヤー"
-                data={player}
-                recentBuys={recentBuyCards}
-                recentPlays={recentPlayCards}
-              />
-              <PlayerHud title="CPU" data={cpu} compact />
-            </div>
-
-            <section className="hb-card-detail-panel hb-card-detail-panel--detail">
-              <div className="hb-section-title">DETAIL</div>
-              {selectedCardForLabel && (
-                <div className="text-[11px] text-slate-300 mb-1">
-                  選択中：{selectedCardForLabel.name ?? selectedCardForLabel.id}
-                </div>
-              )}
-
-              {cardForDetail?.id && (
-                <div className="hb-detail-buy-status">
-                  {detailCanBuy ? (
-                    <>
-                      <div className="hb-detail-buy-row">
-                        <span className="hb-detail-buy-key">購入</span>
-                        <span
-                          className={`hb-detail-buy-val ${
-                            detailCanBuy.ok ? "is-ok" : "is-ng"
-                          }`}
-                        >
-                          {detailCanBuy.ok ? "可" : "不可"}
-                        </span>
-                      </div>
-                      <div className="hb-detail-buy-row">
-                        <span className="hb-detail-buy-key">コスト</span>
-                        <span className="hb-detail-buy-val">
-                          米 {detailCanBuy.costRice} / 知識 {detailCanBuy.reqKnow}
-                        </span>
-                      </div>
-                      {!detailCanBuy.ok && detailCanBuy.reasons.length > 0 && (
-                        <div className="hb-detail-buy-reasons">
-                          {detailCanBuy.reasons.slice(0, 3).join(" / ")}
-                          {detailCanBuy.reasons.length > 3 ? " / …" : ""}
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="hb-detail-buy-reasons">
-                      サプライ外のカードです（購入判定なし）
+              <div className="hb-supply-board" onMouseLeave={() => onHoverCard?.(null)}>
+                {/* 基本（資源 / 勝利点） */}
+                <div className="hb-supply-block">
+                  <div className="hb-supply-block-title">基本</div>
+                  <div className="hb-basic-grid" aria-label="基本カード">
+                    <div className="hb-basic-column hb-basic-column--resource">
+                      {resourceSupplyPiles.map((pile: any) => (
+                        <SupplyCardPile
+                          key={pile.card.id}
+                          pile={pile}
+                          variant="basic"
+                          isDisabled={!canBuyFromState(pile)}
+                          isSelected={selectedSupplyCardId === pile.card.id}
+                          isFlashingBuy={buyFlashCardId === pile.card.id}
+                          onClick={() => handleSupplyClick(pile)}
+                          onHover={onHoverCard}
+                        />
+                      ))}
                     </div>
-                  )}
+                    <div className="hb-basic-column hb-basic-column--victory">
+                      {victorySupplyPiles.map((pile: any) => (
+                        <SupplyCardPile
+                          key={pile.card.id}
+                          pile={pile}
+                          variant="basic"
+                          isDisabled={!isPlayerBuyPhase}
+                          isSelected={selectedSupplyCardId === pile.card.id}
+                          isFlashingBuy={buyFlashCardId === pile.card.id}
+                          onClick={() => handleSupplyClick(pile)}
+                          onHover={onHoverCard}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              )}
 
-              <div className="hb-card-detail-scroll">
-                {cardForDetail ? (
-                  <CardDetail card={cardForDetail} />
-                ) : (
-                  <p className="hb-card-detail-placeholder">
-                    サプライや手札のカードにマウスをのせると、ここに詳細が表示されます。
-                  </p>
-                )}
+                {/* 王国（人物 / 出来事 / 建物） */}
+                <div className="hb-supply-block">
+                  <div className="hb-supply-block-title">王国</div>
+                  <div className="hb-kingdom-supply-grid" aria-label="王国カード">
+                    {kingdomSupplyPiles.map((pile: any) => (
+                      <SupplyCardPile
+                        key={pile.card.id}
+                        pile={pile}
+                        variant="kingdom"
+                        isDisabled={!isPlayerBuyPhase}
+                        isSelected={selectedSupplyCardId === pile.card.id}
+                        isFlashingBuy={buyFlashCardId === pile.card.id}
+                        onClick={() => handleSupplyClick(pile)}
+                        onHover={onHoverCard}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </section>
-          </div>
-        </aside>
-      </div>
+          </main>
 
-      {/* --- 下：手札エリア＋アクションボタン＋ログ --- */}
-      <section className="hb-hand-area">
+          {/* 右：DETAIL */}
+          <aside className="hb-detail-column">
+            <div className="hb-detail-stack">
+              <div className="hb-player-row">
+                <PlayerHud
+                  title="プレイヤー"
+                  data={player}
+                  recentBuys={recentBuyCards}
+                  recentPlays={recentPlayCards}
+                />
+                <PlayerHud title="CPU" data={cpu} compact />
+              </div>
+
+              <section className="hb-card-detail-panel hb-card-detail-panel--detail">
+                <div className="hb-section-title">DETAIL</div>
+                {selectedCardForLabel && (
+                  <div className="text-[11px] text-slate-300 mb-1">
+                    選択中：{selectedCardForLabel.name ?? selectedCardForLabel.id}
+                  </div>
+                )}
+
+                {cardForDetail?.id && (
+                  <div className="hb-detail-buy-status">
+                    {detailCanBuy ? (
+                      <>
+                        <div className="hb-detail-buy-row">
+                          <span className="hb-detail-buy-key">購入</span>
+                          <span
+                            className={`hb-detail-buy-val ${
+                              detailCanBuy.ok ? "is-ok" : "is-ng"
+                            }`}
+                          >
+                            {detailCanBuy.ok ? "可" : "不可"}
+                          </span>
+                        </div>
+                        <div className="hb-detail-buy-row">
+                          <span className="hb-detail-buy-key">コスト</span>
+                          <span className="hb-detail-buy-val">
+                            米 {detailCanBuy.costRice} / 知識 {detailCanBuy.reqKnow}
+                          </span>
+                        </div>
+                        {!detailCanBuy.ok && detailCanBuy.reasons.length > 0 && (
+                          <div className="hb-detail-buy-reasons">
+                            {detailCanBuy.reasons.slice(0, 3).join(" / ")}
+                            {detailCanBuy.reasons.length > 3 ? " / …" : ""}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="hb-detail-buy-reasons">
+                        サプライ外のカードです（購入判定なし）
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="hb-card-detail-scroll">
+                  {cardForDetail ? (
+                    <CardDetail card={cardForDetail} />
+                  ) : (
+                    <p className="hb-card-detail-placeholder">
+                      サプライや手札のカードにマウスをのせると、ここに詳細が表示されます。
+                    </p>
+                  )}
+                </div>
+              </section>
+            </div>
+          </aside>
+        </div>
+
+        {/* --- 下：手札 --- */}
+        <section className="hb-hand-area">
         <div className="hb-hand-header">
           <span className="hb-section-title">手札</span>
           <span className="hb-hand-hint">
@@ -788,50 +796,53 @@ React.useEffect(() => {
           })}
         </div>
 
-        {/* ログパネル：直近のイベントログを表示 */}
-        <div className="hb-log-panel mt-3 border border-slate-700 rounded-md bg-slate-900/80 px-3 py-2 text-[11px] text-slate-200 max-h-32 overflow-y-auto">
-          <div className="hb-log-title font-semibold text-sky-200 mb-1 flex items-center justify-between">
-            <span>ログ</span>
-            <div className="flex gap-1">
-              <button
-                type="button"
-                className={`px-2 py-0.5 rounded border text-[10px] ${
-                  logMode === "default"
-                    ? "border-sky-400 text-sky-200"
-                    : "border-slate-600 text-slate-300"
-                }`}
-                onClick={() => setLogMode("default")}
-              >
-                Default
-              </button>
-              <button
-                type="button"
-                className={`px-2 py-0.5 rounded border text-[10px] ${
-                  logMode === "debug"
-                    ? "border-sky-400 text-sky-200"
-                    : "border-slate-600 text-slate-300"
-                }`}
-                onClick={() => setLogMode("debug")}
-              >
-                Debug
-              </button>
-              <button
-                type="button"
-                className={`px-2 py-0.5 rounded border text-[10px] ${
-                  isHelpOpen
-                    ? "border-amber-300 text-amber-200"
-                    : "border-slate-600 text-slate-300"
-                }`}
-                onClick={() => setIsHelpOpen((v) => !v)}
-                title="ヘルプ"
-              >
-                ？
-              </button>
+        </section>
+
+        {/* --- 下：ログ（固定高＋内部スクロール） --- */}
+        <section className="hb-log-area" aria-label="ログ">
+          <div className="hb-log-panel">
+            <div className="hb-log-title">
+              <span>ログ</span>
+              <div className="flex gap-1">
+                <button
+                  type="button"
+                  className={`px-2 py-0.5 rounded border text-[10px] ${
+                    logMode === "default"
+                      ? "border-sky-400 text-sky-200"
+                      : "border-slate-600 text-slate-300"
+                  }`}
+                  onClick={() => setLogMode("default")}
+                >
+                  Default
+                </button>
+                <button
+                  type="button"
+                  className={`px-2 py-0.5 rounded border text-[10px] ${
+                    logMode === "debug"
+                      ? "border-sky-400 text-sky-200"
+                      : "border-slate-600 text-slate-300"
+                  }`}
+                  onClick={() => setLogMode("debug")}
+                >
+                  Debug
+                </button>
+                <button
+                  type="button"
+                  className={`px-2 py-0.5 rounded border text-[10px] ${
+                    isHelpOpen
+                      ? "border-amber-300 text-amber-200"
+                      : "border-slate-600 text-slate-300"
+                  }`}
+                  onClick={() => setIsHelpOpen((v) => !v)}
+                  title="ヘルプ"
+                >
+                  ？
+                </button>
+              </div>
             </div>
-          </div>
-          {isHelpOpen && (
-            <div className="relative mb-2">
-              <div className="rounded-md border border-slate-700 bg-slate-950/80 px-3 py-2 text-[11px] text-slate-200">
+
+            {isHelpOpen && (
+              <div className="hb-log-help">
                 <div className="flex items-center justify-between mb-1">
                   <div className="font-semibold text-amber-200">ミニヘルプ</div>
                   <button
@@ -851,30 +862,34 @@ React.useEffect(() => {
                   <li>ログ：Default/Debug切替、フィルタ可能</li>
                 </ul>
               </div>
+            )}
+
+            <input
+              value={logFilter}
+              onChange={(e) => setLogFilter(e.target.value)}
+              placeholder="カード名でフィルタ（部分一致）"
+              className="hb-log-filter"
+            />
+
+            <div className="hb-log-list">
+              {filteredLogs.length > 0 ? (
+                <ul className="space-y-0.5">
+                  {filteredLogs
+                    .slice(-15) // 最新 15 件
+                    .reverse() // 新しいものを上に
+                    .map((line, idx) => (
+                      <li key={idx} className="whitespace-pre-wrap">
+                        {line}
+                      </li>
+                    ))}
+                </ul>
+              ) : (
+                <p className="text-slate-400">まだログはありません。</p>
+              )}
             </div>
-          )}
-          <input
-            value={logFilter}
-            onChange={(e) => setLogFilter(e.target.value)}
-            placeholder="カード名でフィルタ（部分一致）"
-            className="mb-1 w-full px-2 py-1 rounded border border-slate-700 bg-slate-950/60 text-[10px] text-slate-200 placeholder:text-slate-500"
-          />
-          {filteredLogs.length > 0 ? (
-            <ul className="space-y-0.5">
-              {filteredLogs
-                .slice(-15) // 最新 15 件
-                .reverse() // 新しいものを上に
-                .map((line, idx) => (
-                  <li key={idx} className="whitespace-pre-wrap">
-                    {line}
-                  </li>
-                ))}
-            </ul>
-          ) : (
-            <p className="text-slate-400">まだログはありません。</p>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      </div>
 
     {/* ★ モーダルは CardDetailModal 側の overlay で完結させる */}
       <CardDetailModal
