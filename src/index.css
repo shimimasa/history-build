@@ -316,8 +316,13 @@ body {
      }
 
      .hb-detail-column {
+       /* ★ 右カラムを常に上詰め＆子が伸びられるように */
+       align-self: start;
+       height: 100%;
        min-height: 0;
        overflow: hidden;
+       display: flex;
+       flex-direction: column;
      }
 
      .hb-detail-stack {
@@ -328,6 +333,7 @@ body {
        gap: 10px;
        padding-right: 4px;
        overflow: hidden; /* ★ 外側はスクロールさせず、DETAIL内スクロールに寄せる */
+       flex: 1 1 auto;
      }
 
      .hb-detail-buy-status {
