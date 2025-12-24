@@ -277,6 +277,7 @@ body {
        display: grid;
        grid-template-columns: minmax(0, 1fr) 380px;
        gap: 16px;
+       align-content: start; /* ★ 余剰高さを行に配らず、常に上詰め（謎の縦空白対策） */
        flex: 1;
        min-height: 0;
        overflow: hidden;
