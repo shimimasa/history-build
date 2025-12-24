@@ -317,12 +317,11 @@ body {
      .hb-detail-stack {
        height: 100%;
        min-height: 0;
-       overflow-y: auto;
-       overflow-x: hidden;
        display: flex;
        flex-direction: column;
        gap: 10px;
        padding-right: 4px;
+       overflow: hidden; /* ★ 外側はスクロールさせず、DETAIL内スクロールに寄せる */
      }
 
      .hb-detail-buy-status {
@@ -516,7 +515,8 @@ body {
      .hb-card-detail-panel--detail {
        max-height: none !important;
        min-height: 0;
-       flex: 1 1 auto;
+       flex: 1 1 auto;     /* ★ 右カラムの残り高さをDETAILが埋める */
+       overflow: hidden;   /* スクロールは中（hb-card-detail-scroll）に寄せる */
      }
 
      .hb-card-detail-panel--detail .hb-card-detail-scroll {
@@ -548,9 +548,14 @@ body {
   border-radius: 16px;
   box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 18px 40px rgba(0,0,0,0.35);
   padding: 0.9rem;
-    max-height: 260px;
-    overflow: hidden; /* スクロールは中身側だけに寄せる */
+  min-height: 0;      /* ★ 子要素のoverflowを効かせる */
+  overflow: hidden;   /* スクロールは中身側だけに寄せる */
 }
+
+  /* sidebar（もし残っている場合）だけ高さを抑えたいときの保険 */
+  .hb-card-detail-panel--sidebar {
+    max-height: 260px;
+  }
 
   /* “説明対象が無い”ときは、説明パネル自体を消す（居座り防止） */
   .hb-card-detail-panel--sidebar.is-empty {
