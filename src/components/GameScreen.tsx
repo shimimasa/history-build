@@ -121,6 +121,9 @@ function sortSupplyPiles(piles: any[]): any[] {
 
   // 追加：サプライの選択状態（クリックで選択／背景クリックで解除）
   const [selectedSupplyCardId, setSelectedSupplyCardId] = React.useState<string | null>(null);
+  // ★ サプライでクリック選択中のカード（BUYのクリック固定DETAIL用）
+  const selectedSupplyCard =
+    selectedSupplyCardId ? supply?.[selectedSupplyCardId]?.card : null;
 
   // v2 Card / SupplyPile 想定:
   const getCardType = (pile: any): string => {
@@ -305,9 +308,6 @@ function sortSupplyPiles(piles: any[]): any[] {
         ? "BUYフェーズでのみ終了できます"
         : undefined;
 
-  // クリックで選択中のカード（デバッグ/ナビ用）
-  const selectedSupplyCard =
-    selectedSupplyCardId ? supply?.[selectedSupplyCardId]?.card : null;
   const selectedCardForLabel =
     selectedCardFromHand ?? selectedSupplyCard ?? null;
 
