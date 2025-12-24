@@ -581,7 +581,7 @@ React.useEffect(() => {
     // - 中央: .hb-game-layout（左サイドバー＋右ボード＝サプライ＋カード詳細）
     // - 下部: 手札エリア（横1列＋横スクロール）とアクションボタン
     <div
-      className="hb-game-screen"
+      className={`hb-game-screen${isBuyPhase ? " hb-game-screen--buy" : ""}`}
       onMouseDown={(e) => {
         const t = e.target as HTMLElement | null;
         if (!t) return;

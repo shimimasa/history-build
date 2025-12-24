@@ -34,6 +34,12 @@ body {
     @apply flex flex-col px-6 pt-4 pb-2 gap-3;
   }
 
+  /* BUYはサプライ＋DETAIL主役：ヘッダーの縦余白を圧縮して盤面を押し上げる */
+  .hb-game-screen--buy .hb-game-header {
+    padding-bottom: 0.25rem; /* pb-2相当を縮小 */
+    gap: 0.6rem;
+  }
+
   .hb-game-title {
     @apply text-xl md:text-2xl font-semibold text-slate-50;
   }
@@ -89,6 +95,22 @@ body {
     background: linear-gradient(135deg, rgba(30, 64, 175, 0.55), rgba(15, 23, 42, 0.75));
     border: 1px solid rgba(148, 163, 184, 0.18);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .hb-game-screen--buy .hb-phase-bar {
+    padding: 10px 12px;
+  }
+
+  .hb-game-screen--buy .hb-phase-now-value {
+    font-size: 24px;
+  }
+
+  .hb-game-screen--buy .hb-phase-actions {
+    margin-top: 4px;
+  }
+
+  .hb-game-screen--buy .hb-phase-actions-hint {
+    display: none; /* BUYでは省略して縦空白を削る */
   }
 
   .hb-phase-bar-left {
