@@ -8,6 +8,10 @@ export interface SupplyCardPileProps {
   variant?: SupplyCardVariant;
   isDisabled?: boolean;
   isSelected?: boolean;
+  /** BUYフェーズの視線誘導（buyable / not-buyable）。selected の方が優先される想定 */
+  buyState?: "buyable" | "not-buyable";
+  /** 買えない理由の最小バッジ（例: "米×" / "知識×"） */
+  buyHintBadge?: string | null;
   onClick?: () => void;
   onHover?: (card: any | null) => void;
   // ★ BUY 成功直後の 600ms ハイライト用
@@ -19,6 +23,8 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
   variant = "kingdom",
   isDisabled,
   isSelected,
+  buyState,
+  buyHintBadge,
   onClick,
   onHover,
   isFlashingBuy,
@@ -46,6 +52,8 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
         isDisabled || isOutOfStock ? " hb-supply-card--disabled" : ""
       }${isSelected ? " hb-supply-card--selected" : ""}${
         isFlashingBuy ? " hb-flash-buy" : ""
+      }${
+        buyState ? ` hb-supply-card--${buyState}` : ""
       }`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
@@ -53,6 +61,11 @@ export const SupplyCardPile: React.FC<SupplyCardPileProps> = ({
     >
       {typeof remaining === "number" && (
         <div className="hb-supply-remaining-badge">残り {remaining}</div>
+      )}
+      {!!buyHintBadge && !isSelected && (
+        <div className="hb-supply-buy-hint-badge" aria-label="購入不可のヒント">
+          {buyHintBadge}
+        </div>
       )}
 
       <div className="hb-card-frame">

@@ -365,9 +365,9 @@ const handleSupplyClick = (pile: any) => {
     return;
   }
 
-  // BUYフェーズ + プレイヤー手番なら「クリックで購入」
+  // BUYフェーズは「クリックで選択 → 右DETAILで購入判断」に寄せる（Dominion Online寄り）
   if (isPlayerTurn && rawPhase === "BUY") {
-    onBuyCard(cardId); // ← GameContainer の handleBuyCard(cardId) まで飛ぶ
+    setFocusedCard(pile.card);
     return;
   }
 
@@ -394,6 +394,38 @@ const handleSupplyClick = (pile: any) => {
   const handCount = player.hand?.length ?? 0;
   const basicSupplyCount = basicSupplyPiles.length;
   const kingdomSupplyCount = kingdomSupplyPiles.length;
+
+  const selectedSupplyPile = selectedSupplyCardId ? supply?.[selectedSupplyCardId] : null;
+  const selectedSupplyCard = selectedSupplyPile?.card ?? null;
+
+  const canBuySelected = React.useMemo(() => {
+    if (!isPlayerBuyPhase) return null;
+    if (!selectedSupplyCardId) return null;
+    if (!supply?.[selectedSupplyCardId]) return null;
+    return canBuy(state as GameState, "player", selectedSupplyCardId);
+  }, [isPlayerBuyPhase, selectedSupplyCardId, supply, state]);
+
+  const buyHintForReasons = (reasons: string[]): string | null => {
+    if (!reasons || reasons.length === 0) return null;
+    const joined = reasons.join(" / ");
+    if (joined.includes("米")) return "米×";
+    if (joined.includes("知識")) return "知識×";
+    if (joined.includes("購入回数")) return "購入×";
+    if (joined.includes("枯渇")) return "在庫×";
+    return "×";
+  };
+
+  const buyabilityByCardId = React.useMemo(() => {
+    if (!isPlayerBuyPhase) return new Map<string, { ok: boolean; reasons: string[] }>();
+    const map = new Map<string, { ok: boolean; reasons: string[] }>();
+    for (const pile of supplyPiles) {
+      const id = pile?.card?.id;
+      if (!id) continue;
+      const r = canBuy(state as GameState, "player", id);
+      map.set(id, { ok: r.ok, reasons: r.reasons });
+    }
+    return map;
+  }, [isPlayerBuyPhase, supplyPiles, state]);
 
   // 購入可能判定（ボタン見た目用）
   const canBuyFromState = (pile: any): boolean => {
@@ -672,6 +704,10 @@ React.useEffect(() => {
                   <div className="hb-basic-grid" aria-label="基本カード">
                     <div className="hb-basic-column hb-basic-column--resource">
                       {resourceSupplyPiles.map((pile: any) => (
+                        (() => {
+                          const id = pile?.card?.id as string | undefined;
+                          const b = id ? buyabilityByCardId.get(id) : undefined;
+                          return (
                         <SupplyCardPile
                           key={pile.card.id}
                           pile={pile}
@@ -679,13 +715,29 @@ React.useEffect(() => {
                           isDisabled={!canBuyFromState(pile)}
                           isSelected={selectedSupplyCardId === pile.card.id}
                           isFlashingBuy={buyFlashCardId === pile.card.id}
+                          buyState={
+                            isPlayerBuyPhase && b
+                              ? b.ok
+                                ? "buyable"
+                                : "not-buyable"
+                              : undefined
+                          }
+                          buyHintBadge={
+                            isPlayerBuyPhase && b && !b.ok ? buyHintForReasons(b.reasons) : null
+                          }
                           onClick={() => handleSupplyClick(pile)}
                           onHover={onHoverCard}
                         />
+                          );
+                        })()
                       ))}
                     </div>
                     <div className="hb-basic-column hb-basic-column--victory">
                       {victorySupplyPiles.map((pile: any) => (
+                        (() => {
+                          const id = pile?.card?.id as string | undefined;
+                          const b = id ? buyabilityByCardId.get(id) : undefined;
+                          return (
                         <SupplyCardPile
                           key={pile.card.id}
                           pile={pile}
@@ -693,9 +745,21 @@ React.useEffect(() => {
                           isDisabled={!isPlayerBuyPhase}
                           isSelected={selectedSupplyCardId === pile.card.id}
                           isFlashingBuy={buyFlashCardId === pile.card.id}
+                          buyState={
+                            isPlayerBuyPhase && b
+                              ? b.ok
+                                ? "buyable"
+                                : "not-buyable"
+                              : undefined
+                          }
+                          buyHintBadge={
+                            isPlayerBuyPhase && b && !b.ok ? buyHintForReasons(b.reasons) : null
+                          }
                           onClick={() => handleSupplyClick(pile)}
                           onHover={onHoverCard}
                         />
+                          );
+                        })()
                       ))}
                     </div>
                   </div>
@@ -706,6 +770,10 @@ React.useEffect(() => {
                   <div className="hb-supply-block-title">王国</div>
                   <div className="hb-kingdom-supply-grid" aria-label="王国カード">
                     {kingdomSupplyPiles.map((pile: any) => (
+                      (() => {
+                        const id = pile?.card?.id as string | undefined;
+                        const b = id ? buyabilityByCardId.get(id) : undefined;
+                        return (
                       <SupplyCardPile
                         key={pile.card.id}
                         pile={pile}
@@ -713,9 +781,21 @@ React.useEffect(() => {
                         isDisabled={!isPlayerBuyPhase}
                         isSelected={selectedSupplyCardId === pile.card.id}
                         isFlashingBuy={buyFlashCardId === pile.card.id}
+                        buyState={
+                          isPlayerBuyPhase && b
+                            ? b.ok
+                              ? "buyable"
+                              : "not-buyable"
+                            : undefined
+                        }
+                        buyHintBadge={
+                          isPlayerBuyPhase && b && !b.ok ? buyHintForReasons(b.reasons) : null
+                        }
                         onClick={() => handleSupplyClick(pile)}
                         onHover={onHoverCard}
                       />
+                        );
+                      })()
                     ))}
                   </div>
                 </div>
@@ -738,50 +818,23 @@ React.useEffect(() => {
 
               <section className="hb-card-detail-panel hb-card-detail-panel--detail">
                 <div className="hb-section-title">DETAIL</div>
-                {selectedCardForLabel && (
-                  <div className="text-[11px] text-slate-300 mb-1">
-                    選択中：{selectedCardForLabel.name ?? selectedCardForLabel.id}
-                  </div>
-                )}
-
-                {cardForDetail?.id && (
-                  <div className="hb-detail-buy-status">
-                    {detailCanBuy ? (
-                      <>
-                        <div className="hb-detail-buy-row">
-                          <span className="hb-detail-buy-key">購入</span>
-                          <span
-                            className={`hb-detail-buy-val ${
-                              detailCanBuy.ok ? "is-ok" : "is-ng"
-                            }`}
-                          >
-                            {detailCanBuy.ok ? "可" : "不可"}
-                          </span>
-                        </div>
-                        <div className="hb-detail-buy-row">
-                          <span className="hb-detail-buy-key">コスト</span>
-                          <span className="hb-detail-buy-val">
-                            米 {detailCanBuy.costRice} / 知識 {detailCanBuy.reqKnow}
-                          </span>
-                        </div>
-                        {!detailCanBuy.ok && detailCanBuy.reasons.length > 0 && (
-                          <div className="hb-detail-buy-reasons">
-                            {detailCanBuy.reasons.slice(0, 3).join(" / ")}
-                            {detailCanBuy.reasons.length > 3 ? " / …" : ""}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="hb-detail-buy-reasons">
-                        サプライ外のカードです（購入判定なし）
-                      </div>
-                    )}
-                  </div>
-                )}
-
                 <div className="hb-card-detail-scroll">
                   {cardForDetail ? (
-                    <CardDetail card={cardForDetail} />
+                    <DecisionDetail
+                      card={cardForDetail}
+                      discountThisTurn={discountThisTurn}
+                      showBuyControls={!!(isPlayerBuyPhase && selectedSupplyCard)}
+                      buyResult={canBuySelected}
+                      onBuy={() => {
+                        if (!selectedSupplyCardId) return;
+                        onBuyCard(selectedSupplyCardId);
+                      }}
+                      selectedLabel={
+                        selectedCardForLabel
+                          ? `選択中：${selectedCardForLabel.name ?? selectedCardForLabel.id}`
+                          : null
+                      }
+                    />
                   ) : (
                     <p className="hb-card-detail-placeholder">
                       サプライや手札のカードにマウスをのせると、ここに詳細が表示されます。
@@ -1163,3 +1216,98 @@ function getPhaseLabel(phase: GamePhase | string): string {
       return String(phase);
   }
 }
+
+const DecisionDetail: React.FC<{
+  card: any;
+  discountThisTurn: number;
+  showBuyControls: boolean;
+  buyResult: ReturnType<typeof canBuy> | null;
+  onBuy: () => void;
+  selectedLabel: string | null;
+}> = ({ card, discountThisTurn, showBuyControls, buyResult, onBuy, selectedLabel }) => {
+  const riceCost: number =
+    (typeof card.cost === "number" ? card.cost : card.cost?.rice) ?? 0;
+  const finalCost = Math.max(0, riceCost - Math.max(0, discountThisTurn ?? 0));
+  const knowledgeReq: number =
+    card.knowledgeRequired ??
+    (typeof card.cost === "object" ? card.cost?.knowledge : 0) ??
+    0;
+
+  const effectLines: string[] = formatEffects(card);
+  const shownEffectLines = effectLines.slice(0, 6);
+  const hasMoreEffects = effectLines.length > 6;
+
+  const buyEnabled = !!(buyResult && buyResult.ok);
+  const disabledReason =
+    !buyEnabled && buyResult?.reasons?.length ? buyResult.reasons[0] : null;
+
+  return (
+    <div className="hb-detail-decision">
+      {selectedLabel && <div className="hb-detail-selected">{selectedLabel}</div>}
+
+      <div className="hb-detail-title">{card.name}</div>
+      {card?.id && <div className="hb-detail-id">ID: {card.id}</div>}
+
+      <div className="hb-detail-cost">
+        コスト: 米 {riceCost}
+        {discountThisTurn > 0 && (
+          <span>
+            {" "}
+            （割引 -{discountThisTurn} → 最終 {finalCost}）
+          </span>
+        )}
+        {discountThisTurn <= 0 && <span>（最終 {finalCost}）</span>}
+      </div>
+
+      {knowledgeReq > 0 && (
+        <div className="hb-detail-knowledge">必要知識: {knowledgeReq}</div>
+      )}
+
+      <div className="hb-detail-effects">
+        <div className="hb-detail-effects-title">効果</div>
+        {effectLines.length === 0 ? (
+          <div className="hb-detail-effects-none">なし</div>
+        ) : (
+          <ul className="hb-detail-effects-list">
+            {shownEffectLines.map((line, idx) => (
+              <li key={idx}>{line}</li>
+            ))}
+            {hasMoreEffects && <li>…</li>}
+          </ul>
+        )}
+      </div>
+
+      {showBuyControls && (
+        <div className="hb-detail-buybox">
+          <div className="hb-detail-buybox-row">
+            <span className="hb-detail-buybox-key">購入可否</span>
+            <span className={`hb-detail-buybox-val ${buyEnabled ? "is-ok" : "is-ng"}`}>
+              {buyEnabled ? "OK" : "NG"}
+            </span>
+          </div>
+
+          {!buyEnabled && buyResult?.reasons?.length ? (
+            <ul className="hb-detail-buybox-reasons">
+              {buyResult.reasons.slice(0, 4).map((r, i) => (
+                <li key={i}>{r}</li>
+              ))}
+              {buyResult.reasons.length > 4 && <li>…</li>}
+            </ul>
+          ) : null}
+
+          <button
+            type="button"
+            className="hb-btn hb-btn-primary hb-detail-buy-btn"
+            disabled={!buyEnabled}
+            onClick={onBuy}
+          >
+            購入する
+          </button>
+          {!buyEnabled && disabledReason && (
+            <div className="hb-detail-buy-btn-reason">{disabledReason}</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
