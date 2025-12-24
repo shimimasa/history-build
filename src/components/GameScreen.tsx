@@ -395,9 +395,6 @@ const handleSupplyClick = (pile: any) => {
   const basicSupplyCount = basicSupplyPiles.length;
   const kingdomSupplyCount = kingdomSupplyPiles.length;
 
-  const selectedSupplyPile = selectedSupplyCardId ? supply?.[selectedSupplyCardId] : null;
-  const selectedSupplyCard = selectedSupplyPile?.card ?? null;
-
   const canBuySelected = React.useMemo(() => {
     if (!isPlayerBuyPhase) return null;
     if (!selectedSupplyCardId) return null;

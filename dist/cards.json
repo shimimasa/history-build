@@ -1,0 +1,6953 @@
+{
+  "cards": [
+    {
+      "id": "AN_E01",
+      "name": "十七条憲法",
+      "era": "ancient",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "totalKnowledge>=3",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_E01.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E02",
+      "name": "大化の改新",
+      "era": "ancient",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/AN_E02.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E03",
+      "name": "公地公民制",
+      "era": "ancient",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_E03.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E04",
+      "name": "班田収授法",
+      "era": "ancient",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "gainRice": 1
+        }
+      ],
+      "image": "/assets/cards/AN_E04.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E05",
+      "name": "律令制度",
+      "era": "ancient",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "conditional": {
+            "if": "totalKnowledge>=5",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_E05.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E06",
+      "name": "大宝律令",
+      "era": "ancient",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_E06.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E07",
+      "name": "遣隋使",
+      "era": "ancient",
+      "category": "event",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/AN_E07.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E08",
+      "name": "遣唐使",
+      "era": "ancient",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_E08.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E09",
+      "name": "壬申の乱",
+      "era": "ancient",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        }
+      ],
+      "image": "/assets/cards/AN_E09.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_E10",
+      "name": "墾田永年私財法",
+      "era": "ancient",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "gainRice": 1
+        }
+      ],
+      "image": "/assets/cards/AN_E10.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P01",
+      "name": "聖徳太子",
+      "era": "ancient",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P01.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P02",
+      "name": "推古天皇",
+      "era": "ancient",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P02.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P03",
+      "name": "中大兄皇子（天智天皇）",
+      "era": "ancient",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P03.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P04",
+      "name": "中臣鎌足（藤原鎌足）",
+      "era": "ancient",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P04.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P05",
+      "name": "天武天皇",
+      "era": "ancient",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "conditional": {
+            "if": "totalKnowledge>=4",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P05.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P06",
+      "name": "持統天皇",
+      "era": "ancient",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedVictoryThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P06.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P07",
+      "name": "行基",
+      "era": "ancient",
+      "category": "person",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/AN_P07.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P08",
+      "name": "鑑真",
+      "era": "ancient",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P08.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P09",
+      "name": "額田王",
+      "era": "ancient",
+      "category": "person",
+      "cost": 2,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "gainKnowledge": 1
+        }
+      ],
+      "image": "/assets/cards/AN_P09.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P10",
+      "name": "柿本人麻呂",
+      "era": "ancient",
+      "category": "person",
+      "cost": 2,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "gainKnowledge": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P10.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P11",
+      "name": "藤原不比等",
+      "era": "ancient",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P11.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_P12",
+      "name": "阿倍仲麻呂",
+      "era": "ancient",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_P12.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_R01",
+      "name": "仏教伝来",
+      "era": "ancient",
+      "category": "resource",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/AN_R01.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_R02",
+      "name": "万葉集",
+      "era": "ancient",
+      "category": "resource",
+      "cost": 2,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "gainKnowledge": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_R02.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_V01",
+      "name": "飛鳥京",
+      "era": "ancient",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "totalKnowledge>=2",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_V01.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_V02",
+      "name": "藤原京",
+      "era": "ancient",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "totalKnowledge>=3",
+            "then": [
+              {
+                "gainVP": 2
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_V02.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_V03",
+      "name": "平城京",
+      "era": "ancient",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        {
+          "conditional": {
+            "if": "totalKnowledge>=4",
+            "then": [
+              {
+                "gainVP": 3
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_V03.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_V04",
+      "name": "東大寺",
+      "era": "ancient",
+      "category": "victory",
+      "cost": 3,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_V04.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_V05",
+      "name": "国分寺建立",
+      "era": "ancient",
+      "category": "victory",
+      "cost": 3,
+      "effects": [
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/AN_V05.webp",
+      "notes": ""
+    },
+    {
+      "id": "AN_V06",
+      "name": "律令国家の完成",
+      "era": "ancient",
+      "category": "victory",
+      "cost": 6,
+      "effects": [
+        {
+          "gainVP": 5
+        }
+      ],
+      "image": "/assets/cards/AN_V06.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_C01",
+      "name": "鎌倉仏教",
+      "era": "medieval",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_C01.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_C02",
+      "name": "武士道の萌芽",
+      "era": "medieval",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_C02.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E01",
+      "name": "鎌倉幕府の成立",
+      "era": "medieval",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              },
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E01.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E02",
+      "name": "守護・地頭の設置",
+      "era": "medieval",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 2
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E02.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E03",
+      "name": "御恩と奉公",
+      "era": "medieval",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E03.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E04",
+      "name": "承久の乱",
+      "era": "medieval",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E04.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E05",
+      "name": "御成敗式目",
+      "era": "medieval",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E05.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E06",
+      "name": "元寇（文永の役）",
+      "era": "medieval",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/MD_E06.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E07",
+      "name": "元寇（弘安の役）",
+      "era": "medieval",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E07.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E08",
+      "name": "建武の新政",
+      "era": "medieval",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/MD_E08.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E09",
+      "name": "南北朝の動乱",
+      "era": "medieval",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E09.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_E10",
+      "name": "室町幕府の成立",
+      "era": "medieval",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              },
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_E10.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P01",
+      "name": "源頼朝",
+      "era": "medieval",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              },
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P01.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P02",
+      "name": "源義経",
+      "era": "medieval",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "attackDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/MD_P02.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P03",
+      "name": "北条政子",
+      "era": "medieval",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        },
+        {
+          "gainKnowledge": 1
+        }
+      ],
+      "image": "/assets/cards/MD_P03.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P04",
+      "name": "北条時政",
+      "era": "medieval",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainRice": 2
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P04.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P05",
+      "name": "北条泰時",
+      "era": "medieval",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P05.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P06",
+      "name": "後鳥羽上皇",
+      "era": "medieval",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "attackDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/MD_P06.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P07",
+      "name": "足利尊氏",
+      "era": "medieval",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              },
+              {
+                "attackDiscard": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P07.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P08",
+      "name": "足利義満",
+      "era": "medieval",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedVictoryThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P08.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P09",
+      "name": "楠木正成",
+      "era": "medieval",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "attackDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/MD_P09.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P10",
+      "name": "新田義貞",
+      "era": "medieval",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        },
+        {
+          "attackDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/MD_P10.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P11",
+      "name": "日蓮",
+      "era": "medieval",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P11.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_P12",
+      "name": "栄西",
+      "era": "medieval",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_P12.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_V01",
+      "name": "鎌倉（武家政権）",
+      "era": "medieval",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "gainVP": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_V01.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_V02",
+      "name": "武家社会の成立",
+      "era": "medieval",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn>=2",
+            "then": [
+              {
+                "gainVP": 2
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_V02.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_V03",
+      "name": "室町幕府",
+      "era": "medieval",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        {
+          "gainVP": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_V03.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_V04",
+      "name": "将軍と幕府政治",
+      "era": "medieval",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              },
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_V04.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_V05",
+      "name": "公武二重政権",
+      "era": "medieval",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MD_V05.webp",
+      "notes": ""
+    },
+    {
+      "id": "MD_V06",
+      "name": "武士の支配体制",
+      "era": "medieval",
+      "category": "victory",
+      "cost": 6,
+      "effects": [
+        {
+          "gainVP": 3
+        }
+      ],
+      "image": "/assets/cards/MD_V06.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E01",
+      "name": "下剋上",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 4
+        },
+        {
+          "reduceCostThisTurn": 2
+        },
+        {
+          "trashFromHand": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E01.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E02",
+      "name": "応仁の乱",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 2
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E02.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E03",
+      "name": "桶狭間の戦い",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "attackDiscard": 2
+        },
+        {
+          "conditional": {
+            "if": "attackDiscarded>=2",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        },
+        {
+          "selfDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E03.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E04",
+      "name": "長篠の戦い",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E04.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E05",
+      "name": "本能寺の変",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainVP": 2
+        },
+        {
+          "selfDiscard": 2
+        }
+      ],
+      "image": "/assets/cards/SG_E05.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E06",
+      "name": "刀狩",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "trashFromHand": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E06.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E07",
+      "name": "楽市楽座",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 3
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E07.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E08",
+      "name": "惣無事令",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "draw": 2
+        },
+        {
+          "selfDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/SG_E08.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E09",
+      "name": "関ヶ原の戦い",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        {
+          "attackDiscard": 2
+        },
+        {
+          "gainVP": 2
+        }
+      ],
+      "image": "/assets/cards/SG_E09.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_E10",
+      "name": "天下統一",
+      "era": "sengoku",
+      "category": "event",
+      "cost": 6,
+      "effects": [
+        {
+          "gainVP": 4
+        },
+        {
+          "reduceCostThisTurn": 2
+        },
+        {
+          "selfDiscard": 2
+        }
+      ],
+      "image": "/assets/cards/SG_E10.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_P01",
+      "name": "織田信長",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "reduceCostThisTurn": 2
+        },
+        {
+          "draw": 1
+        },
+        {
+          "selfDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/SG_P01.webp",
+      "notes": "革新と覇権"
+    },
+    {
+      "id": "SG_P02",
+      "name": "豊臣秀吉",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "reduceCostThisTurn": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P02.webp",
+      "notes": "下剋上の体現"
+    },
+    {
+      "id": "SG_P03",
+      "name": "徳川家康",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "conditional": {
+            "if": "boughtVictoryThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P03.webp",
+      "notes": "天下統一の完成者"
+    },
+    {
+      "id": "SG_P04",
+      "name": "武田信玄",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "conditional": {
+            "if": "attackResolved",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P04.webp",
+      "notes": "甲斐の虎"
+    },
+    {
+      "id": "SG_P05",
+      "name": "上杉謙信",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/SG_P05.webp",
+      "notes": "越後の龍"
+    },
+    {
+      "id": "SG_P06",
+      "name": "毛利元就",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedResourceThisTurn",
+            "then": [
+              {
+                "reduceCostThisTurn": 1
+              },
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P06.webp",
+      "notes": "中国地方の覇者"
+    },
+    {
+      "id": "SG_P07",
+      "name": "北条早雲",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "conditional": {
+            "if": "handSize<=4",
+            "then": [
+              {
+                "draw": 2
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P07.webp",
+      "notes": "戦国大名の先駆け"
+    },
+    {
+      "id": "SG_P08",
+      "name": "今川義元",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 4
+        },
+        {
+          "selfDiscard": 2
+        }
+      ],
+      "image": "/assets/cards/SG_P08.webp",
+      "notes": "名門大名"
+    },
+    {
+      "id": "SG_P09",
+      "name": "明智光秀",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 2
+        },
+        {
+          "selfDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/SG_P09.webp",
+      "notes": "謀反"
+    },
+    {
+      "id": "SG_P10",
+      "name": "石田三成",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedAnotherPersonThisTurn",
+            "then": [
+              {
+                "reduceCostThisTurn": 1
+              },
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P10.webp",
+      "notes": "豊臣政権"
+    },
+    {
+      "id": "SG_P11",
+      "name": "伊達政宗",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/SG_P11.webp",
+      "notes": "独眼竜"
+    },
+    {
+      "id": "SG_P12",
+      "name": "島津義弘",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "attackDiscard": 2
+        }
+      ],
+      "image": "/assets/cards/SG_P12.webp",
+      "notes": "九州の雄"
+    },
+    {
+      "id": "SG_P13",
+      "name": "長宗我部元親",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedRiceThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_P13.webp",
+      "notes": "四国統一"
+    },
+    {
+      "id": "SG_P14",
+      "name": "斎藤道三",
+      "era": "sengoku",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "reduceCostThisTurn": 3
+        },
+        {
+          "trashFromHand": 1
+        }
+      ],
+      "image": "/assets/cards/SG_P14.webp",
+      "notes": "下剋上"
+    },
+    {
+      "id": "SG_R01",
+      "name": "鉄砲伝来",
+      "era": "sengoku",
+      "category": "resource",
+      "cost": 2,
+      "effects": [
+        {
+          "reduceCostThisTurn": 2
+        }
+      ],
+      "image": "/assets/cards/SG_R01.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_R02",
+      "name": "城郭建築（石垣・天守）",
+      "era": "sengoku",
+      "category": "resource",
+      "cost": 2,
+      "effects": [
+        {
+          "gainRice": 2
+        },
+        {
+          "trashFromHand": 1
+        }
+      ],
+      "image": "/assets/cards/SG_R02.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_V01",
+      "name": "城下町",
+      "era": "sengoku",
+      "category": "victory",
+      "cost": 3,
+      "effects": [
+        {
+          "gainVP": 1
+        }
+      ],
+      "image": "/assets/cards/SG_V01.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_V02",
+      "name": "領国経営",
+      "era": "sengoku",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_V02.webp",
+      "notes": "領国経営"
+    },
+    {
+      "id": "SG_V03",
+      "name": "一国支配",
+      "era": "sengoku",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        {
+          "gainVP": 3
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/SG_V03.webp",
+      "notes": ""
+    },
+    {
+      "id": "SG_V04",
+      "name": "全国支配",
+      "era": "sengoku",
+      "category": "victory",
+      "cost": 6,
+      "effects": [
+        {
+          "gainVP": 6
+        }
+      ],
+      "image": "/assets/cards/SG_V04.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_C01",
+      "name": "寺子屋",
+      "era": "edo",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/ED_C01.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_C02",
+      "name": "浮世絵文化",
+      "era": "edo",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_C02.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E01",
+      "name": "江戸幕府の成立",
+      "era": "edo",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "conditional": {
+            "if": "trashedThisTurn>=1",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_E01.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E02",
+      "name": "参勤交代",
+      "era": "edo",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainRice": 2
+              }
+            ]
+          }
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/ED_E02.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E03",
+      "name": "武家諸法度",
+      "era": "edo",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "trashFromHand": 2
+        }
+      ],
+      "image": "/assets/cards/ED_E03.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E04",
+      "name": "鎖国",
+      "era": "edo",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainRice": 1
+        }
+      ],
+      "image": "/assets/cards/ED_E04.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E05",
+      "name": "朱印船貿易",
+      "era": "edo",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 3
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_E05.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E06",
+      "name": "享保の改革",
+      "era": "edo",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainRice": 2
+        }
+      ],
+      "image": "/assets/cards/ED_E06.webp",
+      "notes": ""
+    },
+    {
+      "id": "ED_E07",
+      "name": "田沼政治",
+      "era": "edo",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainRice": 4
+        },
+        {
+          "selfDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/ED_E07.webp",
+      "notes": "田沼政治"
+    },
+    {
+      "id": "ED_E08",
+      "name": "寛政の改革",
+      "era": "edo",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainKnowledge": 2
+        }
+      ],
+      "image": "/assets/cards/ED_E08.webp",
+      "notes": "寛政の改革"
+    },
+    {
+      "id": "ED_E09",
+      "name": "天保の改革",
+      "era": "edo",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "conditional": {
+            "if": "trashedThisTurn>=1",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_E09.webp",
+      "notes": "天保の改革"
+    },
+    {
+      "id": "ED_E10",
+      "name": "株仲間",
+      "era": "edo",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 2
+        },
+        {
+          "conditional": {
+            "if": "gainedRiceThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_E10.webp",
+      "notes": "株仲間"
+    },
+    {
+      "id": "ED_P01",
+      "name": "徳川家康",
+      "era": "edo",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "conditional": {
+            "if": "trashedThisTurn>=1",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P01.webp",
+      "notes": "徳川家康"
+    },
+    {
+      "id": "ED_P02",
+      "name": "徳川秀忠",
+      "era": "edo",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainRice": 2
+        },
+        {
+          "conditional": {
+            "if": "boughtVictoryThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P02.webp",
+      "notes": "徳川秀忠"
+    },
+    {
+      "id": "ED_P03",
+      "name": "徳川家光",
+      "era": "edo",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainRice": 2
+        }
+      ],
+      "image": "/assets/cards/ED_P03.webp",
+      "notes": "徳川家光"
+    },
+    {
+      "id": "ED_P04",
+      "name": "徳川綱吉",
+      "era": "edo",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P04.webp",
+      "notes": "徳川綱吉"
+    },
+    {
+      "id": "ED_P05",
+      "name": "徳川吉宗",
+      "era": "edo",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainRice": 3
+        }
+      ],
+      "image": "/assets/cards/ED_P05.webp",
+      "notes": "徳川吉宗"
+    },
+    {
+      "id": "ED_P06",
+      "name": "田沼意次",
+      "era": "edo",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainRice": 4
+        },
+        {
+          "selfDiscard": 1
+        }
+      ],
+      "image": "/assets/cards/ED_P06.webp",
+      "notes": "田沼意次"
+    },
+    {
+      "id": "ED_P07",
+      "name": "松平定信",
+      "era": "edo",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainKnowledge": 1
+        }
+      ],
+      "image": "/assets/cards/ED_P07.webp",
+      "notes": "松平定信"
+    },
+    {
+      "id": "ED_P08",
+      "name": "大岡忠相",
+      "era": "edo",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "conditional": {
+            "if": "trashedThisTurn>=1",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P08.webp",
+      "notes": "大岡忠相"
+    },
+    {
+      "id": "ED_P09",
+      "name": "平賀源内",
+      "era": "edo",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/ED_P09.webp",
+      "notes": "平賀源内"
+    },
+    {
+      "id": "ED_P10",
+      "name": "伊能忠敬",
+      "era": "edo",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P10.webp",
+      "notes": "伊能忠敬"
+    },
+    {
+      "id": "ED_P11",
+      "name": "葛飾北斎",
+      "era": "edo",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "conditional": {
+            "if": "playedCultureThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P11.webp",
+      "notes": "葛飾北斎"
+    },
+    {
+      "id": "ED_P12",
+      "name": "歌川広重",
+      "era": "edo",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "draw": 1
+        },
+        {
+          "conditional": {
+            "if": "boughtVictoryThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_P12.webp",
+      "notes": "歌川広重"
+    },
+    {
+      "id": "ED_V01",
+      "name": "江戸の町",
+      "era": "edo",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "gainVP": 2
+        },
+        {
+          "conditional": {
+            "if": "gainedRiceThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_V01.webp",
+      "notes": "江戸の町"
+    },
+    {
+      "id": "ED_V02",
+      "name": "城下町の発展",
+      "era": "edo",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_V02.webp",
+      "notes": "城下町の発展"
+    },
+    {
+      "id": "ED_V03",
+      "name": "五街道",
+      "era": "edo",
+      "category": "victory",
+      "cost": 3,
+      "effects": [
+        {
+          "conditional": {
+            "if": "boughtVictoryThisTurn",
+            "then": [
+              {
+                "draw": 1
+              },
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_V03.webp",
+      "notes": "五街道"
+    },
+    {
+      "id": "ED_V04",
+      "name": "天下泰平",
+      "era": "edo",
+      "category": "victory",
+      "cost": 6,
+      "effects": [
+        {
+          "gainVP": 5
+        }
+      ],
+      "image": "/assets/cards/ED_V04.webp",
+      "notes": "天下泰平"
+    },
+    {
+      "id": "ED_V05",
+      "name": "宿場町",
+      "era": "edo",
+      "category": "victory",
+      "cost": 3,
+      "effects": [
+        {
+          "gainRice": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedRiceThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_V05.webp",
+      "notes": "宿場町"
+    },
+    {
+      "id": "ED_V06",
+      "name": "石高制",
+      "era": "edo",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        {
+          "gainVP": 3
+        },
+        {
+          "conditional": {
+            "if": "totalRiceThisTurn>=5",
+            "then": [
+              {
+                "gainVP": 2
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/ED_V06.webp",
+      "notes": "石高制"
+    },
+    {
+      "id": "MJ_C01",
+      "name": "文明開化",
+      "era": "meiji",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_C01.webp",
+      "notes": "文明開化"
+    },
+    {
+      "id": "MJ_C02",
+      "name": "西洋技術の導入",
+      "era": "meiji",
+      "category": "culture",
+      "cost": 2,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_C02.webp",
+      "notes": "西洋技術の導入"
+    },
+    {
+      "id": "MJ_E01",
+      "name": "明治維新",
+      "era": "meiji",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        {
+          "trashFromHand": 2
+        },
+        {
+          "gainKnowledge": 2
+        }
+      ],
+      "image": "/assets/cards/MJ_E01.webp",
+      "notes": "明治維新"
+    },
+    {
+      "id": "MJ_E02",
+      "name": "王政復古",
+      "era": "meiji",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "trashFromHand": 1
+        },
+        {
+          "gainKnowledge": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_E02.webp",
+      "notes": "王政復古"
+    },
+    {
+      "id": "MJ_E03",
+      "name": "廃藩置県",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "trashFromHand": 2
+        },
+        {
+          "gainKnowledge": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_E03.webp",
+      "notes": "廃藩置県"
+    },
+    {
+      "id": "MJ_E04",
+      "name": "四民平等",
+      "era": "meiji",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_E04.webp",
+      "notes": "四民平等"
+    },
+    {
+      "id": "MJ_E05",
+      "name": "富国強兵",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_E05.webp",
+      "notes": "富国強兵"
+    },
+    {
+      "id": "MJ_E06",
+      "name": "殖産興業",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_E06.webp",
+      "notes": "殖産興業"
+    },
+    {
+      "id": "MJ_E07",
+      "name": "学制発布",
+      "era": "meiji",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_E07.webp",
+      "notes": "学制発布"
+    },
+    {
+      "id": "MJ_E08",
+      "name": "徴兵令",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_E08.webp",
+      "notes": "徴兵令"
+    },
+    {
+      "id": "MJ_E09",
+      "name": "大日本帝国憲法",
+      "era": "meiji",
+      "category": "event",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=2",
+            "then": [
+              {
+                "gainVP": 2
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_E09.webp",
+      "notes": "大日本帝国憲法"
+    },
+    {
+      "id": "MJ_E10",
+      "name": "日清戦争",
+      "era": "meiji",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "gainVP": 2
+        }
+      ],
+      "image": "/assets/cards/MJ_E10.webp",
+      "notes": "日清戦争"
+    },
+    {
+      "id": "MJ_P01",
+      "name": "明治天皇",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=2",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P01.webp",
+      "notes": "明治天皇"
+    },
+    {
+      "id": "MJ_P02",
+      "name": "西郷隆盛",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "selfDiscard": 1
+        },
+        {
+          "conditional": {
+            "if": "selfDiscardedThisTurn>=1",
+            "then": [
+              {
+                "gainKnowledge": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P02.webp",
+      "notes": "西郷隆盛"
+    },
+    {
+      "id": "MJ_P03",
+      "name": "大久保利通",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_P03.webp",
+      "notes": "大久保利通"
+    },
+    {
+      "id": "MJ_P04",
+      "name": "木戸孝允",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_P04.webp",
+      "notes": "木戸孝允"
+    },
+    {
+      "id": "MJ_P05",
+      "name": "岩倉具視",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P05.webp",
+      "notes": "岩倉具視"
+    },
+    {
+      "id": "MJ_P06",
+      "name": "伊藤博文",
+      "era": "meiji",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        {
+          "gainKnowledge": 2
+        },
+        {
+          "reduceCostThisTurn": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_P06.webp",
+      "notes": "伊藤博文"
+    },
+    {
+      "id": "MJ_P07",
+      "name": "山県有朋",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P07.webp",
+      "notes": "山県有朋"
+    },
+    {
+      "id": "MJ_P08",
+      "name": "福沢諭吉",
+      "era": "meiji",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_P08.webp",
+      "notes": "福沢諭吉"
+    },
+    {
+      "id": "MJ_P09",
+      "name": "板垣退助",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P09.webp",
+      "notes": "板垣退助"
+    },
+    {
+      "id": "MJ_P10",
+      "name": "大隈重信",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "draw": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P10.webp",
+      "notes": "大隈重信"
+    },
+    {
+      "id": "MJ_P11",
+      "name": "渋沢栄一",
+      "era": "meiji",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "conditional": {
+            "if": "gainedKnowledgeThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_P11.webp",
+      "notes": "渋沢栄一"
+    },
+    {
+      "id": "MJ_P12",
+      "name": "津田梅子",
+      "era": "meiji",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        {
+          "gainKnowledge": 1
+        },
+        {
+          "draw": 1
+        }
+      ],
+      "image": "/assets/cards/MJ_P12.webp",
+      "notes": "津田梅子"
+    },
+    {
+      "id": "MJ_V01",
+      "name": "中央集権国家",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 5,
+      "effects": [
+        {
+          "gainVP": 3
+        },
+        {
+          "conditional": {
+            "if": "totalKnowledge>=5",
+            "then": [
+              {
+                "gainVP": 2
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_V01.webp",
+      "notes": "中央集権国家"
+    },
+    {
+      "id": "MJ_V02",
+      "name": "近代官僚制",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedEventThisTurn",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_V02.webp",
+      "notes": "近代官僚制"
+    },
+    {
+      "id": "MJ_V03",
+      "name": "議会政治の始まり",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "playedPersonThisTurn",
+            "then": [
+              {
+                "draw": 1
+              },
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_V03.webp",
+      "notes": "議会政治の始まり"
+    },
+    {
+      "id": "MJ_V04",
+      "name": "鉄道網の整備",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "reducedCostThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_V04.webp",
+      "notes": "鉄道網の整備"
+    },
+    {
+      "id": "MJ_V05",
+      "name": "近代工場",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 4,
+      "effects": [
+        {
+          "conditional": {
+            "if": "reducedCostThisTurn>=1",
+            "then": [
+              {
+                "gainVP": 1
+              }
+            ]
+          }
+        }
+      ],
+      "image": "/assets/cards/MJ_V05.webp",
+      "notes": "近代工場"
+    },
+    {
+      "id": "MJ_V06",
+      "name": "近代国家の完成",
+      "era": "meiji",
+      "category": "victory",
+      "cost": 6,
+      "effects": [
+        {
+          "gainVP": 6
+        }
+      ],
+      "image": "/assets/cards/MJ_V06.webp",
+      "notes": "近代国家の完成"
+    },
+    {
+      "id": "AMM_R01",
+      "name": "穀物交易",
+      "era": "ancient_mediterranean",
+      "category": "resource",
+      "cost": 2,
+      "effects": [
+        { "gainRice": 2 }
+      ],
+      "image": "/assets/cards/AMM_R01.webp",
+      "notes": "地中海の穀物供給"
+    },
+    {
+      "id": "AMM_R02",
+      "name": "オリーブ油",
+      "era": "ancient_mediterranean",
+      "category": "resource",
+      "cost": 3,
+      "effects": [
+        { "gainRice": 1 },
+        { "draw": 1 }
+      ],
+      "image": "/assets/cards/AMM_R02.webp",
+      "notes": "保存と交易に強い資源"
+    },
+    {
+      "id": "AMM_V01",
+      "name": "アレクサンドリア図書館",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/AMM_V01.webp",
+      "notes": "知の集積"
+    },
+    {
+      "id": "AMM_V02",
+      "name": "ローマのフォルム",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/AMM_V02.webp",
+      "notes": "公共空間"
+    },
+    {
+      "id": "AMM_V03",
+      "name": "大灯台（ファロス）",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/AMM_V03.webp",
+      "notes": "航海と交易の象徴"
+    },
+    {
+      "id": "AMM_V04",
+      "name": "コロッセウム",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/AMM_V04.webp",
+      "notes": "帝国の威信"
+    },
+    {
+      "id": "AMM_V05",
+      "name": "パンテオン",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/AMM_V05.webp",
+      "notes": "宗教と統合"
+    },
+    {
+      "id": "AMM_V06",
+      "name": "ローマ法の体系化",
+      "era": "ancient_mediterranean",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/AMM_V06.webp",
+      "notes": "制度の完成"
+    },
+    {
+      "id": "AMM_P01",
+      "name": "ハンムラビ",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P01.webp",
+      "notes": "法の支配"
+    },
+    {
+      "id": "AMM_P02",
+      "name": "ソクラテス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "selfDiscard": 1 },
+        { "gainKnowledge": 2 }
+      ],
+      "image": "/assets/cards/AMM_P02.webp",
+      "notes": "問答法"
+    },
+    {
+      "id": "AMM_P03",
+      "name": "プラトン",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "draw": 1 }
+      ],
+      "image": "/assets/cards/AMM_P03.webp",
+      "notes": "アカデメイア"
+    },
+    {
+      "id": "AMM_P04",
+      "name": "アリストテレス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 2 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P04.webp",
+      "notes": "体系化"
+    },
+    {
+      "id": "AMM_P05",
+      "name": "アレクサンドロス大王",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "gainRice": 2 },
+        { "attackDiscard": 1 }
+      ],
+      "image": "/assets/cards/AMM_P05.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "AMM_P06",
+      "name": "カエサル",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_P06.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "AMM_P07",
+      "name": "クレオパトラ",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "draw": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_P07.webp",
+      "notes": "外交"
+    },
+    {
+      "id": "AMM_P08",
+      "name": "アウグストゥス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 5,
+      "effects": [
+        { "trashFromHand": 1 },
+        { "gainVP": 1 }
+      ],
+      "image": "/assets/cards/AMM_P08.webp",
+      "notes": "秩序の再建"
+    },
+    {
+      "id": "AMM_P09",
+      "name": "ハンニバル",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P09.webp",
+      "notes": "奇襲"
+    },
+    {
+      "id": "AMM_P10",
+      "name": "ペリクレス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "image": "/assets/cards/AMM_P10.webp",
+      "notes": "民主政の発展"
+    },
+    {
+      "id": "AMM_P11",
+      "name": "スパルタクス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "selfDiscard": 1 },
+        { "attackDiscard": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_P11.webp",
+      "notes": "反乱"
+    },
+    {
+      "id": "AMM_P12",
+      "name": "ピタゴラス",
+      "era": "ancient_mediterranean",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_P12.webp",
+      "notes": "数学"
+    },
+    {
+      "id": "AMM_E01",
+      "name": "ポリス",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "draw": 1 }
+      ],
+      "image": "/assets/cards/AMM_E01.webp",
+      "notes": "都市国家"
+    },
+    {
+      "id": "AMM_E02",
+      "name": "共和政ローマ",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 2 }
+      ],
+      "image": "/assets/cards/AMM_E02.webp",
+      "notes": "市民参加"
+    },
+    {
+      "id": "AMM_E03",
+      "name": "ローマ街道",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainRice": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "image": "/assets/cards/AMM_E03.webp",
+      "notes": "物流"
+    },
+    {
+      "id": "AMM_E04",
+      "name": "十二表法",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "trashFromHand": 1 },
+        { "gainKnowledge": 1 }
+      ],
+      "image": "/assets/cards/AMM_E04.webp",
+      "notes": "成文化"
+    },
+    {
+      "id": "AMM_E05",
+      "name": "オリンピア競技",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "draw": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_E05.webp",
+      "notes": "祭典"
+    },
+    {
+      "id": "AMM_E06",
+      "name": "パクス・ロマーナ",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 2 },
+        { "gainVP": 1 }
+      ],
+      "image": "/assets/cards/AMM_E06.webp",
+      "notes": "平和と繁栄"
+    },
+    {
+      "id": "AMM_E07",
+      "name": "貨幣経済",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainRice": 1 },
+        { "reduceCostThisTurn": 1 }
+      ],
+      "image": "/assets/cards/AMM_E07.webp",
+      "notes": "市場"
+    },
+    {
+      "id": "AMM_E08",
+      "name": "ストア派",
+      "era": "ancient_mediterranean",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "selfDiscard": 1 },
+        { "gainKnowledge": 2 }
+      ],
+      "image": "/assets/cards/AMM_E08.webp",
+      "notes": "理性"
+    },
+    {
+      "id": "AMM_S01",
+      "name": "水道橋",
+      "era": "ancient_mediterranean",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 2 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/AMM_S01.webp",
+      "notes": "インフラ"
+    },
+    {
+      "id": "AMM_S02",
+      "name": "道路網",
+      "era": "ancient_mediterranean",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "gainRice": 1 }
+      ],
+      "image": "/assets/cards/AMM_S02.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "MEU_R01",
+      "name": "羊毛",
+      "era": "medieval_europe",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/MEU_R01.webp",
+      "notes": "毛織物の基盤"
+    },
+    {
+      "id": "MEU_R02",
+      "name": "地中海交易",
+      "era": "medieval_europe",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_R02.webp",
+      "notes": "港市の繁栄"
+    },
+    {
+      "id": "MEU_V01",
+      "name": "ゴシック大聖堂",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/MEU_V01.webp",
+      "notes": "信仰と都市"
+    },
+    {
+      "id": "MEU_V02",
+      "name": "大学",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/MEU_V02.webp",
+      "notes": "学問の拠点"
+    },
+    {
+      "id": "MEU_V03",
+      "name": "騎士叙任",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/MEU_V03.webp",
+      "notes": "武と名誉"
+    },
+    {
+      "id": "MEU_V04",
+      "name": "王権強化",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/MEU_V04.webp",
+      "notes": "中央集権"
+    },
+    {
+      "id": "MEU_V05",
+      "name": "都市自治",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/MEU_V05.webp",
+      "notes": "自由都市"
+    },
+    {
+      "id": "MEU_V06",
+      "name": "封建秩序の完成",
+      "era": "medieval_europe",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/MEU_V06.webp",
+      "notes": "身分と契約"
+    },
+    {
+      "id": "MEU_P01",
+      "name": "カール大帝",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_P01.webp",
+      "notes": "帝国の統合"
+    },
+    {
+      "id": "MEU_P02",
+      "name": "ウルバヌス2世",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "draw": 1 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/MEU_P02.webp",
+      "notes": "十字軍の呼びかけ"
+    },
+    {
+      "id": "MEU_P03",
+      "name": "サラディン",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_P03.webp",
+      "notes": "対抗"
+    },
+    {
+      "id": "MEU_P04",
+      "name": "ジャンヌ・ダルク",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_P04.webp",
+      "notes": "鼓舞"
+    },
+    {
+      "id": "MEU_P05",
+      "name": "マルコ・ポーロ",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MEU_P05.webp",
+      "notes": "見聞"
+    },
+    {
+      "id": "MEU_P06",
+      "name": "トマス・アクィナス",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/MEU_P06.webp",
+      "notes": "スコラ学"
+    },
+    {
+      "id": "MEU_P07",
+      "name": "教皇",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_P07.webp",
+      "notes": "権威"
+    },
+    {
+      "id": "MEU_P08",
+      "name": "封建領主",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/MEU_P08.webp",
+      "notes": "領地経営"
+    },
+    {
+      "id": "MEU_P09",
+      "name": "十字軍騎士",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainVP": 1 } ],
+      "image": "/assets/cards/MEU_P09.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "MEU_P10",
+      "name": "職人",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MEU_P10.webp",
+      "notes": "手札を整える"
+    },
+    {
+      "id": "MEU_P11",
+      "name": "修道士",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MEU_P11.webp",
+      "notes": "清貧と学び"
+    },
+    {
+      "id": "MEU_P12",
+      "name": "吟遊詩人",
+      "era": "medieval_europe",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "draw": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MEU_P12.webp",
+      "notes": "語りと祝祭"
+    },
+    {
+      "id": "MEU_E01",
+      "name": "封建制",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_E01.webp",
+      "notes": "主従関係"
+    },
+    {
+      "id": "MEU_E02",
+      "name": "荘園制",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/MEU_E02.webp",
+      "notes": "農村"
+    },
+    {
+      "id": "MEU_E03",
+      "name": "十字軍",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_E03.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "MEU_E04",
+      "name": "叙任権闘争",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MEU_E04.webp",
+      "notes": "権力の衝突"
+    },
+    {
+      "id": "MEU_E05",
+      "name": "都市の発達",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_E05.webp",
+      "notes": "市場"
+    },
+    {
+      "id": "MEU_E06",
+      "name": "黒死病",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MEU_E06.webp",
+      "notes": "社会の衝撃"
+    },
+    {
+      "id": "MEU_E07",
+      "name": "通貨経済の拡大",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MEU_E07.webp",
+      "notes": "商業"
+    },
+    {
+      "id": "MEU_E08",
+      "name": "修道院改革",
+      "era": "medieval_europe",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_E08.webp",
+      "notes": "規律"
+    },
+    {
+      "id": "MEU_S01",
+      "name": "修道院",
+      "era": "medieval_europe",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainVP": 1 } ],
+      "image": "/assets/cards/MEU_S01.webp",
+      "notes": "共同体"
+    },
+    {
+      "id": "MEU_S02",
+      "name": "ギルド",
+      "era": "medieval_europe",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/MEU_S02.webp",
+      "notes": "職人の組合"
+    },
+    {
+      "id": "ISW_R01",
+      "name": "香辛料交易",
+      "era": "islamic_world",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/ISW_R01.webp",
+      "notes": "インド洋交易"
+    },
+    {
+      "id": "ISW_R02",
+      "name": "シルクロード",
+      "era": "islamic_world",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_R02.webp",
+      "notes": "隊商路"
+    },
+    {
+      "id": "ISW_V01",
+      "name": "知恵の館",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/ISW_V01.webp",
+      "notes": "学問の集積"
+    },
+    {
+      "id": "ISW_V02",
+      "name": "シャリーア体系化",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/ISW_V02.webp",
+      "notes": "法学"
+    },
+    {
+      "id": "ISW_V03",
+      "name": "学問都市",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/ISW_V03.webp",
+      "notes": "教育と交流"
+    },
+    {
+      "id": "ISW_V04",
+      "name": "灌漑網の拡張",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/ISW_V04.webp",
+      "notes": "農業の発展"
+    },
+    {
+      "id": "ISW_V05",
+      "name": "交易圏の形成",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/ISW_V05.webp",
+      "notes": "広域経済"
+    },
+    {
+      "id": "ISW_V06",
+      "name": "イスラーム文明の成熟",
+      "era": "islamic_world",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/ISW_V06.webp",
+      "notes": "文化の総合"
+    },
+    {
+      "id": "ISW_P01",
+      "name": "ムハンマド",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainKnowledge": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/ISW_P01.webp",
+      "notes": "共同体の形成"
+    },
+    {
+      "id": "ISW_P02",
+      "name": "アブー＝バクル",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_P02.webp",
+      "notes": "初代正統カリフ"
+    },
+    {
+      "id": "ISW_P03",
+      "name": "ウマイヤ朝のカリフ",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/ISW_P03.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "ISW_P04",
+      "name": "アッバース朝のカリフ",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_P04.webp",
+      "notes": "バグダード"
+    },
+    {
+      "id": "ISW_P05",
+      "name": "イブン＝シーナ",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/ISW_P05.webp",
+      "notes": "医学と哲学"
+    },
+    {
+      "id": "ISW_P06",
+      "name": "イブン＝ハルドゥーン",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_P06.webp",
+      "notes": "歴史叙述"
+    },
+    {
+      "id": "ISW_P07",
+      "name": "サラディン",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_P07.webp",
+      "notes": "十字軍への対抗"
+    },
+    {
+      "id": "ISW_P08",
+      "name": "ウラマー",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_P08.webp",
+      "notes": "宗教的権威"
+    },
+    {
+      "id": "ISW_P09",
+      "name": "書記",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/ISW_P09.webp",
+      "notes": "記録"
+    },
+    {
+      "id": "ISW_P10",
+      "name": "隊商長",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/ISW_P10.webp",
+      "notes": "交易の実務"
+    },
+    {
+      "id": "ISW_P11",
+      "name": "天文学者",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/ISW_P11.webp",
+      "notes": "暦と観測"
+    },
+    {
+      "id": "ISW_P12",
+      "name": "商人",
+      "era": "islamic_world",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/ISW_P12.webp",
+      "notes": "手札を整える"
+    },
+    {
+      "id": "ISW_E01",
+      "name": "カリフ制",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E01.webp",
+      "notes": "統治"
+    },
+    {
+      "id": "ISW_E02",
+      "name": "ジズヤ",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/ISW_E02.webp",
+      "notes": "税制"
+    },
+    {
+      "id": "ISW_E03",
+      "name": "翻訳運動",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E03.webp",
+      "notes": "知の継承"
+    },
+    {
+      "id": "ISW_E04",
+      "name": "隊商交易",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/ISW_E04.webp",
+      "notes": "市場"
+    },
+    {
+      "id": "ISW_E05",
+      "name": "スーフィズム",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/ISW_E05.webp",
+      "notes": "内面的修養"
+    },
+    {
+      "id": "ISW_E06",
+      "name": "ワクフ（寄進）",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E06.webp",
+      "notes": "慈善"
+    },
+    {
+      "id": "ISW_E07",
+      "name": "十字軍対応",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/ISW_E07.webp",
+      "notes": "防衛"
+    },
+    {
+      "id": "ISW_E08",
+      "name": "学問の奨励",
+      "era": "islamic_world",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_E08.webp",
+      "notes": "後援"
+    },
+    {
+      "id": "ISW_S01",
+      "name": "バグダード",
+      "era": "islamic_world",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_S01.webp",
+      "notes": "都"
+    },
+    {
+      "id": "ISW_S02",
+      "name": "モスク",
+      "era": "islamic_world",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/ISW_S02.webp",
+      "notes": "共同体の中心"
+    },
+    {
+      "id": "EAS_R01",
+      "name": "稲作農業",
+      "era": "east_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/EAS_R01.webp",
+      "notes": "生産の基盤"
+    },
+    {
+      "id": "EAS_R02",
+      "name": "絹織物",
+      "era": "east_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_R02.webp",
+      "notes": "高級交易品"
+    },
+    {
+      "id": "EAS_V01",
+      "name": "儒教国家体制",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/EAS_V01.webp",
+      "notes": "倫理と秩序"
+    },
+    {
+      "id": "EAS_V02",
+      "name": "皇帝支配体制",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/EAS_V02.webp",
+      "notes": "中央集権"
+    },
+    {
+      "id": "EAS_V03",
+      "name": "漢字文化の拡大",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/EAS_V03.webp",
+      "notes": "共通の文字"
+    },
+    {
+      "id": "EAS_V04",
+      "name": "官僚制国家",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/EAS_V04.webp",
+      "notes": "行政の整備"
+    },
+    {
+      "id": "EAS_V05",
+      "name": "中華思想",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/EAS_V05.webp",
+      "notes": "世界観"
+    },
+    {
+      "id": "EAS_V06",
+      "name": "冊封秩序の確立",
+      "era": "east_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/EAS_V06.webp",
+      "notes": "国際秩序"
+    },
+    {
+      "id": "EAS_P01",
+      "name": "孔子",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/EAS_P01.webp",
+      "notes": "倫理"
+    },
+    {
+      "id": "EAS_P02",
+      "name": "孟子",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_P02.webp",
+      "notes": "性善説"
+    },
+    {
+      "id": "EAS_P03",
+      "name": "始皇帝",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_P03.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "EAS_P04",
+      "name": "劉邦",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_P04.webp",
+      "notes": "漢の建国"
+    },
+    {
+      "id": "EAS_P05",
+      "name": "漢武帝",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_P05.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "EAS_P06",
+      "name": "張騫",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_P06.webp",
+      "notes": "西域"
+    },
+    {
+      "id": "EAS_P07",
+      "name": "曹操",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/EAS_P07.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "EAS_P08",
+      "name": "諸葛亮",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_P08.webp",
+      "notes": "政略"
+    },
+    {
+      "id": "EAS_P09",
+      "name": "隋文帝",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/EAS_P09.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "EAS_P10",
+      "name": "唐太宗",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_P10.webp",
+      "notes": "貞観の治"
+    },
+    {
+      "id": "EAS_P11",
+      "name": "朱元璋",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/EAS_P11.webp",
+      "notes": "明の建国"
+    },
+    {
+      "id": "EAS_P12",
+      "name": "忽必烈",
+      "era": "east_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_P12.webp",
+      "notes": "元の支配"
+    },
+    {
+      "id": "EAS_E01",
+      "name": "科挙",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_E01.webp",
+      "notes": "官僚登用"
+    },
+    {
+      "id": "EAS_E02",
+      "name": "郡県制",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_E02.webp",
+      "notes": "地方統治"
+    },
+    {
+      "id": "EAS_E03",
+      "name": "封建制（中国）",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/EAS_E03.webp",
+      "notes": "諸侯"
+    },
+    {
+      "id": "EAS_E04",
+      "name": "漢字文化圏",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_E04.webp",
+      "notes": "共通文化"
+    },
+    {
+      "id": "EAS_E05",
+      "name": "三国時代",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_E05.webp",
+      "notes": "群雄"
+    },
+    {
+      "id": "EAS_E06",
+      "name": "シルクロード（東端）",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/EAS_E06.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "EAS_E07",
+      "name": "冊封体制",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/EAS_E07.webp",
+      "notes": "外交儀礼"
+    },
+    {
+      "id": "EAS_E08",
+      "name": "遊牧国家との抗争",
+      "era": "east_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/EAS_E08.webp",
+      "notes": "辺境"
+    },
+    {
+      "id": "EAS_S01",
+      "name": "万里の長城",
+      "era": "east_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/EAS_S01.webp",
+      "notes": "防衛線"
+    },
+    {
+      "id": "EAS_S02",
+      "name": "大運河",
+      "era": "east_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/EAS_S02.webp",
+      "notes": "物流"
+    },
+    {
+      "id": "SAS_R01",
+      "name": "香辛料",
+      "era": "south_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/SAS_R01.webp",
+      "notes": "交易品"
+    },
+    {
+      "id": "SAS_R02",
+      "name": "綿織物",
+      "era": "south_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_R02.webp",
+      "notes": "手工業"
+    },
+    {
+      "id": "SAS_V01",
+      "name": "アショーカの法",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/SAS_V01.webp",
+      "notes": "統治理念"
+    },
+    {
+      "id": "SAS_V02",
+      "name": "グプタの黄金期",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/SAS_V02.webp",
+      "notes": "文化の繁栄"
+    },
+    {
+      "id": "SAS_V03",
+      "name": "インド洋交易圏",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/SAS_V03.webp",
+      "notes": "海上交易"
+    },
+    {
+      "id": "SAS_V04",
+      "name": "仏教文化の広がり",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/SAS_V04.webp",
+      "notes": "信仰と交流"
+    },
+    {
+      "id": "SAS_V05",
+      "name": "ムガル建築",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/SAS_V05.webp",
+      "notes": "壮麗な造営"
+    },
+    {
+      "id": "SAS_V06",
+      "name": "南アジア文明の多様性",
+      "era": "south_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/SAS_V06.webp",
+      "notes": "多文化"
+    },
+    {
+      "id": "SAS_P01",
+      "name": "ゴータマ・ブッダ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/SAS_P01.webp",
+      "notes": "悟り"
+    },
+    {
+      "id": "SAS_P02",
+      "name": "アショーカ王",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainKnowledge": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SAS_P02.webp",
+      "notes": "法と布教"
+    },
+    {
+      "id": "SAS_P03",
+      "name": "チャンドラグプタ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_P03.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "SAS_P04",
+      "name": "カウティリヤ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_P04.webp",
+      "notes": "政略"
+    },
+    {
+      "id": "SAS_P05",
+      "name": "カーリダーサ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_P05.webp",
+      "notes": "サンスクリット文学"
+    },
+    {
+      "id": "SAS_P06",
+      "name": "アーリヤバタ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_P06.webp",
+      "notes": "数学と天文学"
+    },
+    {
+      "id": "SAS_P07",
+      "name": "ハルシャ王",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/SAS_P07.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "SAS_P08",
+      "name": "アクバル",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_P08.webp",
+      "notes": "寛容"
+    },
+    {
+      "id": "SAS_P09",
+      "name": "バーブル",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/SAS_P09.webp",
+      "notes": "ムガルの始動"
+    },
+    {
+      "id": "SAS_P10",
+      "name": "アウラングゼーブ",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_P10.webp",
+      "notes": "強権"
+    },
+    {
+      "id": "SAS_P11",
+      "name": "グル・ナーナク",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SAS_P11.webp",
+      "notes": "信仰"
+    },
+    {
+      "id": "SAS_P12",
+      "name": "商人ギルド",
+      "era": "south_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_P12.webp",
+      "notes": "取引"
+    },
+    {
+      "id": "SAS_E01",
+      "name": "マウリヤ朝",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SAS_E01.webp",
+      "notes": "統一王朝"
+    },
+    {
+      "id": "SAS_E02",
+      "name": "グプタ朝",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E02.webp",
+      "notes": "繁栄"
+    },
+    {
+      "id": "SAS_E03",
+      "name": "インド洋交易",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SAS_E03.webp",
+      "notes": "海路"
+    },
+    {
+      "id": "SAS_E04",
+      "name": "仏教の伝播",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E04.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "SAS_E05",
+      "name": "バクティ運動",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/SAS_E05.webp",
+      "notes": "信仰運動"
+    },
+    {
+      "id": "SAS_E06",
+      "name": "デリー・スルターン朝",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E06.webp",
+      "notes": "政権"
+    },
+    {
+      "id": "SAS_E07",
+      "name": "ムガル帝国の成立",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SAS_E07.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "SAS_E08",
+      "name": "カースト制度",
+      "era": "south_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SAS_E08.webp",
+      "notes": "社会構造"
+    },
+    {
+      "id": "SAS_S01",
+      "name": "サーンチーの仏塔",
+      "era": "south_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/SAS_S01.webp",
+      "notes": "信仰の象徴"
+    },
+    {
+      "id": "SAS_S02",
+      "name": "タージ・マハル",
+      "era": "south_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SAS_S02.webp",
+      "notes": "建築"
+    },
+    {
+      "id": "SEA_R01",
+      "name": "香辛料（マルク諸島）",
+      "era": "southeast_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/SEA_R01.webp",
+      "notes": "交易品"
+    },
+    {
+      "id": "SEA_R02",
+      "name": "米作（デルタ農業）",
+      "era": "southeast_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_R02.webp",
+      "notes": "稲作"
+    },
+    {
+      "id": "SEA_V01",
+      "name": "海上交易ネットワーク",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/SEA_V01.webp",
+      "notes": "海の道"
+    },
+    {
+      "id": "SEA_V02",
+      "name": "港市国家の繁栄",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/SEA_V02.webp",
+      "notes": "港市"
+    },
+    {
+      "id": "SEA_V03",
+      "name": "多民族社会",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/SEA_V03.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "SEA_V04",
+      "name": "上座部仏教の広がり",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/SEA_V04.webp",
+      "notes": "信仰"
+    },
+    {
+      "id": "SEA_V05",
+      "name": "イスラーム化（海域部）",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/SEA_V05.webp",
+      "notes": "海域交易"
+    },
+    {
+      "id": "SEA_V06",
+      "name": "独立国家の成立",
+      "era": "southeast_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/SEA_V06.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_P01",
+      "name": "スールヤヴァルマン2世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SEA_P01.webp",
+      "notes": "アンコール"
+    },
+    {
+      "id": "SEA_P02",
+      "name": "ジャヤヴァルマン7世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_P02.webp",
+      "notes": "公共事業"
+    },
+    {
+      "id": "SEA_P03",
+      "name": "アノーヤター",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_P03.webp",
+      "notes": "王国の基盤"
+    },
+    {
+      "id": "SEA_P04",
+      "name": "バインナウン",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/SEA_P04.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "SEA_P05",
+      "name": "ラーマ1世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/SEA_P05.webp",
+      "notes": "王朝の整備"
+    },
+    {
+      "id": "SEA_P06",
+      "name": "ラーマ5世",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_P06.webp",
+      "notes": "近代化"
+    },
+    {
+      "id": "SEA_P07",
+      "name": "阮福映（嘉隆帝）",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_P07.webp",
+      "notes": "王朝の成立"
+    },
+    {
+      "id": "SEA_P08",
+      "name": "鄭和",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_P08.webp",
+      "notes": "海域交易"
+    },
+    {
+      "id": "SEA_P09",
+      "name": "アウン・サン",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SEA_P09.webp",
+      "notes": "独立運動"
+    },
+    {
+      "id": "SEA_P10",
+      "name": "ホー・チ・ミン",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_P10.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_P11",
+      "name": "スカルノ",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_P11.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_P12",
+      "name": "リー・クアンユー",
+      "era": "southeast_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_P12.webp",
+      "notes": "都市国家"
+    },
+    {
+      "id": "SEA_E01",
+      "name": "マラッカ王国",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SEA_E01.webp",
+      "notes": "港市国家"
+    },
+    {
+      "id": "SEA_E02",
+      "name": "香辛料貿易",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_E02.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "SEA_E03",
+      "name": "東南アジア海域交易",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SEA_E03.webp",
+      "notes": "海路"
+    },
+    {
+      "id": "SEA_E04",
+      "name": "海の道（インド洋交易）",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_E04.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "SEA_E05",
+      "name": "植民地支配の開始（東南アジア）",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SEA_E05.webp",
+      "notes": "支配"
+    },
+    {
+      "id": "SEA_E06",
+      "name": "オランダ東インド会社",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_E06.webp",
+      "notes": "会社"
+    },
+    {
+      "id": "SEA_E07",
+      "name": "仏領インドシナ",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SEA_E07.webp",
+      "notes": "植民地"
+    },
+    {
+      "id": "SEA_E08",
+      "name": "東南アジア独立運動",
+      "era": "southeast_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_E08.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SEA_S01",
+      "name": "アンコール・ワット",
+      "era": "southeast_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/SEA_S01.webp",
+      "notes": "造営"
+    },
+    {
+      "id": "SEA_S02",
+      "name": "ボロブドゥール",
+      "era": "southeast_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SEA_S02.webp",
+      "notes": "寺院"
+    },
+    {
+      "id": "CAS_R01",
+      "name": "馬（遊牧資源）",
+      "era": "central_asia",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/CAS_R01.webp",
+      "notes": "機動力"
+    },
+    {
+      "id": "CAS_R02",
+      "name": "交易税（関所収入）",
+      "era": "central_asia",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_R02.webp",
+      "notes": "通行税"
+    },
+    {
+      "id": "CAS_V01",
+      "name": "東西交易の結節点",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/CAS_V01.webp",
+      "notes": "結節"
+    },
+    {
+      "id": "CAS_V02",
+      "name": "遊牧と農耕の交差",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/CAS_V02.webp",
+      "notes": "境界"
+    },
+    {
+      "id": "CAS_V03",
+      "name": "世界帝国の形成",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/CAS_V03.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "CAS_V04",
+      "name": "イスラーム学術の発展",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/CAS_V04.webp",
+      "notes": "学術"
+    },
+    {
+      "id": "CAS_V05",
+      "name": "シルクロード文化交流",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/CAS_V05.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "CAS_V06",
+      "name": "オアシス文明の成熟",
+      "era": "central_asia",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/CAS_V06.webp",
+      "notes": "成熟"
+    },
+    {
+      "id": "CAS_P01",
+      "name": "チンギス・ハン",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_P01.webp",
+      "notes": "遊牧帝国"
+    },
+    {
+      "id": "CAS_P02",
+      "name": "フビライ",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/CAS_P02.webp",
+      "notes": "征服"
+    },
+    {
+      "id": "CAS_P03",
+      "name": "ティムール",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_P03.webp",
+      "notes": "覇権"
+    },
+    {
+      "id": "CAS_P04",
+      "name": "バーブル",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/CAS_P04.webp",
+      "notes": "征服"
+    },
+    {
+      "id": "CAS_P05",
+      "name": "マフムード・ガズナヴィー",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_P05.webp",
+      "notes": "遠征"
+    },
+    {
+      "id": "CAS_P06",
+      "name": "アル＝フワーリズミー",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/CAS_P06.webp",
+      "notes": "数学"
+    },
+    {
+      "id": "CAS_P07",
+      "name": "イブン＝スィーナー（アヴィケンナ）",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/CAS_P07.webp",
+      "notes": "医学と哲学"
+    },
+    {
+      "id": "CAS_P08",
+      "name": "アル＝ビールーニー",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_P08.webp",
+      "notes": "学術"
+    },
+    {
+      "id": "CAS_P09",
+      "name": "トゥグリル・ベク",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/CAS_P09.webp",
+      "notes": "セルジューク"
+    },
+    {
+      "id": "CAS_P10",
+      "name": "ジャラールッディーン",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/CAS_P10.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "CAS_P11",
+      "name": "マナス（叙事詩の英雄）",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_P11.webp",
+      "notes": "英雄"
+    },
+    {
+      "id": "CAS_P12",
+      "name": "アッティラ",
+      "era": "central_asia",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/CAS_P12.webp",
+      "notes": "侵攻"
+    },
+    {
+      "id": "CAS_E01",
+      "name": "シルクロード（中央アジア）",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/CAS_E01.webp",
+      "notes": "交易路"
+    },
+    {
+      "id": "CAS_E02",
+      "name": "オアシス都市の繁栄",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_E02.webp",
+      "notes": "繁栄"
+    },
+    {
+      "id": "CAS_E03",
+      "name": "遊牧国家の興亡",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/CAS_E03.webp",
+      "notes": "興亡"
+    },
+    {
+      "id": "CAS_E04",
+      "name": "モンゴル帝国の拡大",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_E04.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "CAS_E05",
+      "name": "イル汗国",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/CAS_E05.webp",
+      "notes": "分立"
+    },
+    {
+      "id": "CAS_E06",
+      "name": "チャガタイ・ハン国",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/CAS_E06.webp",
+      "notes": "分立"
+    },
+    {
+      "id": "CAS_E07",
+      "name": "ティムール朝",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/CAS_E07.webp",
+      "notes": "王朝"
+    },
+    {
+      "id": "CAS_E08",
+      "name": "キャラバン交易",
+      "era": "central_asia",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_E08.webp",
+      "notes": "隊商"
+    },
+    {
+      "id": "CAS_S01",
+      "name": "サマルカンド",
+      "era": "central_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/CAS_S01.webp",
+      "notes": "都"
+    },
+    {
+      "id": "CAS_S02",
+      "name": "ブハラ",
+      "era": "central_asia",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/CAS_S02.webp",
+      "notes": "オアシス"
+    },
+    {
+      "id": "SSA_R01",
+      "name": "金",
+      "era": "sub_saharan_africa",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/SSA_R01.webp",
+      "notes": "富の源"
+    },
+    {
+      "id": "SSA_R02",
+      "name": "象牙",
+      "era": "sub_saharan_africa",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_R02.webp",
+      "notes": "交易品"
+    },
+    {
+      "id": "SSA_V01",
+      "name": "交易帝国の繁栄",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/SSA_V01.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "SSA_V02",
+      "name": "学問都市の発展",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/SSA_V02.webp",
+      "notes": "学問"
+    },
+    {
+      "id": "SSA_V03",
+      "name": "スワヒリ都市国家",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/SSA_V03.webp",
+      "notes": "港市"
+    },
+    {
+      "id": "SSA_V04",
+      "name": "王国の統合",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/SSA_V04.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "SSA_V05",
+      "name": "植民地支配からの独立",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/SSA_V05.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SSA_V06",
+      "name": "アフリカ文化の多様性",
+      "era": "sub_saharan_africa",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/SSA_V06.webp",
+      "notes": "多様性"
+    },
+    {
+      "id": "SSA_P01",
+      "name": "マンサ・ムーサ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SSA_P01.webp",
+      "notes": "富"
+    },
+    {
+      "id": "SSA_P02",
+      "name": "スンジャタ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/SSA_P02.webp",
+      "notes": "建国"
+    },
+    {
+      "id": "SSA_P03",
+      "name": "シャカ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SSA_P03.webp",
+      "notes": "軍事改革"
+    },
+    {
+      "id": "SSA_P04",
+      "name": "ラティ・ジョロン",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_P04.webp",
+      "notes": "統率"
+    },
+    {
+      "id": "SSA_P05",
+      "name": "エンジンガ（ンジンガ女王）",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_P05.webp",
+      "notes": "外交"
+    },
+    {
+      "id": "SSA_P06",
+      "name": "メネリク2世",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_P06.webp",
+      "notes": "近代化"
+    },
+    {
+      "id": "SSA_P07",
+      "name": "ラリベラ王",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_P07.webp",
+      "notes": "造営"
+    },
+    {
+      "id": "SSA_P08",
+      "name": "アフマド・ババ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_P08.webp",
+      "notes": "学問"
+    },
+    {
+      "id": "SSA_P09",
+      "name": "オサマネ・ダン・フォディオ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_P09.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "SSA_P10",
+      "name": "ヤア・アサンテワ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_P10.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "SSA_P11",
+      "name": "アブドゥルラフマン・アル＝サアディ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_P11.webp",
+      "notes": "歴史叙述"
+    },
+    {
+      "id": "SSA_P12",
+      "name": "ハイレ・セラシエ",
+      "era": "sub_saharan_africa",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SSA_P12.webp",
+      "notes": "近代国家"
+    },
+    {
+      "id": "SSA_E01",
+      "name": "サハラ交易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SSA_E01.webp",
+      "notes": "交易路"
+    },
+    {
+      "id": "SSA_E02",
+      "name": "金交易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_E02.webp",
+      "notes": "富"
+    },
+    {
+      "id": "SSA_E03",
+      "name": "塩交易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/SSA_E03.webp",
+      "notes": "必需品"
+    },
+    {
+      "id": "SSA_E04",
+      "name": "トンブクトゥの学問",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_E04.webp",
+      "notes": "学問都市"
+    },
+    {
+      "id": "SSA_E05",
+      "name": "スワヒリ交易圏",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/SSA_E05.webp",
+      "notes": "海域交易"
+    },
+    {
+      "id": "SSA_E06",
+      "name": "大西洋奴隷貿易",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_E06.webp",
+      "notes": "衝撃"
+    },
+    {
+      "id": "SSA_E07",
+      "name": "ベルリン会議（アフリカ分割）",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/SSA_E07.webp",
+      "notes": "分割"
+    },
+    {
+      "id": "SSA_E08",
+      "name": "独立運動の波",
+      "era": "sub_saharan_africa",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_E08.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "SSA_S01",
+      "name": "トンブクトゥ",
+      "era": "sub_saharan_africa",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/SSA_S01.webp",
+      "notes": "学問都市"
+    },
+    {
+      "id": "SSA_S02",
+      "name": "グレート・ジンバブエ",
+      "era": "sub_saharan_africa",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/SSA_S02.webp",
+      "notes": "石造遺跡"
+    },
+    {
+      "id": "NAM_R01",
+      "name": "綿花",
+      "era": "north_america",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/NAM_R01.webp",
+      "notes": "プランテーション"
+    },
+    {
+      "id": "NAM_R02",
+      "name": "石油",
+      "era": "north_america",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_R02.webp",
+      "notes": "エネルギー"
+    },
+    {
+      "id": "NAM_V01",
+      "name": "連邦国家の成立",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/NAM_V01.webp",
+      "notes": "建国"
+    },
+    {
+      "id": "NAM_V02",
+      "name": "産業化の進展",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/NAM_V02.webp",
+      "notes": "工業"
+    },
+    {
+      "id": "NAM_V03",
+      "name": "大陸国家の拡大",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/NAM_V03.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "NAM_V04",
+      "name": "民主主義の拡張",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/NAM_V04.webp",
+      "notes": "参政"
+    },
+    {
+      "id": "NAM_V05",
+      "name": "公民権の前進",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/NAM_V05.webp",
+      "notes": "権利"
+    },
+    {
+      "id": "NAM_V06",
+      "name": "世界大国への台頭",
+      "era": "north_america",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/NAM_V06.webp",
+      "notes": "大国"
+    },
+    {
+      "id": "NAM_P01",
+      "name": "ジョージ・ワシントン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/NAM_P01.webp",
+      "notes": "建国"
+    },
+    {
+      "id": "NAM_P02",
+      "name": "トマス・ジェファーソン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_P02.webp",
+      "notes": "理念"
+    },
+    {
+      "id": "NAM_P03",
+      "name": "エイブラハム・リンカーン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_P03.webp",
+      "notes": "統合"
+    },
+    {
+      "id": "NAM_P04",
+      "name": "フランクリン・ルーズベルト",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_P04.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "NAM_P05",
+      "name": "マーティン・ルーサー・キング",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_P05.webp",
+      "notes": "公民権"
+    },
+    {
+      "id": "NAM_P06",
+      "name": "アレクサンダー・ハミルトン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_P06.webp",
+      "notes": "財政"
+    },
+    {
+      "id": "NAM_P07",
+      "name": "ベンジャミン・フランクリン",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/NAM_P07.webp",
+      "notes": "啓蒙"
+    },
+    {
+      "id": "NAM_P08",
+      "name": "セオドア・ルーズベルト",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/NAM_P08.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "NAM_P09",
+      "name": "スーザン・B・アンソニー",
+      "era": "north_america",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/NAM_P09.webp",
+      "notes": "参政権"
+    },
+    {
+      "id": "NAM_P10",
+      "name": "シッティング・ブル",
+      "era": "north_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_P10.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "NAM_P11",
+      "name": "ポカホンタス",
+      "era": "north_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_P11.webp",
+      "notes": "交流"
+    },
+    {
+      "id": "NAM_P12",
+      "name": "ルイ・リエル",
+      "era": "north_america",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_P12.webp",
+      "notes": "自治"
+    },
+    {
+      "id": "NAM_E01",
+      "name": "アメリカ独立戦争",
+      "era": "north_america",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_E01.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "NAM_E02",
+      "name": "合衆国憲法制定",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_E02.webp",
+      "notes": "制度"
+    },
+    {
+      "id": "NAM_E03",
+      "name": "ルイジアナ買収",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/NAM_E03.webp",
+      "notes": "拡大"
+    },
+    {
+      "id": "NAM_E04",
+      "name": "西部開拓",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/NAM_E04.webp",
+      "notes": "開拓"
+    },
+    {
+      "id": "NAM_E05",
+      "name": "南北戦争",
+      "era": "north_america",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_E05.webp",
+      "notes": "内戦"
+    },
+    {
+      "id": "NAM_E06",
+      "name": "奴隷解放宣言",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/NAM_E06.webp",
+      "notes": "解放"
+    },
+    {
+      "id": "NAM_E07",
+      "name": "ニューディール政策",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/NAM_E07.webp",
+      "notes": "政策"
+    },
+    {
+      "id": "NAM_E08",
+      "name": "公民権運動",
+      "era": "north_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_E08.webp",
+      "notes": "権利"
+    },
+    {
+      "id": "NAM_S01",
+      "name": "ホワイトハウス",
+      "era": "north_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/NAM_S01.webp",
+      "notes": "政庁"
+    },
+    {
+      "id": "NAM_S02",
+      "name": "大陸横断鉄道",
+      "era": "north_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/NAM_S02.webp",
+      "notes": "物流"
+    },
+    {
+      "id": "LAM_R01",
+      "name": "銀",
+      "era": "latin_america",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/LAM_R01.webp",
+      "notes": "銀山"
+    },
+    {
+      "id": "LAM_R02",
+      "name": "砂糖",
+      "era": "latin_america",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_R02.webp",
+      "notes": "プランテーション"
+    },
+    {
+      "id": "LAM_V01",
+      "name": "独立国家の成立",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/LAM_V01.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "LAM_V02",
+      "name": "先住民文明の遺産",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/LAM_V02.webp",
+      "notes": "遺産"
+    },
+    {
+      "id": "LAM_V03",
+      "name": "大西洋経済への統合",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/LAM_V03.webp",
+      "notes": "交易"
+    },
+    {
+      "id": "LAM_V04",
+      "name": "革命と社会改革",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/LAM_V04.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "LAM_V05",
+      "name": "文化の混淆（メスティーソ）",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/LAM_V05.webp",
+      "notes": "混淆"
+    },
+    {
+      "id": "LAM_V06",
+      "name": "民主化の進展",
+      "era": "latin_america",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/LAM_V06.webp",
+      "notes": "民主化"
+    },
+    {
+      "id": "LAM_P01",
+      "name": "シモン・ボリバル",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_P01.webp",
+      "notes": "解放者"
+    },
+    {
+      "id": "LAM_P02",
+      "name": "ホセ・デ・サン・マルティン",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "selfDiscard": 1 } ],
+      "image": "/assets/cards/LAM_P02.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "LAM_P03",
+      "name": "ミゲル・イダルゴ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_P03.webp",
+      "notes": "蜂起"
+    },
+    {
+      "id": "LAM_P04",
+      "name": "ベニート・フアレス",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/LAM_P04.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "LAM_P05",
+      "name": "ポルフィリオ・ディアス",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/LAM_P05.webp",
+      "notes": "体制"
+    },
+    {
+      "id": "LAM_P06",
+      "name": "エミリアーノ・サパタ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_P06.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_P07",
+      "name": "パンチョ・ビリャ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/LAM_P07.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_P08",
+      "name": "エバ・ペロン",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_P08.webp",
+      "notes": "大衆"
+    },
+    {
+      "id": "LAM_P09",
+      "name": "サルバドール・アジェンデ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_P09.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "LAM_P10",
+      "name": "フィデル・カストロ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_P10.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_P11",
+      "name": "チェ・ゲバラ",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/LAM_P11.webp",
+      "notes": "運動"
+    },
+    {
+      "id": "LAM_P12",
+      "name": "ジュセリーノ・クビチェック",
+      "era": "latin_america",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_P12.webp",
+      "notes": "開発"
+    },
+    {
+      "id": "LAM_E01",
+      "name": "ラテンアメリカ独立運動",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_E01.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "LAM_E02",
+      "name": "先住民文明の征服",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/LAM_E02.webp",
+      "notes": "征服"
+    },
+    {
+      "id": "LAM_E03",
+      "name": "エンコミエンダ制",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_E03.webp",
+      "notes": "労働"
+    },
+    {
+      "id": "LAM_E04",
+      "name": "銀山開発（ポトシ）",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_E04.webp",
+      "notes": "資源"
+    },
+    {
+      "id": "LAM_E05",
+      "name": "三角貿易（大西洋経済）",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/LAM_E05.webp",
+      "notes": "大西洋"
+    },
+    {
+      "id": "LAM_E06",
+      "name": "メキシコ革命",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/LAM_E06.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_E07",
+      "name": "キューバ革命",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/LAM_E07.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "LAM_E08",
+      "name": "軍事政権と民主化",
+      "era": "latin_america",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_E08.webp",
+      "notes": "民主化"
+    },
+    {
+      "id": "LAM_S01",
+      "name": "マチュ・ピチュ",
+      "era": "latin_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/LAM_S01.webp",
+      "notes": "遺産"
+    },
+    {
+      "id": "LAM_S02",
+      "name": "チチェン・イッツァ",
+      "era": "latin_america",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/LAM_S02.webp",
+      "notes": "遺産"
+    },
+    {
+      "id": "OCE_R01",
+      "name": "羊毛",
+      "era": "oceania",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/OCE_R01.webp",
+      "notes": "牧羊"
+    },
+    {
+      "id": "OCE_R02",
+      "name": "金",
+      "era": "oceania",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_R02.webp",
+      "notes": "鉱山"
+    },
+    {
+      "id": "OCE_V01",
+      "name": "航海文化の継承",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/OCE_V01.webp",
+      "notes": "航海"
+    },
+    {
+      "id": "OCE_V02",
+      "name": "植民地社会の形成",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/OCE_V02.webp",
+      "notes": "社会"
+    },
+    {
+      "id": "OCE_V03",
+      "name": "先住民文化の復権",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/OCE_V03.webp",
+      "notes": "復権"
+    },
+    {
+      "id": "OCE_V04",
+      "name": "国家の自立と発展",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/OCE_V04.webp",
+      "notes": "発展"
+    },
+    {
+      "id": "OCE_V05",
+      "name": "多文化社会の成熟",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/OCE_V05.webp",
+      "notes": "多文化"
+    },
+    {
+      "id": "OCE_V06",
+      "name": "太平洋地域の連携",
+      "era": "oceania",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/OCE_V06.webp",
+      "notes": "連携"
+    },
+    {
+      "id": "OCE_P01",
+      "name": "ジェームズ・クック",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_P01.webp",
+      "notes": "探検"
+    },
+    {
+      "id": "OCE_P02",
+      "name": "アーサー・フィリップ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_P02.webp",
+      "notes": "入植"
+    },
+    {
+      "id": "OCE_P03",
+      "name": "ウィリアム・ブライ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_P03.webp",
+      "notes": "航海"
+    },
+    {
+      "id": "OCE_P04",
+      "name": "バンジル（先住民の祖霊）",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/OCE_P04.webp",
+      "notes": "伝承"
+    },
+    {
+      "id": "OCE_P05",
+      "name": "トルガ（先住民指導者）",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_P05.webp",
+      "notes": "抵抗"
+    },
+    {
+      "id": "OCE_P06",
+      "name": "テ・ラウパラハ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/OCE_P06.webp",
+      "notes": "統率"
+    },
+    {
+      "id": "OCE_P07",
+      "name": "アピラナ・ンガタ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_P07.webp",
+      "notes": "政治"
+    },
+    {
+      "id": "OCE_P08",
+      "name": "エディ・マボ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/OCE_P08.webp",
+      "notes": "権利回復"
+    },
+    {
+      "id": "OCE_P09",
+      "name": "ロバート・メンジーズ",
+      "era": "oceania",
+      "category": "person",
+      "cost": 5,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/OCE_P09.webp",
+      "notes": "長期政権"
+    },
+    {
+      "id": "OCE_P10",
+      "name": "ゴフ・ウィットラム",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_P10.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "OCE_P11",
+      "name": "デイヴィッド・ウナイポン",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_P11.webp",
+      "notes": "発明と思想"
+    },
+    {
+      "id": "OCE_P12",
+      "name": "キャシー・フリーマン",
+      "era": "oceania",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_P12.webp",
+      "notes": "象徴"
+    },
+    {
+      "id": "OCE_E01",
+      "name": "ポリネシア航海術",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_E01.webp",
+      "notes": "航海"
+    },
+    {
+      "id": "OCE_E02",
+      "name": "オーストラリア植民地化",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/OCE_E02.webp",
+      "notes": "植民地"
+    },
+    {
+      "id": "OCE_E03",
+      "name": "囚人流刑",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_E03.webp",
+      "notes": "流刑"
+    },
+    {
+      "id": "OCE_E04",
+      "name": "ゴールドラッシュ（豪州）",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/OCE_E04.webp",
+      "notes": "金"
+    },
+    {
+      "id": "OCE_E05",
+      "name": "マオリ戦争",
+      "era": "oceania",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/OCE_E05.webp",
+      "notes": "戦争"
+    },
+    {
+      "id": "OCE_E06",
+      "name": "オセアニア戦線（太平洋戦争）",
+      "era": "oceania",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_E06.webp",
+      "notes": "戦争"
+    },
+    {
+      "id": "OCE_E07",
+      "name": "先住民権利回復運動",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/OCE_E07.webp",
+      "notes": "権利"
+    },
+    {
+      "id": "OCE_E08",
+      "name": "多文化主義政策",
+      "era": "oceania",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_E08.webp",
+      "notes": "多文化"
+    },
+    {
+      "id": "OCE_S01",
+      "name": "シドニー湾入植地",
+      "era": "oceania",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/OCE_S01.webp",
+      "notes": "入植地"
+    },
+    {
+      "id": "OCE_S02",
+      "name": "イースター島のモアイ",
+      "era": "oceania",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/OCE_S02.webp",
+      "notes": "遺産"
+    },
+    {
+      "id": "MOG_R01",
+      "name": "石油資本",
+      "era": "modern_global",
+      "category": "resource",
+      "cost": 2,
+      "effects": [ { "gainRice": 2 } ],
+      "image": "/assets/cards/MOG_R01.webp",
+      "notes": "資本"
+    },
+    {
+      "id": "MOG_R02",
+      "name": "大量生産",
+      "era": "modern_global",
+      "category": "resource",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_R02.webp",
+      "notes": "工業"
+    },
+    {
+      "id": "MOG_V01",
+      "name": "植民地帝国の拡大",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 2 } ],
+      "image": "/assets/cards/MOG_V01.webp",
+      "notes": "帝国"
+    },
+    {
+      "id": "MOG_V02",
+      "name": "戦時総力体制",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 } ],
+      "image": "/assets/cards/MOG_V02.webp",
+      "notes": "総力"
+    },
+    {
+      "id": "MOG_V03",
+      "name": "福祉国家の形成",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 4,
+      "effects": [ { "gainVP": 3 } ],
+      "image": "/assets/cards/MOG_V03.webp",
+      "notes": "福祉"
+    },
+    {
+      "id": "MOG_V04",
+      "name": "東西対立の収束",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 5,
+      "effects": [ { "gainVP": 4 } ],
+      "image": "/assets/cards/MOG_V04.webp",
+      "notes": "冷戦"
+    },
+    {
+      "id": "MOG_V05",
+      "name": "国際協調の枠組み",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 6,
+      "effects": [ { "gainVP": 5 } ],
+      "image": "/assets/cards/MOG_V05.webp",
+      "notes": "協調"
+    },
+    {
+      "id": "MOG_V06",
+      "name": "情報化社会の到来",
+      "era": "modern_global",
+      "category": "victory",
+      "cost": 7,
+      "effects": [ { "gainVP": 6 } ],
+      "image": "/assets/cards/MOG_V06.webp",
+      "notes": "情報"
+    },
+    {
+      "id": "MOG_P01",
+      "name": "ビスマルク",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MOG_P01.webp",
+      "notes": "統一"
+    },
+    {
+      "id": "MOG_P02",
+      "name": "セシル・ローズ",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainRice": 2 }, { "attackDiscard": 1 } ],
+      "image": "/assets/cards/MOG_P02.webp",
+      "notes": "帝国"
+    },
+    {
+      "id": "MOG_P03",
+      "name": "レーニン",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_P03.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "MOG_P04",
+      "name": "スターリン",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "attackDiscard": 2 },
+        { "conditional": { "if": "attackDiscarded>=1", "then": [ { "gainRice": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_P04.webp",
+      "notes": "体制"
+    },
+    {
+      "id": "MOG_P05",
+      "name": "チャーチル",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_P05.webp",
+      "notes": "戦時"
+    },
+    {
+      "id": "MOG_P06",
+      "name": "ルーズベルト（FDR）",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_P06.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "MOG_P07",
+      "name": "ヒトラー",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_P07.webp",
+      "notes": "独裁"
+    },
+    {
+      "id": "MOG_P08",
+      "name": "トルーマン",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 4,
+      "effects": [
+        { "reduceCostThisTurn": 1 },
+        { "conditional": { "if": "playedPersonThisTurn", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_P08.webp",
+      "notes": "冷戦"
+    },
+    {
+      "id": "MOG_P09",
+      "name": "マオ・沢東",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "selfDiscard": 1 }, { "gainKnowledge": 2 } ],
+      "image": "/assets/cards/MOG_P09.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "MOG_P10",
+      "name": "ゴルバチョフ",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "gainedKnowledgeThisTurn>=1", "then": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_P10.webp",
+      "notes": "改革"
+    },
+    {
+      "id": "MOG_P11",
+      "name": "マハトマ・ガンディー",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MOG_P11.webp",
+      "notes": "非暴力"
+    },
+    {
+      "id": "MOG_P12",
+      "name": "ネルソン・マンデラ",
+      "era": "modern_global",
+      "category": "person",
+      "cost": 3,
+      "effects": [ { "gainVP": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_P12.webp",
+      "notes": "人権"
+    },
+    {
+      "id": "MOG_E01",
+      "name": "帝国主義の進展",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainRice": 1 }, { "reduceCostThisTurn": 1 } ],
+      "image": "/assets/cards/MOG_E01.webp",
+      "notes": "帝国"
+    },
+    {
+      "id": "MOG_E02",
+      "name": "第一次世界大戦",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E02.webp",
+      "notes": "大戦"
+    },
+    {
+      "id": "MOG_E03",
+      "name": "ロシア革命",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "trashFromHand": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E03.webp",
+      "notes": "革命"
+    },
+    {
+      "id": "MOG_E04",
+      "name": "世界恐慌",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 2,
+      "effects": [ { "selfDiscard": 2 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_E04.webp",
+      "notes": "恐慌"
+    },
+    {
+      "id": "MOG_E05",
+      "name": "第二次世界大戦",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 4,
+      "effects": [ { "attackDiscard": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E05.webp",
+      "notes": "大戦"
+    },
+    {
+      "id": "MOG_E06",
+      "name": "冷戦",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "draw": 1 }, { "gainKnowledge": 1 } ],
+      "image": "/assets/cards/MOG_E06.webp",
+      "notes": "対立"
+    },
+    {
+      "id": "MOG_E07",
+      "name": "脱植民地化",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [ { "gainKnowledge": 1 }, { "draw": 1 } ],
+      "image": "/assets/cards/MOG_E07.webp",
+      "notes": "独立"
+    },
+    {
+      "id": "MOG_E08",
+      "name": "グローバル化",
+      "era": "modern_global",
+      "category": "event",
+      "cost": 3,
+      "effects": [
+        { "gainKnowledge": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ], "else": [ { "draw": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_E08.webp",
+      "notes": "接続"
+    },
+    {
+      "id": "MOG_S01",
+      "name": "国際連盟",
+      "era": "modern_global",
+      "category": "structure",
+      "cost": 4,
+      "effects": [
+        { "gainRice": 1 },
+        { "conditional": { "if": "trashedThisTurn>=1", "then": [ { "gainVP": 1 } ] } }
+      ],
+      "image": "/assets/cards/MOG_S01.webp",
+      "notes": "協調"
+    },
+    {
+      "id": "MOG_S02",
+      "name": "国際連合",
+      "era": "modern_global",
+      "category": "structure",
+      "cost": 4,
+      "effects": [ { "reduceCostThisTurn": 1 }, { "gainRice": 1 } ],
+      "image": "/assets/cards/MOG_S02.webp",
+      "notes": "協調"
+    }
+  ]
+}
