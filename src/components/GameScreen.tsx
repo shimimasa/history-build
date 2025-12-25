@@ -239,6 +239,9 @@ function sortSupplyPiles(piles: any[]): any[] {
  
    const hoveredCard: any | null = state.hoveredCard ?? null;
 
+   // ACTION専用：ミニDETAIL（折りたたみドロワー）
+   const [isActionMiniDetailOpen, setIsActionMiniDetailOpen] = React.useState(false);
+
    // 手札カードの「表示用の一意キー」を解決（instanceId が無い場合は id__index）
    // これを選択IDとして使うことで、同名カードが複数あっても「1枚だけ」選択できる。
    const resolveHandKey = (c: any, index: number) =>
@@ -255,6 +258,20 @@ function sortSupplyPiles(piles: any[]): any[] {
            return null;
          })()
        : null;
+
+  // ACTION：手札をクリック選択したらミニDETAILを自動で開く（ホバーでは更新しない）
+  React.useEffect(() => {
+    if (!isActionPhase) {
+      setIsActionMiniDetailOpen(false);
+      return;
+    }
+    if (selectedCardFromHand) {
+      setIsActionMiniDetailOpen(true);
+    } else {
+      // 選択が無ければ閉じる（デフォルトは閉）
+      setIsActionMiniDetailOpen(false);
+    }
+  }, [isActionPhase, selectedHandCardId, selectedCardFromHand]);
 
          // ★ 優先度:
   //    1. ホバー中のカード
@@ -285,8 +302,10 @@ function sortSupplyPiles(piles: any[]): any[] {
   const handleHandClick = (cardId: string) => {
        if (selectedHandCardId === cardId) {
          onSelectHandCard(null);
+         if (isActionPhase) setIsActionMiniDetailOpen(false);
        } else {
          onSelectHandCard(cardId);
+         if (isActionPhase) setIsActionMiniDetailOpen(true);
        }
      };
 
@@ -374,12 +393,31 @@ function sortSupplyPiles(piles: any[]): any[] {
           setIsHelpOpen(false);
           return;
         }
+        // 中央モーダルが開いているなら先に閉じる
+        if (isDetailModalOpen) {
+          e.preventDefault();
+          setIsDetailModalOpen(false);
+          return;
+        }
         // BUY中のDrawerは先に閉じる（ヘルプ > Drawer > 選択解除）
         if (rawPhase === "BUY" && (isHandOpen || isLogOpen)) {
           e.preventDefault();
           setIsHandOpen(false);
           setIsLogOpen(false);
           return;
+        }
+        // ACTION中：ミニDETAILを先に閉じる（必要なら次のEscで選択解除）
+        if (rawPhase === "ACTION") {
+          if (isActionMiniDetailOpen) {
+            e.preventDefault();
+            setIsActionMiniDetailOpen(false);
+            return;
+          }
+          if (selectedHandCardId != null) {
+            e.preventDefault();
+            onSelectHandCard(null);
+            return;
+          }
         }
         onSelectHandCard(null);
         setSelectedSupplyCardId(null);
@@ -402,7 +440,7 @@ function sortSupplyPiles(piles: any[]): any[] {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard, isHelpOpen, rawPhase, isHandOpen, isLogOpen]);
+  }, [endTurnEnabled, proceedEnabled, onEndPhase, onEndTurn, onSelectHandCard, isHelpOpen, rawPhase, isHandOpen, isLogOpen, isActionMiniDetailOpen, selectedHandCardId, isDetailModalOpen]);
 
   // BUYフェーズ + プレイヤー手番なら「クリックで即購入」
 // それ以外（他フェーズ or CPU 手番 or 在庫0）は詳細モーダルを開くだけ
@@ -593,6 +631,7 @@ React.useEffect(() => {
               // 既存の除外
               " .hb-hand-card, .hb-supply-card, .hb-log-panel, .hb-phase-actions," +
               " .hb-buy-drawer-toggle-row, .hb-drawer, .hb-drawer-backdrop," +
+              " .hb-action-detail-drawer," +
               " .hb-modal-overlay, input, button, textarea, select"
           )
         ) {
@@ -954,8 +993,11 @@ React.useEffect(() => {
                         setDetailModalCard(card);
                         setIsDetailModalOpen(true);
                       }}
-                      onMouseEnter={() => onHoverCard(card)}
-                      onMouseLeave={() => onHoverCard(null)}
+                      // ACTION中はホバーで詳細更新しない（マウス移動で消える問題を避ける）
+                      onMouseEnter={
+                        isActionPhase ? undefined : () => onHoverCard(card)
+                      }
+                      onMouseLeave={isActionPhase ? undefined : () => onHoverCard(null)}
                     >
                       <CardView card={card} variant="hand" />
                     </div>
@@ -1242,6 +1284,43 @@ React.useEffect(() => {
         </>
       )}
 
+      {/* ACTIONフェーズ限定：ミニDETAIL（クリック選択で自動オープン。ホバー更新なし） */}
+      {isActionPhase && (
+        <div
+          className={[
+            "hb-action-detail-drawer",
+            isActionMiniDetailOpen ? "hb-action-detail-drawer--open" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          role="complementary"
+          aria-label="DETAIL"
+        >
+          <button
+            type="button"
+            className="hb-action-detail-drawer-tab"
+            onClick={() => setIsActionMiniDetailOpen((v) => !v)}
+            aria-expanded={isActionMiniDetailOpen}
+            aria-controls="hb-action-mini-detail-panel"
+          >
+            DETAIL
+          </button>
+
+          <div
+            id="hb-action-mini-detail-panel"
+            className="hb-action-detail-drawer-panel"
+          >
+            {selectedCardFromHand ? (
+              <ActionMiniDetail card={selectedCardFromHand} />
+            ) : (
+              <div className="hb-action-detail-empty">
+                手札のカードをクリックすると、ここに詳細が表示されます。
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     {/* ★ モーダルは CardDetailModal 側の overlay で完結させる */}
       <CardDetailModal
         card={detailModalCard}
@@ -1258,6 +1337,32 @@ React.useEffect(() => {
           !(isPlayerBuyPhase && canBuyThisCard) ? buyDisabledReason : undefined
         }
       />
+    </div>
+  );
+};
+
+const ActionMiniDetail: React.FC<{ card: any }> = ({ card }) => {
+  const cardType: string = card.cardType ?? card.type ?? card.cardTypeLabel ?? "";
+  const effectLines: string[] = formatEffects(card);
+
+  return (
+    <div className="hb-action-detail">
+      <div className="hb-action-detail-name">{card.name ?? "（名称不明）"}</div>
+      {card?.id && <div className="hb-action-detail-id">ID: {card.id}</div>}
+      {cardType && <div className="hb-action-detail-type">タイプ: {cardType}</div>}
+
+      <div className="hb-action-detail-effects">
+        <div className="hb-action-detail-effects-title">効果</div>
+        {effectLines.length === 0 ? (
+          <div className="hb-action-detail-effects-none">なし</div>
+        ) : (
+          <ul className="hb-action-detail-effects-list">
+            {effectLines.map((line, idx) => (
+              <li key={idx}>{line}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

@@ -587,6 +587,126 @@ body {
   overflow: hidden;   /* スクロールは中身側だけに寄せる */
 }
 
+/* ====== ACTION: ミニDETAIL（折りたたみドロワー） ====== */
+.hb-action-detail-drawer {
+  --hb-action-detail-tab-h: 44px;
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: clamp(320px, 28vw, 420px);
+  height: clamp(240px, 34vh, 360px);
+  z-index: 50;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  transform: translateY(calc(100% - var(--hb-action-detail-tab-h)));
+  transition: transform 160ms ease;
+}
+
+.hb-action-detail-drawer--open {
+  transform: translateY(0);
+}
+
+.hb-action-detail-drawer-tab {
+  height: var(--hb-action-detail-tab-h);
+  align-self: flex-end;
+  padding: 0 14px;
+  border-radius: 999px;
+
+  background: rgba(2, 6, 23, 0.92);
+  color: rgba(226, 232, 240, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 18px 40px rgba(0,0,0,0.35);
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.hb-action-detail-drawer-tab:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  color: rgba(241, 245, 249, 0.98);
+}
+
+.hb-action-detail-drawer-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #050811; /* 既存パネルと統一 */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 18px 40px rgba(0,0,0,0.35);
+  padding: 0.9rem;
+}
+
+.hb-action-detail-empty {
+  color: rgba(148, 163, 184, 0.9);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.hb-action-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+}
+
+.hb-action-detail-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(226, 232, 240, 0.98);
+}
+
+.hb-action-detail-id,
+.hb-action-detail-type {
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.hb-action-detail-effects {
+  margin-top: 2px;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hb-action-detail-effects-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.hb-action-detail-effects-none {
+  font-size: 12px;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.hb-action-detail-effects-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: rgba(226, 232, 240, 0.92);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: auto;
+}
+
+@media (max-width: 720px) {
+  .hb-action-detail-drawer {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    height: min(42vh, 360px);
+  }
+}
+
   /* sidebar（もし残っている場合）だけ高さを抑えたいときの保険 */
   .hb-card-detail-panel--sidebar {
     max-height: 260px;
